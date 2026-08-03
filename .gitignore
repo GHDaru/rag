@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.pytest_cache/
+
+# motor do livro (node)
+publicar/node_modules/
+
+# site gerado (o CI reconstrói e publica)
+docs/
+
+# harness-zero etapa 04 (banco local de sessões)
+harness-zero/**/sessoes.db
+harness-zero/**/auditoria.jsonl
+harness-zero/**/skills/pendentes/
+harness-zero/**/skills/aprovadas/
