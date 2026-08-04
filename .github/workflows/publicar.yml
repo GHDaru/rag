@@ -46,10 +46,14 @@ jobs:
         working-directory: publicar
       - name: Limpar temporario de impressao
         run: rm -f docs/_print.html
-      # Requer que o Pages esteja habilitado uma vez no repositório
-      # (Settings → Pages → Source: GitHub Actions). O token do Actions não
-      # tem permissão para criar o site sozinho — é a única etapa manual.
+      # `enablement: true` faz a action tentar HABILITAR o Pages via API, em vez
+      # de só consultá-lo. Sem isso, um repositório novo falha aqui com
+      # "Get Pages site failed ... Not Found" e o deploy é pulado.
+      # Se ainda assim falhar (a API pode recusar dependendo do plano/permissão),
+      # a saída é manual e única: Settings → Pages → Source: GitHub Actions.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
