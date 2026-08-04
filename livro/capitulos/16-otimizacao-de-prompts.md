@@ -1,6 +1,6 @@
-# 06 — Otimização Automática de Prompts
+# 16 — Otimização Automática de Prompts
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento e as três famílias de otimizador estão fechados; as medições comparadas e o Apêndice A são a rodada 2 do ROADMAP.
 
@@ -77,11 +77,11 @@ Três ressalvas que o entusiasmo costuma pular:
 
 ### Leitura executiva
 
-O prompt deixou de ser texto autoral e virou **artefato compilado** contra uma métrica: você declara entrada→saída e um otimizador escreve o texto. Três famílias — busca por **exemplos** (barata, comece aqui), busca por **instrução** (bayesiana/evolutiva) e **reflexão sobre traços** (cara, mas devolve explicação legível junto). **O que roubar:** trate o prompt como artefato de build, versionado com o hash do conjunto que o produziu — e a troca de modelo vira recompilação, não reescrita. **O risco central:** o otimizador encontra exatamente as brechas da sua métrica — **otimizar contra métrica ruim produz um prompt confiantemente errado**. Por isso: não otimize antes de saber medir (cap. 07), e nunca sem separar treino de validação.
+O prompt deixou de ser texto autoral e virou **artefato compilado** contra uma métrica: você declara entrada→saída e um otimizador escreve o texto. Três famílias — busca por **exemplos** (barata, comece aqui), busca por **instrução** (bayesiana/evolutiva) e **reflexão sobre traços** (cara, mas devolve explicação legível junto). **O que roubar:** trate o prompt como artefato de build, versionado com o hash do conjunto que o produziu — e a troca de modelo vira recompilação, não reescrita. **O risco central:** o otimizador encontra exatamente as brechas da sua métrica — **otimizar contra métrica ruim produz um prompt confiantemente errado**. Por isso: não otimize antes de saber medir (cap. 17), e nunca sem separar treino de validação.
 
-## Mão na massa — contexto-zero, etapa 5
+## Mão na massa — rag-zero, etapa 10 (o gerador)
 
-Na etapa 5 você constrói um otimizador mínimo, na mão, antes de qualquer framework: 20 casos rotulados, uma métrica, um laço que propõe K variantes de instrução, avalia e mantém a melhor — com validação separada. São ~60 linhas e ensinam o que nenhum tutorial de biblioteca ensina: o overfitting aparece na sua frente. Só depois a etapa mostra o mesmo problema com um framework, e a comparação é o conteúdo.
+Na etapa 10 você constrói um otimizador mínimo, na mão, antes de qualquer framework: 20 casos rotulados, uma métrica, um laço que propõe K variantes de instrução, avalia e mantém a melhor — com validação separada. São ~60 linhas e ensinam o que nenhum tutorial de biblioteca ensina: o overfitting aparece na sua frente. Só depois a etapa mostra o mesmo problema com um framework, e a comparação é o conteúdo.
 
 ## Verificação
 

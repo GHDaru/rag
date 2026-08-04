@@ -3,7 +3,7 @@
 O tutor responde do livro (Princípio I: evidência). Este módulo carrega os
 Markdown de `livro/`, quebra em blocos por
 cabeçalho/parágrafo e pontua por sobreposição de termos. Não é um vetor de
-embeddings — é o BM25 da etapa 8 do contexto-zero, honesto e suficiente para
+embeddings — é o BM25 da etapa 8 do rag-zero, honesto e suficiente para
 ancorar respostas e citar de onde vieram. A etapa 9 (embeddings + fusão +
 reranking) entra aqui na rodada 3 do ROADMAP: o companion é o próprio livro
 rodando, e evolui capítulo a capítulo.

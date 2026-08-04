@@ -1,6 +1,6 @@
-# chat-companion — o backend (contexto-zero ao vivo)
+# chat-companion — o backend (rag-zero ao vivo)
 
-O **companion** é o assistente do livro vivo *Engenharia de Prompt e Engenharia de Contexto*: aparece desde a capa, ajuda o leitor e mostra, a cada capítulo, **quais capacidades tem naquele momento**. Este diretório é o **backend** — um serviço FastAPI que **é o `contexto-zero` rodando em produção** (reusa `LLMPort`, o índice BM25 da etapa 8 e o loop de tool-calling). É também o exemplo real que o livro disseca: o próprio livro respondendo ao leitor, com um RAG que evolui capítulo a capítulo. O **widget** (front-end no site) é uma feature à parte.
+O **companion** é o assistente do livro vivo *Engenharia de RAG*: aparece desde a capa, ajuda o leitor e mostra, a cada capítulo, **quais capacidades tem naquele momento**. Este diretório é o **backend** — um serviço FastAPI que **é o `rag-zero` rodando em produção** (reusa `LLMPort`, o índice BM25 da etapa 8 e o loop de tool-calling). É também o exemplo real que o livro disseca: o próprio livro respondendo ao leitor, com um RAG que evolui capítulo a capítulo. O **widget** (front-end no site) é uma feature à parte.
 
 > Feita pelo ciclo oficial do spec-kit: [`specs/016-chat-companion-backend/`](../specs/016-chat-companion-backend/).
 

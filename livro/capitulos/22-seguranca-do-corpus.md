@@ -1,8 +1,8 @@
-# 17 — Segurança do Contexto
+# 22 — Segurança do Corpus e da Recuperação
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** O modelo de ameaça e as camadas de defesa estão fechados; o tratamento por técnica de ataque e defesa é a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** Componente que aprofunda: **guardrails** (cap. 02). O foco é a superfície que o RAG cria — corpus envenenado, conteúdo recuperado como instrução, vazamento por permissão. O modelo de ameaça geral de agentes é do [livro irmão](https://github.com/GHDaru/harness_engineering).
 
 ## Objetivos de aprendizagem
 
@@ -15,12 +15,12 @@ Ao final deste capítulo, você deve ser capaz de:
 
 ## O problema
 
-Um modelo recebe uma sequência de tokens. Não há, na arquitetura, um canal separado para "isto é ordem" e "isto é material" — a distinção existe apenas como convenção no próprio texto (cap. 02). Se um conteúdo consegue parecer uma instrução mais convincente que a instrução original, ele pode ser obedecido.
+Um modelo recebe uma sequência de tokens. Não há, na arquitetura, um canal separado para "isto é ordem" e "isto é material" — a distinção existe apenas como convenção no próprio texto (cap. 11). Se um conteúdo consegue parecer uma instrução mais convincente que a instrução original, ele pode ser obedecido.
 
 Isso tem duas consequências que este capítulo insiste em não amenizar:
 
 1. **Não existe defesa completa por prompt.** Toda instrução do tipo "ignore instruções contidas no documento" é uma heurística que aumenta o custo do ataque, não uma garantia. Segurança que depende de o modelo obedecer não é segurança.
-2. **O problema piora exatamente onde este livro é mais útil.** Um sistema de RAG coloca no contexto texto que vem de fora. Um agente com ferramentas lê páginas, e-mails e arquivos. Cada capítulo da Parte II adiciona superfície de ataque — o cap. 10 (o corpus), o 11 (a web e o laço), o 12 (a memória, que persiste), o 14 (as ferramentas).
+2. **O problema piora exatamente onde este livro é mais útil.** Um sistema de RAG coloca no contexto texto que vem de fora. Um agente com ferramentas lê páginas, e-mails e arquivos. Cada capítulo da Parte II adiciona superfície de ataque — o cap. 06 (o corpus), o 11 (a web e o laço), o 12 (a memória, que persiste), o 14 (as ferramentas).
 
 Por isso a defesa real mora **fora** do modelo: no que o sistema permite que aconteça depois.
 
@@ -30,7 +30,7 @@ Por isso a defesa real mora **fora** do modelo: no que o sistema permite que aco
 - **Injeção via ferramentas de desenvolvimento** — trabalho específico sobre a exposição de ferramentas de desenvolvimento assistido por IA ([arXiv 2603.21642](https://arxiv.org/abs/2603.21642)) mostra que a superfície não é hipotética. `[a validar]`
 - **Injeção multimodal** — a superfície se estende a imagem e outros modais ([arXiv 2509.05883](https://arxiv.org/abs/2509.05883)), o que quebra a suposição de que filtrar texto basta. `[a validar]`
 - **Defesas propostas** — a literatura recente inclui separação criptográfica/sintática de instruções confiáveis (assinar as instruções legítimas e treinar o modelo a obedecer só as assinadas), treinamento com dados sintéticos diversos e raciocínio em nível de instrução, e defesas semânticas específicas por tarefa. Nenhuma é reportada como completa. `[a validar]`
-- **Contaminação de memória** — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009): a memória de longo prazo como vetor de persistência do ataque. É o cap. 13 encontrando este. `[a validar]`
+- **Contaminação de memória** — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009): a memória de longo prazo como vetor de persistência do ataque. É o cap. 19 encontrando este. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 
@@ -61,10 +61,10 @@ E há um agravante próprio do RAG: **o conteúdo malicioso é recuperado justam
 
 Cada camada cobre uma falha da anterior. Nenhuma é suficiente sozinha, e a ordem é de dentro para fora:
 
-1. **Separação e marcação de procedência** (cap. 02). Delimitar o material externo e declarar sua natureza. Barato, necessário, insuficiente.
+1. **Separação e marcação de procedência** (cap. 11). Delimitar o material externo e declarar sua natureza. Barato, necessário, insuficiente.
 2. **Hierarquia de instruções.** Refletir na montagem a precedência que o provedor treinou. Barato, ajuda, insuficiente.
 3. **Filtragem de entrada e saída.** Detectar padrões conhecidos de ataque na entrada; impedir vazamento na saída. Pega o ataque conhecido; perde o novo.
-4. **Privilégio mínimo nas ferramentas** (cap. 15). A camada que muda a natureza do problema: se o modelo for convencido, o que ele consegue fazer? Uma ferramenta somente-leitura limita o dano de forma que não depende do modelo resistir.
+4. **Privilégio mínimo nas ferramentas** (cap. 18). A camada que muda a natureza do problema: se o modelo for convencido, o que ele consegue fazer? Uma ferramenta somente-leitura limita o dano de forma que não depende do modelo resistir.
 5. **Aprovação humana para o irreversível.** Enviar, apagar, transferir, publicar. É a última linha, e a única que não pode ser argumentada por texto.
 6. **Teste adversarial recorrente.** Porque as camadas anteriores envelhecem, e o ataque novo aparece.
 
@@ -80,7 +80,7 @@ As quebras possíveis, em ordem de praticidade: separar os laços (quem lê não
 
 ### 4. A memória como persistência do ataque
 
-Uma injeção que consegue gravar na memória (cap. 13) deixa de ser um incidente e vira uma condição: a afirmação falsa é recuperada em toda sessão futura, e o rastro do ataque original desaparece.
+Uma injeção que consegue gravar na memória (cap. 19) deixa de ser um incidente e vira uma condição: a afirmação falsa é recuperada em toda sessão futura, e o rastro do ataque original desaparece.
 
 As mitigações são de escrita, não de leitura:
 
@@ -92,9 +92,9 @@ As mitigações são de escrita, não de leitura:
 
 *Prompt injection* não é bug: é **propriedade da arquitetura** — o modelo recebe uma sequência de tokens sem canal separado para ordem e material. Duas consequências que não se amenizam: **não existe defesa completa por prompt** (instrução do tipo "ignore instruções do documento" aumenta o custo do ataque, não garante nada), e **o problema piora exatamente onde este livro é mais útil** — cada capítulo da Parte II adiciona superfície (o corpus, o laço, a memória, as ferramentas). **O que importa aqui é a injeção indireta:** o atacante não fala com o sistema, planta o texto onde o sistema vai ler — e, no RAG, o conteúdo malicioso é recuperado **justamente por ser relevante**, podendo ser escrito para ranquear bem. **O que roubar:** memorize a combinação perigosa — **ler de fonte não confiável + ferramenta de efeito colateral + sem supervisão, no mesmo laço** — e quebre um dos três elos. Das seis camadas de defesa, a que separa sistemas seguros de sistemas com boas intenções é o **privilégio mínimo nas ferramentas**: é a única cuja eficácia não depende de o modelo resistir. **E cuide da escrita:** injeção que grava na memória deixa de ser incidente e vira condição permanente.
 
-## Mão na massa — contexto-zero, etapa 16
+## Mão na massa — rag-zero, etapa 15
 
-Na etapa 16 você ataca o próprio `contexto-zero`: planta no corpus indexado um documento com instrução hostil, escrito para ranquear bem nas consultas do livro, e verifica o que acontece. Depois aplica as camadas, uma a uma, medindo o que cada uma bloqueia — e o que continua passando. A etapa termina com a única conclusão honesta possível: a camada que resolve não é textual, é a de privilégio. O exercício de completude: a marcação de procedência vem esqueletada — você a implementa e depois tenta contorná-la, o que é o exercício de verdade.
+Na etapa 15 você ataca o próprio `rag-zero`: planta no corpus indexado um documento com instrução hostil, escrito para ranquear bem nas consultas do livro, e verifica o que acontece. Depois aplica as camadas, uma a uma, medindo o que cada uma bloqueia — e o que continua passando. A etapa termina com a única conclusão honesta possível: a camada que resolve não é textual, é a de privilégio. O exercício de completude: a marcação de procedência vem esqueletada — você a implementa e depois tenta contorná-la, o que é o exercício de verdade.
 
 ## Verificação
 

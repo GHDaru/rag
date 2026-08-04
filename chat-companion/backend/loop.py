@@ -1,4 +1,4 @@
-"""O loop de tool-calling — a etapa 10 do contexto-zero (recuperação como ferramenta).
+"""O loop de tool-calling — a etapa 10 do rag-zero (recuperação como ferramenta).
 
 Diferença de produção: recebe apenas as tools **habilitadas pelo gating**
 (`permitidas`), e a chave BYOK opcional. Quando não há tools ativas (modo

@@ -19,7 +19,7 @@
 | C02 | **SeloDeDatação** | cláusula de expiração — data de captura/revisão | 1º blockquote "Estado da arte capturado em" | `.selo-data` (integra-se ao C01 nos capítulos) | ✅ |
 | C03 | **Objetivos** | Backward Design/Bloom: objetivos de aprendizagem | `## Objetivos de aprendizagem` | `h2[data-callout="callout-objetivos"]` | ✅ |
 | C04 | **Verificação** | Backward Design: evidências de aprendizagem | `## Verificação` | `callout-verificacao` | ✅ |
-| C05 | **MãoNaMassa** | 4C/ID: learning task (trilha contexto-zero) | `## Mão na massa` | `callout-pratica` | ✅ |
+| C05 | **MãoNaMassa** | 4C/ID: learning task (trilha rag-zero) | `## Mão na massa` | `callout-pratica` | ✅ |
 | C06 | **OQueRoubar** | Diátaxis how-to: padrões transferíveis | `## O que roubar` | `callout-roubar` | ✅ |
 | C07 | **ApêndiceA** | Princípio II: tratamento por repositório (evidência) | `## Apêndice A` | `callout-apendice` | ✅ |
 | C08 | **LeituraExecutiva** | síntese acionável do estado da arte | `### Leitura executiva` | `.leitura-exec` | ✅ **V1 "painel âmbar"** (spec 043) |

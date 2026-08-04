@@ -2,9 +2,29 @@
 
 > O livro é vivo (Princípio IV): toda edição é datada, registrada e **atribuída** — inclusive quanto ao modelo de IA usado, porque saídas de LLM não são determinísticas e a rastreabilidade é parte do rigor.
 >
-> Esta página tem duas metades: o **histórico de edições** (o que mudou, quando, por quem) e o **registro de expiração** (o placar das apostas do cap. 19 — previsões feitas com data, para serem cobradas depois).
+> Esta página tem duas metades: o **histórico de edições** (o que mudou, quando, por quem) e o **registro de expiração** (o placar das apostas do cap. 24 — previsões feitas com data, para serem cobradas depois).
 
 ## Histórico de edições
+
+### Edição 0.2 — 2026-08-04 · O livro vira *Engenharia de RAG*
+
+**A crítica que originou a rodada**, do editor: o livro anterior (*Engenharia de Prompt e Engenharia de Contexto*) **duplicava o livro irmão**. Quatro capítulos — memória, compactação, ferramentas/MCP, segurança de contexto — eram território do *Engenharia de Harness*, e o que era genuinamente deste livro (corpus, recuperação, RAG avançado, agêntico) estava espremido no meio. A crítica estava certa.
+
+**O que mudou:**
+
+- **Nome e objeto.** O livro passa a ser **Engenharia de RAG** — *como se constrói um sistema em volta da recuperação da informação*. Cunhagem nossa, como "Engenharia de Harness"; a pesquisa confirmou que não existe termo consagrado (existe **RAG**, universal, e *Information Retrieval*, o campo que o absorveu — há track de RAG no TREC).
+- **Constituição 3.0.0.** Princípio VIII reescrito: o objeto é o **sistema**, todo capítulo declara o **componente da arquitetura** que aprofunda, e a **fronteira com o livro irmão** é explícita — gestão de contexto de agente é de lá; aqui entra só o que decide a recuperação ou a fundamentação.
+- **Três capítulos novos**, que fechavam a lacuna real: **02 — Anatomia de um Sistema de RAG** (dois caminhos, 16 componentes, os contratos), **03 — Arquiteturas de Referência** (Naive → Advanced → Modular → Agêntico, e os quatro padrões de fluxo) e **15 — Geração Fundamentada** (o "G" que faltava: grounding, citação verificável, abstenção).
+- **A Parte III desdobrada** em cinco capítulos (busca, reranking, consulta, avançada, estruturada), onde antes havia dois.
+- **A Parte IV mantida inteira** — os seis capítulos de engenharia de prompt ficam, agora a serviço da geração. Decisão do editor, contra a proposta inicial de condensá-los.
+- **Dois capítulos removidos** (compactação; ferramentas e MCP) e devolvidos ao livro irmão; o que era de RAG neles foi absorvido pelos caps. 19 e 18.
+- `contexto-zero` → **`rag-zero`**, com 17 etapas realinhadas.
+
+**A correção de evidência que esta edição registra:** a survey de Gao et al. ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) — **a referência mais citada de RAG** — não constava do levantamento da edição 0.1. Falha do panorama, que trouxe a revisão sistemática e a de RAG agêntico e passou batido pela fundacional. Ela agora ancora os caps. 01–03, junto de *Modular RAG* (2407.21059). Registrar a omissão é mais útil que corrigi-la em silêncio.
+
+**Estado da evidência:** segue **nenhuma referência com status ✓**. A validação é a rodada 2.
+
+**Atribuição:** crítica editorial, decisão de nome e de escopo — Gilsiley Henrique Darú. Pesquisa de terminologia, reestruturação e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-04.
 
 ### Edição 0.1 — 2026-08-04 · Fundação: o esqueleto das duas disciplinas
 
@@ -13,11 +33,11 @@
 **O que foi feito:**
 - **Constituição 2.0.0** — derivada da 1.2.0 do livro *Engenharia de Harness* (mesmo método pedagógico e editorial, domínio novo). Princípio II reescrito: a fonte-base deixa de ser "o código de harnesses" e passa a ser **paper + implementação pública**. Princípio VIII criado: fixa a moldura do par e o lugar do RAG.
 - **Levantamento da comunidade** — [panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md) cruzando academia (surveys estruturantes), repositórios públicos, frameworks e técnicas, e respondendo à pergunta que originou o projeto ("engenharia de contexto substitui RAG?" — não como substituto, como moldura).
-- **Sumário em três partes** — Parte I (Engenharia de Prompt, caps. 02–07), Parte II (Engenharia de Contexto, caps. 08–14, com RAG em três capítulos), Parte III (o sistema em produção, caps. 16–18), mais abertura (00–01) e fechamento (18).
+- **Sumário em três partes** — Parte I (Engenharia de Prompt, caps. 11–17), Parte II (Engenharia de Contexto, caps. 20–14, com RAG em três capítulos), Parte III (o sistema em produção, caps. 21–23), mais abertura (00–01) e fechamento (18).
 - **Aparato** — catálogo de técnicas, apêndice do ecossistema, glossário, bibliografia com status de validação, grafo do livro.
 - **Motor de publicação** adaptado: PT-only, sem Radar, com o grafo remapeado para o novo domínio.
 
-**Fora do escopo, por decisão explícita:** edição em inglês, Radar de atualização automática, benchmark quantitativo de frameworks, e a trilha prática `contexto-zero` (descrita nos capítulos, implementada na rodada 3). Ver [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+**Fora do escopo, por decisão explícita:** edição em inglês, Radar de atualização automática, benchmark quantitativo de frameworks, e a trilha prática `rag-zero` (descrita nos capítulos, implementada na rodada 3). Ver [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
 
 **Estado da evidência (honestidade obrigatória, Princípio I):** **nenhuma referência tem status ✓ nesta edição.** Todas estão marcadas ⏳ na [bibliografia](bibliografia.md) e `[a validar]` nos capítulos. Os capítulos declaram maturidade "esboço" ou "fundação" no cabeçalho. A validação é a rodada 2.
 
@@ -28,14 +48,14 @@
 Rodada curta, disparada por três guias de praticante indicados pelo editor ([análise no panorama §6](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)). Um quarto guia devolveu HTTP 403 e fica como pendência declarada.
 
 **O que entrou:**
-- **Seis técnicas nomeadas** que o esqueleto tratava de forma genérica: RAPTOR (cap. 11), Self-RAG / CRAG / FLARE / Adaptive RAG (cap. 12), step-back prompting (cap. 11), sentence-window e proposition chunking (cap. 10). Todas ⏳, na fila da rodada 2.
-- **Dois padrões que a organização revelou** e que não estavam escritos: *desacoplar a unidade de busca da unidade de entrega* (cap. 10) e *as materializações de RAG agêntico diferem por onde mora o julgamento* (cap. 12).
-- **Sinais de produção** (cap. 16): taxa de resultado zero, distribuição de nota do reranker, taxa de citação, p99 por camada. E o **cache semântico** com seu modo de falha (cap. 18).
-- **Seção nova "O teto que ninguém mede: o corpus"** (cap. 10) — frescor, procedência, deduplicação. Declarada como a seção mais fraca da edição.
+- **Seis técnicas nomeadas** que o esqueleto tratava de forma genérica: RAPTOR (cap. 09), Self-RAG / CRAG / FLARE / Adaptive RAG (cap. 18), step-back prompting (cap. 09), sentence-window e proposition chunking (cap. 06). Todas ⏳, na fila da rodada 2.
+- **Dois padrões que a organização revelou** e que não estavam escritos: *desacoplar a unidade de busca da unidade de entrega* (cap. 06) e *as materializações de RAG agêntico diferem por onde mora o julgamento* (cap. 18).
+- **Sinais de produção** (cap. 21): taxa de resultado zero, distribuição de nota do reranker, taxa de citação, p99 por camada. E o **cache semântico** com seu modo de falha (cap. 23).
+- **Seção nova "O teto que ninguém mede: o corpus"** (cap. 06) — frescor, procedência, deduplicação. Declarada como a seção mais fraca da edição.
 
 **O que NÃO entrou, e é o registro que importa:** nenhum número das três fontes. São secundárias (praticante citando proponente), e o panorama §6.2 documenta o caso de **deriva numérica** do *contextual retrieval* — o 67% da Anthropic, que é resultado de três estágios cumulativos, aparece em fonte secundária como mérito de um só. Também ficou registrado como não utilizável o "80% das falhas de RAG vêm da ingestão", que circula **sem fonte alguma**.
 
-**Pergunta editorial aberta para o editor:** governança/ingestão do corpus merece **capítulo próprio** na Parte II, ou continua como seção do cap. 10? É hoje a única parte do pipeline que nenhuma das três partes do livro cobre.
+**Pergunta editorial aberta para o editor:** governança/ingestão do corpus merece **capítulo próprio** na Parte II, ou continua como seção do cap. 06? É hoje a única parte do pipeline que nenhuma das três partes do livro cobre.
 
 **Atribuição:** direção editorial — Gilsiley Henrique Darú (indicação das fontes). Análise, verificação e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-04.
 
@@ -43,8 +63,8 @@ Rodada curta, disparada por três guias de praticante indicados pelo editor ([an
 
 Decisão editorial do autor sobre a pergunta deixada em aberto no adendo 0.1.1: **governança e ingestão do corpus merecem capítulo próprio.**
 
-- **Novo [cap. 09 — Ingestão e Governança do Corpus](capitulos/09-corpus.md)**, inserido **antes** da recuperação. A ordem é o argumento: o corpus é o teto de tudo que os caps. 10–12 otimizam, e quem aprende a otimizar antes de conhecer o teto passa meses ajustando `top_k` num corpus que nunca poderia responder bem.
-- **Renumeração**: os antigos caps. 09–18 passam a 10–19. O `contexto-zero` ganha a etapa 8 (ingestão) e passa a 18 etapas.
+- **Novo [cap. 04 — Ingestão e Governança do Corpus](capitulos/04-corpus.md)**, inserido **antes** da recuperação. A ordem é o argumento: o corpus é o teto de tudo que os caps. 06–18 otimizam, e quem aprende a otimizar antes de conhecer o teto passa meses ajustando `top_k` num corpus que nunca poderia responder bem.
+- **Renumeração**: os antigos caps. 04–23 passam a 10–19. O `rag-zero` ganha a etapa 8 (ingestão) e passa a 18 etapas.
 - **O capítulo declara a própria fragilidade**: é o de base científica mais fraca do livro, porque a literatura de RAG trata ingestão como pré-processamento e raramente a estuda. Fica registrada a pergunta que a rodada 2 deve responder — *existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?* Se não existir, vira experimento próprio na rodada 4.
 
 **Atribuição:** decisão editorial — Gilsiley Henrique Darú. Redação e renumeração — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-04.
@@ -53,11 +73,11 @@ Decisão editorial do autor sobre a pergunta deixada em aberto no adendo 0.1.1: 
 
 ## Registro de expiração
 
-O placar das apostas registradas no [cap. 19](19-convergencias.md). Uma aposta só vale se puder ser julgada — por isso cada uma tem critério de verificação e prazo.
+O placar das apostas registradas no [cap. 24](24-convergencias.md). Uma aposta só vale se puder ser julgada — por isso cada uma tem critério de verificação e prazo.
 
 | # | Aposta | Feita em | Prazo | Critério | Veredito |
 |---|---|:---:|:---:|---|:---:|
-| A1 | A metade sintática da saída estruturada (cap. 04) vira funcionalidade trivial e o capítulo encolhe para uma seção do cap. 02 | 2026-08 | 2027-08 | o capítulo é fundido | ⏳ aberta |
+| A1 | A metade sintática da saída estruturada (cap. 13) vira funcionalidade trivial e o capítulo encolhe para uma seção do cap. 11 | 2026-08 | 2027-08 | o capítulo é fundido | ⏳ aberta |
 | A2 | Orçamento explícito de contexto vira prática padrão, com painel de composição por fonte | 2026-08 | 2028-02 | ferramentas de observabilidade trazem pronto | ⏳ aberta |
 | A3 | Otimização automática de prompt **não** substitui a escrita manual na maioria dos projetos, mas vira padrão em alto volume | 2026-08 | 2028-08 | adoção reportada em levantamentos | ⏳ aberta |
 | A4 | Nenhuma defesa por prompt contra injeção indireta será considerada suficiente | 2026-08 | 2028-08 | recomendação vigente do OWASP | ⏳ aberta |

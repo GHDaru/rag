@@ -1,8 +1,8 @@
-# ROADMAP — Engenharia de Prompt e Engenharia de Contexto
+# ROADMAP — Engenharia de RAG
 
 > As rodadas planejadas do livro vivo. Cada rodada é um lote de trabalho que vira **uma ou mais specs** (`specs/NNN-nome/`), cada uma em sua branch, conforme o Princípio VII da [constituição](.specify/memory/constitution.md).
 >
-> Última atualização: **2026-08-04** · edição vigente: **0.1** (ver [Histórico](livro/HISTORICO.md))
+> Última atualização: **2026-08-04** · edição vigente: **0.2** (ver [Histórico](livro/HISTORICO.md))
 
 ## Onde estamos
 
@@ -14,11 +14,17 @@ O que **ainda não** existe, e é deliberado:
 |---|---|:---:|
 | Referências validadas (status ✓) | o levantamento localizou; validar exige ler | rodada 2 |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 2–3 |
-| Trilha prática `contexto-zero` | descrita nos capítulos, não implementada | rodada 3 |
+| Trilha prática `rag-zero` | descrita nos capítulos, não implementada | rodada 3 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
 | Chat companion ligado | backend existe, corpus e capacidades adaptados; falta o deploy | rodada 3 |
 | Edição em inglês | fora do escopo da v1, por decisão | rodada 7 |
 | Radar de atualização | fora do escopo da v1, por decisão | rodada 6 |
+
+---
+
+## Rodada 1b — Reestruturação para Engenharia de RAG ✅ (concluída em 2026-08-04)
+
+**Entregue:** constituição 3.0.0 (o objeto é o sistema; componente declarado por capítulo; fronteira com o livro irmão) · 3 capítulos novos (02 anatomia, 03 arquiteturas, 15 geração fundamentada) · Parte III desdobrada em 5 · 2 capítulos devolvidos ao livro irmão · survey de Gao registrada · `rag-zero` com 17 etapas · capa nova.
 
 ---
 
@@ -34,20 +40,20 @@ O que **ainda não** existe, e é deliberado:
 
 **Escopo:**
 1. **Validar os surveys estruturantes** (S1, S2, S3 da [bibliografia](livro/bibliografia.md)) pela skill `academic-research`: ler, conferir o que o livro afirma sobre eles, registrar ✓.
-2. **Validar a lacuna prioritária**: a afirmação do cap. 08 de que a degradação em contexto longo é dirigida pela **similaridade entre alvo e distratores** (hoje a citação mais frágil do livro).
-3. **Registrar condição experimental** de todo número citado — em especial os de otimização de prompt (cap. 06), *contextual retrieval* (cap. 11) e memória (cap. 13), todos auto-reportados pelos proponentes.
+2. **Validar a lacuna prioritária**: a afirmação do cap. 20 de que a degradação em contexto longo é dirigida pela **similaridade entre alvo e distratores** (hoje a citação mais frágil do livro).
+3. **Registrar condição experimental** de todo número citado — em especial os de otimização de prompt (cap. 16), *contextual retrieval* (cap. 09) e memória (cap. 19), todos auto-reportados pelos proponentes.
 4. **Preencher os Apêndices A** dos capítulos com o tratamento por implementação.
 5. **Aprofundar o corpo** dos capítulos onde a validação trouxer material novo.
 6. **Validar as seis técnicas nomeadas** que entraram no adendo 0.1.1 (RAPTOR · Self-RAG · CRAG · FLARE · Adaptive RAG · step-back), cada uma com fonte primária e condição experimental.
-7. **Dar base de evidência ao cap. 09** (Ingestão e Governança do Corpus, criado no adendo 0.1.2). É hoje o capítulo mais fraco do livro em citação: a área trata ingestão como pré-processamento e raramente a estuda. Pergunta a responder: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
+7. **Dar base de evidência ao cap. 04** (Ingestão e Governança do Corpus, criado no adendo 0.1.2). É hoje o capítulo mais fraco do livro em citação: a área trata ingestão como pré-processamento e raramente a estuda. Pergunta a responder: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
 
 **Critério de conclusão:** ao menos 60% das referências com status ✓; nenhum número no corpo sem condição experimental; nenhum capítulo com Apêndice A vazio.
 
-**Sugestão de fatiamento em specs:** `002-evidencia-parte-i` (caps. 02–07) · `003-evidencia-parte-ii` (caps. 08–14) · `004-evidencia-parte-iii` (caps. 16–19).
+**Sugestão de fatiamento em specs:** `002-evidencia-parte-i` (caps. 11–17) · `003-evidencia-parte-ii` (caps. 20–14) · `004-evidencia-parte-iii` (caps. 21–24).
 
 ---
 
-## Rodada 3 — `contexto-zero` (a trilha prática)
+## Rodada 3 — `rag-zero` (a trilha prática)
 
 **Objetivo:** o livro executável. 18 etapas, uma por capítulo, Python + FastAPI, custo zero e sem GPU.
 
@@ -74,7 +80,7 @@ O que **ainda não** existe, e é deliberado:
 | 16 | 17 | **atacar o próprio sistema** e medir o que cada camada bloqueia |
 | 17 | 18 | painel: custo por parcela + cache + latência + qualidade |
 
-**Também nesta rodada:** ligar o **chat companion** em produção (o companion *é* o `contexto-zero` rodando, e vira o exemplo real que o livro disseca), com gating de capacidades por capítulo.
+**Também nesta rodada:** ligar o **chat companion** em produção (o companion *é* o `rag-zero` rodando, e vira o exemplo real que o livro disseca), com gating de capacidades por capítulo.
 
 **Critério de conclusão:** as 18 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
 

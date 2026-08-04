@@ -1,6 +1,6 @@
-# 04 — Saídas Estruturadas
+# 13 — Saídas Estruturadas
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento está fechado; o comparativo entre modos de garantia (schema nativo × gramática × validação externa) é a rodada 2 do ROADMAP.
 
@@ -20,7 +20,7 @@ Um sistema real não consome prosa: consome campos. E o ponto onde a maioria dos
 O problema tem duas metades que costumam ser confundidas:
 
 - **Sintática** — a saída é parseável e respeita o schema? Esta metade está essencialmente **resolvida** por funcionalidade de plataforma, e é onde este capítulo mais vai expirar.
-- **Semântica** — os campos estão *corretos*? Um JSON perfeitamente válido com o valor errado passa em toda validação de formato e falha em produção. Esta metade não tem solução de plataforma: é eval (cap. 07) e fundamentação (cap. 16).
+- **Semântica** — os campos estão *corretos*? Um JSON perfeitamente válido com o valor errado passa em toda validação de formato e falha em produção. Esta metade não tem solução de plataforma: é eval (cap. 17) e fundamentação (cap. 21).
 
 ## Fundamentos científicos
 
@@ -54,10 +54,10 @@ A escada correta é: restrinja quando puder, valide sempre, e trate o "pedir" co
 
 Um schema que serve ao código pode ser péssimo para o modelo. Os padrões que a prática consolidou:
 
-- **Campo de raciocínio primeiro.** Um campo textual livre (`analise`, `justificativa`) **antes** dos campos de decisão dá ao modelo o espaço de pensar que o cap. 03 discutiu, dentro do contrato. Ordem importa: os campos são gerados na ordem em que aparecem.
+- **Campo de raciocínio primeiro.** Um campo textual livre (`analise`, `justificativa`) **antes** dos campos de decisão dá ao modelo o espaço de pensar que o cap. 12 discutiu, dentro do contrato. Ordem importa: os campos são gerados na ordem em que aparecem.
 - **Enum em vez de string livre** para qualquer campo com domínio fechado. Elimina uma classe inteira de erro semântico sem custo.
 - **Nomes que carregam a instrução.** `resumo_em_ate_3_frases` ensina mais que `resumo` com uma descrição que o modelo pode não priorizar.
-- **Campo explícito de incerteza.** Sem um lugar para dizer "não encontrei", o modelo preenche. Este é o mesmo argumento da restrição de fallback do cap. 02, agora como estrutura.
+- **Campo explícito de incerteza.** Sem um lugar para dizer "não encontrei", o modelo preenche. Este é o mesmo argumento da restrição de fallback do cap. 11, agora como estrutura.
 - **Achatar o aninhamento.** Estrutura profunda é onde a assimetria compreensão × geração cobra caro. Duas chamadas com schemas rasos costumam superar uma com schema profundo.
 
 ### 3. O ciclo de reparo, e seu limite
@@ -67,15 +67,15 @@ O padrão de produção é: gerar → validar → se falhar, re-solicitar anexan
 Duas regras que separam quem já apanhou disso de quem ainda vai apanhar:
 
 - **Teto obrigatório e falha explícita.** Sem teto, um schema impossível de satisfazer vira laço infinito com fatura aberta. A falha após o teto deve ser um erro tratado, não um valor vazio silencioso.
-- **Contar as tentativas como métrica.** A taxa de reparo é um indicador de saúde do schema. Se subiu, alguma coisa mudou — modelo, prompt ou dado de entrada. Este número pertence ao painel do cap. 16, não ao log.
+- **Contar as tentativas como métrica.** A taxa de reparo é um indicador de saúde do schema. Se subiu, alguma coisa mudou — modelo, prompt ou dado de entrada. Este número pertence ao painel do cap. 21, não ao log.
 
 ### Leitura executiva
 
-Duas metades: a **sintática** está resolvida por plataforma (schema nativo, decodificação restrita) e é onde este capítulo vai expirar; a **semântica** — o campo válido com o valor errado — não tem solução de plataforma e é eval (cap. 07) e fundamentação (cap. 16). **O que roubar:** restrinja quando puder, **valide sempre** (garantia de forma não é garantia de valor); ponha um campo de raciocínio antes dos campos de decisão, use enum em domínio fechado, e dê ao modelo um lugar explícito para dizer "não sei". **O sinal operacional:** monitore a **taxa de reparo** — ela é o termômetro do schema, e mudanças nela avisam antes de o usuário reclamar.
+Duas metades: a **sintática** está resolvida por plataforma (schema nativo, decodificação restrita) e é onde este capítulo vai expirar; a **semântica** — o campo válido com o valor errado — não tem solução de plataforma e é eval (cap. 17) e fundamentação (cap. 21). **O que roubar:** restrinja quando puder, **valide sempre** (garantia de forma não é garantia de valor); ponha um campo de raciocínio antes dos campos de decisão, use enum em domínio fechado, e dê ao modelo um lugar explícito para dizer "não sei". **O sinal operacional:** monitore a **taxa de reparo** — ela é o termômetro do schema, e mudanças nela avisam antes de o usuário reclamar.
 
-## Mão na massa — contexto-zero, etapa 3
+## Mão na massa — rag-zero, etapa 10 (o gerador)
 
-Na etapa 3 você troca a resposta em texto livre do `contexto-zero` por um contrato: schema com campo de raciocínio, enum de intenção e campo de incerteza; validação no lado do servidor; ciclo de reparo com teto 2 e falha explícita. O exercício de completude: o repórter de erro vem esqueletado — você faz a mensagem de validação virar uma instrução útil para a re-solicitação, e mede quanto isso muda a taxa de reparo.
+Na etapa 10 você troca a resposta em texto livre do `rag-zero` por um contrato: schema com campo de raciocínio, enum de intenção e campo de incerteza; validação no lado do servidor; ciclo de reparo com teto 2 e falha explícita. O exercício de completude: o repórter de erro vem esqueletado — você faz a mensagem de validação virar uma instrução útil para a re-solicitação, e mede quanto isso muda a taxa de reparo.
 
 ## Verificação
 

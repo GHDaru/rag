@@ -1,8 +1,8 @@
-# 08 — A Janela como Orçamento
+# 20 — A Janela como Orçamento
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** A tese do orçamento e a leitura híbrida estão fechadas; as medições por regime e o Apêndice A são a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** Componente que aprofunda: **aumento** — o que dos candidatos vira contexto (cap. 02). A tese do orçamento e a leitura híbrida estão fechadas; as medições por regime são a rodada 2 do ROADMAP.
 
 ## Objetivos de aprendizagem
 
@@ -46,11 +46,11 @@ Cinco fontes disputam o mesmo espaço em toda requisição:
 
 | Fonte | Cresce com | Quem costuma cortar |
 |---|---|---|
-| Prompt de sistema e regras | releases e incidentes | ninguém (cap. 05) |
-| Histórico da conversa | número de turnos | compactação (cap. 14) |
+| Prompt de sistema e regras | releases e incidentes | ninguém (cap. 14) |
+| Histórico da conversa | número de turnos | resumo do histórico (cap. 19) |
 | Recuperado | `top_k` e tamanho do chunk | quase sempre o primeiro a ser cortado |
-| Memória de longo prazo | tempo de relacionamento | raramente instrumentado (cap. 13) |
-| Resultado de ferramenta | imprevisível, e é o pior | quase ninguém (cap. 15) |
+| Memória de longo prazo | tempo de relacionamento | raramente instrumentado (cap. 19) |
+| Resultado de ferramenta (busca inclusa) | imprevisível, e é o pior | quase ninguém (cap. 18) |
 
 A linha crítica é a última: resultado de ferramenta é a única fonte cujo tamanho **você não controla** no momento de pedir. Uma consulta que devolve 40 mil tokens não avisa antes. Sistemas sem teto por ferramenta descobrem isso em produção.
 
@@ -73,16 +73,16 @@ Orçamento sem instrumentação é intenção. Quatro números que um sistema ma
 
 - **Composição do contexto por fonte** (tokens por bloco, por requisição). É o painel básico e quase ninguém tem.
 - **Taxa de estouro** — com que frequência o orçamento aperta, e quem foi cortado quando apertou.
-- **Utilidade do recuperado** — quantos dos trechos enviados foram efetivamente citados na resposta. Um `top_k` de 20 com 2 usados é 18 blocos de ruído pagos (a métrica formal disso é *context precision*, cap. 16).
+- **Utilidade do recuperado** — quantos dos trechos enviados foram efetivamente citados na resposta. Um `top_k` de 20 com 2 usados é 18 blocos de ruído pagos (a métrica formal disso é *context precision*, cap. 21).
 - **Qualidade × comprimento** — a mesma pergunta com contextos de tamanhos diferentes. É o teste que mostra se o seu sistema está em regime de *context rot* ou não, e nenhuma referência externa substitui rodá-lo no seu dado.
 
 ### Leitura executiva
 
 Janela maior não resolveu nada: a degradação **não é linear com o comprimento** — ela é dirigida pela similaridade entre o alvo e os distratores, e por isso encher a janela pode piorar a resposta **e** a fatura. **O que roubar:** escreva a alocação do seu contexto em **uma linha** (`sistema 2k | memória 1k | recuperado 8k | ferramenta ≤4k | histórico o resto`) e defina quem cede quando aperta — sistemas sem essa linha degradam de um jeito que ninguém consegue explicar depois. **O concorrente esquecido:** resultado de ferramenta é a única fonte cujo tamanho você não controla ao pedir; sem teto por ferramenta, você descobre em produção. **Contexto longo × RAG:** decida por corpus, frescor, forma do raciocínio e aritmética de custo — e prefira o híbrido (recupere para reduzir, raciocine sobre o que sobrou). **Meça:** composição por fonte, taxa de estouro, utilidade do recuperado, e qualidade × comprimento no **seu** dado.
 
-## Mão na massa — contexto-zero, etapa 7
+## Mão na massa — rag-zero, etapa 13
 
-Na etapa 7 você transforma o contador de tokens da etapa 0 em **orçamento com política**: limites por fonte, ordem de corte declarada, e um log por requisição com a composição do contexto. O teste da etapa força o estouro (um resultado de ferramenta gigante) e prova que o sistema corta segundo a política escrita, e não segundo o acaso da ordem de concatenação. O exercício de completude: a política de corte vem esqueletada — você decide quem cede primeiro e defende a decisão por escrito.
+Na etapa 13 você transforma o contador de tokens da etapa 0 em **orçamento com política**: limites por fonte, ordem de corte declarada, e um log por requisição com a composição do contexto. O teste da etapa força o estouro (um resultado de ferramenta gigante) e prova que o sistema corta segundo a política escrita, e não segundo o acaso da ordem de concatenação. O exercício de completude: a política de corte vem esqueletada — você decide quem cede primeiro e defende a decisão por escrito.
 
 ## Verificação
 

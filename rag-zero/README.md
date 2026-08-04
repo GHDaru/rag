@@ -1,8 +1,8 @@
-# contexto-zero — a trilha prática
+# rag-zero — a trilha prática
 
 > O livro executável: um sistema de prompt + contexto construído do zero, **uma etapa por capítulo**.
 >
-> Edição 0.1 · **status: planejado.** As etapas estão especificadas abaixo e descritas na seção "Mão na massa" de cada capítulo. A implementação é a [rodada 3](../ROADMAP.md#rodada-3--contexto-zero-a-trilha-prática) do ROADMAP.
+> Edição 0.1 · **status: planejado.** As etapas estão especificadas abaixo e descritas na seção "Mão na massa" de cada capítulo. A implementação é a [rodada 3](../ROADMAP.md#rodada-3--rag-zero-a-trilha-prática) do ROADMAP.
 
 ## O que é
 
@@ -46,13 +46,13 @@ Da seção "Restrições" da [constituição](../.specify/memory/constitution.md
 
 Quatro delas carregam o argumento do livro inteiro, e valem mesmo isoladas:
 
-- **Etapa 0 — o contador.** O instrumento que você vai olhar em todas as outras. A maior parte dos sistemas em produção não tem nada equivalente, e é por isso que degradam de forma inexplicável (cap. 08).
-- **Etapa 8 — a ingestão antes da busca.** Provar que um documento revogado não é recuperado, mesmo sendo o mais similar, é o que separa um índice de uma pilha de texto (cap. 09).
+- **Etapa 0 — o contador.** O instrumento que você vai olhar em todas as outras. A maior parte dos sistemas em produção não tem nada equivalente, e é por isso que degradam de forma inexplicável (cap. 20).
+- **Etapa 8 — a ingestão antes da busca.** Provar que um documento revogado não é recuperado, mesmo sendo o mais similar, é o que separa um índice de uma pilha de texto (cap. 04).
 - **Etapa 15 — o eval desconfortável.** Rodar a avaliação sobre a etapa 9 (só BM25) e sobre a etapa 10 (pipeline completo) e verificar se o ganho **que você esperava** aparece. Às vezes não aparece. Esse é o conteúdo.
-- **Etapa 16 — atacar o próprio sistema.** A única forma de aprender o cap. 17 é ver a defesa textual falhar e a defesa de privilégio segurar.
+- **Etapa 16 — atacar o próprio sistema.** A única forma de aprender o cap. 22 é ver a defesa textual falhar e a defesa de privilégio segurar.
 
 ## Relação com o chat companion
 
-O [`chat-companion/`](../chat-companion/) **é o contexto-zero rodando em produção**: mesmo `LLMPort`, mesmo índice BM25 (a etapa 9), mesmo gating de capacidades por capítulo. Isso é deliberado — o exemplo real que o livro disseca é o próprio livro respondendo ao leitor.
+O [`chat-companion/`](../chat-companion/) **é o rag-zero rodando em produção**: mesmo `LLMPort`, mesmo índice BM25 (a etapa 9), mesmo gating de capacidades por capítulo. Isso é deliberado — o exemplo real que o livro disseca é o próprio livro respondendo ao leitor.
 
 Conforme as etapas avançarem, o companion avança junto: a etapa 10 (embeddings + fusão + reranking) substitui o índice atual, a etapa 12 liga a memória, a etapa 17 acende o painel.

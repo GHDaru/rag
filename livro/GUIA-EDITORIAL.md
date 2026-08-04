@@ -9,7 +9,7 @@
 Quatro tradições combinadas, cada uma resolvendo um problema diferente:
 
 - **Backward Design** (Wiggins & McTighe) — escreve-se de trás para frente: primeiro os **objetivos de aprendizagem** (com verbos de Bloom: explicar, distinguir, projetar, avaliar), depois as **evidências** de que foram atingidos (a seção "Verificação"), e só então o conteúdo. Um capítulo cujo objetivo não tem verificação correspondente está incompleto.
-- **4C/ID** (van Merriënboer) — a trilha prática (`contexto-zero`) é a espinha: as etapas são *learning tasks* (tarefas inteiras, não fragmentos); os capítulos são *supportive information*; os boxes no código são *just-in-time*; os exercícios curtos são *part-task practice*.
+- **4C/ID** (van Merriënboer) — a trilha prática (`rag-zero`) é a espinha: as etapas são *learning tasks* (tarefas inteiras, não fragmentos); os capítulos são *supportive information*; os boxes no código são *just-in-time*; os exercícios curtos são *part-task practice*.
 - **Diátaxis** (Procida) — quatro tipos de texto que **nunca se misturam na mesma seção**: capítulos são *explanation*; a construção é *tutorial*; o catálogo de técnicas e o glossário são *reference*; a "Leitura executiva" (o "o que roubar") é *how-to*.
 - **Carga Cognitiva** (Sweller) — *worked example* antes do exercício; *completion problem* ("complete", nunca "crie do zero"); *fading* do andaime etapa a etapa; **uma ideia nova por vez**.
 
@@ -27,7 +27,7 @@ Todo capítulo numerado tem, nesta ordem:
 ## Fontes da indústria            ← docs oficiais e prática, com URL
 ## O estado da arte               ← a síntese: seções numeradas
    ### Leitura executiva          ← o "o que roubar" (how-to), sempre por último
-## Mão na massa — contexto-zero, etapa N
+## Mão na massa — rag-zero, etapa N
 ## Verificação                    ← as evidências dos objetivos
 ---
 ## Apêndice A — Como cada fonte trata X   ← o tratamento por implementação
@@ -64,7 +64,7 @@ E a formulação padrão para medição de terceiro: **"foi medido por N, em C, 
 - **Sem vendor favorito** (Princípio VI). Ferramentas aparecem pelo problema que resolvem, com o custo declarado.
 - **Voz ativa e frase curta.** O assunto já é difícil; a prosa não deve somar dificuldade.
 
-## 5. A construção (`contexto-zero`)
+## 5. A construção (`rag-zero`)
 
 - **Do zero antes da biblioteca** (restrição 3 da constituição). Toda técnica é implementada na mão primeiro — BM25 em ~40 linhas antes de qualquer vector store. A biblioteca entra depois, nomeada como escolha.
 - **Uma etapa por capítulo**, autocontida e executável.

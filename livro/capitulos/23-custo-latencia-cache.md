@@ -1,6 +1,6 @@
-# 18 — Custo, Latência e Cache
+# 23 — Custo, Latência e Cache
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A economia do contexto e as alavancas estão fechadas; os números por provedor e o Apêndice A são a rodada 2 do ROADMAP.
 
@@ -52,7 +52,7 @@ O padrão da coluna "quem esquece" é a mensagem: a atenção vai para a parcela
 
 ### 2. Cache por prefixo: a ordem é dinheiro
 
-O cache vale do início do contexto até o primeiro token que difere. Isso converte a arquitetura de camadas do cap. 05 em decisão financeira direta:
+O cache vale do início do contexto até o primeiro token que difere. Isso converte a arquitetura de camadas do cap. 14 em decisão financeira direta:
 
 ```
 estável   → identidade, política, ferramentas    ─┐ cacheável
@@ -73,7 +73,7 @@ Três consequências práticas:
 | Estabilizar o prefixo | custo de entrada, latência | nada — é a primeira, sempre |
 | `top_k` menor + reranking | tokens de recuperado | recall, se o reranking não compensar |
 | Resumir resultado de ferramenta | tokens e persistência | detalhe literal |
-| Compactar mais cedo | custo do histórico | detalhe da conversa (cap. 14) |
+| Resumir o histórico mais cedo | custo do histórico | detalhe da conversa (cap. 19) |
 | Modelo menor por etapa | custo por token | qualidade, de forma desigual por etapa |
 | Cache **semântico** de resposta | tudo, quando a pergunta se repete ou se parece | frescor, e falso positivo por similaridade |
 
@@ -81,7 +81,7 @@ A última merece nota própria, porque é a que mais engana: o **cache semântic
 
 A primeira linha é gratuita: estabilizar o prefixo não sacrifica nada. É por isso que ela vem antes de qualquer discussão sobre trocar de modelo — e é por isso que "reordenar o prompt" é a otimização de maior retorno e menor risco deste livro.
 
-A penúltima merece um alerta: usar modelo menor por etapa (classificar, reescrever consulta, resumir) funciona bem em algumas etapas e mal em outras, e a diferença **não é intuitiva**. Exige medição por etapa (cap. 16), não por sistema.
+A penúltima merece um alerta: usar modelo menor por etapa (classificar, reescrever consulta, resumir) funciona bem em algumas etapas e mal em outras, e a diferença **não é intuitiva**. Exige medição por etapa (cap. 21), não por sistema.
 
 ### 4. Instrumentar custo e qualidade juntos
 
@@ -91,8 +91,8 @@ Um painel mínimo:
 
 - Custo médio por requisição, **decomposto por parcela**;
 - Taxa de acerto do cache;
-- Latência p50 e p95 (a p95 é onde os laços do cap. 12 aparecem);
-- Qualidade (cap. 16) na mesma tela.
+- Latência p50 e p95 (a p95 é onde os laços do cap. 18 aparecem);
+- Qualidade (cap. 21) na mesma tela.
 
 Sem isso, toda decisão de arquitetura é tomada com metade da informação — e a metade que falta é a que aparece na fatura três meses depois, quando ninguém lembra qual mudança a causou.
 
@@ -100,9 +100,9 @@ Sem isso, toda decisão de arquitetura é tomada com metade da informação — 
 
 Contexto é pago **em toda requisição, para sempre**: uma linha acrescentada ao prompt de sistema custa o seu tamanho vezes o número de chamadas, até alguém removê-la — e quase ninguém calcula esse produto antes de acrescentar. **O que roubar, e é grátis:** **estabilizar o prefixo**. O cache vale do início até o primeiro token que difere, então nada volátil acima de algo estável (o timestamp no topo é o erro mais caro e mais comum da área), serialização determinística, e histórico que **cresce por acréscimo** em vez de ser reserializado. É a única alavanca que não sacrifica nada — vem antes de qualquer conversa sobre trocar de modelo. **Onde a atenção erra:** vai para o `top_k`, que é fácil de ver, e não para o prompt fixo e o histórico, que dominam a conta em conversas longas. **Sobre cache semântico:** economiza muito onde há repetição, e serve resposta errada com confiança quando o limiar é frouxo — a chave precisa incluir os filtros aplicados, e cache que ignora permissão é vazamento, não otimização. **A regra que fecha o livro:** nenhuma métrica de qualidade deve ser reportada sem o **custo ao lado** — decomposto por parcela, com taxa de acerto do cache e latência p95 na mesma tela.
 
-## Mão na massa — contexto-zero, etapa 17
+## Mão na massa — rag-zero, etapa 16
 
-Na etapa 17 você fecha a construção: o contador da etapa 0 vira painel. Custo por parcela, taxa de acerto do cache antes e depois de reordenar as camadas, latência p50/p95 com e sem o laço agêntico da etapa 11 — e as métricas de qualidade da etapa 15 na mesma tela. O entregável é a tela, não o código. O exercício de completude: a detecção de invalidação de cache vem esqueletada — você implementa o alerta que dispara quando a taxa cai, e descobre, ao rodar, que o seu próprio sistema tinha um invalidador escondido.
+Na etapa 16 você fecha a construção: o contador da etapa 0 vira painel. Custo por parcela, taxa de acerto do cache antes e depois de reordenar as camadas, latência p50/p95 com e sem o laço agêntico da etapa 11 — e as métricas de qualidade da etapa 15 na mesma tela. O entregável é a tela, não o código. O exercício de completude: a detecção de invalidação de cache vem esqueletada — você implementa o alerta que dispara quando a taxa cai, e descobre, ao rodar, que o seu próprio sistema tinha um invalidador escondido.
 
 ## Verificação
 
@@ -118,4 +118,4 @@ Na etapa 17 você fecha a construção: o contador da etapa 0 vira painel. Custo
 
 **Rodada 1 (edição 0.1)**: a economia do contexto e as alavancas estão descritas. O tratamento por provedor — regras exatas de cache (mínimo, tempo de vida, marcação), descontos vigentes e como cada um mede — é o trabalho da **rodada 2** do ROADMAP, com a ressalva do Princípio IV: esta é a seção do livro com maior taxa de expiração.
 
-Enfileirado: regras de cache por prefixo dos provedores · práticas de monitoramento de taxa de acerto · roteamento por modelo e por etapa · a economia comparada entre indexar e encher a janela (cap. 08).
+Enfileirado: regras de cache por prefixo dos provedores · práticas de monitoramento de taxa de acerto · roteamento por modelo e por etapa · a economia comparada entre indexar e encher a janela (cap. 20).

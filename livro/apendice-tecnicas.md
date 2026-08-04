@@ -127,10 +127,10 @@
 
 | Técnica | O que é | Quando usa | Custo | Cap. |
 |---|---|---|---|:---:|
-| **Tabela de diagnóstico** | combinar recall/precision/faithfulness para localizar a falha | antes de escolher qualquer técnica do cap. 11 | rodar o eval | 15 |
+| **Tabela de diagnóstico** | combinar recall/precision/faithfulness para localizar a falha | antes de escolher qualquer técnica do cap. 09 | rodar o eval | 15 |
 | **Taxa de resultado zero** | quantas consultas voltam sem nada acima do limiar | **sempre** — o sinal barato que denuncia por ausência | ~0 | 15 |
 | **Taxa de citação** | quantas respostas referenciam o recuperado | *faithfulness* barata, sem juiz, em toda requisição | ~0 | 15 |
-| **Higiene do corpus** | frescor, procedência, deduplicação, permissão no metadado | **antes** de qualquer técnica dos caps. 10–12 | ingestão | 09 |
+| **Higiene do corpus** | frescor, procedência, deduplicação, permissão no metadado | **antes** de qualquer técnica dos caps. 06–18 | ingestão | 09 |
 | **Conjunto sintético do corpus** | gerar perguntas dos documentos | cobrir volume barato | superestima o recall | 15 |
 | **Casos de falha registrados** | todo incidente vira caso | **sempre** | ~0 | 07, 15 |
 | **Marcação de procedência** | declarar no contexto o que veio de fora | sempre que há conteúdo externo | ~0 | 14, 16 |

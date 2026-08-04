@@ -1,6 +1,6 @@
-# 19 — Convergências e Tendências
+# 24 — Convergências e Tendências
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](HISTORICO.md)
 >
 > **Maturidade: esboço.** As convergências, as disputas e as apostas datadas estão registradas; a revisão do placar é a rodada 6 do ROADMAP.
 
@@ -46,7 +46,7 @@ Registradas para serem cobradas. O placar vive no [registro de expiração](HIST
 
 | # | Aposta (feita em 2026-08) | Como se verifica | Prazo |
 |---|---|---|---|
-| A1 | **Grande parte do cap. 04 (saída estruturada, metade sintática) vira funcionalidade trivial de plataforma** e deixa de merecer capítulo próprio. | O capítulo encolhe para uma seção do cap. 02. | 2027-08 |
+| A1 | **Grande parte do cap. 13 (saída estruturada, metade sintática) vira funcionalidade trivial de plataforma** e deixa de merecer capítulo próprio. | O capítulo encolhe para uma seção do cap. 11. | 2027-08 |
 | A2 | **Orçamento explícito de contexto vira prática padrão**, com painel de composição por fonte tão comum quanto painel de latência hoje. | Ferramentas de observabilidade passam a trazê-lo pronto. | 2028-02 |
 | A3 | **A otimização automática de prompt não substitui a escrita manual na maioria dos projetos** até 2028 — mas vira padrão em sistemas de alto volume. | Adoção reportada em levantamentos da comunidade. | 2028-08 |
 | A4 | **Nenhuma defesa por prompt contra injeção indireta será considerada suficiente**; a defesa continuará sendo de privilégio e aprovação. | Recomendação vigente do OWASP. | 2028-08 |

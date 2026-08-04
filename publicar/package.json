@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "description": "Motor de publicação do livro Engenharia de Prompt e Engenharia de Contexto (Markdown -> HTML navegável + PDF).",
+  "description": "Motor de publicação do livro Engenharia de RAG (Markdown -> HTML navegável + PDF).",
   "scripts": {
     "build": "node build.mjs && node verifica-capitulos.mjs",
     "pdf": "node pdf.mjs"

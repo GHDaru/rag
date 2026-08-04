@@ -1,6 +1,6 @@
 // Knowledge Graph do livro — extração DETERMINÍSTICA, sem LLM.
 // Nós: capítulos, ferramentas/frameworks do ecossistema, conceitos-chave,
-// etapas do contexto-zero. Arestas: menções reais no texto (peso = nº de
+// etapas do rag-zero. Arestas: menções reais no texto (peso = nº de
 // ocorrências) — evidência verificável.
 // Chamado pelo build.mjs a cada build ⇒ o grafo acompanha toda mudança do livro.
 
@@ -50,14 +50,14 @@ const CONCEITOS = [
 ];
 
 const ETAPAS = [
-  "00 chat + porta LLM", "01 prompt em camadas", "02 raciocínio", "03 saída estruturada",
-  "04 persona e regras", "05 otimizador de prompt", "06 eval de prompt", "07 orçamento",
-  "08 ingestão do corpus", "09 índice e busca", "10 híbrido + rerank", "11 RAG agêntico",
-  "12 memória", "13 compactação", "14 ferramentas", "15 eval do sistema",
-  "16 defesa de injeção", "17 painel de custo",
+  "00 chat + porta LLM", "01 esqueleto e contratos", "02 RAG naive (linha de base)",
+  "03 ingestão do corpus", "04 chunking e representação", "05 busca híbrida", "06 reranking",
+  "07 reescrita de consulta", "08 recuperação avançada", "09 recuperação estruturada",
+  "10 geração fundamentada", "11 RAG agêntico", "12 RAG conversacional", "13 orçamento",
+  "14 avaliação e observabilidade", "15 segurança do corpus", "16 custo e cache",
 ];
 
-const GH = "https://github.com/GHDaru/rag/tree/main/contexto-zero";
+const GH = "https://github.com/GHDaru/rag/tree/main/rag-zero";
 
 function contar(re, texto) {
   const m = texto.match(re);
@@ -104,7 +104,7 @@ export function gerarGrafo(itens, RAIZ, versao) {
     const porEtapa = {};
     for (const m of texto.matchAll(/\betapas?\s+(\d{1,2})\b/gi)) {
       const n = String(parseInt(m[1], 10)).padStart(2, "0");
-      if (parseInt(n, 10) <= 17) porEtapa[n] = (porEtapa[n] || 0) + 1;
+      if (parseInt(n, 10) <= 16) porEtapa[n] = (porEtapa[n] || 0) + 1;
     }
     for (const n of Object.keys(porEtapa)) addAresta(id, "etapa-" + n, porEtapa[n]);
   }

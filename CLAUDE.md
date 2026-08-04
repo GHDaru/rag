@@ -1,6 +1,6 @@
 # CLAUDE.md — instruções para agentes neste repositório
 
-Este repositório é o livro vivo **Engenharia de Prompt e Engenharia de Contexto** (teoria + catálogo de técnicas + construção prática `contexto-zero`). **RAG é a técnica central da engenharia de contexto** — tem capítulos próprios, mas não é a moldura do livro (Princípio VIII).
+Este repositório é o livro vivo **Engenharia de RAG** (teoria + catálogo de técnicas + construção prática `rag-zero`). **RAG é a técnica central da engenharia de contexto** — tem capítulos próprios, mas não é a moldura do livro (Princípio VIII).
 
 ## Regra primária
 
@@ -23,7 +23,7 @@ Resumo do que a constituição exige (leia-a por inteiro antes de contribuir):
 
 ## Fluxo de trabalho (spec-kit) — uma branch por spec
 
-Operacionaliza o Princípio VII. **Toda melhoria** — capítulo aprofundado, rodada de auditoria, etapa do `contexto-zero`, feature de infra, ajuste editorial — segue este ciclo, cada uma na **sua própria branch**. Não se edita direto na `main`.
+Operacionaliza o Princípio VII. **Toda melhoria** — capítulo aprofundado, rodada de auditoria, etapa do `rag-zero`, feature de infra, ajuste editorial — segue este ciclo, cada uma na **sua própria branch**. Não se edita direto na `main`.
 
 1. **specify** — `bash .specify/scripts/bash/create-new-feature.sh "<nome>"` cria `specs/NNN-nome/` (e o nº da feature); então `git checkout -b NNN-nome`. Escreva `spec.md` (o QUÊ/PORQUÊ) a partir de `.specify/templates/spec-template.md`.
 2. **checklist / clarify** — valide a qualidade do spec (`checklists/requirements.md`); use *clarify* quando houver ambiguidade real de escopo.
@@ -43,8 +43,8 @@ As skills `/speckit-*` (em `.claude/skills/`) automatizam esses passos; quando n
 
 - `livro/` — o livro. `GUIA-EDITORIAL.md` (como escrever), `HISTORICO.md` (edições + expiração), `bibliografia.md`, `glossario.md`, `capitulos/`, apêndices.
 - `benchmark/` — a metodologia de avaliação de técnicas (`README.md`). As avaliações chegam na rodada 4 (ver ROADMAP).
-- `contexto-zero/` — a construção prática (Python + FastAPI), uma etapa por capítulo. Regras: seção "Restrições" da constituição. Chega na rodada 3.
-- `chat-companion/` — o assistente do livro (FastAPI + RAG sobre o próprio texto). É o `contexto-zero` rodando em produção — e o exemplo real que o livro dissseca.
+- `rag-zero/` — a construção prática (Python + FastAPI), uma etapa por capítulo. Regras: seção "Restrições" da constituição. Chega na rodada 3.
+- `chat-companion/` — o assistente do livro (FastAPI + RAG sobre o próprio texto). É o `rag-zero` rodando em produção — e o exemplo real que o livro dissseca.
 - `estudos/` — notas de pesquisa (panorama da comunidade, parecer editorial).
 - `adr/` — Architecture Decision Records.
 - `publicar/` — o motor do site (Markdown → HTML). `node build.mjs` gera `docs/`.
