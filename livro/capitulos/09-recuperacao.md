@@ -48,10 +48,16 @@ O chunk é a unidade atômica de tudo que vem depois. Errar aqui não é recuper
 
 | Estratégia | Como corta | Boa para | Falha em |
 |---|---|---|---|
+| **Nenhuma** | o documento inteiro é a unidade | FAQ, tickets, descrições curtas | documento longo |
 | **Tamanho fixo** | N tokens, com sobreposição | corpus homogêneo; linha de base honesta | corta no meio de raciocínio |
+| **Recursiva** | quebra por separadores em cascata (parágrafo → frase → token) | o padrão razoável para a maioria dos corpora | ainda é corte cego, só que educado |
 | **Estrutural** | por marcação do documento (título, seção, célula) | documentos com hierarquia real | documento sem estrutura confiável |
 | **Semântica** | por quebra de tópico detectada | prosa longa sem seções | custo de pré-processamento; fronteiras instáveis |
+| **Sentence-window** | indexa a frase, entrega a janela em volta dela | precisão de busca com contexto na entrega | janela fixa nem sempre é a certa |
+| **Proposition** | decompõe em afirmações autocontidas e indexa cada uma | pergunta factual específica | caro (uma passada de LLM) e perde o encadeamento |
 | **Hierárquica** | indexa pequeno, entrega o pai | quando o vizinho importa | complexidade de índice |
+
+As três últimas compartilham a mesma ideia, e vale nomeá-la porque é o padrão de projeto mais útil do capítulo: **desacoplar a unidade de busca da unidade de entrega.** O que se indexa (pequeno, preciso, bom para o ranking) não precisa ser o que se envia ao modelo (maior, com contexto suficiente para responder). Quase todo sistema que fixa as duas coisas no mesmo chunk está aceitando um compromisso que não precisava aceitar.
 
 Três regras que a prática consolidou, e que valem mais que a escolha da estratégia:
 
@@ -78,17 +84,30 @@ A economia do arranjo é o ponto: o modelo caro só vê o que o barato já filtr
 
 O ganho reportado pelos praticantes é cumulativo com os estágios anteriores — a curva importa mais que os números: cada estágio adiciona, e o reranking é o que mais adiciona **por último**. Os números específicos publicados (ver [panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md)) vêm de corpus dos próprios proponentes, e este livro os trata como hipótese a reproduzir.
 
-### 4. O que quase sempre falta
+### 4. O teto que ninguém mede: o corpus
+
+Todos os estágios anteriores são otimizações **sobre o que está no índice**. Nenhum deles inventa informação que o corpus não tem, e nenhum deles distingue um documento correto de um obsoleto — os dois embeddam igual.
+
+Isso significa que a qualidade de recuperação tem um **teto** definido antes de qualquer decisão técnica deste capítulo, e o teto é o corpus:
+
+- **Frescor.** Um documento revogado que continua indexado é recuperado com a mesma confiança do vigente. Data no metadado e política de expiração do índice não são higiene — são correção.
+- **Procedência.** Quando duas versões conflitam, o sistema precisa saber qual é a canônica. Sem isso, a resposta depende de qual chunk ranqueou melhor, que é o mesmo que dizer: depende da sorte.
+- **Duplicação.** O mesmo conteúdo em cinco documentos ocupa cinco lugares do `top_k` e desloca a informação que faltava. Deduplicar na ingestão devolve orçamento (cap. 08) sem tocar em modelo nenhum.
+- **Permissão como metadado**, para poder filtrar antes de buscar (ver abaixo).
+
+Esta é a seção mais fraca da edição 0.1 e o livro admite: não há aqui tratamento à altura do problema. O argumento foi levantado por fonte da indústria com interesse declarado (fornecedores de catálogo de dados), o que exige ceticismo — mas se sustenta sozinho, porque nenhuma técnica dos caps. 09–11 conserta um corpus podre. Aprofundar é trabalho da rodada 2 do ROADMAP.
+
+### 5. O que quase sempre falta
 
 Três coisas ausentes na maioria dos pipelines, em ordem de dano:
 
 - **Filtro por permissão antes da busca.** Recuperar e depois filtrar vaza — na latência e, dependendo da implementação, no conteúdo. É requisito de segurança, não de performance.
-- **Um caminho para "não encontrei".** Sistema que sempre devolve `top_k` resultados sempre devolve algo — mesmo quando o corpus não tem a resposta. Sem limiar de similaridade e sem caminho de abstenção, a alucinação fundamentada em ruído é inevitável.
+- **Um caminho para "não encontrei".** Sistema que sempre devolve `top_k` resultados sempre devolve algo — mesmo quando o corpus não tem a resposta. Sem limiar de similaridade e sem caminho de abstenção, a alucinação fundamentada em ruído é inevitável. O sinal operacional correspondente — a **taxa de resultado zero** — é o instrumento que mostra se esse caminho existe e com que frequência é usado (cap. 15).
 - **Medição isolada deste estágio.** Sem medir recuperação separada da geração, todo diagnóstico vira palpite (cap. 15).
 
 ### Leitura executiva
 
-Recuperação é um pipeline de **três estágios com métricas próprias**: candidatos baratos → fusão de sinais → reranking caro sobre poucos. **O que roubar, em ordem de retorno:** (1) **busca híbrida** — densa e esparsa erram em direções complementares (densa perde código e nome próprio; esparsa perde paráfrase), e a fusão é o upgrade de melhor relação benefício/esforço; (2) **reranking** como terceiro estágio, que é o que mais adiciona por último; (3) **metadado junto do chunk**, porque filtrar antes de buscar rende mais que ajustar similaridade. **O corte decide tudo:** o tamanho ótimo do chunk depende da **pergunta**, não do documento — corpus com perguntas de tipos diferentes pede mais de uma granularidade. **O que quase sempre falta:** filtro por permissão **antes** da busca, um caminho explícito para "não encontrei", e medir este estágio isolado da geração.
+Recuperação é um pipeline de **três estágios com métricas próprias**: candidatos baratos → fusão de sinais → reranking caro sobre poucos. **O que roubar, em ordem de retorno:** (1) **busca híbrida** — densa e esparsa erram em direções complementares (densa perde código e nome próprio; esparsa perde paráfrase), e a fusão é o upgrade de melhor relação benefício/esforço; (2) **reranking** como terceiro estágio, que é o que mais adiciona por último; (3) **metadado junto do chunk**, porque filtrar antes de buscar rende mais que ajustar similaridade. **O padrão de projeto do capítulo:** *desacople a unidade de busca da unidade de entrega* — o que se indexa (pequeno, preciso) não precisa ser o que se envia (maior, com contexto). É o que sentence-window, proposition e chunking hierárquico têm em comum. **O corte decide tudo:** o tamanho ótimo depende da **pergunta**, não do documento. **O teto que ninguém mede é o corpus:** frescor, procedência e duplicação limitam a recuperação antes de qualquer escolha técnica — documento revogado embedda igual ao vigente. **O que quase sempre falta:** filtro por permissão **antes** da busca, um caminho explícito para "não encontrei" (com a taxa de resultado zero monitorada), e medir este estágio isolado da geração.
 
 ## Mão na massa — contexto-zero, etapa 8
 

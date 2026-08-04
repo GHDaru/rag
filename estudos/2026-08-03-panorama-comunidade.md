@@ -97,3 +97,54 @@ O livro trata estes números como o Princípio I manda: citáveis com a fonte e 
 Busca aberta na web em 2026-08-03, cruzando quatro eixos (survey acadêmico · repositório público · framework de produção · fonte de fornecedor) para cada um dos três temas. Critério de inclusão: aparecer em pelo menos duas buscas independentes **ou** ser fonte primária de uma técnica nomeada. Nenhum item foi lido na íntegra nesta passada — por isso `[a validar]`. A validação (leitura, conferência de número, registro em `livro/bibliografia.md` com status ✓) é trabalho da **rodada 2** do [ROADMAP](../ROADMAP.md).
 
 **Viés declarado**: buscas em inglês, motor único, sem acesso a bases pagas. Literatura não indexada e trabalho publicado fora de arXiv/GitHub está sub-representado.
+
+---
+
+## 6. Adendo (2026-08-04) — guias de praticante sobre RAG em produção
+
+Três guias de praticante indicados pelo editor e consultados após o levantamento principal. Um quarto ([teacherandtask](https://www.teacherandtask.com/blog/advanced-rag-patterns-2026-production-engineering-guide)) devolveu HTTP 403 e **não foi lido** — fica registrado como pendência, porque "não consegui abrir" é diferente de "não tinha nada".
+
+| Fonte | O que agrega |
+|---|---|
+| [RAG Architecture in 2026](https://futureagi.com/blog/rag-architecture-llm-2025/) (Future AGI) | arquitetura em seis camadas; três padrões de orquestração (clássico / multi-hop / agêntico); nomeia step-back prompting, Self-RAG, FLARE |
+| [Building Production RAG](https://www.premai.io/blog/building-production-rag-architecture-chunking-evaluation-monitoring-2026-guide/) (Prem AI) | chunking recursivo/proposition/sentence-window; **observabilidade com limiares por camada** (p99, taxa de resultado zero, distribuição de nota do reranker) |
+| [12 Advanced RAG Techniques](https://atlan.com/know/advanced-rag-techniques/) (Atlan) | organiza por estágio (pré-recuperação / recuperação / pós / arquitetura); nomeia RAPTOR, CRAG, Adaptive RAG, Modular RAG; e o argumento de **governança do corpus** |
+
+### 6.1 O que entrou no livro
+
+Seis técnicas nomeadas que o esqueleto tratava de forma genérica — todas com paper por trás, todas entrando na fila de validação da rodada 2:
+
+- **RAPTOR** (cap. 10) — o livro dizia "sumarização hierárquica" sem nomear a materialização de referência.
+- **Self-RAG, CRAG, FLARE, Adaptive RAG** (cap. 11) — o livro dizia "laço com reflexão" e "roteamento" sem as implementações. A distinção editorial que emergiu ao organizá-las: elas diferem por **onde mora o julgamento** (no modelo / em avaliador externo / no sinal de incerteza / em classificador de entrada).
+- **Step-back prompting** (cap. 10) — faltava na lista do lado da pergunta.
+- **Sentence-window e proposition chunking** (cap. 09) — a tabela tinha quatro estratégias e agora tem oito; e o exercício de organizá-las revelou o padrão que as três últimas compartilham: **desacoplar a unidade de busca da unidade de entrega**. Esse padrão não estava escrito em lugar nenhum do livro, e é mais útil que qualquer uma das estratégias isoladas.
+
+E dois sinais operacionais (caps. 15 e 17): **taxa de resultado zero** — o melhor sinal barato de recuperação, e que denuncia por ausência (se está em zero, provavelmente não há limiar nem abstenção) — e o **cache semântico**, com seu modo de falha específico (perguntas próximas com respostas diferentes).
+
+### 6.2 O que NÃO entrou, e por quê
+
+**Nenhum número destas três fontes.** Elas são secundárias — praticante citando proponente — e o Princípio I não abre exceção para isso. Dois exemplos do porquê:
+
+**O caso de deriva do *contextual retrieval*.** O mesmo experimento, citado por três bocas:
+
+| Quem | O que afirma |
+|---|---|
+| Anthropic (proponente) | 35% (embeddings contextuais) · 49% (+BM25) · **67% (+reranking)** — três condições cumulativas |
+| Future AGI | "aumenta recuperação em 35 a 50 por cento" |
+| Atlan | "**67% fewer retrieval failures**", atribuído ao contextual retrieval |
+
+O 67% é o resultado dos **três estágios juntos** e virou, na citação de terceiro, mérito de um só. Nenhuma das duas fontes secundárias mentiu — as duas descartaram a condição experimental, que é justamente o que o Princípio I obriga a carregar junto do número. Este é o melhor exemplo didático que o livro tem para explicar por que a regra existe, e vale citar no cap. 10 quando ele for aprofundado.
+
+**Números órfãos.** "80% das falhas de RAG vêm da camada de ingestão e chunking" (Prem AI) aparece **sem fonte alguma**. É plausível, é citável, é exatamente o tipo de número que circula até virar consenso sem nunca ter sido medido. Fica registrado aqui como **não utilizável**.
+
+Outros números vistos e não usados: "recursive chunking 69% vs semantic" (atribuído a "50 academic papers", sem referência), "reranking melhora precisão 10–30%" (sem fonte), "60% das implantações de RAG têm avaliação sistemática" (declarado como estimativa).
+
+### 6.3 O achado mais valioso: o teto do corpus
+
+O Atlan — fornecedor de catálogo de dados, portanto **fonte interessada** — sustenta que *"retrieval quality is ultimately bounded by what is in the index"*, e que governança (procedência, ativos certificados, linhagem, metadado ativo) é pré-requisito e não etapa posterior.
+
+O interesse comercial é declarado e não invalida o argumento, que se sustenta sozinho: **nenhuma técnica dos caps. 09–11 conserta um corpus podre.** Um documento revogado embedda exatamente igual ao vigente; conteúdo duplicado ocupa cinco lugares do `top_k` e desloca o que faltava; sem procedência, o desempate entre versões conflitantes é a sorte do ranking.
+
+Isso expôs uma **lacuna estrutural** da edição 0.1: o livro não tratava qualidade de corpus em lugar nenhum. Foi aberta a seção "O teto que ninguém mede: o corpus" no cap. 09, declarada como a mais fraca da edição. A pergunta editorial que fica aberta para o editor decidir: **isso merece capítulo próprio na Parte II** (ingestão e governança do corpus), ou continua como seção do cap. 09? Há argumento para o capítulo — é a única parte do pipeline que nenhuma das três partes do livro cobre hoje.
+
+E há uma corroboração independente da moldura do livro: o mesmo texto argumenta que *"advanced RAG techniques are necessary, but they are not sufficient"*, com engenharia de contexto como camada fundacional. É a tese do Princípio VIII chegando por outro caminho, de uma fonte que não tem interesse nenhum em defendê-la.

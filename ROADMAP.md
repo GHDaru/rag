@@ -38,6 +38,8 @@ O que **ainda não** existe, e é deliberado:
 3. **Registrar condição experimental** de todo número citado — em especial os de otimização de prompt (cap. 06), *contextual retrieval* (cap. 10) e memória (cap. 12), todos auto-reportados pelos proponentes.
 4. **Preencher os Apêndices A** dos capítulos com o tratamento por implementação.
 5. **Aprofundar o corpo** dos capítulos onde a validação trouxer material novo.
+6. **Validar as seis técnicas nomeadas** que entraram no adendo 0.1.1 (RAPTOR · Self-RAG · CRAG · FLARE · Adaptive RAG · step-back), cada uma com fonte primária e condição experimental.
+7. **Decidir a pergunta aberta do adendo 0.1.1**: governança e ingestão do corpus viram **capítulo próprio** na Parte II, ou continuam como seção do cap. 09? Hoje é a única parte do pipeline que nenhuma das três partes cobre — e é o teto de tudo que os caps. 09–11 otimizam.
 
 **Critério de conclusão:** ao menos 60% das referências com status ✓; nenhum número no corpo sem condição experimental; nenhum capítulo com Apêndice A vazio.
 

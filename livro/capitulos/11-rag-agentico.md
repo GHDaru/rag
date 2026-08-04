@@ -59,6 +59,17 @@ A recomendação honesta: **suba um grau por vez, e só com evidência de que o 
 - **Roteamento** — escolher a fonte certa entre várias (documentação, banco, API, web) antes de buscar. É frequentemente o que o sistema realmente precisava quando alguém propôs "agente".
 - **Colaboração** — agentes especializados por fonte ou por etapa, coordenados. É o padrão mais caro e o mais difícil de avaliar; exige justificativa explícita.
 
+As quatro materializações nomeadas que a literatura consolidou — vale conhecer para não reinventar:
+
+| Nome | O que faz | Padrão |
+|---|---|---|
+| **Self-RAG** | o modelo emite marcadores de reflexão que decidem *se* recupera e *se* o trecho sustenta a resposta | reflexão, treinada no modelo |
+| **CRAG** (*Corrective RAG*) | um avaliador leve classifica o resultado (correto / ambíguo / errado) e dispara ação corretiva — refinar ou buscar em outra fonte | reflexão, com avaliador externo |
+| **FLARE** | recupera **durante** a geração, quando o modelo fica incerto sobre o que vai escrever a seguir | reflexão, disparada por incerteza |
+| **Adaptive RAG** | classifica a complexidade da pergunta e escolhe o grau — resposta direta, uma busca, ou laço | roteamento por complexidade |
+
+A diferença entre elas é **onde mora o julgamento**: dentro do modelo (Self-RAG), num avaliador separado (CRAG), no sinal de incerteza da geração (FLARE), ou num classificador de entrada (Adaptive RAG). A última é a mais fácil de operar e depurar, e por isso costuma ser a primeira a tentar.
+
 ### 3. O custo da autonomia
 
 Quatro custos que a literatura de entusiasmo omite:
@@ -79,7 +90,7 @@ Um laço de recuperação em produção precisa, sem exceção, de:
 
 ### Leitura executiva
 
-RAG agêntico inverte o controle: o modelo decide **se, o que e onde** buscar, e a recuperação deixa de ser etapa e vira **ferramenta**. Não é dicotomia, é **espectro** — pipeline fixo → roteamento → busca sob demanda → laço com reflexão → multiagente. **O que roubar:** suba **um grau por vez**, e só com evidência de que o anterior falha; e comece pela **reflexão** (criticar o resultado antes de usá-lo), que é o padrão mais barato e de maior retorno. Muito sistema que adotou multiagente por design precisava só de **roteamento** — que é depurável. **O custo que o entusiasmo omite:** latência de cauda larga, custo por pergunta imprevisível, avaliação de **trajetória** (e não de resposta), e superfície de *prompt injection* encadeada. **Inegociável em produção:** teto de iterações, teto de orçamento por requisição, detecção de laço improdutivo e trajetória observável — sem os quatro, o laço é um risco com aparência de recurso.
+RAG agêntico inverte o controle: o modelo decide **se, o que e onde** buscar, e a recuperação deixa de ser etapa e vira **ferramenta**. Não é dicotomia, é **espectro** — pipeline fixo → roteamento → busca sob demanda → laço com reflexão → multiagente. **O que roubar:** suba **um grau por vez**, e só com evidência de que o anterior falha; e comece pela **reflexão** (criticar o resultado antes de usá-lo), que é o padrão mais barato e de maior retorno. As materializações nomeadas diferem por **onde mora o julgamento** — dentro do modelo (Self-RAG), num avaliador separado (CRAG), no sinal de incerteza da geração (FLARE) ou num classificador de entrada (Adaptive RAG); a última é a mais fácil de operar e depurar. Muito sistema que adotou multiagente por design precisava só de **roteamento** — que é depurável. **O custo que o entusiasmo omite:** latência de cauda larga, custo por pergunta imprevisível, avaliação de **trajetória** (e não de resposta), e superfície de *prompt injection* encadeada. **Inegociável em produção:** teto de iterações, teto de orçamento por requisição, detecção de laço improdutivo e trajetória observável — sem os quatro, o laço é um risco com aparência de recurso.
 
 ## Mão na massa — contexto-zero, etapa 10
 

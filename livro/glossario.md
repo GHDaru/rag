@@ -30,6 +30,8 @@
 
 **CoT (*Chain-of-Thought*)** — induzir passos intermediários explícitos antes da resposta. Família *thought generation* (cap. 03).
 
+**CRAG** (*Corrective RAG*) — um avaliador leve classifica o resultado da recuperação e dispara ação corretiva (refinar, ou buscar em outra fonte). O julgamento fica **fora** do modelo, e por isso é auditável (cap. 11).
+
 **Cross-encoder** — modelo que lê consulta e documento **juntos** para pontuar relevância, em vez de comparar vetores calculados separadamente. É a arquitetura típica de reranker: preciso e caro (cap. 09).
 
 ## D–L
@@ -44,9 +46,13 @@
 
 **Few-shot** — incluir exemplos no prompt. Fixa formato e fronteiras de rótulo; custa tokens em toda chamada (cap. 03).
 
+**FLARE** — recupera **durante** a geração, disparado pela incerteza do modelo sobre o que vai escrever a seguir (cap. 11).
+
 **GEPA** — otimizador de prompt que evolui instruções por reflexão em linguagem natural sobre traços de execução, com seleção genético-Pareto (cap. 06).
 
 **GraphRAG** — construir um grafo de entidades e relações, sumarizar regiões densas e recuperar sobre essa estrutura. Muda **do que** se recupera (cap. 10).
+
+**Higiene do corpus** — frescor, procedência, deduplicação e permissão como metadado. É o **teto** da qualidade de recuperação: nenhuma técnica dos caps. 09–11 conserta um corpus podre, porque um documento revogado embedda exatamente igual ao vigente (cap. 09).
 
 **HyDE** (*Hypothetical Document Embeddings*) — gerar uma resposta hipotética e buscar por ela, porque uma resposta se parece mais com o documento do que a pergunta (cap. 10).
 
@@ -64,9 +70,9 @@
 
 **Mem0** — sistema de memória que extrai fatos salientes das mensagens e os guarda como memórias compactas (cap. 12).
 
-**Memória** — estado deliberadamente mantido além do turno atual. Distinta do histórico bruto, e distinta de RAG: memória guarda afirmações que **mudam de valor de verdade** (cap. 12).
-
 **MemGPT / Letta** — arquitetura que trata o LLM como sistema operacional gerenciando a própria memória, paginando entre contexto principal, *recall* e *archival* (cap. 12).
+
+**Memória** — estado deliberadamente mantido além do turno atual. Distinta do histórico bruto, e distinta de RAG: memória guarda afirmações que **mudam de valor de verdade** (cap. 12).
 
 **MIPROv2** — otimizador que busca instruções e exemplos conjuntamente, via otimização bayesiana e bootstrap (cap. 06).
 
@@ -80,9 +86,13 @@
 
 **Prompt injection** — fazer o modelo obedecer a texto que deveria ser tratado como dado. Propriedade da arquitetura, não bug (cap. 16).
 
-**RAG (*Retrieval-Augmented Generation*)** — recuperar trechos de um corpus externo **e** gerar resposta fundamentada neles. Recuperação sozinha não é RAG. Neste livro, é a técnica central da engenharia de contexto — não a moldura (caps. 00, 09).
+**Proposition chunking** — decompor o documento em afirmações autocontidas e indexar cada uma. Precisão alta para pergunta factual; caro, e perde o encadeamento (cap. 09).
 
 **RAGAS** — framework de avaliação que fixou o vocabulário de fato: *faithfulness*, *answer relevance*, *context precision*, *context recall* (cap. 15).
+
+**RAG (*Retrieval-Augmented Generation*)** — recuperar trechos de um corpus externo **e** gerar resposta fundamentada neles. Recuperação sozinha não é RAG. Neste livro, é a técnica central da engenharia de contexto — não a moldura (caps. 00, 09).
+
+**RAPTOR** — construir uma árvore de resumos recursivos (agrupar chunks por similaridade, resumir cada grupo, repetir). A recuperação acontece em qualquer nível: folhas para pergunta factual, nós altos para **pergunta global**. É a materialização de referência da sumarização hierárquica (cap. 10).
 
 **ReAct** — ciclo pensamento → ação → observação. Nasce como técnica de prompt (cap. 03) e vira arquitetura de recuperação (cap. 11).
 
@@ -93,6 +103,14 @@
 **Saída estruturada** — restringir a resposta a um schema. Garante forma, nunca valor; a validação semântica continua sendo sua (cap. 04).
 
 **Self-consistency** — amostrar vários caminhos de raciocínio e agregar por voto. Multiplica o custo por N; é decisão financeira (cap. 03).
+
+**Self-RAG** — o modelo emite marcadores de reflexão que decidem se recupera e se o trecho sustenta a resposta. O julgamento fica **dentro** do modelo (cap. 11).
+
+**Sentence-window** — indexar a frase e entregar a janela de texto em volta dela. Caso particular do padrão **desacoplar a unidade de busca da unidade de entrega** (cap. 09).
+
+**Step-back prompting** — generalizar a pergunta antes de recuperar, para trazer o princípio e não só o detalhe. É o inverso da decomposição (cap. 10).
+
+**Taxa de resultado zero** — proporção de consultas que voltam sem nada acima do limiar. O sinal operacional mais barato da recuperação — e que denuncia por ausência: se está sempre em zero, provavelmente não há limiar nem caminho de abstenção (caps. 09, 15).
 
 **Token** — a unidade que o modelo processa e que a fatura cobra. Não é palavra (cap. 01).
 

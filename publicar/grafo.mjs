@@ -22,6 +22,11 @@ const FERRAMENTAS = [
   { id: "zep", rotulo: "Zep", re: /\bZep\b/g },
   { id: "letta", rotulo: "Letta / MemGPT", re: /\b(?:Letta|MemGPT)\b/g },
   { id: "graphrag", rotulo: "GraphRAG", re: /\bGraphRAG\b/gi },
+  { id: "raptor", rotulo: "RAPTOR", re: /\bRAPTOR\b/g },
+  { id: "self-rag", rotulo: "Self-RAG", re: /\bSelf-RAG\b/gi },
+  { id: "crag", rotulo: "CRAG", re: /\bCRAG\b/g },
+  { id: "flare", rotulo: "FLARE", re: /\bFLARE\b/g },
+  { id: "adaptive-rag", rotulo: "Adaptive RAG", re: /\bAdaptive RAG\b/gi },
   { id: "owasp", rotulo: "OWASP LLM Top 10", re: /\bOWASP\b/g },
 ];
 
@@ -37,6 +42,9 @@ const CONCEITOS = [
   { id: "context-rot", rotulo: "context rot", re: /\bcontext rot\b/gi },
   { id: "prompt-injection", rotulo: "prompt injection", re: /\bprompt injection\b/gi },
   { id: "few-shot", rotulo: "few-shot", re: /\bfew-shot\b/gi },
+  { id: "hyde", rotulo: "HyDE", re: /\bHyDE\b/g },
+  { id: "step-back", rotulo: "step-back", re: /\bstep-back\b/gi },
+  { id: "corpus", rotulo: "higiene do corpus", re: /\bcorpus\b/gi },
   { id: "llm-as-judge", rotulo: "LLM-as-judge", re: /\bLLM-as-judge\b/gi },
   { id: "prefix-cache", rotulo: "prefix caching", re: /\bprefix cach\w*|cache de prefixo\b/gi },
 ];

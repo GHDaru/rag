@@ -75,7 +75,9 @@ Três consequências práticas:
 | Resumir resultado de ferramenta | tokens e persistência | detalhe literal |
 | Compactar mais cedo | custo do histórico | detalhe da conversa (cap. 13) |
 | Modelo menor por etapa | custo por token | qualidade, de forma desigual por etapa |
-| Cache de resposta | tudo, quando repete | frescor |
+| Cache **semântico** de resposta | tudo, quando a pergunta se repete ou se parece | frescor, e falso positivo por similaridade |
+
+A última merece nota própria, porque é a que mais engana: o **cache semântico** responde sem chamar o modelo quando a pergunta nova é *parecida* com uma já respondida. Onde há muita repetição (base de conhecimento, suporte), a economia é grande. O risco é específico e não aparece em teste de carga: duas perguntas semanticamente próximas podem ter respostas **diferentes** ("posso cancelar?" × "posso cancelar depois de 30 dias?"), e o cache serve a errada com total confiança. Limiar conservador e chave de cache que inclua os filtros aplicados (cliente, permissão, data) são o mínimo — e um cache que ignora permissão é vazamento, não otimização.
 
 A primeira linha é gratuita: estabilizar o prefixo não sacrifica nada. É por isso que ela vem antes de qualquer discussão sobre trocar de modelo — e é por isso que "reordenar o prompt" é a otimização de maior retorno e menor risco deste livro.
 
@@ -96,7 +98,7 @@ Sem isso, toda decisão de arquitetura é tomada com metade da informação — 
 
 ### Leitura executiva
 
-Contexto é pago **em toda requisição, para sempre**: uma linha acrescentada ao prompt de sistema custa o seu tamanho vezes o número de chamadas, até alguém removê-la — e quase ninguém calcula esse produto antes de acrescentar. **O que roubar, e é grátis:** **estabilizar o prefixo**. O cache vale do início até o primeiro token que difere, então nada volátil acima de algo estável (o timestamp no topo é o erro mais caro e mais comum da área), serialização determinística, e histórico que **cresce por acréscimo** em vez de ser reserializado. É a única alavanca que não sacrifica nada — vem antes de qualquer conversa sobre trocar de modelo. **Onde a atenção erra:** vai para o `top_k`, que é fácil de ver, e não para o prompt fixo e o histórico, que dominam a conta em conversas longas. **A regra que fecha o livro:** nenhuma métrica de qualidade deve ser reportada sem o **custo ao lado** — decomposto por parcela, com taxa de acerto do cache e latência p95 na mesma tela.
+Contexto é pago **em toda requisição, para sempre**: uma linha acrescentada ao prompt de sistema custa o seu tamanho vezes o número de chamadas, até alguém removê-la — e quase ninguém calcula esse produto antes de acrescentar. **O que roubar, e é grátis:** **estabilizar o prefixo**. O cache vale do início até o primeiro token que difere, então nada volátil acima de algo estável (o timestamp no topo é o erro mais caro e mais comum da área), serialização determinística, e histórico que **cresce por acréscimo** em vez de ser reserializado. É a única alavanca que não sacrifica nada — vem antes de qualquer conversa sobre trocar de modelo. **Onde a atenção erra:** vai para o `top_k`, que é fácil de ver, e não para o prompt fixo e o histórico, que dominam a conta em conversas longas. **Sobre cache semântico:** economiza muito onde há repetição, e serve resposta errada com confiança quando o limiar é frouxo — a chave precisa incluir os filtros aplicados, e cache que ignora permissão é vazamento, não otimização. **A regra que fecha o livro:** nenhuma métrica de qualidade deve ser reportada sem o **custo ao lado** — decomposto por parcela, com taxa de acerto do cache e latência p95 na mesma tela.
 
 ## Mão na massa — contexto-zero, etapa 16
 

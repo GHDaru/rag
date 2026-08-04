@@ -70,7 +70,10 @@
 |---|---|---|---|:---:|
 | **Chunking fixo com sobreposição** | corte por N tokens | linha de base honesta | ~0 | 09 |
 | **Chunking estrutural** | corte pela marcação do documento | documento com hierarquia real | ~0 | 09 |
+| **Chunking recursivo** | separadores em cascata (parágrafo → frase → token) | o padrão razoável para a maioria dos corpora | ~0 | 09 |
 | **Chunking semântico** | corte por quebra de tópico | prosa longa sem seções | pré-processamento | 09 |
+| **Sentence-window** | indexa a frase, entrega a janela em volta | precisão de busca com contexto na entrega | ~0 | 09 |
+| **Proposition chunking** | decompõe em afirmações autocontidas | pergunta factual específica | 1 passada de LLM na indexação | 09 |
 | **Índice hierárquico** | indexa pequeno, entrega o pai | perguntas de granularidades diferentes | complexidade | 09 |
 | **Metadado no chunk** | origem, seção, data, permissão | **sempre** — permite filtrar antes de buscar | ~0 | 09 |
 | **BM25 / busca esparsa** | pontuação por termo literal | identificador, código, nome próprio | baixo | 09 |
@@ -88,6 +91,8 @@
 | **Reescrita de consulta** | traduzir a pergunta para o vocabulário do corpus | pergunta ≠ resposta; conversa com referência | 1 chamada por pergunta | 10 |
 | **Múltiplas consultas** | decompor a pergunta e buscar cada parte | pergunta composta | N buscas | 10 |
 | **HyDE** | gerar resposta hipotética e buscar por ela | pergunta muito distante do texto | 1 chamada + risco de alucinar a hipótese | 10 |
+| **Step-back prompting** | generalizar a pergunta antes de buscar | quando falta o princípio geral, não o detalhe | 1 chamada por pergunta | 10 |
+| **RAPTOR** | agrupar, resumir, repetir — árvore de resumos recursivos | **pergunta global** (a que nenhum `top_k` responde) | indexação pesada, uma vez | 10 |
 | **GraphRAG** | grafo de entidades e relações, com resumo de comunidades | entidades recorrentes; perguntas globais/multi-hop | indexação pesada | 10 |
 
 ### Agente, memória e compactação
@@ -97,6 +102,10 @@
 | **Roteamento** | escolher a fonte antes de buscar | múltiplos corpora | 1 classificação | 11 |
 | **Recuperação sob demanda** | o modelo decide *se* busca | perguntas que nem sempre precisam de busca | imprevisibilidade | 11 |
 | **Laço com reflexão** | criticar o resultado e buscar de novo | busca vazia; resultado parcial; multi-hop | latência variável | 11 |
+| **Self-RAG** | o modelo emite marcadores que decidem recuperar e avaliar sustentação | o julgamento cabe no modelo | modelo treinado para isso | 11 |
+| **CRAG** | avaliador leve classifica o resultado e dispara correção | quer o julgamento fora do modelo, auditável | 1 avaliador por busca | 11 |
+| **FLARE** | recupera **durante** a geração, disparado por incerteza | texto longo que descobre lacunas ao escrever | recuperações imprevisíveis | 11 |
+| **Adaptive RAG** | classifica a complexidade e escolhe o grau | perguntas de dificuldade heterogênea | 1 classificação por pergunta | 11 |
 | **Teto de iterações + orçamento** | limites duros no laço | **sempre que houver laço** | ~0 | 11 |
 | **Memória por fatos extraídos** | destilar afirmações salientes | fatos estáveis | extração por turno | 12 |
 | **Memória em grafo temporal** | entidades + relações + validade no tempo | fatos que mudam | manutenção de grafo | 12 |
@@ -119,12 +128,16 @@
 | Técnica | O que é | Quando usa | Custo | Cap. |
 |---|---|---|---|:---:|
 | **Tabela de diagnóstico** | combinar recall/precision/faithfulness para localizar a falha | antes de escolher qualquer técnica do cap. 10 | rodar o eval | 15 |
+| **Taxa de resultado zero** | quantas consultas voltam sem nada acima do limiar | **sempre** — o sinal barato que denuncia por ausência | ~0 | 15 |
+| **Taxa de citação** | quantas respostas referenciam o recuperado | *faithfulness* barata, sem juiz, em toda requisição | ~0 | 15 |
+| **Higiene do corpus** | frescor, procedência, deduplicação, permissão no metadado | **antes** de qualquer técnica dos caps. 09–11 | ingestão | 09 |
 | **Conjunto sintético do corpus** | gerar perguntas dos documentos | cobrir volume barato | superestima o recall | 15 |
 | **Casos de falha registrados** | todo incidente vira caso | **sempre** | ~0 | 07, 15 |
 | **Marcação de procedência** | declarar no contexto o que veio de fora | sempre que há conteúdo externo | ~0 | 14, 16 |
 | **Privilégio mínimo nas ferramentas** | quem lê de fora não age | **sempre** — a única defesa que não depende do modelo | funcionalidade | 16 |
 | **Aprovação humana** | confirmar antes do irreversível | ação que não pode ser desfeita | fricção | 16 |
 | **Prefixo estável** | nada volátil acima de algo estável | **sempre** — não sacrifica nada | ~0 — **economiza muito** | 05, 17 |
+| **Cache semântico** | responder sem chamar o modelo quando a pergunta se parece com uma anterior | muita repetição (base de conhecimento, suporte) | risco de servir a resposta errada; chave precisa incluir permissão | 17 |
 | **Serialização determinística** | mesma informação, sempre os mesmos bytes | sempre que há cache | ~0 | 17 |
 | **Painel custo + qualidade** | nunca reportar uma sem a outra | sempre | instrumentação | 15, 17 |
 

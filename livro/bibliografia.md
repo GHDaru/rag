@@ -72,6 +72,9 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 | C5 | Late Chunking (Jina AI) | cortar depois do transformer | ⏳ |
 | C6 | *Hybrid Retrieval and Query Rewriting for Multi-Turn RAG* — [arXiv 2606.28352](https://arxiv.org/abs/2606.28352) | reescrita de consulta em conversa | ⏳ |
 | C7 | Surveys de GraphRAG e RAG baseado em grafo | quando grafo paga | ⏳ |
+| C8 | **RAPTOR** — árvore de resumos recursivos por agrupamento | sumarização hierárquica; pergunta global | ⏳ |
+| C9 | **HyDE** — documento hipotético como consulta | lado da pergunta | ⏳ |
+| C10 | **Step-back prompting** — generalizar antes de recuperar | lado da pergunta | ⏳ |
 
 ### 11 — RAG Agêntico
 
@@ -79,6 +82,10 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 |---|---|---|:---:|
 | A1 | S3 (survey de RAG agêntico) | os quatro padrões; o espectro | ⏳ |
 | A2 | *GraphSearch: An Agentic Deep Searching Workflow for Graph RAG* — [arXiv 2509.22009](https://arxiv.org/abs/2509.22009) | convergência grafo + agente | ⏳ |
+| A3 | **Self-RAG** — reflexão treinada no modelo (marcadores de recuperação e sustentação) | as materializações nomeadas | ⏳ |
+| A4 | **CRAG** (*Corrective RAG*) — avaliador leve + ação corretiva | idem | ⏳ |
+| A5 | **FLARE** — recuperação disparada por incerteza durante a geração | idem | ⏳ |
+| A6 | **Adaptive RAG** — roteamento por complexidade da pergunta | idem | ⏳ |
 
 ### 12 — Memória e Estado
 
@@ -128,5 +135,13 @@ Não recebem status ✓/⏳ — são recursos consultáveis, verificados apenas 
 - [promptslab/Awesome-Prompt-Engineering](https://github.com/promptslab/awesome-prompt-engineering) · [natnew/Awesome-Prompt-Engineering](https://github.com/natnew/Awesome-Prompt-Engineering)
 - [promptfoo — OWASP LLM Top 10](https://www.promptfoo.dev/docs/red-team/owasp-llm-top-10/) — red teaming mapeado à classificação
 - Tópico [`context-engineering`](https://github.com/topics/context-engineering) no GitHub
+
+**Guias de praticante sobre RAG em produção** (consultados em 2026-08-04; ver a [análise crítica no panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)):
+
+- [RAG Architecture in 2026](https://futureagi.com/blog/rag-architecture-llm-2025/) (Future AGI) — arquitetura em seis camadas e três padrões de orquestração
+- [Building Production RAG](https://www.premai.io/blog/building-production-rag-architecture-chunking-evaluation-monitoring-2026-guide/) (Prem AI) — chunking, avaliação e **observabilidade com limiares por camada**
+- [12 Advanced RAG Techniques](https://atlan.com/know/advanced-rag-techniques/) (Atlan) — as técnicas por estágio do pipeline, e o argumento de **governança do corpus**
+
+> **Estes três são fonte secundária** (praticante, não proponente) e **nenhum número deles entra no corpo do livro**. Servem para localizar técnicas nomeadas — foi assim que RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG e step-back entraram na fila de validação. O caso de deriva numérica documentado no panorama (§6) explica por quê.
 
 O mapeamento completo do ecossistema por problema está no [Apêndice — O ecossistema](apendice-ecossistema.md).

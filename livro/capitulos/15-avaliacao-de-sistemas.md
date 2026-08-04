@@ -76,7 +76,27 @@ Três origens, em ordem crescente de valor e de custo:
 
 O erro estrutural a evitar: gerar perguntas **e** julgar respostas com o mesmo modelo que gera as respostas. O sistema passa a ser avaliado pelo seu próprio viés, e o número resultante mede consistência, não qualidade.
 
-### 4. O que a instrumentação atual não cobre
+### 4. Do eval ao painel: os sinais de produção
+
+Eval responde "está bom?" sobre um conjunto fixo. Produção precisa de sinais **contínuos**, que avisem quando algo mudou sem esperar a próxima rodada de avaliação. A prática consolidada separa por camada:
+
+**Camada de recuperação**
+
+- **Taxa de resultado zero** — quantas consultas voltam sem nada acima do limiar. É o sinal mais barato e mais informativo do pipeline: se sobe, ou o corpus tem lacuna, ou o padrão de pergunta mudou, ou o índice quebrou. E se está em **zero**, o alerta é outro: provavelmente não existe limiar nem caminho de abstenção (cap. 09), e o sistema está devolvendo ruído com cara de resposta.
+- **Distribuição das notas do reranker** — não a média, a distribuição. Uma cauda que engorda perto do limiar indica corpus mudando antes de qualquer métrica de qualidade acusar.
+- **Latência por percentil** (p50, p95, p99), separada da geração.
+
+**Camada de geração**
+
+- **Taxa de citação** — quantas respostas de fato referenciam o que foi recuperado. É *faithfulness* na versão barata, calculável sem juiz, em toda requisição.
+- **Latência e contagem de tokens** por percentil.
+
+Dois cuidados que separam painel de enfeite:
+
+- **Limiar de alerta é local.** Números de referência publicados por fornecedores (p99 de recuperação abaixo de X ms, taxa de resultado zero abaixo de Y%) valem como ponto de partida, nunca como meta — dependem do corpus, do hardware e do que o produto tolera. Calibre com a sua própria linha de base.
+- **O p99 é onde o cap. 11 aparece.** Um laço agêntico não mexe muito na mediana e alarga a cauda. Quem monitora só p50 não vê a autonomia chegando na fatura.
+
+### 5. O que a instrumentação atual não cobre
 
 - **Trajetória.** Em RAG agêntico (cap. 11), duas execuções com a mesma resposta podem ter custos muito diferentes. Nenhuma das quatro métricas vê isso.
 - **Conversa.** As métricas são por turno. A falha do cap. 13 — esquecer o combinado no turno 3 — é invisível para todas elas.
@@ -85,7 +105,7 @@ O erro estrutural a evitar: gerar perguntas **e** julgar respostas com o mesmo m
 
 ### Leitura executiva
 
-"O RAG não está bom" tem pelo menos quatro causas distintas, e a separação mínima é entre **achar** e **usar**. **O que roubar:** a **tabela de diagnóstico** — recall baixo = não acha (chunking/busca); recall alto + precision baixo = traz lixo junto (reranking, `top_k` menor); recall e precision altos + faithfulness baixa = **tem tudo e inventa** (prompt de fundamentação). Sem ela, "melhorar o RAG" é tentativa e erro caro. **A métrica mais mal compreendida:** *faithfulness* baixa numa resposta **factualmente correta** não é defeito da métrica — significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta. Esse é o caso que mais engana, porque parece bom. **Sobre conjuntos:** sintético a partir do corpus é barato e **superestima o recall** (a pergunta gerada de um trecho é respondível por aquele trecho); pergunta real com resposta verificada por gente é insubstituível. **Nunca** gere as perguntas e julgue as respostas com o mesmo modelo que responde — isso mede consistência, não qualidade. **As lacunas abertas:** trajetória, conversa (não só turno), custo ao lado da qualidade, e deriva.
+"O RAG não está bom" tem pelo menos quatro causas distintas, e a separação mínima é entre **achar** e **usar**. **O que roubar:** a **tabela de diagnóstico** — recall baixo = não acha (chunking/busca); recall alto + precision baixo = traz lixo junto (reranking, `top_k` menor); recall e precision altos + faithfulness baixa = **tem tudo e inventa** (prompt de fundamentação). Sem ela, "melhorar o RAG" é tentativa e erro caro. **A métrica mais mal compreendida:** *faithfulness* baixa numa resposta **factualmente correta** não é defeito da métrica — significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta. Esse é o caso que mais engana, porque parece bom. **Sobre conjuntos:** sintético a partir do corpus é barato e **superestima o recall** (a pergunta gerada de um trecho é respondível por aquele trecho); pergunta real com resposta verificada por gente é insubstituível. **Nunca** gere as perguntas e julgue as respostas com o mesmo modelo que responde — isso mede consistência, não qualidade. **Do eval ao painel:** eval mede um conjunto fixo; produção precisa de sinais contínuos — e o mais barato e informativo é a **taxa de resultado zero**. Se ela sobe, algo mudou no corpus ou nas perguntas; se está em **zero**, provavelmente não há limiar nem caminho de abstenção, e o sistema devolve ruído com cara de resposta. Monitore também **p99** (é onde o laço agêntico do cap. 11 aparece, não na mediana) e a **taxa de citação**, que é *faithfulness* na versão barata, sem juiz. **As lacunas abertas:** trajetória, conversa (não só turno), custo ao lado da qualidade, e deriva.
 
 ## Mão na massa — contexto-zero, etapa 14
 
