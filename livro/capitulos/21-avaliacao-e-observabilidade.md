@@ -1,8 +1,8 @@
-# 16 — Avaliação de Sistemas de Contexto
+# 21 — Avaliação e Observabilidade
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** As quatro métricas e a tabela de diagnóstico estão fechadas; o tratamento por ferramenta e benchmark é a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** Componentes que aprofunda: **avaliador** e **observabilidade** (cap. 02). As quatro métricas e a tabela de diagnóstico estão fechadas; o tratamento por ferramenta e benchmark é a rodada 2 do ROADMAP.
 
 ## Objetivos de aprendizagem
 
@@ -19,8 +19,8 @@ Ao final deste capítulo, você deve ser capaz de:
 
 A separação mínima é entre **achar** e **usar**:
 
-- A recuperação trouxe o que precisava? (falha aqui = caps. 10 e 11)
-- A resposta usou o que foi trazido, sem inventar? (falha aqui = geração, prompt, cap. 02/04)
+- A recuperação trouxe o que precisava? (falha aqui = caps. 06 e 09)
+- A resposta usou o que foi trazido, sem inventar? (falha aqui = geração, prompt, cap. 11/13)
 
 Um sistema pode ter recuperação excelente e resposta péssima. E — o caso que mais engana — pode ter recuperação péssima e resposta que **parece** boa, porque o modelo preencheu as lacunas com conhecimento paramétrico plausível. Este segundo caso passa em qualquer avaliação superficial e falha exatamente onde importa: no caso raro, no dado novo, no que a empresa tem de específico.
 
@@ -28,7 +28,7 @@ Um sistema pode ter recuperação excelente e resposta péssima. E — o caso qu
 
 - **Benchmarks de recuperação** — **BEIR** (recuperação zero-shot em domínios variados) e **MTEB** (avaliação ampla de modelos de embedding) medem o estágio isolado. São a referência para escolher modelo de embedding sem confundir com o resto do pipeline. `[a validar]`
 - **Avaliação ponta a ponta** — não há benchmark único de RAG; a prática recomendada é combinar dois ou três, cobrindo estágios distintos: recuperação pura (BEIR), fidelidade da geração, e conjuntos próprios do domínio. `[a validar]`
-- **Avaliação sob contexto longo** — *U-NIAH* ([arXiv 2503.00353](https://arxiv.org/abs/2503.00353)) unifica a avaliação de RAG e de contexto longo no mesmo protocolo, permitindo comparar os dois regimes em vez de discuti-los por anedota (cap. 08). `[a validar]`
+- **Avaliação sob contexto longo** — *U-NIAH* ([arXiv 2503.00353](https://arxiv.org/abs/2503.00353)) unifica a avaliação de RAG e de contexto longo no mesmo protocolo, permitindo comparar os dois regimes em vez de discuti-los por anedota (cap. 20). `[a validar]`
 - **Benchmarks de domínio** — há uma tendência de frameworks de benchmarking adaptativo por setor (por exemplo, [FAB-Bench](https://arxiv.org/abs/2605.26476), para manufatura de semicondutores), que é sintoma de um fato inconveniente: **resultado em benchmark geral não transfere para domínio específico**. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
@@ -37,7 +37,7 @@ Um sistema pode ter recuperação excelente e resposta péssima. E — o caso qu
 
 - **RAGAS** — estabeleceu o vocabulário de fato da área com quatro métricas por LLM-as-judge: *faithfulness*, *answer relevance*, *context precision* e *context recall*; e suporta geração de conjunto de teste a partir do próprio corpus.
 - **DeepEval** — as mesmas ideias com foco em integração de CI/CD. A leitura de 2026 é complementar, não concorrente: **RAGAS fornece o arcabouço conceitual; DeepEval, a execução em pipeline**.
-- **TruLens** e a família de observabilidade — instrumentação de execução, útil para o que este livro chama de trajetória (cap. 12).
+- **TruLens** e a família de observabilidade — instrumentação de execução, útil para o que este livro chama de trajetória (cap. 18).
 - **A prática que separa** — os times que conseguem melhorar RAG são os que têm um conjunto de avaliação **do próprio domínio**, com respostas verificadas por gente. Todo o resto é diagnóstico assistido.
 
 ## O estado da arte
@@ -46,23 +46,23 @@ Um sistema pode ter recuperação excelente e resposta péssima. E — o caso qu
 
 | Métrica | Pergunta | Estágio | Falha indica |
 |---|---|---|---|
-| **Context recall** | os trechos necessários foram recuperados? | recuperação | índice, chunking, busca (caps. 10–11) |
-| **Context precision** | os trechos recuperados eram relevantes? | recuperação | `top_k` alto, ranking fraco, orçamento desperdiçado (cap. 08) |
-| **Faithfulness** | a resposta é sustentada pelo que foi recuperado? | geração | alucinação; prompt sem regra de fundamentação (cap. 02) |
+| **Context recall** | os trechos necessários foram recuperados? | recuperação | índice, chunking, busca (caps. 06–09) |
+| **Context precision** | os trechos recuperados eram relevantes? | recuperação | `top_k` alto, ranking fraco, orçamento desperdiçado (cap. 20) |
+| **Faithfulness** | a resposta é sustentada pelo que foi recuperado? | geração | alucinação; prompt sem regra de fundamentação (cap. 11) |
 | **Answer relevance** | a resposta responde à pergunta feita? | geração | o modelo respondeu outra coisa |
 
 *Faithfulness* é a que mais importa e a mais mal compreendida. Ela é calculada decompondo a resposta em afirmações e verificando quantas são **inferíveis do contexto fornecido**. Uma resposta factualmente correta mas não sustentada pelo contexto tem *faithfulness* baixa — e isso é o comportamento desejado, não um defeito da métrica: significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta.
 
 ### 2. A tabela de diagnóstico
 
-A combinação das métricas localiza o problema — é o instrumento que o cap. 11 pede antes de escolher técnica:
+A combinação das métricas localiza o problema — é o instrumento que o cap. 09 pede antes de escolher técnica:
 
 | Recall | Precision | Faithfulness | Diagnóstico | Onde agir |
 |:---:|:---:|:---:|---|---|
-| baixo | — | — | não acha | chunking, busca híbrida, reescrita (caps. 10, 11) |
-| alto | baixo | — | acha e traz lixo junto | reranking, `top_k` menor (cap. 10) |
-| alto | alto | baixo | tem tudo e inventa | prompt de fundamentação, regra de abstenção (cap. 02) |
-| alto | alto | alto | e ainda erra | a pergunta exige raciocínio (cap. 03) ou multi-hop (cap. 11) |
+| baixo | — | — | não acha | chunking, busca híbrida, reescrita (caps. 06, 09) |
+| alto | baixo | — | acha e traz lixo junto | reranking, `top_k` menor (cap. 06) |
+| alto | alto | baixo | tem tudo e inventa | prompt de fundamentação, regra de abstenção (cap. 11) |
+| alto | alto | alto | e ainda erra | a pergunta exige raciocínio (cap. 12) ou multi-hop (cap. 09) |
 
 Esta tabela é, sozinha, o motivo de o capítulo existir. Sem ela, "melhorar o RAG" é tentativa e erro caro.
 
@@ -72,7 +72,7 @@ Três origens, em ordem crescente de valor e de custo:
 
 - **Sintético a partir do corpus.** Gera-se perguntas a partir dos documentos. Barato, cobre volume, e tem um viés conhecido: perguntas geradas de um trecho são respondíveis por aquele trecho, o que **superestima** o recall e não testa multi-hop nem pergunta mal formulada.
 - **Perguntas reais de usuários**, com resposta verificada por gente. Caro, insubstituível — é o único conjunto que contém as ambiguidades e os erros de digitação do mundo real.
-- **Casos de falha registrados.** O mesmo princípio do cap. 07: todo incidente vira caso. É o conjunto que cresce sozinho e com valor.
+- **Casos de falha registrados.** O mesmo princípio do cap. 17: todo incidente vira caso. É o conjunto que cresce sozinho e com valor.
 
 O erro estrutural a evitar: gerar perguntas **e** julgar respostas com o mesmo modelo que gera as respostas. O sistema passa a ser avaliado pelo seu próprio viés, e o número resultante mede consistência, não qualidade.
 
@@ -82,7 +82,7 @@ Eval responde "está bom?" sobre um conjunto fixo. Produção precisa de sinais 
 
 **Camada de recuperação**
 
-- **Taxa de resultado zero** — quantas consultas voltam sem nada acima do limiar. É o sinal mais barato e mais informativo do pipeline: se sobe, ou o corpus tem lacuna, ou o padrão de pergunta mudou, ou o índice quebrou. E se está em **zero**, o alerta é outro: provavelmente não existe limiar nem caminho de abstenção (cap. 10), e o sistema está devolvendo ruído com cara de resposta.
+- **Taxa de resultado zero** — quantas consultas voltam sem nada acima do limiar. É o sinal mais barato e mais informativo do pipeline: se sobe, ou o corpus tem lacuna, ou o padrão de pergunta mudou, ou o índice quebrou. E se está em **zero**, o alerta é outro: provavelmente não existe limiar nem caminho de abstenção (cap. 06), e o sistema está devolvendo ruído com cara de resposta.
 - **Distribuição das notas do reranker** — não a média, a distribuição. Uma cauda que engorda perto do limiar indica corpus mudando antes de qualquer métrica de qualidade acusar.
 - **Latência por percentil** (p50, p95, p99), separada da geração.
 
@@ -94,26 +94,26 @@ Eval responde "está bom?" sobre um conjunto fixo. Produção precisa de sinais 
 Dois cuidados que separam painel de enfeite:
 
 - **Limiar de alerta é local.** Números de referência publicados por fornecedores (p99 de recuperação abaixo de X ms, taxa de resultado zero abaixo de Y%) valem como ponto de partida, nunca como meta — dependem do corpus, do hardware e do que o produto tolera. Calibre com a sua própria linha de base.
-- **O p99 é onde o cap. 12 aparece.** Um laço agêntico não mexe muito na mediana e alarga a cauda. Quem monitora só p50 não vê a autonomia chegando na fatura.
+- **O p99 é onde o cap. 18 aparece.** Um laço agêntico não mexe muito na mediana e alarga a cauda. Quem monitora só p50 não vê a autonomia chegando na fatura.
 
 ### 5. O que a instrumentação atual não cobre
 
-- **Trajetória.** Em RAG agêntico (cap. 12), duas execuções com a mesma resposta podem ter custos muito diferentes. Nenhuma das quatro métricas vê isso.
-- **Conversa.** As métricas são por turno. A falha do cap. 14 — esquecer o combinado no turno 3 — é invisível para todas elas.
-- **Custo como métrica de primeira classe.** Qualidade sem custo ao lado leva a decisões que não sobrevivem à revisão de fatura (cap. 18).
+- **Trajetória.** Em RAG agêntico (cap. 18), duas execuções com a mesma resposta podem ter custos muito diferentes. Nenhuma das quatro métricas vê isso.
+- **Conversa.** As métricas são por turno. A falha do cap. 19 — perder a referência ao longo da conversa — é invisível para todas elas.
+- **Custo como métrica de primeira classe.** Qualidade sem custo ao lado leva a decisões que não sobrevivem à revisão de fatura (cap. 23).
 - **Deriva.** O corpus muda, o modelo muda, o padrão de pergunta muda. Sem execução periódica sobre um conjunto fixo, a degradação lenta é invisível até virar reclamação.
 
 ### Leitura executiva
 
-"O RAG não está bom" tem pelo menos quatro causas distintas, e a separação mínima é entre **achar** e **usar**. **O que roubar:** a **tabela de diagnóstico** — recall baixo = não acha (chunking/busca); recall alto + precision baixo = traz lixo junto (reranking, `top_k` menor); recall e precision altos + faithfulness baixa = **tem tudo e inventa** (prompt de fundamentação). Sem ela, "melhorar o RAG" é tentativa e erro caro. **A métrica mais mal compreendida:** *faithfulness* baixa numa resposta **factualmente correta** não é defeito da métrica — significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta. Esse é o caso que mais engana, porque parece bom. **Sobre conjuntos:** sintético a partir do corpus é barato e **superestima o recall** (a pergunta gerada de um trecho é respondível por aquele trecho); pergunta real com resposta verificada por gente é insubstituível. **Nunca** gere as perguntas e julgue as respostas com o mesmo modelo que responde — isso mede consistência, não qualidade. **Do eval ao painel:** eval mede um conjunto fixo; produção precisa de sinais contínuos — e o mais barato e informativo é a **taxa de resultado zero**. Se ela sobe, algo mudou no corpus ou nas perguntas; se está em **zero**, provavelmente não há limiar nem caminho de abstenção, e o sistema devolve ruído com cara de resposta. Monitore também **p99** (é onde o laço agêntico do cap. 12 aparece, não na mediana) e a **taxa de citação**, que é *faithfulness* na versão barata, sem juiz. **As lacunas abertas:** trajetória, conversa (não só turno), custo ao lado da qualidade, e deriva.
+"O RAG não está bom" tem pelo menos quatro causas distintas, e a separação mínima é entre **achar** e **usar**. **O que roubar:** a **tabela de diagnóstico** — recall baixo = não acha (chunking/busca); recall alto + precision baixo = traz lixo junto (reranking, `top_k` menor); recall e precision altos + faithfulness baixa = **tem tudo e inventa** (prompt de fundamentação). Sem ela, "melhorar o RAG" é tentativa e erro caro. **A métrica mais mal compreendida:** *faithfulness* baixa numa resposta **factualmente correta** não é defeito da métrica — significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta. Esse é o caso que mais engana, porque parece bom. **Sobre conjuntos:** sintético a partir do corpus é barato e **superestima o recall** (a pergunta gerada de um trecho é respondível por aquele trecho); pergunta real com resposta verificada por gente é insubstituível. **Nunca** gere as perguntas e julgue as respostas com o mesmo modelo que responde — isso mede consistência, não qualidade. **Do eval ao painel:** eval mede um conjunto fixo; produção precisa de sinais contínuos — e o mais barato e informativo é a **taxa de resultado zero**. Se ela sobe, algo mudou no corpus ou nas perguntas; se está em **zero**, provavelmente não há limiar nem caminho de abstenção, e o sistema devolve ruído com cara de resposta. Monitore também **p99** (é onde o laço agêntico do cap. 18 aparece, não na mediana) e a **taxa de citação**, que é *faithfulness* na versão barata, sem juiz. **As lacunas abertas:** trajetória, conversa (não só turno), custo ao lado da qualidade, e deriva.
 
-## Mão na massa — contexto-zero, etapa 15
+## Mão na massa — rag-zero, etapa 14
 
-Na etapa 15 você monta o eval do `contexto-zero`: 30 perguntas sobre o texto deste livro (metade sintéticas, metade escritas por você), as quatro métricas implementadas com juiz de família diferente, e a tabela de diagnóstico impressa ao final. A etapa termina com um exercício desconfortável e deliberado: rodar o eval sobre a etapa 9 (só BM25) e sobre a etapa 10 (pipeline completo) e verificar se o ganho que você **esperava** aparece. O exercício de completude: o cálculo de *faithfulness* vem esqueletado — você implementa a decomposição em afirmações e descobre onde a métrica é frágil.
+Na etapa 14 você monta o eval do `rag-zero`: 30 perguntas sobre o texto deste livro (metade sintéticas, metade escritas por você), as quatro métricas implementadas com juiz de família diferente, e a tabela de diagnóstico impressa ao final. A etapa termina com um exercício desconfortável e deliberado: rodar o eval sobre a etapa 9 (só BM25) e sobre a etapa 10 (pipeline completo) e verificar se o ganho que você **esperava** aparece. O exercício de completude: o cálculo de *faithfulness* vem esqueletado — você implementa a decomposição em afirmações e descobre onde a métrica é frágil.
 
 ## Verificação
 
-1. *Context recall* 0,9, *context precision* 0,4, *faithfulness* 0,85. Qual é o problema, e qual o custo escondido dele? (Dica: cap. 08.)
+1. *Context recall* 0,9, *context precision* 0,4, *faithfulness* 0,85. Qual é o problema, e qual o custo escondido dele? (Dica: cap. 20.)
 2. Por que uma resposta correta pode — e deve — receber *faithfulness* baixa? O que isso avisa sobre o sistema?
 3. Você gerou 200 perguntas sinteticamente e o recall ficou em 0,95. Cite duas razões para não comemorar.
 
@@ -123,6 +123,6 @@ Na etapa 15 você monta o eval do `contexto-zero`: 30 perguntas sobre o texto de
 
 > Tratamento por ferramenta e benchmark, com o que mede e o que não mede — complementação online, expandida a cada rodada.
 
-**Rodada 1 (edição 0.1)**: as quatro métricas e a tabela de diagnóstico estão descritas. O tratamento por ferramenta — a definição operacional exata de cada métrica em cada implementação (elas divergem), o custo de rodar, e a integração em CI — é o trabalho da **rodada 2** do ROADMAP, e converge com o Apêndice A do cap. 07.
+**Rodada 1 (edição 0.1)**: as quatro métricas e a tabela de diagnóstico estão descritas. O tratamento por ferramenta — a definição operacional exata de cada métrica em cada implementação (elas divergem), o custo de rodar, e a integração em CI — é o trabalho da **rodada 2** do ROADMAP, e converge com o Apêndice A do cap. 17.
 
 Enfileirado: RAGAS (definição de cada métrica) · DeepEval e execução em CI · TruLens e observabilidade · BEIR e MTEB (o que medem do estágio de recuperação) · U-NIAH (avaliação unificada dos dois regimes) · benchmarks de domínio e o que a proliferação deles revela.

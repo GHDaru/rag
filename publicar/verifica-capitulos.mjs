@@ -20,8 +20,8 @@ const slugDe = (arquivo) => basename(arquivo).replace(/\.md$/, "").toLowerCase()
 const RE_CAPTURA = EN ? /State of the art captured in/ : /Estado da arte capturado em/;
 const RE_LEITURA = EN ? /^###\s+Executive summary/m : /^###\s+Leitura executiva/m;
 const MIN_LEITURA = EN ? "min read" : "min de leitura";
-const MD_LIVRO = EN ? "harness-engineering.md" : "engenharia-de-prompt-e-contexto.md";
-const PDF_LIVRO = EN ? "harness-engineering.pdf" : "engenharia-de-prompt-e-contexto.pdf";
+const MD_LIVRO = EN ? "harness-engineering.md" : "engenharia-de-rag.md";
+const PDF_LIVRO = EN ? "harness-engineering.pdf" : "engenharia-de-rag.pdf";
 
 const falhas = [];
 let capitulos = 0, aparato = 0;

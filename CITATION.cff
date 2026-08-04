@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "Se você usar esta obra, por favor cite-a como abaixo."
-title: "Engenharia de Prompt e Engenharia de Contexto — Um livro vivo sobre as duas disciplinas que decidem o que o modelo vê"
+title: "Engenharia de RAG — Como se constrói um sistema em volta da recuperação da informação"
 abstract: >-
   Livro vivo, em português, sobre as duas disciplinas que decidem o que um
   modelo de linguagem vê: a engenharia de prompt (o que se escreve — anatomia,

@@ -1,6 +1,6 @@
 {
-  "titulo": "Engenharia de Prompt e Engenharia de Contexto",
-  "subtitulo": "Um livro vivo sobre as duas disciplinas que decidem o que o modelo vê",
+  "titulo": "Engenharia de RAG",
+  "subtitulo": "Como se constrói um sistema em volta da recuperação da informação",
   "companion_backend": "",
   "partes": [
     {
@@ -9,112 +9,147 @@
         {
           "arquivo": "livro/00-introducao.md",
           "titulo": "00 — Introdução",
-          "teaser": "Duas disciplinas, um problema: o que entra na janela."
+          "teaser": "Por que RAG, o que ele não resolve, e o que é engenharia aqui."
         },
         {
           "arquivo": "livro/01-fundamentos.md",
           "titulo": "01 — Fundamentos",
-          "teaser": "Vocabulário, a janela como orçamento, o mapa do território."
+          "teaser": "Vocabulário, a herança de Information Retrieval, a taxonomia por sintoma."
         }
       ]
     },
     {
-      "nome": "Parte I — Engenharia de Prompt",
+      "nome": "Parte I — A arquitetura",
       "itens": [
         {
-          "arquivo": "livro/capitulos/02-anatomia-do-prompt.md",
-          "titulo": "02 — Anatomia de um Prompt",
-          "teaser": "Instrução, dado e exemplo: separar o que o modelo obedece do que ele lê."
+          "arquivo": "livro/capitulos/02-anatomia-do-sistema.md",
+          "titulo": "02 — Anatomia de um Sistema de RAG",
+          "teaser": "Os dois caminhos, dezesseis componentes e os contratos entre eles."
         },
         {
-          "arquivo": "livro/capitulos/03-tecnicas-de-raciocinio.md",
-          "titulo": "03 — Técnicas de Raciocínio",
+          "arquivo": "livro/capitulos/03-arquiteturas-de-referencia.md",
+          "titulo": "03 — Arquiteturas de Referência",
+          "teaser": "Naive, Advanced, Modular e Agêntico — e os padrões de fluxo."
+        }
+      ]
+    },
+    {
+      "nome": "Parte II — O corpus",
+      "itens": [
+        {
+          "arquivo": "livro/capitulos/04-corpus.md",
+          "titulo": "04 — Ingestão e Governança do Corpus",
+          "teaser": "O teto de tudo que vem depois: o que entra no índice."
+        },
+        {
+          "arquivo": "livro/capitulos/05-chunking-e-representacao.md",
+          "titulo": "05 — Chunking e Representação",
+          "teaser": "O corte e o vetor: as duas decisões mais caras de reverter."
+        }
+      ]
+    },
+    {
+      "nome": "Parte III — Recuperação",
+      "itens": [
+        {
+          "arquivo": "livro/capitulos/06-busca.md",
+          "titulo": "06 — Busca: Esparsa, Densa e Híbrida",
+          "teaser": "Dois modos de errar, espelhados — e por que a fusão vence."
+        },
+        {
+          "arquivo": "livro/capitulos/07-reranking.md",
+          "titulo": "07 — Reranking",
+          "teaser": "Recuperar barato, reordenar caro. E usar a nota, não só a ordem."
+        },
+        {
+          "arquivo": "livro/capitulos/08-entendimento-da-consulta.md",
+          "titulo": "08 — Entendimento da Consulta",
+          "teaser": "Quando o problema está na pergunta, não no índice."
+        },
+        {
+          "arquivo": "livro/capitulos/09-recuperacao-avancada.md",
+          "titulo": "09 — Recuperação Avançada",
+          "teaser": "Contextual retrieval e late chunking: a mesma cura, contas diferentes."
+        },
+        {
+          "arquivo": "livro/capitulos/10-recuperacao-estruturada.md",
+          "titulo": "10 — Recuperação Estruturada",
+          "teaser": "Multi-hop e pergunta global: RAPTOR, grafo e dado estruturado."
+        }
+      ]
+    },
+    {
+      "nome": "Parte IV — Geração",
+      "itens": [
+        {
+          "arquivo": "livro/capitulos/11-anatomia-do-prompt.md",
+          "titulo": "11 — Anatomia de um Prompt",
+          "teaser": "Instrução, dado e exemplo: separar o que se obedece do que se lê."
+        },
+        {
+          "arquivo": "livro/capitulos/12-tecnicas-de-raciocinio.md",
+          "titulo": "12 — Técnicas de Raciocínio",
           "teaser": "As seis famílias de prompting, e quando cada uma paga."
         },
         {
-          "arquivo": "livro/capitulos/04-saidas-estruturadas.md",
-          "titulo": "04 — Saídas Estruturadas",
+          "arquivo": "livro/capitulos/13-saidas-estruturadas.md",
+          "titulo": "13 — Saídas Estruturadas",
           "teaser": "Do texto solto ao contrato: schema, validação e retry."
         },
         {
-          "arquivo": "livro/capitulos/05-persona-e-regras.md",
-          "titulo": "05 — Prompt de Sistema, Persona e Regras",
-          "teaser": "Camadas por volatilidade e a diferença entre voz e política."
+          "arquivo": "livro/capitulos/14-persona-e-regras.md",
+          "titulo": "14 — Prompt de Sistema, Persona e Regras",
+          "teaser": "Camadas por volatilidade; voz não é política."
         },
         {
-          "arquivo": "livro/capitulos/06-otimizacao-de-prompts.md",
-          "titulo": "06 — Otimização Automática de Prompts",
+          "arquivo": "livro/capitulos/15-geracao-fundamentada.md",
+          "titulo": "15 — Geração Fundamentada",
+          "teaser": "O \"G\" do RAG: grounding, citação verificável e abstenção."
+        },
+        {
+          "arquivo": "livro/capitulos/16-otimizacao-de-prompts.md",
+          "titulo": "16 — Otimização Automática de Prompts",
           "teaser": "Do artesanato ao compilador: prompt como artefato otimizado."
         },
         {
-          "arquivo": "livro/capitulos/07-avaliacao-de-prompts.md",
-          "titulo": "07 — Avaliação de Prompts",
+          "arquivo": "livro/capitulos/17-avaliacao-de-prompts.md",
+          "titulo": "17 — Avaliação de Prompts",
           "teaser": "Sem eval, mudar prompt é apostar."
         }
       ]
     },
     {
-      "nome": "Parte II — Engenharia de Contexto",
+      "nome": "Parte V — O sistema em produção",
       "itens": [
         {
-          "arquivo": "livro/capitulos/08-janela-como-orcamento.md",
-          "titulo": "08 — A Janela como Orçamento",
-          "teaser": "Context rot, contexto longo × recuperação, e o que medir."
+          "arquivo": "livro/capitulos/18-rag-agentico.md",
+          "titulo": "18 — RAG Agêntico",
+          "teaser": "Quando o modelo decide se, quando e como buscar."
         },
         {
-          "arquivo": "livro/capitulos/09-corpus.md",
-          "titulo": "09 — Ingestão e Governança do Corpus",
-          "teaser": "O teto de tudo que vem depois: o que entra no índice."
+          "arquivo": "livro/capitulos/19-rag-conversacional.md",
+          "titulo": "19 — RAG Conversacional",
+          "teaser": "Referência, repetição e o que persiste entre sessões."
         },
         {
-          "arquivo": "livro/capitulos/10-recuperacao.md",
-          "titulo": "10 — Recuperação: o Núcleo do RAG",
-          "teaser": "Chunking, embeddings, busca híbrida e reranking."
+          "arquivo": "livro/capitulos/20-janela-como-orcamento.md",
+          "titulo": "20 — A Janela como Orçamento",
+          "teaser": "Quanto do contexto vale gastar com o recuperado."
         },
         {
-          "arquivo": "livro/capitulos/11-rag-avancado.md",
-          "titulo": "11 — RAG Avançado",
-          "teaser": "Contextual retrieval, late chunking, multi-hop e GraphRAG."
+          "arquivo": "livro/capitulos/21-avaliacao-e-observabilidade.md",
+          "titulo": "21 — Avaliação e Observabilidade",
+          "teaser": "As quatro métricas, a tabela de diagnóstico e os sinais de produção."
         },
         {
-          "arquivo": "livro/capitulos/12-rag-agentico.md",
-          "titulo": "12 — RAG Agêntico",
-          "teaser": "Quando o agente decide se, quando e como recuperar."
+          "arquivo": "livro/capitulos/22-seguranca-do-corpus.md",
+          "titulo": "22 — Segurança do Corpus e da Recuperação",
+          "teaser": "Quem escreve no índice escreve no contexto do modelo."
         },
         {
-          "arquivo": "livro/capitulos/13-memoria.md",
-          "titulo": "13 — Memória e Estado",
-          "teaser": "O que sobrevive ao turno, à sessão e ao mês."
-        },
-        {
-          "arquivo": "livro/capitulos/14-compactacao.md",
-          "titulo": "14 — Compactação e Isolamento",
-          "teaser": "Caber na janela sem perder o fio."
-        },
-        {
-          "arquivo": "livro/capitulos/15-ferramentas-e-mcp.md",
-          "titulo": "15 — Ferramentas e Contexto Externo",
-          "teaser": "Resultado de ferramenta também é contexto — e é o mais caro."
-        }
-      ]
-    },
-    {
-      "nome": "Parte III — O sistema em produção",
-      "itens": [
-        {
-          "arquivo": "livro/capitulos/16-avaliacao-de-sistemas.md",
-          "titulo": "16 — Avaliação de Sistemas de Contexto",
-          "teaser": "Medir recuperação e geração separadamente, e em CI."
-        },
-        {
-          "arquivo": "livro/capitulos/17-seguranca-do-contexto.md",
-          "titulo": "17 — Segurança do Contexto",
-          "teaser": "Prompt injection: todo dado recuperado é hostil até prova em contrário."
-        },
-        {
-          "arquivo": "livro/capitulos/18-custo-latencia-cache.md",
-          "titulo": "18 — Custo, Latência e Cache",
-          "teaser": "A conta do contexto, e como o cache de prefixo a reduz."
+          "arquivo": "livro/capitulos/23-custo-latencia-cache.md",
+          "titulo": "23 — Custo, Latência e Cache",
+          "teaser": "A conta do RAG, e onde ela vaza."
         }
       ]
     },
@@ -122,9 +157,9 @@
       "nome": "Fechamento",
       "itens": [
         {
-          "arquivo": "livro/19-convergencias.md",
-          "titulo": "19 — Convergências e Tendências",
-          "teaser": "O que já é consenso, o que ainda é disputa, o que vai expirar."
+          "arquivo": "livro/24-convergencias.md",
+          "titulo": "24 — Convergências e Tendências",
+          "teaser": "O que já é consenso, o que é disputa, o que vai expirar."
         }
       ]
     },
@@ -139,7 +174,7 @@
         {
           "arquivo": "livro/apendice-ecossistema.md",
           "titulo": "Apêndice — O ecossistema",
-          "teaser": "Frameworks, bibliotecas e coleções, organizados por problema."
+          "teaser": "Frameworks e coleções, organizados por problema."
         },
         {
           "arquivo": "livro/glossario.md",
@@ -149,7 +184,7 @@
         {
           "arquivo": "livro/apendice-grafo.md",
           "titulo": "Apêndice — Grafo do livro",
-          "teaser": "O mapa de conexões do livro, interativo e sempre em sincronia."
+          "teaser": "O mapa de conexões, interativo e sempre em sincronia."
         },
         {
           "arquivo": "livro/bibliografia.md",

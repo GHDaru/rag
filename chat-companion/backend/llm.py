@@ -1,4 +1,4 @@
-"""LLMPort — a primeira porta do contexto-zero (etapa 0), aqui em produção.
+"""LLMPort — a primeira porta do rag-zero (etapa 0), aqui em produção.
 
 Reuso direto do padrão do etapa 01: um Protocol e dois adapters. A novidade
 de produção é o **BYOK** (bring your own key): o leitor pode passar a própria

@@ -1,37 +1,34 @@
 # 01 — Fundamentos
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 · [histórico e registro de expiração](HISTORICO.md)
 >
-> **Maturidade: fundação.** O vocabulário e a taxonomia estão fechados. As referências marcadas `[a validar]` viram citação com status ✓ na rodada 2 do ROADMAP.
+> **Maturidade: fundação.** O vocabulário e a taxonomia por sintoma estão fechados. As referências `[a validar]` viram citação com status ✓ na rodada 2.
 
 ## Objetivos de aprendizagem
 
 Ao final deste capítulo, você deve ser capaz de:
 
-1. **Definir** os termos que o livro inteiro usa: janela, token, contexto, prompt, chunk, embedding, recuperação, memória;
-2. **Descrever** o caminho de uma requisição — o que o sistema monta antes de a inferência começar;
-3. **Classificar** um problema real na taxonomia por sintoma (é prompt? é recuperação? é orçamento? é memória?);
-4. **Aplicar** a cláusula de expiração: identificar, num texto técnico desta área, o que provavelmente não vale mais em 18 meses.
+1. **Definir** os termos que o livro inteiro usa, e desfazer as três confusões mais caras;
+2. **Situar** o RAG na linhagem de *Information Retrieval* — e dizer o que ele herdou e o que inventou;
+3. **Classificar** um problema real na taxonomia por sintoma, para entrar no livro pelo lugar certo;
+4. **Aplicar** a cláusula de expiração a qualquer texto técnico da área, inclusive a este.
 
 ## O problema
 
-Todo campo novo sofre de vocabulário instável, e este sofre mais do que a média: "contexto" nomeia ao mesmo tempo a janela física do modelo, o conteúdo que se coloca nela, o arquivo de regras do projeto e a disciplina inteira. Sem desambiguar, duas pessoas discutem arquitetura falando de coisas diferentes com a mesma palavra.
+Campo novo, vocabulário instável. "Recuperação" às vezes significa o estágio de busca, às vezes o pipeline inteiro; "RAG" às vezes é a técnica, às vezes o produto; "contexto" nomeia coisas de três níveis diferentes.
 
-Este capítulo fixa os termos e desenha o mapa. É o capítulo de referência ao qual os outros voltam.
+Sem desambiguar, duas pessoas discutem arquitetura falando de coisas distintas com a mesma palavra — e a discussão que parecia técnica era de vocabulário.
+
+Este capítulo fixa os termos, dá a linhagem, e entrega o mapa de entrada por sintoma. É o capítulo ao qual os outros voltam.
 
 ## Fundamentos científicos
 
-- **A disciplina tem taxonomia formal.** O survey *A Survey of Context Engineering for LLMs* ([arXiv 2507.13334](https://arxiv.org/abs/2507.13334)) organiza a área a partir de 1400+ trabalhos em três **componentes** — recuperação e geração de contexto, processamento de contexto, gestão de contexto — e quatro **implementações** que os combinam: RAG, sistemas de memória, raciocínio integrado a ferramentas e sistemas multiagente. Esta é a espinha da Parte II do livro. `[a validar]`
-- **O prompting também tem taxonomia formal.** *The Prompt Report* ([arXiv 2406.06608](https://arxiv.org/abs/2406.06608)) cataloga 58 técnicas de prompting textual e 33 termos de vocabulário, em seis famílias: *zero-shot*, *few-shot*, *thought generation*, *ensembling*, *self-criticism* e *decomposition*. É a espinha da Parte I. `[a validar]`
-- **A degradação não é linear.** *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) mostra que informação posicionada no meio de um contexto longo é sistematicamente pior aproveitada do que a que está nas bordas. Não é um detalhe de tuning: é uma restrição arquitetural que decide onde cada coisa vai. `[a validar]`
+- **A herança** — *Information Retrieval* é um campo com décadas de acumulação: SIGIR, TREC, e um corpo de métricas, benchmarks e métodos que o RAG herdou quase inteiro. **Neural IR** é a virada que trouxe representações densas para dentro dele. Ignorar essa linhagem é reinventar mal o que já estava resolvido. `[a validar]`
+- **A absorção** — a comunidade de IR não tratou o RAG como estranho: criou **track dedicado no TREC**, com avaliação de atribuição de fonte e completude, não só de correção. É o sinal mais forte de que RAG é subcampo de IR, e não disciplina paralela. `[a validar]`
+- **A sistematização** — a survey de Gao et al. ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) organiza a área em três fundamentos (**recuperação · aumento · geração**) e três paradigmas (Naive, Advanced, Modular). É a referência mais citada e a espinha dos caps. 02 e 03. `[a validar]`
+- **A degradação que justifica recuperar** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) mostra que informação no meio de contexto longo é mal aproveitada. Não é detalhe de tuning: é a razão empírica de "mandar tudo" ser anti-padrão (cap. 20). `[a validar]`
 
-(Bibliografia completa e status de validação: [`bibliografia.md`](bibliografia.md).)
-
-## Fontes da indústria
-
-- **[Prompt Engineering Guide](https://github.com/dair-ai/prompt-engineering-guide)** (DAIR.AI) — o guia de referência da área. O dado editorial mais interessante não é o conteúdo, é o índice: o mesmo repositório cobre *prompt engineering*, *context engineering*, *RAG* e *agentes*. A comunidade já trata o par como uma coisa só.
-- **[Awesome-Context-Engineering](https://github.com/Meirtz/Awesome-Context-Engineering)** — a coleção viva associada ao survey 2507.13334; ponto de partida do garimpo de cada capítulo da Parte II.
-- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — fixa o vocabulário de risco que o cap. 17 usa; *prompt injection* é LLM01 em todas as edições publicadas.
+(Bibliografia completa: [`bibliografia.md`](bibliografia.md).)
 
 ## O estado da arte
 
@@ -39,86 +36,79 @@ Este capítulo fixa os termos e desenha o mapa. É o capítulo de referência ao
 
 | Termo | O que é neste livro | O que **não** é |
 |---|---|---|
-| **token** | a unidade que o modelo processa e que a fatura cobra | não é palavra |
-| **janela de contexto** | o limite físico de tokens de uma chamada | não é "memória do modelo" |
-| **contexto** | o conteúdo efetivamente montado para uma chamada | não é a janela (o limite) nem o arquivo de regras (uma das fontes) |
-| **prompt** | a parte do contexto que é instrução autoral e estável | não é o contexto todo |
-| **chunk** | o pedaço de documento que é indexado e recuperado como unidade | não é parágrafo, necessariamente |
-| **embedding** | representação vetorial usada para medir similaridade semântica | não é compreensão |
-| **recuperação (*retrieval*)** | selecionar trechos de um corpus por relevância a uma consulta | não é RAG (RAG = recuperação **+** geração fundamentada) |
-| **memória** | estado que sobrevive além do turno atual, deliberadamente mantido | não é o histórico bruto da conversa |
-| **orçamento de contexto** | a alocação explícita de tokens entre os concorrentes | não é "o que couber" |
+| **recuperação** (*retrieval*) | selecionar trechos de um corpus por relevância a uma consulta | não é RAG |
+| **RAG** | recuperação **+** geração fundamentada no recuperado | não é "busca com LLM em cima" |
+| **corpus** | o conjunto de documentos que o sistema pode consultar | não é o índice |
+| **índice** | a estrutura que torna o corpus buscável | não é o corpus |
+| **chunk** | a unidade indexada e recuperada | não é parágrafo, necessariamente |
+| **embedding** | representação vetorial para medir similaridade | não é compreensão |
+| **candidatos** | o que a busca devolve, antes de reordenar | não é o contexto |
+| **contexto** | o que efetivamente vai para o modelo, montado | não é tudo que foi recuperado |
+| **fundamentação** (*grounding*) | a resposta ser sustentada pelo que foi recuperado | não é a resposta estar correta |
 
-A distinção que mais rende no dia a dia é a última linha da tabela do meio: **recuperação não é RAG**. Buscar é metade. RAG é buscar *e* gerar uma resposta fundamentada no que se buscou — e o segundo termo é onde mora a maior parte das falhas de produção (cap. 16).
+### 2. As três confusões que mais custam
 
-### 2. O caminho de uma requisição
+**Recuperação ≠ RAG.** Buscar é metade. RAG é buscar *e* gerar uma resposta sustentada no que se buscou — e a maior parte das falhas de produção mora na segunda metade (caps. 15 e 21). Times que medem só recuperação declaram vitória cedo demais.
 
-Toda arquitetura desta área, por mais elaborada, é uma variação deste caminho:
+**Candidatos ≠ contexto.** Entre "a busca devolveu 50" e "o modelo recebeu 5" há decisões — quantos, em que ordem, comprimidos ou não. É a camada de **aumento** do cap. 02, e ela costuma não ter dono.
 
-```
-pedido do usuário
-   │
-   ├─ [prompt]     instrução + exemplos + formato pedido      ← Parte I
-   ├─ [regras]     política do sistema, persona, restrições   ← cap. 05
-   ├─ [memória]    o que ficou de sessões anteriores          ← cap. 13
-   ├─ [recuperado] trechos buscados no corpus                 ← caps. 10-12
-   ├─ [ferramenta] resultados de chamadas externas            ← cap. 15
-   └─ [histórico]  os turnos desta conversa (talvez compactado) ← cap. 14
-   │
-   ▼
-   MONTAGEM  ── decide ordem, corte e orçamento ──────────────  cap. 08
-   ▼
-   inferência ──► resposta ──► avaliação (cap. 16) e custo (cap. 18)
-```
+**Fundamentada ≠ correta.** Uma resposta pode estar certa e não ser fundamentada (o modelo respondeu de memória), ou errada e perfeitamente fundamentada (o corpus estava errado). São dois eixos independentes, e confundi-los faz o time consertar no lugar errado (caps. 15, 21).
 
-Duas leituras deste desenho valem o capítulo inteiro:
+### 3. De onde o RAG vem
 
-- **A montagem é o produto.** Os componentes são commodities — todo mundo tem um vector store, todo mundo tem um modelo. A diferença de qualidade entre dois sistemas está quase sempre na linha "MONTAGEM": o que entra, em que ordem, e o que é sacrificado quando falta espaço.
-- **Os concorrentes disputam o mesmo orçamento.** Memória, recuperação, histórico e resultado de ferramenta competem por tokens. Aumentar o `top_k` da recuperação não é uma decisão isolada: é tirar espaço de outro. Quase nenhum sistema em produção declara essa alocação explicitamente — e é por isso que quase todos degradam quando a conversa fica longa.
+Vale situar, porque muda a postura de quem constrói:
 
-### 3. A taxonomia por sintoma
+- **O que o RAG herdou de IR:** a arquitetura em estágios (recuperar barato → reordenar caro), as métricas (precisão, recall, ordenação), a cultura de benchmark (TREC, BEIR), e a noção de que relevância é medida, não opinada.
+- **O que o RAG acrescentou:** um consumidor que **lê** os resultados em vez de mostrá-los a uma pessoa. Isso muda o que é "bom": não basta o certo estar entre os dez primeiros — ele precisa caber no orçamento, estar em ordem aproveitável, e vir com procedência para ser citado.
+- **O que ainda é problema aberto:** avaliar a geração fundamentada com o mesmo rigor com que IR avalia recuperação. É onde a área está mais imatura (cap. 21).
 
-O jeito útil de entrar no livro não é por tema, é por sintoma. Leve o seu problema real a esta tabela:
+A moral prática: **quando um problema deste livro parecer novo, verifique se IR não o resolveu em 1998.** Frequentemente resolveu.
 
-| Sintoma observado | Provável natureza | Onde ler |
+### 4. A taxonomia por sintoma
+
+A forma útil de entrar no livro não é pelo sumário — é pelo sintoma:
+
+| Sintoma observado | Natureza | Onde ler |
 |---|---|---|
-| A resposta varia muito entre execuções idênticas | prompt (falta de âncora ou de formato) | caps. 02, 04 |
-| O modelo erra em tarefas que exigem passos | prompt (falta de estratégia de raciocínio) | cap. 03 |
-| "Melhorei o prompt" e não sei se melhorou | falta de eval | cap. 07 |
-| O modelo não sabe informação da minha organização | contexto (falta recuperação) | cap. 10 |
-| Ele recupera coisa errada / não encontra o óbvio | recuperação (chunking, busca, ranking) | caps. 10, 11 |
-| Ele recupera certo mas responde errado | geração não fundamentada | cap. 16 |
-| Piora quando a conversa fica longa | orçamento e *context rot* | caps. 08, 13 |
-| Esquece o que o usuário disse semana passada | memória | cap. 13 |
-| Um documento fez o agente agir contra o usuário | segurança (*prompt injection*) | cap. 17 |
-| Funciona, mas custa/demora demais | custo, latência, cache | cap. 18 |
+| Cita documento revogado ou desatualizado | corpus | 04 |
+| Não encontra identificador, código, sigla | busca (falta esparsa) | 06 |
+| Não encontra paráfrase | busca (falta densa) ou representação | 05, 06 |
+| Traz o trecho certo sem contexto suficiente | chunking / indexação | 05, 09 |
+| Traz relevante e irrelevante junto | reranking, `top_k` | 07 |
+| Degrada da terceira pergunta em diante | referência entre turnos | 08, 19 |
+| Precisa juntar informação de vários documentos | multi-hop | 10, 18 |
+| "Quais os temas de tudo isso?" | pergunta global | 10 |
+| Recupera certo e responde errado | geração | 15 |
+| Responde certo mas não sei se usou a fonte | fundamentação | 15, 21 |
+| Inventa quando não sabe | abstenção | 06, 15 |
+| Piorou e ninguém sabe quando | observabilidade | 21 |
+| Um documento fez o sistema agir errado | segurança | 22 |
+| Funciona e custa demais | custo | 23 |
 
-### 4. A cláusula de expiração
+### 5. A cláusula de expiração
 
-A tese que o livro assume desde o primeiro capítulo: **boa parte do que se descreve aqui é temporária, e a honestidade é dizer qual parte.**
+A tese que o livro assume: **boa parte do que se descreve aqui é temporária, e a honestidade é dizer qual parte.**
 
-Três forças fazem o conteúdo expirar nesta área, em velocidades diferentes:
+O critério, que você pode aplicar contra este livro:
 
-1. **Capacidade do modelo.** Toda técnica que existe para compensar uma limitação some quando a limitação some. Muita engenharia de prompt de 2023 morreu porque os modelos passaram a fazer aquilo sozinhos.
-2. **Preço e janela.** Decisões de orçamento assumem uma relação custo/token e um tamanho de janela. Ambos mudaram de ordem de grandeza mais de uma vez.
-3. **Padronização.** O que hoje é técnica manual vira funcionalidade de plataforma (saída estruturada é o caso exemplar) — e o capítulo que ensinava a fazer na mão vira história.
+- **A técnica compensa uma limitação do modelo?** Expira quando a limitação expirar. Muita coisa de 2023 morreu assim.
+- **A técnica assume um preço ou um tamanho de janela?** Expira quando a economia mudar — e ela mudou de ordem de grandeza mais de uma vez.
+- **A técnica resolve um problema de informação?** (o que não está nos pesos, o que não cabe, o que não pode ser confiado) Provavelmente **não** expira: muda de forma, não de existência.
 
-O que **não** expira, e é onde o livro aposta seu peso: o raciocínio de **orçamento** (o que vale a pena ocupar a janela), a **separação instrução × dado** (que é segurança, não estilo) e a **disciplina de medir** — porque essas são propriedades do problema, não do modelo da vez.
+O que este livro aposta que sobrevive: a **arquitetura em estágios**, a exigência de **procedência**, a distinção **fundamentada × correta**, e a disciplina de **medir**. São propriedades do problema, não do modelo da vez.
 
-O registro dessas apostas, com data e veredito posterior, fica no [registro de expiração](HISTORICO.md).
+O placar das apostas, com data e critério, está no [registro de expiração](HISTORICO.md).
 
 ### Leitura executiva
 
-**Contexto** é o que se monta; **janela** é o limite; **prompt** é a parte autoral e estável; **recuperação não é RAG** (RAG é recuperação + geração fundamentada). Toda arquitetura da área é uma variação do mesmo caminho, e o produto está na linha da **montagem** — porque os concorrentes (prompt, memória, recuperado, ferramenta, histórico) disputam **um orçamento único** que quase ninguém declara. **O que roubar:** entre no livro pela tabela de sintomas, não pelo sumário; e escreva a alocação de tokens do seu sistema em uma linha antes de mexer em qualquer `top_k`. **O que vai expirar:** as técnicas que compensam limitação de modelo. **O que não vai:** orçamento, separação instrução×dado, e medir.
+**Três confusões custam caro:** recuperação **≠** RAG (buscar é metade, e a maioria das falhas de produção está na outra); candidatos **≠** contexto (entre os 50 devolvidos e os 5 enviados há decisões sem dono); e **fundamentada ≠ correta** — são eixos independentes, e confundi-los faz consertar no lugar errado. **A herança que muda a postura:** RAG é subcampo de *Information Retrieval*, com track próprio no TREC; herdou a arquitetura em estágios, as métricas e a cultura de benchmark, e acrescentou um consumidor que **lê** os resultados em vez de mostrá-los — o que muda o que significa "bom": não basta estar entre os dez primeiros, precisa caber no orçamento e vir com procedência. **Quando um problema parecer novo aqui, verifique se IR não o resolveu em 1998.** **O que roubar:** entre no livro pela **tabela de sintomas**, com o seu problema real na mão. **O que vai expirar:** o que compensa limitação de modelo ou assume um preço. **O que não:** arquitetura em estágios, procedência, a distinção fundamentada×correta, e medir.
 
-## Mão na massa — contexto-zero, etapa 0
+## Mão na massa — rag-zero, etapa 0
 
-Na etapa 0 você levanta o esqueleto do `contexto-zero`: um chat mínimo (HTML+JS) sobre FastAPI, com o modelo atrás de uma `LLMPort` — a porta que impede o livro inteiro de apodrecer junto com um fornecedor. Nenhuma técnica ainda: só o chão sobre o qual as quinze etapas seguintes se apoiam, e um script que imprime a **contagem de tokens de cada bloco** do contexto montado. Esse contador é o instrumento do livro: você vai olhar para ele em todos os capítulos.
-
-> A trilha prática entra na **rodada 3** do ROADMAP. Nesta edição, as seções "Mão na massa" descrevem a etapa e seu objetivo pedagógico.
+Na etapa 0 você levanta o chão do `rag-zero`: um chat mínimo sobre FastAPI, com o modelo atrás de uma `LLMPort`, e um instrumento que vai acompanhar o livro inteiro — o **contador que imprime, por requisição, quantos tokens vieram de cada bloco do contexto**. Nenhuma técnica de RAG ainda. Só o chão e o instrumento.
 
 ## Verificação
 
-1. Um colega diz "aumentei a janela para 200k, agora não preciso mais de RAG". Cite duas razões — uma de qualidade, uma de custo — para duvidar.
-2. Classifique na taxonomia por sintoma: *"o assistente responde bem nas primeiras 5 perguntas e depois começa a ignorar as regras do sistema"*. Qual é a natureza do problema e por quê?
-3. Aponte, no seu próprio sistema, quem são os concorrentes pelo orçamento de contexto. Qual deles você nunca mediu?
+1. Um colega diz "nosso recall está em 0,92, o RAG está pronto". O que falta medir, e por quê?
+2. Classifique na taxonomia: *"o assistente responde bem a perguntas isoladas, mas erra quando o usuário faz três seguidas sobre o mesmo assunto"*.
+3. Escolha uma técnica que você usa hoje e aplique o critério de expiração. Ela sobrevive a modelos duas vezes melhores?

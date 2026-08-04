@@ -1,9 +1,9 @@
 ---
 name: academic-research
-description: Pesquisa acadêmica para o livro de Engenharia de Prompt e Engenharia de Contexto — localizar, validar e citar papers científicos (arXiv, surveys, benchmarks) seguindo as regras editoriais do projeto. Use quando o usuário pedir para "buscar papers", "validar referências", "atualizar a bibliografia", "fundamentar um capítulo cientificamente", "pesquisa acadêmica", "literature review", ou quando um capítulo novo/retrofitado precisar da seção "Fundamentos científicos".
+description: Pesquisa acadêmica para o livro de Engenharia de RAG — localizar, validar e citar papers científicos (arXiv, surveys, benchmarks) seguindo as regras editoriais do projeto. Use quando o usuário pedir para "buscar papers", "validar referências", "atualizar a bibliografia", "fundamentar um capítulo cientificamente", "pesquisa acadêmica", "literature review", ou quando um capítulo novo/retrofitado precisar da seção "Fundamentos científicos".
 ---
 
-# Pesquisa acadêmica do livro de Engenharia de Prompt e Engenharia de Contexto
+# Pesquisa acadêmica do livro de Engenharia de RAG
 
 ## Contexto do projeto
 

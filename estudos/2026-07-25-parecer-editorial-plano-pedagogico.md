@@ -14,7 +14,7 @@
 
 1. **O livro precisa disso.** Hoje ele é analítico — lê código dos outros. Toda a literatura de aprendizagem complexa (4C/ID, construcionismo) diz o mesmo: competência profissional se forma em *tarefas inteiras*, não em análise de partes. Um projeto-fio-condutor transforma o leitor de espectador em construtor, e dá ao livro o terceiro pilar que falta: **teoria (fundamentos) + evidência (benchmark) + prática (construção)**.
 2. **Hexagonal não é escolha arbitrária — é o padrão real do domínio.** O benchmark já provou isso sem querer: os melhores harnesses convergiram para portas-e-adaptadores. O `software-agent-sdk` tem tudo como ABC plugável (condenser, analyzer, store); o IronClaw formaliza "ports" no kernel boundary; o opencode separa core/protocol/client; o provedor de modelo é a porta canônica de todos. Ensinar harness *é* ensinar a desenhar essas portas — a arquitetura hexagonal só dá nome ao que o domínio já exige. Item raro: a escolha arquitetural do exemplo didático coincide com a lição do domínio.
-3. **O chat como front é a janela de observação certa.** Cada dimensão do harness ganha manifestação visível: streaming (cap. 02), pedido de aprovação inline (cap. 07), indicador de compactação (cap. 04), lista de todos (cap. 10). O chat não é um "front bonitinho" — é o instrumento de medição do leitor.
+3. **O chat como front é a janela de observação certa.** Cada dimensão do harness ganha manifestação visível: streaming (cap. 11), pedido de aprovação inline (cap. 17), indicador de compactação (cap. 13), lista de todos (cap. 06). O chat não é um "front bonitinho" — é o instrumento de medição do leitor.
 
 ### As quatro condições (onde a ideia pode afundar o livro)
 
@@ -47,14 +47,14 @@ Todo capítulo passa a declarar, nesta ordem de projeto: (1) **resultados deseja
 ### 2.2 4C/ID (van Merriënboer) — a espinha da trilha prática
 O modelo de referência para *aprendizagem complexa* (habilidades com alta interatividade de elementos — exatamente engenharia de harness). Os quatro componentes mapeiam 1:1 no nosso material:
 - **Learning tasks** (tarefas inteiras, do simples ao complexo) = as etapas da construção do Arreio — cada uma é um harness *funcionando*, progressivamente mais completo;
-- **Supportive information** (teoria que apoia o raciocínio) = o corpo dos capítulos 02–17;
+- **Supportive information** (teoria que apoia o raciocínio) = o corpo dos capítulos 11–22;
 - **Just-in-time information** (procedimento no momento do uso) = boxes e comentários no código da construção;
 - **Part-task practice** (treino de rotina isolada) = katas por capítulo ("escreva a função de prune"; "derive o JSON Schema de um dataclass").
 Fundamento: [Blueprints for complex learning: The 4C/ID-model](https://link.springer.com/article/10.1007/BF02504993) e o livro *Ten Steps to Complex Learning* (3ª ed., 2018).
 
 ### 2.3 Diátaxis — a disciplina dos tipos de texto
 O livro já tem os quatro quadrantes do Diátaxis sem saber; a regra editorial é **não misturá-los na mesma seção**:
-- *Explanation* = capítulos 02–17 (o problema, os padrões, a evidência);
+- *Explanation* = capítulos 11–22 (o problema, os padrões, a evidência);
 - *Tutorial* = a construção do Arreio (trilha guiada, garantia de sucesso);
 - *Reference* = templates (HARNESS_EVAL, FRAMEWORK_EVAL) e as tabelas do benchmark;
 - *How-to* = as seções "o que roubar" (receitas pontuais para quem já constrói).
@@ -112,29 +112,29 @@ Cada capítulo de dimensão passa a ter oito seções fixas:
 - *A Review of Prominent Paradigms for LLM-Based Agents* (CoLing 2025) — [aclanthology](https://aclanthology.org/2025.coling-main.652.pdf)
 - *LLM Agent: A Survey on Methodology, Applications and Challenges* — [repo](https://github.com/luo-junyu/Awesome-Agent-Papers)
 
-**Cap. 02 (Loop):** ReAct (m, arXiv 2210.03629); *LLM-based Agentic Reasoning Frameworks: A Survey* — [2508.17692](https://arxiv.org/pdf/2508.17692); *RL-based Agentic Search Survey* — [2510.16724](https://arxiv.org/pdf/2510.16724)
+**Cap. 11 (Loop):** ReAct (m, arXiv 2210.03629); *LLM-based Agentic Reasoning Frameworks: A Survey* — [2508.17692](https://arxiv.org/pdf/2508.17692); *RL-based Agentic Search Survey* — [2510.16724](https://arxiv.org/pdf/2510.16724)
 
-**Cap. 03 (Contexto):** ⭐ *A Survey of Context Engineering for LLMs* — [2507.13334](https://arxiv.org/abs/2507.13334); *Less Context, Better Agents* — [2606.10209](https://arxiv.org/abs/2606.10209); *Lost in the Middle* (m, 2307.03172)
+**Cap. 12 (Contexto):** ⭐ *A Survey of Context Engineering for LLMs* — [2507.13334](https://arxiv.org/abs/2507.13334); *Less Context, Better Agents* — [2606.10209](https://arxiv.org/abs/2606.10209); *Lost in the Middle* (m, 2307.03172)
 
-**Cap. 04 (Compactação):** *ContextBudget* — [2604.01664](https://arxiv.org/pdf/2604.01664); *The Missing Memory Hierarchy: Demand Paging for LLM Context Windows* — [2603.09023](https://arxiv.org/pdf/2603.09023); MemGPT (m, 2310.08560)
+**Cap. 13 (Compactação):** *ContextBudget* — [2604.01664](https://arxiv.org/pdf/2604.01664); *The Missing Memory Hierarchy: Demand Paging for LLM Context Windows* — [2603.09023](https://arxiv.org/pdf/2603.09023); MemGPT (m, 2310.08560)
 
-**Cap. 05 (Tools):** *Evolution of Tool Use in LLM Agents* — [2603.22862](https://arxiv.org/pdf/2603.22862); *Tool Learning survey* — [repo quchangle1](https://github.com/quchangle1/LLM-Tool-Survey); Gorilla/ToolLLM (m)
+**Cap. 14 (Tools):** *Evolution of Tool Use in LLM Agents* — [2603.22862](https://arxiv.org/pdf/2603.22862); *Tool Learning survey* — [repo quchangle1](https://github.com/quchangle1/LLM-Tool-Survey); Gorilla/ToolLLM (m)
 
-**Cap. 06 (MCP):** spec MCP; análises de segurança de MCP (a localizar — lacuna de busca)
+**Cap. 16 (MCP):** spec MCP; análises de segurança de MCP (a localizar — lacuna de busca)
 
-**Cap. 07 (Permissões/segurança):** ⭐ *Security Threats and Defenses in LLM-Based AI Agents: Layered Attack Surface* — [2604.23338](https://arxiv.org/pdf/2604.23338); *A Survey on Agentic Security* — [2510.06445](https://arxiv.org/pdf/2510.06445); *Safety of Computer-Using Agents* — [2505.10924](https://arxiv.org/pdf/2505.10924); prompt injection Greshake et al. (m)
+**Cap. 17 (Permissões/segurança):** ⭐ *Security Threats and Defenses in LLM-Based AI Agents: Layered Attack Surface* — [2604.23338](https://arxiv.org/pdf/2604.23338); *A Survey on Agentic Security* — [2510.06445](https://arxiv.org/pdf/2510.06445); *Safety of Computer-Using Agents* — [2505.10924](https://arxiv.org/pdf/2505.10924); prompt injection Greshake et al. (m)
 
-**Cap. 08 (Memória):** ⭐ *Survey on Memory Mechanism of LLM-based Agents* — [2404.13501](https://arxiv.org/abs/2404.13501); *From Storage to Experience* — [2605.06716](https://arxiv.org/abs/2605.06716); *From Human Memory to AI Memory* — [2504.15965](https://arxiv.org/pdf/2504.15965); *Governing Evolving Memory (SSGM)* — [2603.11768](https://arxiv.org/pdf/2603.11768)
+**Cap. 20 (Memória):** ⭐ *Survey on Memory Mechanism of LLM-based Agents* — [2404.13501](https://arxiv.org/abs/2404.13501); *From Storage to Experience* — [2605.06716](https://arxiv.org/abs/2605.06716); *From Human Memory to AI Memory* — [2504.15965](https://arxiv.org/pdf/2504.15965); *Governing Evolving Memory (SSGM)* — [2603.11768](https://arxiv.org/pdf/2603.11768)
 
-**Cap. 10 (Planejamento):** *Understanding the Planning of LLM Agents* (m, 2402.02716); *PLANET: benchmarks de planejamento* — [2504.14773](https://arxiv.org/pdf/2504.14773); *Task-Decoupled Planning* — [2601.07577](https://arxiv.org/pdf/2601.07577)
+**Cap. 06 (Planejamento):** *Understanding the Planning of LLM Agents* (m, 2402.02716); *PLANET: benchmarks de planejamento* — [2504.14773](https://arxiv.org/pdf/2504.14773); *Task-Decoupled Planning* — [2601.07577](https://arxiv.org/pdf/2601.07577)
 
-**Cap. 11 (Multi-agente):** survey multi-agente (m, 2412.17481); *MultiAgentBench* (m); *D3MAS* — [2510.10585](https://arxiv.org/pdf/2510.10585)
+**Cap. 09 (Multi-agente):** survey multi-agente (m, 2412.17481); *MultiAgentBench* (m); *D3MAS* — [2510.10585](https://arxiv.org/pdf/2510.10585)
 
-**Cap. 12 (Evals):** ⭐ *Survey on Evaluation of LLM-based Agents* — [2503.16416](https://arxiv.org/abs/2503.16416); SWE-bench (m, 2310.06770); *2025 AI Agent Index* — [2602.17753](https://arxiv.org/abs/2602.17753)
+**Cap. 18 (Evals):** ⭐ *Survey on Evaluation of LLM-based Agents* — [2503.16416](https://arxiv.org/abs/2503.16416); SWE-bench (m, 2310.06770); *2025 AI Agent Index* — [2602.17753](https://arxiv.org/abs/2602.17753)
 
-**Cap. 17 (Aprendizado):** ⭐ *A Survey of Self-Evolving Agents* — [2507.21046](https://arxiv.org/abs/2507.21046); *Comprehensive Survey of Self-Evolving AI Agents* (m, 2508.07407); Voyager (m, 2305.16291); *Adaptation of Agentic AI: Post-Training, Memory, and Skills* — [2512.16301](https://arxiv.org/pdf/2512.16301)
+**Cap. 22 (Aprendizado):** ⭐ *A Survey of Self-Evolving Agents* — [2507.21046](https://arxiv.org/abs/2507.21046); *Comprehensive Survey of Self-Evolving AI Agents* (m, 2508.07407); Voyager (m, 2305.16291); *Adaptation of Agentic AI: Post-Training, Memory, and Skills* — [2512.16301](https://arxiv.org/pdf/2512.16301)
 
-**Caps. 13/14/16/18:** dimensões com literatura acadêmica rarefeita (extensibilidade, interfaces, embutidos, protocolos) — a lacuna é em si um achado a registrar no livro; cobrir com specs, papers industriais e o survey-âncora transversal.
+**Caps. 19/14/16/18:** dimensões com literatura acadêmica rarefeita (extensibilidade, interfaces, embutidos, protocolos) — a lacuna é em si um achado a registrar no livro; cobrir com specs, papers industriais e o survey-âncora transversal.
 
 ---
 

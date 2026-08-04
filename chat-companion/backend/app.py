@@ -1,4 +1,4 @@
-"""Chat-companion — o backend (contexto-zero ao vivo).
+"""Chat-companion — o backend (rag-zero ao vivo).
 
 Composition root: escolhe os adapters por ambiente (echo/openai, memória/Neon),
 monta as portas e expõe a API que o widget do site consome. Fallbacks seguros:
@@ -73,7 +73,7 @@ def _system_prompt(chapter: Optional[int], mode: str, achados: list[dict],
     lista = ", ".join(c["rotulo"] for c in caps) or "Tutor do livro"
     obj = (f"\n\nObjetivo declarado do leitor: {goal}\n"
            "Conecte as respostas a este objetivo; ao traçar planos de ensino, "
-           "sugira a ordem de capítulos e as etapas do contexto-zero que melhor o servem, "
+           "sugira a ordem de capítulos e as etapas do rag-zero que melhor o servem, "
            "e sempre aponte o próximo passo concreto.") if goal else ""
     ctx = ("\n\nTrechos do livro relevantes (use como evidência e cite a fonte entre colchetes):\n"
            + "\n".join(f"- [{a['fonte']} · {a['titulo']}] {a['trecho']}" for a in achados)
@@ -84,7 +84,7 @@ def _system_prompt(chapter: Optional[int], mode: str, achados: list[dict],
                 "Se pedirem algo de um capítulo à frente, explique que aquela capacidade "
                 "ainda não foi liberada e de qual capítulo ela vem.")
     return (
-        "Você é o companion do livro vivo 'Engenharia de Prompt e Engenharia de Contexto', "
+        "Você é o companion do livro vivo 'Engenharia de RAG', "
         "em português. Ajuda o leitor a decidir o que o modelo vê: o que se escreve (prompt) "
         "e o que se monta em runtime (contexto) — com RAG no lugar certo, dentro da segunda. "
         "Seja preciso e conciso; ancore afirmações no texto do livro; sem inventar fontes. "

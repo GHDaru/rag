@@ -1,25 +1,32 @@
-# 13 — Memória e Estado
+# 19 — RAG Conversacional
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** As três arquiteturas e a distinção memória × RAG estão fechadas; o comparativo medido é a rodada 2 do ROADMAP.
+> **Maturidade: esboço, reescopado na edição 0.2.** Componente que aprofunda: **entendimento da consulta** e o estado que o alimenta (cap. 02). O que é gestão de contexto de agente — compactação, isolamento — é do [livro irmão sobre harness](https://github.com/GHDaru/harness_engineering); aqui fica só o que decide a **recuperação** na conversa.
 
 ## Objetivos de aprendizagem
 
 Ao final deste capítulo, você deve ser capaz de:
 
-1. **Distinguir** histórico, memória de trabalho e memória de longo prazo pelo que cada um preserva e descarta;
-2. **Comparar** as três arquiteturas dominantes (fatos extraídos, grafo temporal, paginação autogerida);
-3. **Explicar** por que memória e RAG resolvem problemas parecidos com garantias diferentes;
-4. **Reconhecer** os modos de falha próprios da memória: contaminação, deriva e o fato que ficou obsoleto.
+1. **Explicar** por que RAG em conversa é um problema diferente de RAG em pergunta isolada;
+2. **Resolver** o estado mínimo que a recuperação precisa: referência, tópico e o que já foi mostrado;
+3. **Comparar** as três arquiteturas de memória de longo prazo (fatos extraídos, grafo temporal, paginação);
+4. **Reconhecer** os modos de falha próprios: fato obsoleto, memória contaminada e recuperação repetida.
 
 ## O problema
 
-Uma conversa que recomeça do zero a cada sessão é um produto ruim. Mas guardar tudo é impossível (orçamento, cap. 08) e guardar o histórico bruto é inútil: quinhentos turnos de conversa não cabem, e se coubessem seriam ruído.
+Tudo nos capítulos anteriores supõe uma pergunta isolada e autocontida. Conversa quebra as duas suposições, e a recuperação é a primeira a sofrer.
 
-Memória é a decisão de **o que vale a pena sobreviver** — e essa decisão é irreversível na prática, porque o que não foi guardado não volta.
+Quatro problemas que só existem aqui:
 
-A confusão que custa caro: tratar memória como "RAG sobre o histórico". Tecnicamente é possível; conceitualmente esconde o problema. RAG recupera trechos **imutáveis** de um corpus; memória mantém afirmações **que mudam de valor de verdade** ao longo do tempo. "O usuário mora em São Paulo" era verdade em janeiro. Um índice de trechos não tem como saber que deixou de ser.
+1. **A pergunta não se basta.** "E no ano passado?" não é uma consulta. O tratamento está no cap. 08; o que este capítulo acrescenta é **de onde vem o estado** que permite reescrevê-la.
+2. **O sistema repete.** Sem saber o que já mostrou, ele recupera os mesmos trechos e responde a mesma coisa com outras palavras — o sintoma mais irritante de RAG conversacional.
+3. **O tópico muda no meio.** O usuário falava de férias e passou a falar de rescisão. Manter o contexto anterior atrapalha; descartá-lo cedo demais também.
+4. **Fatos do usuário que persistem.** "Trabalho no time de vendas" muda toda recuperação seguinte — e vale além desta sessão.
+
+Os três primeiros são **estado de sessão**; o quarto é **memória de longo prazo**. Misturá-los é o erro de arquitetura deste capítulo.
+
+> **Fronteira declarada.** Gestão de contexto de agente — compactação do histórico, isolamento por subagente, orçamento entre turnos — é assunto do [livro irmão sobre harness](https://github.com/GHDaru/harness_engineering). Aqui trata-se apenas do que **decide a recuperação**. Quando os dois se tocam, este livro cita e não repete.
 
 ## Fundamentos científicos
 
@@ -44,7 +51,7 @@ A confusão que custa caro: tratar memória como "RAG sobre o histórico". Tecni
 
 | Horizonte | O que guarda | Mecanismo | Falha típica |
 |---|---|---|---|
-| **Histórico** | os turnos desta conversa | a própria janela | estoura; vira ruído (cap. 14) |
+| **Histórico** | os turnos desta conversa | a própria janela | estoura; vira ruído (cap. 20) |
 | **Memória de trabalho** | o estado da tarefa em andamento | estrutura explícita (plano, resultados parciais) | some no reinício; não sobrevive à compactação |
 | **Longo prazo** | fatos e preferências que atravessam sessões | extração + armazenamento + recuperação | contamina, envelhece, deriva |
 
@@ -54,7 +61,7 @@ O horizonte do meio é o mais negligenciado. Times investem em memória de longo
 
 - **Fatos extraídos.** Um passo de extração identifica afirmações salientes e as guarda como memórias curtas. Barato de recuperar, legível, auditável. Perde nuance e depende inteiramente da qualidade da extração — o que a extração não capturou, não existe.
 - **Grafo temporal.** Entidades, relações e **validade no tempo**. Responde "o que era verdade quando?" e lida com fato que muda. Custa manutenção de grafo e complexidade de consulta.
-- **Paginação autogerida.** O modelo decide o que trazer e o que arquivar, via ferramentas. Elegante e geral; paga em latência e em imprevisibilidade — os mesmos custos do cap. 12, pelas mesmas razões.
+- **Paginação autogerida.** O modelo decide o que trazer e o que arquivar, via ferramentas. Elegante e geral; paga em latência e em imprevisibilidade — os mesmos custos do cap. 18, pelas mesmas razões.
 
 Nenhuma domina. A escolha honesta vem de uma pergunta: **os seus fatos mudam?** Se mudam (endereço, cargo, preferência, estado de assinatura), grafo temporal ou versionamento explícito. Se não mudam (fatos históricos, decisões registradas), fatos extraídos resolvem por muito menos.
 
@@ -75,16 +82,16 @@ A linha "escrita" é a que mais importa: **memória tem um caminho de escrita, e
 - **Contaminação.** Conteúdo malicioso ou simplesmente errado entra na memória e persiste. Mitigação: nunca gravar diretamente do que foi lido de fonte externa; exigir procedência; permitir revisão e remoção.
 - **Obsolescência.** O fato foi verdade e não é mais. Mitigação: validade temporal, ou revalidação quando o fato é usado em decisão relevante.
 - **Bajulação acumulada.** A memória guarda a concordância com o usuário e reforça, sessão após sessão, uma visão que ninguém verificou. Mitigação: separar *fato* de *opinião expressa pelo usuário* na própria estrutura.
-- **Deriva de identidade.** Ao longo de conversas longas, a persona declarada erode. Mitigação: reafirmar a camada estável do prompt (cap. 05) e não deixar a memória sobrescrever política.
+- **Deriva de identidade.** Ao longo de conversas longas, a persona declarada erode. Mitigação: reafirmar a camada estável do prompt (cap. 14) e não deixar a memória sobrescrever política.
 - **Direito ao esquecimento.** Memória é dado pessoal. Precisa de caminho de exclusão real — e testado.
 
 ### Leitura executiva
 
-Memória é a decisão de **o que vale a pena sobreviver** — e é irreversível: o que não foi guardado não volta. Três horizontes (histórico · trabalho · longo prazo), e o mais negligenciado é o do meio: **memória de trabalho deixada implícita no histórico é a primeira coisa que a compactação destrói**. Três arquiteturas de longo prazo — fatos extraídos (barata, auditável, perde nuance), grafo temporal (responde "o que era verdade quando?"), paginação autogerida (geral, cara em latência) — e a pergunta que escolhe entre elas é uma só: **os seus fatos mudam?** **A distinção que evita o erro caro:** RAG recupera trechos **imutáveis**; memória mantém afirmações que **mudam de valor de verdade**. **O risco estrutural:** memória tem caminho de **escrita**, e todo caminho de escrita é superfície de ataque — uma afirmação falsa gravada envenena todas as sessões futuras (cap. 17). Nunca grave direto do que foi lido de fonte externa.
+Memória de longo prazo é a decisão de **o que vale a pena sobreviver** — e é irreversível: o que não foi guardado não volta. Três horizontes (histórico · trabalho · longo prazo), e o mais negligenciado é o do meio: **memória de trabalho deixada implícita no histórico é a primeira coisa que a compactação destrói**. Três arquiteturas de longo prazo — fatos extraídos (barata, auditável, perde nuance), grafo temporal (responde "o que era verdade quando?"), paginação autogerida (geral, cara em latência) — e a pergunta que escolhe entre elas é uma só: **os seus fatos mudam?** **A distinção que evita o erro caro:** RAG recupera trechos **imutáveis**; memória mantém afirmações que **mudam de valor de verdade**. **O risco estrutural:** memória tem caminho de **escrita**, e todo caminho de escrita é superfície de ataque — uma afirmação falsa gravada envenena todas as sessões futuras (cap. 22). Nunca grave direto do que foi lido de fonte externa.
 
-## Mão na massa — contexto-zero, etapa 12
+## Mão na massa — rag-zero, etapa 12
 
-Na etapa 12 o `contexto-zero` ganha memória: extração de fatos ao fim do turno, armazenamento com data e procedência, e recuperação no início do turno seguinte — dentro do orçamento da etapa 7, e não em cima dele. Dois testes fecham a etapa: um fato marcado como vindo de fonte externa **não** é gravado como fato do usuário; e o endpoint de exclusão apaga de verdade. O exercício de completude: o critério de saliência da extração vem esqueletado — você decide o que merece virar memória, e percebe que essa é a decisão de produto do capítulo.
+Na etapa 12 o `rag-zero` passa a lidar com conversa: estado de sessão com tópico corrente e trechos já mostrados, resolução de referência alimentada por esse estado (o cap. 08 em uso), e memória de longo prazo com procedência, data e exclusão real. Dois testes fecham a etapa: uma pergunta encadeada recupera o que a pergunta isolada não recuperaria; e uma segunda pergunta sobre o mesmo assunto **não** devolve os mesmos trechos. O exercício de completude: o critério de "já mostrei isto" vem esqueletado — e você descobre que ele é mais sutil do que comparar ids.
 
 ## Verificação
 

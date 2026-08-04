@@ -1,6 +1,6 @@
 # Apêndice — Grafo do livro
 
-> O mapa de conexões do livro, extraído **deterministicamente** do próprio texto a cada build — sem LLM, sem curadoria manual. Um nó é um capítulo, uma ferramenta do ecossistema, um conceito do glossário ou uma etapa do `contexto-zero`; uma aresta é uma menção real, e o peso é o número de ocorrências.
+> O mapa de conexões do livro, extraído **deterministicamente** do próprio texto a cada build — sem LLM, sem curadoria manual. Um nó é um capítulo, uma ferramenta do ecossistema, um conceito do glossário ou uma etapa do `rag-zero`; uma aresta é uma menção real, e o peso é o número de ocorrências.
 >
 > Edição 0.1 · captura em 2026-08.
 
@@ -13,9 +13,9 @@ Como o grafo nasce do texto, ele é sempre honesto: se um capítulo não cita um
 - **Capítulos** (âmbar) — os 19 textos numerados.
 - **Ferramentas e frameworks** (azul) — o ecossistema mapeado no [apêndice do ecossistema](apendice-ecossistema.md).
 - **Conceitos** (verde) — os verbetes do [glossário](glossario.md).
-- **contexto-zero** (roxo) — as 16 etapas da trilha prática.
+- **rag-zero** (roxo) — as 16 etapas da trilha prática.
 
-Arestas mais grossas são menções mais frequentes. Capítulo→capítulo aparece quando um texto cita outro por número ("cap. 10").
+Arestas mais grossas são menções mais frequentes. Capítulo→capítulo aparece quando um texto cita outro por número ("cap. 06").
 
 ## O que o grafo revela nesta edição
 

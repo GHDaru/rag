@@ -2,7 +2,7 @@
 
 > Fontes científicas e da indústria, por capítulo, com **status de validação**.
 >
-> Edição 0.1 · captura em 2026-08.
+> Edição 0.2 · captura em 2026-08.
 
 ## Como ler o status (Princípio I da constituição)
 
@@ -12,7 +12,9 @@
 | ⏳ | **A validar** — a referência foi localizada em levantamento (ver [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md)), mas **não** foi lida na íntegra. Aparece nos capítulos marcada como `[a validar]`. |
 | ✗ | **Rejeitada** — não sustenta a afirmação, ou a fonte não resistiu à conferência. Fica registrada com o motivo, porque saber o que **não** vale é resultado. |
 
-**Estado da edição 0.1: nenhuma referência tem status ✓.** Isto é deliberado e é a consequência honesta do escopo desta versão: o levantamento localizou as fontes e desenhou o mapa; a **validação é a rodada 2** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md), conduzida pela skill `academic-research` (localizar → validar → registrar → integrar).
+> **Correção registrada (edição 0.2).** A survey **S0** (Gao et al., 2312.10997) é a referência mais citada de RAG e **não constava** do levantamento inicial — falha do panorama da edição 0.1, que trouxe a revisão sistemática e a de RAG agêntico e passou batido pela fundacional. Ela é agora a âncora dos caps. 01–03. Registrar a omissão é mais útil que corrigi-la em silêncio.
+
+**Estado da edição 0.2: nenhuma referência tem status ✓.** Isto é deliberado e é a consequência honesta do escopo desta versão: o levantamento localizou as fontes e desenhou o mapa; a **validação é a rodada 2** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md), conduzida pela skill `academic-research` (localizar → validar → registrar → integrar).
 
 Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos capítulos sem a marcação e sem a condição experimental ao lado.**
 
@@ -22,12 +24,15 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 
 | Ref. | Fonte | Usada em | Status |
 |---|---|---|:---:|
+| **S0** | **Retrieval-Augmented Generation for Large Language Models: A Survey** — [arXiv 2312.10997](https://arxiv.org/abs/2312.10997) (Gao et al.) | **caps. 01, 02, 03** e todo o livro | ⏳ |
 | S1 | *The Prompt Report: A Systematic Survey of Prompting Techniques* — [arXiv 2406.06608](https://arxiv.org/abs/2406.06608) | caps. 01, 02, 03 | ⏳ |
 | S2 | *A Survey of Context Engineering for Large Language Models* — [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) | caps. 01, 04, 05, 08, 09, 12, 13, 14 | ⏳ |
-| S3 | *Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG* — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | cap. 12 | ⏳ |
-| S4 | *Exploring Prompt Engineering: A Systematic Review with SWOT Analysis* — [arXiv 2410.12843](https://arxiv.org/abs/2410.12843) | cap. 03 | ⏳ |
-| S5 | *A Systematic Review of Key RAG Systems* — [arXiv 2507.18910](https://arxiv.org/abs/2507.18910) | caps. 10, 11 | ⏳ |
-| S6 | *Context Engineering 2.0: The Context of Context Engineering* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | cap. 19 | ⏳ |
+| S3 | *Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG* — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | cap. 18 | ⏳ |
+| S4 | *Exploring Prompt Engineering: A Systematic Review with SWOT Analysis* — [arXiv 2410.12843](https://arxiv.org/abs/2410.12843) | cap. 12 | ⏳ |
+| S5 | *A Systematic Review of Key RAG Systems* — [arXiv 2507.18910](https://arxiv.org/abs/2507.18910) | caps. 06, 09 | ⏳ |
+| S5b | *Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks* — [arXiv 2407.21059](https://arxiv.org/html/2407.21059v1) | caps. 02, 03 | ⏳ |
+| S5c | *Reasoning RAG via System 1 or System 2* — [arXiv 2506.10408](https://arxiv.org/abs/2506.10408) | caps. 02, 03, 18 | ⏳ |
+| S6 | *Context Engineering 2.0: The Context of Context Engineering* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | cap. 24 | ⏳ |
 
 ## Por capítulo
 
@@ -38,7 +43,7 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 | F1 | *Lost in the Middle: How Language Models Use Long Contexts* — [arXiv 2307.03172](https://arxiv.org/abs/2307.03172) | degradação posicional; "o que importa vai para as pontas" | ⏳ |
 | F2 | *U-NIAH: Unified RAG and LLM Evaluation for Long Context Needle-In-A-Haystack* — [arXiv 2503.00353](https://arxiv.org/abs/2503.00353) | comparação dos dois regimes no mesmo protocolo | ⏳ |
 
-> **Lacuna conhecida**: a afirmação do cap. 08 de que a degradação é dirigida pela **similaridade entre alvo e distratores** (e não pelo comprimento) é hoje a mais frágil do livro em termos de citação. É prioridade 1 da rodada 2.
+> **Lacuna conhecida**: a afirmação do cap. 20 de que a degradação é dirigida pela **similaridade entre alvo e distratores** (e não pelo comprimento) é hoje a mais frágil do livro em termos de citação. É prioridade 1 da rodada 2.
 
 ### 03 — Técnicas de Raciocínio
 
@@ -46,7 +51,7 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 |---|---|---|:---:|
 | R1 | Chain-of-Thought (proposta original) | família *thought generation* | ⏳ |
 | R2 | Self-Consistency | família *ensembling* | ⏳ |
-| R3 | ReAct | a ponte prompt → RAG agêntico (caps. 03, 11, 14) | ⏳ |
+| R3 | ReAct | a ponte prompt → RAG agêntico (caps. 12, 09, 14) | ⏳ |
 | R4 | *A comparative evaluation of CoT-based prompt engineering techniques for medical QA* — [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0010482525009655) | o ranking de técnicas muda com domínio e modelo | ⏳ |
 
 ### 06 — Otimização Automática de Prompts
@@ -92,11 +97,11 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
 | M1 | MemGPT / Letta | paginação autogerida | ⏳ |
-| M2 | *ES-Mem: Event Segmentation-Based Memory for Long-Term Dialogue Agents* — [arXiv 2601.07582](https://arxiv.org/abs/2601.07582) | segmentar por evento (caps. 13, 14) | ⏳ |
+| M2 | *ES-Mem: Event Segmentation-Based Memory for Long-Term Dialogue Agents* — [arXiv 2601.07582](https://arxiv.org/abs/2601.07582) | segmentar por evento (caps. 19, 14) | ⏳ |
 | M3 | *MemR³: Memory Retrieval via Reflective Reasoning* — [arXiv 2512.20237](https://arxiv.org/abs/2512.20237) | recuperação reflexiva de memória | ⏳ |
-| M4 | *MemGuard: Preventing Memory Contamination* — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | contaminação (caps. 13, 17) | ⏳ |
+| M4 | *MemGuard: Preventing Memory Contamination* — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | contaminação (caps. 19, 22) | ⏳ |
 | M5 | *MemSyco-Bench: Benchmarking Sycophancy in Agent Memory* — [arXiv 2607.01071](https://arxiv.org/abs/2607.01071) | bajulação acumulada | ⏳ |
-| M6 | *Nautilus Compass: Black-box Persona Drift Detection* — [arXiv 2605.09863](https://arxiv.org/abs/2605.09863) | deriva de persona (caps. 05, 12) | ⏳ |
+| M6 | *Nautilus Compass: Black-box Persona Drift Detection* — [arXiv 2605.09863](https://arxiv.org/abs/2605.09863) | deriva de persona (caps. 14, 18) | ⏳ |
 
 ### 15 — Avaliação de Sistemas
 

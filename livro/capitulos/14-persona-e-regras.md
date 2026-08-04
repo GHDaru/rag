@@ -1,6 +1,6 @@
-# 05 — Prompt de Sistema, Persona e Regras
+# 14 — Prompt de Sistema, Persona e Regras
 
-> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A arquitetura em camadas e a separação voz × política estão fechadas; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -31,7 +31,7 @@ Sub-problemas: onde vivem as regras e como são descobertas; se o prompt deve va
 
 ## Fontes da indústria
 
-- **Cache por prefixo** — a mecânica que decide a ordem das camadas: provedores cobram menos (e respondem mais rápido) por tokens que repetem um **prefixo já visto**. Qualquer conteúdo volátil no topo invalida tudo abaixo dele. O tratamento completo é o cap. 18; aqui entra como restrição de arquitetura.
+- **Cache por prefixo** — a mecânica que decide a ordem das camadas: provedores cobram menos (e respondem mais rápido) por tokens que repetem um **prefixo já visto**. Qualquer conteúdo volátil no topo invalida tudo abaixo dele. O tratamento completo é o cap. 23; aqui entra como restrição de arquitetura.
 - **[AGENTS.md](https://agents.md/)** — o "README para agentes" convergiu como formato portável de regras de projeto, com governança neutra e adoção ampla. A lição transferível para qualquer sistema: regras versionadas, próximas do que descrevem, em formato aberto.
 - **Hierarquia de instruções** — os provedores treinam precedência entre camadas (sistema > desenvolvedor > usuário > conteúdo externo). A montagem deve refletir essa hierarquia; contrariá-la é pedir comportamento indefinido.
 
@@ -64,7 +64,7 @@ A distinção que mais rende a médio prazo:
 
 Misturadas no mesmo bloco, as duas se degradam: a política vira sugestão de tom ("seja cuidadoso com dados sensíveis") em vez de restrição verificável, e a voz vira lista de proibições que deixa o assistente ríspido. Separadas — arquivos distintos, blocos distintos, donos distintos — cada uma pode ser testada pelo método que lhe cabe.
 
-E há um argumento de segurança: **política que não é verificável não é política** (cap. 17). Se a regra existe só como frase no prompt e não tem contraparte no que as ferramentas permitem, ela é uma preferência.
+E há um argumento de segurança: **política que não é verificável não é política** (cap. 22). Se a regra existe só como frase no prompt e não tem contraparte no que as ferramentas permitem, ela é uma preferência.
 
 ### 3. Cascata com precedência declarada
 
@@ -87,9 +87,9 @@ O que a prática ensinou sobre autoria, e que vale como regra editorial do próp
 
 O prompt de sistema está em **toda** chamada — é o bloco mais caro do sistema e o que mais apodrece. Monte-o em **camadas por volatilidade** (identidade → capacidades → regras → ambiente → tarefa), porque tudo abaixo do primeiro token que muda deixa de ser cacheável: **nada volátil acima de algo estável**. **O que roubar:** separe **voz** de **política** em blocos e donos distintos — a primeira se testa por julgamento, a segunda por asserção; e adote a cascata com precedência declarada. **A disciplina que salva o arquivo:** a regra entra por **evidência de falha reincidente** e sai quando não se justifica mais — sem processo de remoção, toda cascata vira sedimento. **A regra de segurança:** política sem contraparte no que as ferramentas permitem é preferência, não política.
 
-## Mão na massa — contexto-zero, etapa 4
+## Mão na massa — rag-zero, etapa 10 (o gerador)
 
-Na etapa 4 você separa o prompt do `contexto-zero` em cinco camadas ordenadas, com `SOUL`/persona e `REGRAS`/política em arquivos distintos, e implementa a descoberta em cascata. O teste que fecha a etapa prova **estabilidade de prefixo**: dois turnos consecutivos produzem exatamente os mesmos bytes até a última mensagem. O exercício de completude: a função de precedência vem esqueletada — você decide e implementa quem vence, e escreve a regra por extenso no arquivo.
+Na etapa 10 você separa o prompt do `rag-zero` em cinco camadas ordenadas, com `SOUL`/persona e `REGRAS`/política em arquivos distintos, e implementa a descoberta em cascata. O teste que fecha a etapa prova **estabilidade de prefixo**: dois turnos consecutivos produzem exatamente os mesmos bytes até a última mensagem. O exercício de completude: a função de precedência vem esqueletada — você decide e implementa quem vence, e escreve a regra por extenso no arquivo.
 
 ## Verificação
 
