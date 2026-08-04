@@ -46,11 +46,13 @@ jobs:
         working-directory: publicar
       - name: Limpar temporario de impressao
         run: rm -f docs/_print.html
-      # `enablement: true` faz a action tentar HABILITAR o Pages via API, em vez
-      # de só consultá-lo. Sem isso, um repositório novo falha aqui com
-      # "Get Pages site failed ... Not Found" e o deploy é pulado.
-      # Se ainda assim falhar (a API pode recusar dependendo do plano/permissão),
-      # a saída é manual e única: Settings → Pages → Source: GitHub Actions.
+      # Pages habilitado manualmente em 2026-08-04 (Settings → Pages → Source:
+      # GitHub Actions). Registro do que foi tentado antes, para ninguém repetir:
+      # `enablement: true` NÃO resolveu — mesmo com `pages: write`, a API recusou
+      # criar o site ("Get Pages site failed ... Not Found", runs #2 e #3).
+      # Num repositório novo, portanto, essa habilitação é etapa manual e única.
+      # O parâmetro fica como está: é inócuo com o site já criado, e volta a ser
+      # a primeira tentativa caso o repositório seja recriado.
       - uses: actions/configure-pages@v5
         with:
           enablement: true
