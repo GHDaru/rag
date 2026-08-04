@@ -2,7 +2,7 @@
 // da experiência de entrada (spec 021). Dependency-free.
 (function () {
   var raiz = document.documentElement;
-  var chave = "harness-tema";
+  var chave = "livro-tema";
   var salvo = localStorage.getItem(chave);
   if (salvo) raiz.setAttribute("data-tema", salvo);
   else if (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches)
@@ -52,15 +52,7 @@
     try { localStorage.setItem("hz_lang", pill.getAttribute("data-lang-alvo")); } catch (e) {}
   });
   try { localStorage.setItem("hz_lang_visto_" + lang, "1"); } catch (e) {}
-  // Convite: só na capa PT, navegador em inglês, sem preferência gravada. Nunca redirect.
-  if (!corpo.classList.contains("splash-body") || lang !== "pt") return;
-  var pref = null; try { pref = localStorage.getItem("hz_lang"); } catch (e) {}
-  var navEn = (navigator.language || "").toLowerCase().indexOf("en") === 0;
-  if (pref || !navEn) return;
-  var ctas = document.querySelector(".splash-ctas");
-  if (!ctas) return;
-  var p = document.createElement("p");
-  p.className = "lang-sugestao";
-  p.innerHTML = '\ud83c\udf10 This book is also available in <a href="en/index.html">English</a>.';
-  ctas.parentNode.insertBefore(p, ctas.nextSibling);
+  // Convite ao idioma EN: desligado na v1 (livro PT-only — ver ROADMAP rodada 7).
+  // Reativar junto com a reintrodução de livro/en/ e sumario.en.json.
+  return;
 })();

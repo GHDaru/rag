@@ -7,9 +7,9 @@
   var alvo = document.querySelector('[data-viz="grafo-livro"]');
   if (!alvo) return;
 
-  var CORES = { capitulo: "#e0a24a", harness: "#78aeff", conceito: "#6fd08a", etapa: "#c79be0" };
-  var NOMES = { capitulo: "Capítulos", harness: "Harnesses do corpus", conceito: "Conceitos", etapa: "harness-zero" };
-  var RAIO = { capitulo: 11, harness: 8, conceito: 8, etapa: 6 };
+  var CORES = { capitulo: "#e0a24a", ferramenta: "#78aeff", conceito: "#6fd08a", etapa: "#c79be0" };
+  var NOMES = { capitulo: "Capítulos", ferramenta: "Ferramentas e frameworks", conceito: "Conceitos", etapa: "contexto-zero" };
+  var RAIO = { capitulo: 11, ferramenta: 8, conceito: 8, etapa: 6 };
 
   function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
 
@@ -49,7 +49,7 @@
     var porId = {}; nos.forEach(function (n) { porId[n.id] = n; });
     var arestas = g.arestas.filter(function (a) { return porId[a.de] && porId[a.para]; });
     arestas.forEach(function (a) { porId[a.de].grau += a.peso; porId[a.para].grau += a.peso; });
-    var visiveis = { capitulo: true, harness: true, conceito: true, etapa: true };
+    var visiveis = { capitulo: true, ferramenta: true, conceito: true, etapa: true };
     var zoom = 1, panX = 0, panY = 0;
     var selecionado = null, hover = null, arrastando = null, panning = false;
     var lastX = 0, lastY = 0;

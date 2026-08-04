@@ -1,5 +1,7 @@
 # Parecer — achados acionáveis do estudo de metodologias de escrita (Guia §6)
 
+> **Nota de herança (2026-08-04).** Achados escritos para o livro irmão *Engenharia de Harness*, mantidos como escritos: fundamentam a **revisão developmental** como portão de qualidade e o **registro da versão do modelo** na datação — os dois adotados por esta constituição (§ Fluxo de trabalho, Princípio IV).
+
 > **Registro, não regra.** Documento de decisão rastreável (gênero `estudos/`). Os itens abaixo só se tornam **oficiais/vinculantes** quando viram regra na constituição (`.specify/memory/constitution.md`) e/ou no `GUIA-EDITORIAL.md`, via ciclo spec-kit (Princípio VII) — emendas à constituição podem ir direto ao main, mas registradas no `HISTORICO.md`. Data: 2026-07-26. Fonte: Guia Editorial §6 + `specs/010-estudo-metodologias-escrita/research.md`.
 
 ## Reforços (o survey confirmou práticas já vigentes — não exigem mudança)

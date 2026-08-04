@@ -10,8 +10,6 @@ on:
       - "livro/**"
       - "publicar/**"
       - "benchmark/**"
-      - "harness-um/**"
-      - "radar/**"
       - ".github/workflows/publicar.yml"
   workflow_dispatch:
 
@@ -29,12 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Testes do harness-um (a referência não pode apodrecer)
-        run: pip install -q -e ".[dev]" && python -m pytest tests/ -q
-        working-directory: harness-um
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -53,7 +45,7 @@ jobs:
         run: npm run pdf
         working-directory: publicar
       - name: Limpar temporario de impressao
-        run: rm -f docs/_print.html docs/en/_print.html
+        run: rm -f docs/_print.html
       # Requer que o Pages esteja habilitado uma vez no repositório
       # (Settings → Pages → Source: GitHub Actions). O token do Actions não
       # tem permissão para criar o site sozinho — é a única etapa manual.

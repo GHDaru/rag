@@ -1,25 +1,24 @@
-# Apêndice — Grafo do livro (vivo)
+# Apêndice — Grafo do livro
 
-> **Estado da arte capturado em 2026-07** · última revisão 2026-07-30 · [histórico e registro de expiração](HISTORICO.md)
+> O mapa de conexões do livro, extraído **deterministicamente** do próprio texto a cada build — sem LLM, sem curadoria manual. Um nó é um capítulo, uma ferramenta do ecossistema, um conceito do glossário ou uma etapa do `contexto-zero`; uma aresta é uma menção real, e o peso é o número de ocorrências.
+>
+> Edição 0.1 · captura em 2026-08.
 
-Todo livro técnico é um grafo disfarçado de sequência: capítulos que se citam, sistemas que aparecem em várias dimensões, conceitos que costuram tudo. Esta página torna o grafo explícito — e **interativo**.
-
-## Como este grafo é construído (e por que ele nunca desatualiza)
-
-Os nós e as arestas **não são editados à mão nem gerados por um modelo**: são extraídos **deterministicamente do próprio Markdown** a cada build do site, pelo motor de publicação (`publicar/grafo.mjs`). Uma aresta capítulo→harness existe porque aquele capítulo *menciona* aquele sistema no texto — com o peso igual ao número de menções (Princípio I: cada aresta é evidência textual verificável). Como o build roda a **cada mudança publicada do livro**, o grafo acompanha o conteúdo por construção — atualizá-lo não é um processo, é uma propriedade.
-
-- **Nós** (4 tipos): os 18 **capítulos**; os 16 **sistemas do corpus** do estudo; **conceitos**-chave (MCP, A2A, ACP, LSP, RAG, MAST); as 13 **etapas do harness-zero**.
-- **Arestas**: capítulo→capítulo (referências cruzadas "cap. NN"), capítulo→sistema (menções), capítulo→conceito (ocorrências), capítulo→etapa (a trilha Mão na massa).
-
-## O grafo interativo
+Como o grafo nasce do texto, ele é sempre honesto: se um capítulo não cita uma técnica, não há aresta. Nós sem nenhuma conexão são podados — o que torna o grafo um instrumento de revisão editorial, e não só uma ilustração. Um conceito que ninguém menciona é um conceito que o livro promete e não entrega.
 
 <div data-viz="grafo-livro"></div>
 
-*(A visualização existe apenas na versão online — no PDF esta ilha é omitida por definição.)*
+## Como ler
 
-## Guia de leitura
+- **Capítulos** (âmbar) — os 19 textos numerados.
+- **Ferramentas e frameworks** (azul) — o ecossistema mapeado no [apêndice do ecossistema](apendice-ecossistema.md).
+- **Conceitos** (verde) — os verbetes do [glossário](glossario.md).
+- **contexto-zero** (roxo) — as 16 etapas da trilha prática.
 
-- **Hubs**: os nós maiores concentram conexões — espere ver o cap. 02 (Loop) e sistemas avaliados em todas as dimensões como centros gravitacionais.
-- **Pontes**: conceitos como MCP conectam grupos que de outro modo ficariam distantes (o cap. 06 ao cap. 17, o corpus aos protocolos) — é a costura do livro visível.
-- **A trilha prática**: filtre por "harness-zero" para ver como as etapas amarram os capítulos teóricos à construção (Backward Design em forma de grafo).
-- **Clique em qualquer nó** para isolar a vizinhança e navegar direto para a página correspondente.
+Arestas mais grossas são menções mais frequentes. Capítulo→capítulo aparece quando um texto cita outro por número ("cap. 10").
+
+## O que o grafo revela nesta edição
+
+Na edição 0.1 o grafo é esparso por construção — os capítulos estão no nível de esqueleto, e a densidade de menções cresce com o aprofundamento. Os pisos de qualidade do build (nós e arestas mínimos) foram calibrados para esta edição e **sobem a cada rodada** de aprofundamento, registrado no [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+
+O uso editorial do grafo, a partir da rodada 2: procurar **nós isolados** (conceito prometido no glossário e não usado em nenhum capítulo) e **pontes ausentes** (capítulos que deveriam conversar e não se citam — por exemplo, 12 e 16, que tratam do mesmo risco por ângulos diferentes).

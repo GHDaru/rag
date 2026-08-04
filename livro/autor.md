@@ -2,9 +2,9 @@
 
 <img class="autor-foto" src="assets/autor.png" alt="Foto de Gilsiley Henrique Darú">
 
-**Gilsiley Henrique Darú** é o editor, direcionador e orquestrador humano deste livro vivo. Cientista de dados, engenheiro e professor universitário, atua há mais de 20 anos na fronteira entre **otimização, pesquisa operacional e inteligência artificial** aplicadas ao planejamento e à cadeia de suprimentos — e há alguns anos, na engenharia dos sistemas de IA que este livro chama de *harness*.
+**Gilsiley Henrique Darú** é o editor, direcionador e orquestrador humano deste livro vivo. Cientista de dados, engenheiro e professor universitário, atua há mais de 20 anos na fronteira entre **otimização, pesquisa operacional e inteligência artificial** aplicadas ao planejamento e à cadeia de suprimentos — e há alguns anos, na engenharia dos sistemas de IA que decidem **o que um modelo vê** — prompt e contexto.
 
-A escolha do tema não é acidental. A trajetória do autor é uma longa prática de **envolver métodos poderosos em um andaime que os torna úteis no mundo real**: solvers matemáticos dentro de rotinas de PCP, modelos preditivos dentro de processos de negócio, e agora agentes de IA dentro de um *scaffolding* de loop, ferramentas, memória e verificação. Este livro é a sistematização dessa disciplina.
+A escolha do tema não é acidental. A trajetória do autor é uma longa prática de **envolver métodos poderosos em um andaime que os torna úteis no mundo real**: solvers matemáticos dentro de rotinas de PCP, modelos preditivos dentro de processos de negócio, e agora modelos de linguagem dentro de um sistema de recuperação, memória, orçamento e verificação. Este livro é a sistematização dessa disciplina.
 
 > Perfis: [Currículo Lattes](https://lattes.cnpq.br/6253911800847523) · [ORCID 0000-0002-8979-0461](https://orcid.org/0000-0002-8979-0461) · [LinkedIn](https://www.linkedin.com/in/gilsiley-dar%C3%BA/) · Contato: [ghdaru@gmail.com](mailto:ghdaru@gmail.com)
 
@@ -69,11 +69,11 @@ Trabalhos de conclusão em Engenharia de Produção e Computação, entre eles: 
 
 ## Como citar este livro
 
-Esta obra tem **DOI** (Zenodo/DataCite) e é versionada por edição:
+A obra é versionada por edição (ver [Histórico](HISTORICO.md)):
 
-> Darú, Gilsiley Henrique. *Engenharia de Harness — Um livro vivo sobre o scaffolding que envolve agentes de IA*. 2026. DOI: [10.5281/zenodo.21632412](https://doi.org/10.5281/zenodo.21632412)
+> Darú, Gilsiley Henrique. *Engenharia de Prompt e Engenharia de Contexto — Um livro vivo sobre as duas disciplinas que decidem o que o modelo vê*. Edição 0.1, 2026. Disponível em: <https://github.com/GHDaru/rag>
 
-O identificador acompanha a obra viva; cada edição também recebe seu próprio DOI de versão. A co-autoria humano + IA está declarada na [Nota de autoria e método](00-introducao.md#nota-de-autoria-e-metodo).
+O registro de DOI (Zenodo/DataCite) entra quando a obra atingir a edição 1.0 — ver [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md). A co-autoria humano + IA está declarada no [Guia Editorial](GUIA-EDITORIAL.md) e registrada, edição a edição, no [Histórico](HISTORICO.md).
 
 ## Perfis e contato
 
@@ -84,4 +84,4 @@ O identificador acompanha a obra viva; cada edição também recebe seu próprio
 
 ---
 
-*Esta página é parte do aparato do livro (back matter). Os fatos vêm do Currículo Lattes, do perfil profissional público e de fontes verificáveis; instituições e empresas são citadas como trajetória, não como endosso. Sobre a co-autoria humano + IA desta obra, veja a [Nota de autoria e método](00-introducao.md#nota-de-autoria-e-metodo) na introdução.*
+*Esta página é parte do aparato do livro (back matter). Os fatos vêm do Currículo Lattes, do perfil profissional público e de fontes verificáveis; instituições e empresas são citadas como trajetória, não como endosso. Sobre a co-autoria humano + IA desta obra, veja o [Guia Editorial](GUIA-EDITORIAL.md).*

@@ -23,9 +23,7 @@ import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
 import MarkdownIt from "markdown-it";
 import anchor from "markdown-it-anchor";
-import * as esbuild from "esbuild";
 import { gerarGrafo } from "./grafo.mjs";
-import { gerarJornal } from "./jornal.mjs";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = resolve(AQUI, "..");
@@ -35,7 +33,11 @@ const SAIDA = resolve(RAIZ, EN ? "docs/en" : "docs");
 const A = EN ? "../assets/" : "assets/"; // assets são compartilhados na raiz de docs/
 
 const sumario = JSON.parse(readFileSync(resolve(AQUI, EN ? "sumario.en.json" : "sumario.json"), "utf8"));
-const sumarioOutro = JSON.parse(readFileSync(resolve(AQUI, EN ? "sumario.json" : "sumario.en.json"), "utf8"));
+// Bilíngue é opcional (v1 é só PT — ver ROADMAP): sem o sumário do outro idioma,
+// o motor omite a pill de idioma e os hreflang alternates em vez de quebrar.
+const arqOutro = resolve(AQUI, EN ? "sumario.json" : "sumario.en.json");
+const BILINGUE = existsSync(arqOutro);
+const sumarioOutro = BILINGUE ? JSON.parse(readFileSync(arqOutro, "utf8")) : { partes: [] };
 
 // Lista linear de itens publicáveis (para prev/next); itens `externo` ficam só na navegação.
 const slugDe = (arquivo) => basename(arquivo).replace(/\.md$/, "").toLowerCase();
@@ -53,9 +55,9 @@ sumario.partes.forEach((p, pi) =>
 );
 const hrefOutroIdioma = (slug) => (EN ? `../${parDe[slug] || "sumario"}.html` : `en/${parDe[slug] || "sumario"}.html`);
 
-const GITHUB_BASE = "https://github.com/GHDaru/harness_engineering/blob/main/";
-const SITE = "https://ghdaru.github.io/harness_engineering/";
-const DOI = "10.5281/zenodo.21632412";
+const GITHUB_BASE = "https://github.com/GHDaru/rag/blob/main/";
+const SITE = "https://ghdaru.github.io/rag/";
+const DOI = "";
 
 // Dicionário do chrome (spec 067). O conteúdo vem do Markdown; isto é só a moldura.
 const T = EN
@@ -128,15 +130,15 @@ const T = EN
       capKicker: "Cap.",
       anterior: "← anterior",
       proximo: "próximo →",
-      rodape: `Livro vivo · gerado do Markdown pelo motor próprio · <a href="https://github.com/GHDaru/harness_engineering">fonte no GitHub</a>`,
+      rodape: `Livro vivo · gerado do Markdown pelo motor próprio · <a href="https://github.com/GHDaru/rag">fonte no GitHub</a>`,
       bibliografiaHtml: "bibliografia.html",
       verCitacao: "ver na Bibliografia",
-      splashDesc: "Um estudo empírico da disciplina de construir o <em>scaffolding</em> que envolve agentes de IA — teoria, benchmark de harnesses reais e uma construção prática do zero.",
-      splashAlt: "Capa de Engenharia de Harness: um núcleo de IA luminoso, em âmbar, envolto por um harness de engenharia com módulos de loop, ferramenta, permissões, memória e verificação, sobre fundo azul-escuro com traços de blueprint.",
+      splashDesc: "As duas disciplinas que decidem o que o modelo vê: <em>o que se escreve</em> (prompt) e <em>o que se monta em runtime</em> (contexto) — com o RAG no lugar certo, dentro da segunda.",
+      splashAlt: "Capa de Engenharia de Prompt e Engenharia de Contexto: o título em branco e âmbar sobre fundo azul-escuro com malha de blueprint, e abaixo um diagrama da janela de contexto em cinco camadas — instrução, exemplos e regras, recuperado (RAG), memória e ferramentas — com a legenda \"tudo isso disputa um orçamento único\".",
       entrarLivro: "Entrar no livro →",
-      benchmarkBtn: "Benchmark",
+      benchmarkBtn: "Técnicas",
       guiaBtn: "Guia Editorial",
-      hrefComparativo: "comparativo.html",
+      hrefComparativo: "apendice-tecnicas.html",
       hrefGuia: "guia-editorial.html",
       hrefHistorico: "historico.html",
       newsKicker: "🗞 Novidade",
@@ -144,24 +146,24 @@ const T = EN
       verRadar: "ver o Radar completo →",
       nestaEdicao: "Nesta edição",
       historicoNome: "Histórico",
-      creditos: `<strong><a href="autor.html">Gilsiley Henrique Darú</a></strong> — edição, direção e orquestração · <a class="splash-linkedin" href="https://www.linkedin.com/in/gilsiley-dar%C3%BA/">LinkedIn</a><br><strong>Claude (Anthropic)</strong> — pesquisa e geração de texto (co-autoria) · <strong>GPT (OpenAI)</strong> — imagem de capa`,
+      creditos: `<strong><a href="autor.html">Gilsiley Henrique Darú</a></strong> — edição, direção e orquestração · <a class="splash-linkedin" href="https://www.linkedin.com/in/gilsiley-dar%C3%BA/">LinkedIn</a><br><strong>Claude (Anthropic)</strong> — pesquisa e geração de texto (co-autoria) · capa tipográfica gerada pelo próprio motor do livro`,
       atualizadoEm: "atualizado em",
       kickerEntrada: "Livro vivo",
       comecar: "▶ Começar do início — 00",
-      pdfLivro: "pdf/engenharia-de-harness.pdf",
-      mdLivro: "md/engenharia-de-harness.md",
+      pdfLivro: "pdf/engenharia-de-prompt-e-contexto.pdf",
+      mdLivro: "md/engenharia-de-prompt-e-contexto.md",
       pdfLivroTitulo: "Livro completo em PDF",
       mdLivroTitulo: "Livro completo em Markdown (bom para LLMs)",
       continueLendo: "Continue lendo",
       retomar: "Retomar ▶",
       trilha: [
         ["01-fundamentos.html", "Trilha · 1", "Fundamentos", "O vocabulário e a tese do livro."],
-        ["02-loop-do-agente.html", "Trilha · 2", "Funcionalidades", "Os 16 componentes, um por capítulo."],
-        ["comparativo.html", "Trilha · 3", "Benchmark", "10 harnesses reais comparados."],
-        ["https://github.com/GHDaru/harness_engineering/tree/main/harness-zero", "Trilha · 4", "Mão na massa", "Construa o harness-zero, etapa a etapa."],
+        ["02-anatomia-do-prompt.html", "Trilha · 2", "Engenharia de Prompt", "O que se escreve: seis capítulos."],
+        ["08-janela-como-orcamento.html", "Trilha · 3", "Engenharia de Contexto", "O que se monta em runtime — RAG incluso."],
+        ["apendice-tecnicas.html", "Trilha · 4", "Catálogo", "As técnicas, uma a uma, com quando usar."],
       ],
-      partesCartao: new Set(["Abertura", "Capítulos por funcionalidade"]),
-      pillsRotulo: "Benchmark · Aparato · Sobre",
+      partesCartao: new Set(["Abertura", "Parte I — Engenharia de Prompt", "Parte II — Engenharia de Contexto"]),
+      pillsRotulo: "Catálogo · Aparato · Sobre",
       dataLocale: "pt-BR",
       sincOk: null,
       sincAtras: null,
@@ -175,20 +177,28 @@ const T = EN
 const COMPANION_BACKEND = sumario.companion_backend || "";
 const COMPANION_CAPS = [
   { chave: "tutor", rotulo: "Tutor do livro", libera: 0 },
-  { chave: "busca_livro", rotulo: "Busca no livro", libera: 0 },
-  { chave: "loop", rotulo: "Loop de agente", libera: 2 },
-  { chave: "contexto", rotulo: "Contexto em camadas", libera: 3 },
-  { chave: "compactacao", rotulo: "Compactação", libera: 4 },
-  { chave: "ferramentas", rotulo: "Ferramentas seguras", libera: 5 },
-  { chave: "mcp", rotulo: "MCP", libera: 6 },
-  { chave: "permissoes", rotulo: "Permissões", libera: 7 },
-  { chave: "memoria", rotulo: "Memória entre sessões", libera: 8 },
-  { chave: "planejamento", rotulo: "Planejamento", libera: 9 },
-  { chave: "subagentes", rotulo: "Subagentes", libera: 10 },
-  { chave: "evals", rotulo: "Verificação", libera: 11 },
+  { chave: "prompt_em_camadas", rotulo: "Prompt em camadas", libera: 2 },
+  { chave: "raciocinio", rotulo: "Raciocínio explícito", libera: 3 },
+  { chave: "saida_estruturada", rotulo: "Saída estruturada", libera: 4 },
+  { chave: "persona", rotulo: "Persona e regras", libera: 5 },
+  { chave: "auto_otimizacao", rotulo: "Prompt otimizado", libera: 6 },
+  { chave: "eval_prompt", rotulo: "Eval de prompt", libera: 7 },
+  { chave: "orcamento", rotulo: "Orçamento de janela", libera: 8 },
+  { chave: "corpus", rotulo: "Corpus curado", libera: 9 },
+  { chave: "recuperacao", rotulo: "Recuperação (RAG)", libera: 10 },
+  { chave: "rag_avancado", rotulo: "RAG avançado", libera: 11 },
+  { chave: "rag_agentico", rotulo: "RAG agêntico", libera: 12 },
+  { chave: "memoria", rotulo: "Memória entre sessões", libera: 13 },
+  { chave: "compactacao", rotulo: "Compactação", libera: 14 },
+  { chave: "ferramentas", rotulo: "Ferramentas e MCP", libera: 15 },
+  { chave: "evals", rotulo: "Avaliação do sistema", libera: 16 },
+  { chave: "seguranca", rotulo: "Contexto não confiável", libera: 17 },
 ];
 const capituloDe = (titulo) => parseInt((String(titulo).match(/^\s*(\d+)/) || [])[1], 10) || 0;
 function companionSnippet(chapter) {
+  // Sem backend configurado, o widget não é injetado: um chat que não responde
+  // é pior que chat nenhum. Volta quando o companion for publicado (rodada 3).
+  if (!COMPANION_BACKEND) return "";
   const cfg = JSON.stringify({ backend: COMPANION_BACKEND, chapter, mode: "progressivo", lang: LANG, capabilities: COMPANION_CAPS });
   return `<script>window.COMPANION=${cfg.replace(/</g, "\\u003c")}</script>
 <link rel="stylesheet" href="${A}companion.css">
@@ -330,12 +340,14 @@ const dividirTitulo = (t) => {
 
 // Seletor de idioma (spec 067): pill PT·EN presente em todas as páginas.
 function pillIdioma(slug) {
+  if (!BILINGUE) return "";
   const alvo = hrefOutroIdioma(slug);
   const atual = EN ? "EN" : "PT";
   const outro = T.outroIdioma;
   return `<nav class="lang-pill" aria-label="Idioma / Language"><span class="lang-atual">${atual}</span><a href="${alvo}" title="${T.outroIdiomaTitulo}" data-lang-alvo="${EN ? "pt" : "en"}">${outro}</a></nav>`;
 }
 function hreflangs(slug) {
+  if (!BILINGUE) return "";
   const aqui = EN ? `en/${slug}.html` : `${slug}.html`;
   const la = EN ? `${parDe[slug] || "sumario"}.html` : `en/${parDe[slug] || "sumario"}.html`;
   const pt = EN ? la : aqui, en = EN ? aqui : la;
@@ -386,7 +398,6 @@ ${pillIdioma(slug)}
   </main>
 </div>
 <script src="${A}app.js"></script>
-<script src="${A}viz.js" defer></script>
 <script src="${A}uso.js" defer></script>
 <script src="${A}grafo.js" defer></script>
 ${companionSnippet(chapter)}
@@ -494,7 +505,7 @@ ${pillIdioma("index")}
       : ""}
     <p class="splash-creditos">${T.creditos}</p>
     <p class="splash-versao"><span class="splash-versao-num">${versao}</span> · ${T.atualizadoEm} ${atualizado}</p>
-    <p class="splash-doi"><a href="https://doi.org/10.5281/zenodo.21632412">DOI: 10.5281/zenodo.21632412</a></p>
+    ${DOI ? `<p class="splash-doi"><a href="https://doi.org/${DOI}">DOI: ${DOI}</a></p>` : ""}
   </div>
 </main>
 <script src="${A}app.js"></script>
@@ -531,8 +542,6 @@ if (!EN) {
   cpSync(resolve(AQUI, "tema/capa.png"), resolve(SAIDA, "assets/capa.png"));
   cpSync(resolve(AQUI, "tema/capa-social.png"), resolve(SAIDA, "assets/capa-social.png"));
   cpSync(resolve(AQUI, "tema/autor.png"), resolve(SAIDA, "assets/autor.png"));
-  cpSync(resolve(AQUI, "tema/harness-diagrama.svg"), resolve(SAIDA, "assets/harness-diagrama.svg"));
-  cpSync(resolve(RAIZ, "harness-um/assets/harness-um.svg"), resolve(SAIDA, "assets/harness-um.svg"));
   cpSync(resolve(AQUI, "tema/companion.css"), resolve(SAIDA, "assets/companion.css"));
   cpSync(resolve(AQUI, "tema/companion.js"), resolve(SAIDA, "assets/companion.js"));
   cpSync(resolve(AQUI, "tema/uso.js"), resolve(SAIDA, "assets/uso.js"));
@@ -542,17 +551,9 @@ if (!EN) {
   cpSync(resolve(AQUI, "tema/apple-touch-icon.png"), resolve(SAIDA, "assets/apple-touch-icon.png"));
   writeFileSync(resolve(SAIDA, ".nojekyll"), "");
 
-  // Bundle das ilhas de visualização React (P2). Dados embutidos em build-time.
-  await esbuild.build({
-    entryPoints: [resolve(AQUI, "viz/index.jsx")],
-    bundle: true,
-    minify: true,
-    format: "iife",
-    loader: { ".json": "json" },
-    jsx: "automatic",
-    outfile: resolve(SAIDA, "assets/viz.js"),
-    logLevel: "warning",
-  });
+  // As ilhas React (tabela do benchmark, placar de expiração) voltam quando
+  // houver dado para elas — rodadas 4 e 6 do ROADMAP. O grafo do livro é
+  // servido por assets/grafo.js, que não depende de bundle.
 }
 
 let gerados = 0;
@@ -621,7 +622,7 @@ mkdirSync(resolve(SAIDA, "md"), { recursive: true });
     writeFileSync(resolve(SAIDA, "md", `${item.slug}.md`), bruto);
     partesMd.push(bruto.trim());
   }
-  const cabecalho = `# ${sumario.titulo}\n\n> ${sumario.subtitulo}\n>\n> ${versaoDoLivro()} · DOI ${DOI} · fonte: https://github.com/GHDaru/harness_engineering · site: ${SITE}\n\n---\n\n`;
+  const cabecalho = `# ${sumario.titulo}\n\n> ${sumario.subtitulo}\n>\n> ${versaoDoLivro()}${DOI ? ` · DOI ${DOI}` : ""} · fonte: https://github.com/GHDaru/rag · site: ${SITE}\n\n---\n\n`;
   writeFileSync(resolve(SAIDA, T.mdLivro), cabecalho + partesMd.join("\n\n---\n\n") + "\n");
 }
 
@@ -685,7 +686,7 @@ const corpoSumario = `<section class="entrada">
   <div class="ent-hero">
     <img class="ent-capa" src="${A}capa.png" width="1024" height="1536" loading="eager" alt="${T.splashAlt}">
     <div class="ent-hero-txt">
-      <div class="ent-kicker">${T.kickerEntrada} · ${versaoDoLivro()} · DOI ${DOI}</div>
+      <div class="ent-kicker">${T.kickerEntrada} · ${versaoDoLivro()}${DOI ? ` · DOI ${DOI}` : ""}</div>
       <h1 class="ent-titulo">${sumario.titulo}</h1>
       <p class="ent-sub">${sumario.subtitulo}</p>
       <div class="ent-ctas">
@@ -724,28 +725,11 @@ writeFileSync(
   })
 );
 
-// Radar-jornal (spec 071): docs/radar.html — o diário do Radar diagramado
-// como site de notícias (PT-only; registro operacional, decisão da 067).
-if (!EN) {
-  const jornal = gerarJornal(RAIZ, md, versaoDoLivro());
-  if (jornal) {
-    writeFileSync(
-      resolve(SAIDA, "radar.html"),
-      pagina({
-        tituloLivro: sumario.titulo,
-        tituloPagina: "Radar — o jornal do livro vivo",
-        corpo: jornal,
-        navLateral: montarNavLateral("radar"),
-        prev: null, next: null, data: null, slug: "radar",
-      })
-    );
-    console.log("✓ Radar-jornal: docs/radar.html");
-  }
-}
+// O Radar (jornal de atualização) está fora do escopo da v1 — ver ROADMAP.md.
 
 // Portão de qualidade (T402): links internos .html apontam para páginas
 // existentes NO MESMO idioma; "../" cruza para o outro idioma (validado lá).
-const paginas = new Set(itens.map((i) => `${i.slug}.html`).concat("index.html", "sumario.html", EN ? [] : ["radar.html"]));
+const paginas = new Set(itens.map((i) => `${i.slug}.html`).concat("index.html", "sumario.html"));
 const quebrados = [];
 for (const i of [...itens, { slug: "index" }, { slug: "sumario" }]) {
   const arq = resolve(SAIDA, `${i.slug}.html`);

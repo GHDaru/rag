@@ -1,4 +1,4 @@
-"""Chat-companion — o backend (harness-zero ao vivo).
+"""Chat-companion — o backend (contexto-zero ao vivo).
 
 Composition root: escolhe os adapters por ambiente (echo/openai, memória/Neon),
 monta as portas e expõe a API que o widget do site consome. Fallbacks seguros:
@@ -26,7 +26,7 @@ from ragindex import BookIndex
 from store import make_store
 from tools import Tools
 
-app = FastAPI(title="chat-companion · Engenharia de Harness")
+app = FastAPI(title="chat-companion · Engenharia de Prompt e Contexto")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.ALLOWED_ORIGINS,
@@ -73,7 +73,7 @@ def _system_prompt(chapter: Optional[int], mode: str, achados: list[dict],
     lista = ", ".join(c["rotulo"] for c in caps) or "Tutor do livro"
     obj = (f"\n\nObjetivo declarado do leitor: {goal}\n"
            "Conecte as respostas a este objetivo; ao traçar planos de ensino, "
-           "sugira a ordem de capítulos e as etapas do harness-zero que melhor o servem, "
+           "sugira a ordem de capítulos e as etapas do contexto-zero que melhor o servem, "
            "e sempre aponte o próximo passo concreto.") if goal else ""
     ctx = ("\n\nTrechos do livro relevantes (use como evidência e cite a fonte entre colchetes):\n"
            + "\n".join(f"- [{a['fonte']} · {a['titulo']}] {a['trecho']}" for a in achados)
@@ -84,8 +84,9 @@ def _system_prompt(chapter: Optional[int], mode: str, achados: list[dict],
                 "Se pedirem algo de um capítulo à frente, explique que aquela capacidade "
                 "ainda não foi liberada e de qual capítulo ela vem.")
     return (
-        "Você é o companion do livro vivo 'Engenharia de Harness', em português. "
-        "Ajuda o leitor a entender o scaffolding que envolve agentes de IA. "
+        "Você é o companion do livro vivo 'Engenharia de Prompt e Engenharia de Contexto', "
+        "em português. Ajuda o leitor a decidir o que o modelo vê: o que se escreve (prompt) "
+        "e o que se monta em runtime (contexto) — com RAG no lugar certo, dentro da segunda. "
         "Seja preciso e conciso; ancore afirmações no texto do livro; sem inventar fontes. "
         f"Capacidades ativas agora: {lista}. {modo_txt}{obj}{ctx}"
     )
@@ -167,8 +168,8 @@ def _enviar_email_sugestao(texto: str, pagina: str, session_id: str) -> bool:
         return False
     try:
         msg = EmailMessage()
-        msg["Subject"] = f"[Engenharia de Harness] Sugestão de leitor ({pagina or 'site'})"
-        msg["From"] = config.SMTP_USER or "companion@harness"
+        msg["Subject"] = f"[Engenharia de Prompt e Contexto] Sugestão de leitor ({pagina or 'site'})"
+        msg["From"] = config.SMTP_USER or "companion@livro"
         msg["To"] = config.SUGGESTION_EMAIL_TO
         msg.set_content(f"Sugestão recebida pelo companion do livro.\n\n"
                         f"Página: {pagina or '-'}\nSessão (anônima): {session_id}\n\n{texto}\n")

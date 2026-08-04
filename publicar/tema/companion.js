@@ -472,7 +472,7 @@
         .catch(function () {})
         .then(function () {
           addMsg("sys", tx("🎯 Objetivo gravado. Ele agora acompanha todas as suas conversas (veja nos Bastidores).", "🎯 Goal saved. It now travels with all your conversations (see it in Behind the scenes)."));
-          sendMsg(tx("Meu objetivo é: " + objetivo + ". Trace um plano de ensino por este livro para mim (ordem de capítulos, o que praticar no harness-zero e por onde começar hoje).", "My goal is: " + objetivo + ". Lay out a teaching plan through this book for me (chapter order, what to practice in harness-zero, and where to start today)."));
+          sendMsg(tx("Meu objetivo é: " + objetivo + ". Trace um plano de ensino por este livro para mim (ordem de capítulos, o que praticar no contexto-zero e por onde começar hoje).", "My goal is: " + objetivo + ". Lay out a teaching plan through this book for me (chapter order, what to practice in contexto-zero, and where to start today)."));
         });
       return;
     }

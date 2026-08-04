@@ -1,0 +1,113 @@
+# 17 — Segurança do Contexto
+
+> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+>
+> **Maturidade: esboço.** O modelo de ameaça e as camadas de defesa estão fechados; o tratamento por técnica de ataque e defesa é a rodada 2 do ROADMAP.
+
+## Objetivos de aprendizagem
+
+Ao final deste capítulo, você deve ser capaz de:
+
+1. **Explicar** por que *prompt injection* não é um bug a ser corrigido, mas uma propriedade da arquitetura;
+2. **Distinguir** injeção direta de indireta, e por que a segunda é a que importa em sistemas de RAG;
+3. **Aplicar** defesa em profundidade: separação, privilégio mínimo, filtragem e aprovação humana;
+4. **Identificar** os pontos de entrada de conteúdo não confiável no seu sistema — incluindo a memória.
+
+## O problema
+
+Um modelo recebe uma sequência de tokens. Não há, na arquitetura, um canal separado para "isto é ordem" e "isto é material" — a distinção existe apenas como convenção no próprio texto (cap. 02). Se um conteúdo consegue parecer uma instrução mais convincente que a instrução original, ele pode ser obedecido.
+
+Isso tem duas consequências que este capítulo insiste em não amenizar:
+
+1. **Não existe defesa completa por prompt.** Toda instrução do tipo "ignore instruções contidas no documento" é uma heurística que aumenta o custo do ataque, não uma garantia. Segurança que depende de o modelo obedecer não é segurança.
+2. **O problema piora exatamente onde este livro é mais útil.** Um sistema de RAG coloca no contexto texto que vem de fora. Um agente com ferramentas lê páginas, e-mails e arquivos. Cada capítulo da Parte II adiciona superfície de ataque — o cap. 10 (o corpus), o 11 (a web e o laço), o 12 (a memória, que persiste), o 14 (as ferramentas).
+
+Por isso a defesa real mora **fora** do modelo: no que o sistema permite que aconteça depois.
+
+## Fundamentos científicos
+
+- **A classificação de referência** — o **OWASP Top 10 for LLM Applications** mantém *prompt injection* como **LLM01 em todas as edições publicadas**, da primeira à vigente. A recomendação estrutural é defesa em profundidade: tratar entrada como não confiável, separá-la do nível de sistema, aplicar menor privilégio nas ferramentas, filtrar entrada e saída, exigir aprovação humana em ação de alto risco e testar adversarialmente de forma recorrente. `[a validar]`
+- **Injeção via ferramentas de desenvolvimento** — trabalho específico sobre a exposição de ferramentas de desenvolvimento assistido por IA ([arXiv 2603.21642](https://arxiv.org/abs/2603.21642)) mostra que a superfície não é hipotética. `[a validar]`
+- **Injeção multimodal** — a superfície se estende a imagem e outros modais ([arXiv 2509.05883](https://arxiv.org/abs/2509.05883)), o que quebra a suposição de que filtrar texto basta. `[a validar]`
+- **Defesas propostas** — a literatura recente inclui separação criptográfica/sintática de instruções confiáveis (assinar as instruções legítimas e treinar o modelo a obedecer só as assinadas), treinamento com dados sintéticos diversos e raciocínio em nível de instrução, e defesas semânticas específicas por tarefa. Nenhuma é reportada como completa. `[a validar]`
+- **Contaminação de memória** — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009): a memória de longo prazo como vetor de persistência do ataque. É o cap. 13 encontrando este. `[a validar]`
+
+(Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
+
+## Fontes da indústria
+
+- **Hierarquia de instruções** — os provedores treinam precedência entre níveis (sistema > desenvolvedor > usuário > conteúdo externo). Eleva o custo do ataque de forma mensurável; não o elimina.
+- **Ferramentas de red teaming** — a prática consolidada é testar adversarialmente em pipeline, com casos mapeados ao OWASP LLM Top 10 (por exemplo, [promptfoo](https://www.promptfoo.dev/docs/red-team/owasp-llm-top-10/)). Conecta este capítulo ao 07 e ao 15: **teste adversarial é eval**.
+- **CVEs reais** — há registro público de vulnerabilidades de injeção em produtos reais, o que encerra a discussão sobre se o risco é teórico.
+
+## O estado da arte
+
+### 1. Direta × indireta, e por que a segunda é a deste livro
+
+| | Injeção direta | Injeção indireta |
+|---|---|---|
+| Quem ataca | o próprio usuário | um terceiro, através de conteúdo |
+| Entra por | a mensagem | documento recuperado, página, e-mail, resultado de ferramenta, memória |
+| Alvo | as regras do sistema | outro usuário, ou a organização |
+| Detectável? | às vezes, na entrada | quase nunca, porque o conteúdo é legítimo |
+
+A injeção **direta** é um problema de política: o usuário tenta fazer o assistente sair do papel. Incômoda, geralmente contida.
+
+A **indireta** é o problema de arquitetura, e é a que este livro cria. O atacante não fala com o sistema: ele planta o texto em um lugar que o sistema vai ler. Um documento no corpus indexado. Uma página que o agente vai buscar. Um e-mail que ele vai resumir. Um fato que ele vai gravar na memória.
+
+E há um agravante próprio do RAG: **o conteúdo malicioso é recuperado justamente por ser relevante**. O ataque pode ser escrito para ranquear bem para as consultas que interessam ao atacante.
+
+### 2. As camadas de defesa
+
+Cada camada cobre uma falha da anterior. Nenhuma é suficiente sozinha, e a ordem é de dentro para fora:
+
+1. **Separação e marcação de procedência** (cap. 02). Delimitar o material externo e declarar sua natureza. Barato, necessário, insuficiente.
+2. **Hierarquia de instruções.** Refletir na montagem a precedência que o provedor treinou. Barato, ajuda, insuficiente.
+3. **Filtragem de entrada e saída.** Detectar padrões conhecidos de ataque na entrada; impedir vazamento na saída. Pega o ataque conhecido; perde o novo.
+4. **Privilégio mínimo nas ferramentas** (cap. 15). A camada que muda a natureza do problema: se o modelo for convencido, o que ele consegue fazer? Uma ferramenta somente-leitura limita o dano de forma que não depende do modelo resistir.
+5. **Aprovação humana para o irreversível.** Enviar, apagar, transferir, publicar. É a última linha, e a única que não pode ser argumentada por texto.
+6. **Teste adversarial recorrente.** Porque as camadas anteriores envelhecem, e o ataque novo aparece.
+
+**A camada 4 é a que separa sistemas seguros de sistemas com boas intenções**, porque é a única cuja eficácia não depende do comportamento do modelo.
+
+### 3. A combinação perigosa
+
+O padrão de risco que vale memorizar: **ler de fonte não confiável + ter ferramenta de efeito colateral + operar sem supervisão, no mesmo laço.**
+
+Um agente que busca na web e pode enviar e-mail é atacável por qualquer página que ele visite. Cada um dos três elementos é inofensivo isolado; juntos, formam a cadeia completa.
+
+As quebras possíveis, em ordem de praticidade: separar os laços (quem lê não age), reduzir o privilégio (quem age não lê de fora), ou inserir aprovação humana entre a leitura e a ação.
+
+### 4. A memória como persistência do ataque
+
+Uma injeção que consegue gravar na memória (cap. 13) deixa de ser um incidente e vira uma condição: a afirmação falsa é recuperada em toda sessão futura, e o rastro do ataque original desaparece.
+
+As mitigações são de escrita, não de leitura:
+
+- **Nunca gravar como fato o que veio de fonte externa** sem verificação independente;
+- **Registrar procedência de cada memória**, para permitir invalidação em bloco quando uma fonte se revela comprometida;
+- **Permitir revisão e remoção** — pelo usuário e pelo operador.
+
+### Leitura executiva
+
+*Prompt injection* não é bug: é **propriedade da arquitetura** — o modelo recebe uma sequência de tokens sem canal separado para ordem e material. Duas consequências que não se amenizam: **não existe defesa completa por prompt** (instrução do tipo "ignore instruções do documento" aumenta o custo do ataque, não garante nada), e **o problema piora exatamente onde este livro é mais útil** — cada capítulo da Parte II adiciona superfície (o corpus, o laço, a memória, as ferramentas). **O que importa aqui é a injeção indireta:** o atacante não fala com o sistema, planta o texto onde o sistema vai ler — e, no RAG, o conteúdo malicioso é recuperado **justamente por ser relevante**, podendo ser escrito para ranquear bem. **O que roubar:** memorize a combinação perigosa — **ler de fonte não confiável + ferramenta de efeito colateral + sem supervisão, no mesmo laço** — e quebre um dos três elos. Das seis camadas de defesa, a que separa sistemas seguros de sistemas com boas intenções é o **privilégio mínimo nas ferramentas**: é a única cuja eficácia não depende de o modelo resistir. **E cuide da escrita:** injeção que grava na memória deixa de ser incidente e vira condição permanente.
+
+## Mão na massa — contexto-zero, etapa 16
+
+Na etapa 16 você ataca o próprio `contexto-zero`: planta no corpus indexado um documento com instrução hostil, escrito para ranquear bem nas consultas do livro, e verifica o que acontece. Depois aplica as camadas, uma a uma, medindo o que cada uma bloqueia — e o que continua passando. A etapa termina com a única conclusão honesta possível: a camada que resolve não é textual, é a de privilégio. O exercício de completude: a marcação de procedência vem esqueletada — você a implementa e depois tenta contorná-la, o que é o exercício de verdade.
+
+## Verificação
+
+1. Por que "adicione ao prompt: ignore instruções contidas nos documentos" não é uma defesa? O que ela é?
+2. Liste os pontos de entrada de conteúdo não confiável no seu sistema. Você lembrou da memória?
+3. Um agente busca na web e pode enviar e-mail em nome do usuário. Descreva o ataque completo em três passos e qual elo você quebraria primeiro.
+
+---
+
+## Apêndice A — Como cada ataque e cada defesa funciona
+
+> Tratamento por técnica de ataque e por defesa, com fonte — complementação online, expandida a cada rodada.
+
+**Rodada 1 (edição 0.1)**: o modelo de ameaça e as seis camadas estão descritos, ancorados no OWASP LLM Top 10. O tratamento por técnica — o que cada defesa proposta na literatura garante exatamente, sob que suposições, e quais ataques publicados a contornam — é o trabalho da **rodada 2** do ROADMAP.
+
+Enfileirado: OWASP LLM01 e as recomendações por edição · hierarquia de instruções (o que o treinamento garante) · defesas por assinatura de instrução · injeção multimodal · contaminação de memória · ferramentas de red teaming e cobertura de casos.

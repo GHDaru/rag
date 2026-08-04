@@ -1,5 +1,7 @@
 # Parecer editorial e plano pedagógico do livro
 
+> **Nota de herança (2026-08-04).** Este parecer foi escrito para o livro irmão *Engenharia de Harness* e é mantido aqui **como escrito**, porque é a origem documentada do **Princípio III** (o método pedagógico combinado: Backward Design + 4C/ID + Diátaxis + Carga Cognitiva) que este projeto adota. Os exemplos são daquele domínio (harnesses, `harness-zero`); a **escolha metodológica** que ele fundamenta é a mesma. O plano de capítulos deste livro está no [ROADMAP](../ROADMAP.md) e no [Guia Editorial](../livro/GUIA-EDITORIAL.md).
+
 > Data: 2026-07-25 · Papel: editor pedagógico e de escrita · Escopo: (1) avaliar a proposta "construção de um harness completo com DDD + Hexagonal + chat"; (2) escolher o framework pedagógico e de escrita; (3) planejar os capítulos com objetivos de aprendizagem; (4) mapear a bibliografia científica candidata por capítulo.
 
 ---
@@ -12,7 +14,7 @@
 
 1. **O livro precisa disso.** Hoje ele é analítico — lê código dos outros. Toda a literatura de aprendizagem complexa (4C/ID, construcionismo) diz o mesmo: competência profissional se forma em *tarefas inteiras*, não em análise de partes. Um projeto-fio-condutor transforma o leitor de espectador em construtor, e dá ao livro o terceiro pilar que falta: **teoria (fundamentos) + evidência (benchmark) + prática (construção)**.
 2. **Hexagonal não é escolha arbitrária — é o padrão real do domínio.** O benchmark já provou isso sem querer: os melhores harnesses convergiram para portas-e-adaptadores. O `software-agent-sdk` tem tudo como ABC plugável (condenser, analyzer, store); o IronClaw formaliza "ports" no kernel boundary; o opencode separa core/protocol/client; o provedor de modelo é a porta canônica de todos. Ensinar harness *é* ensinar a desenhar essas portas — a arquitetura hexagonal só dá nome ao que o domínio já exige. Item raro: a escolha arquitetural do exemplo didático coincide com a lição do domínio.
-3. **O chat como front é a janela de observação certa.** Cada dimensão do harness ganha manifestação visível: streaming (cap. 02), pedido de aprovação inline (cap. 07), indicador de compactação (cap. 04), lista de todos (cap. 09). O chat não é um "front bonitinho" — é o instrumento de medição do leitor.
+3. **O chat como front é a janela de observação certa.** Cada dimensão do harness ganha manifestação visível: streaming (cap. 02), pedido de aprovação inline (cap. 07), indicador de compactação (cap. 04), lista de todos (cap. 10). O chat não é um "front bonitinho" — é o instrumento de medição do leitor.
 
 ### As quatro condições (onde a ideia pode afundar o livro)
 
@@ -89,12 +91,12 @@ Cada capítulo de dimensão passa a ter oito seções fixas:
 | 04 Compactação | *Aplicar* a escada truncar→prune→sumarizar | Etapa 5: compactação com indicador visual no chat |
 | 07 Permissões | *Isolar* política como domínio puro e *criticar* política sem contenção | Etapa 6: `PermissionPolicy` + aprovação inline no chat + paths sensíveis fixos |
 | 06 MCP | *Integrar* um servidor MCP externo via adapter | Etapa 7: adapter MCP client (stdio) |
-| 09 Planejamento | *Impor* plan mode via permissões | Etapa 8: modo plan no chat (toggle) |
-| 10 Subagentes | *Delegar* com contexto e permissões isolados | Etapa 9: tool `task` com sessão-filha |
-| 11 Verificação | *Construir* eval mínima com juiz e respostas gravadas | Etapa 10: suíte de evals do próprio Arreio |
-| 12 Extensibilidade | *Expor* hooks nos pontos do ciclo de vida | Etapa 11: hooks pre/post tool |
+| 09 Planejamento | *Impor* plan mode via permissões | Etapa 9: modo plan no chat (toggle) |
+| 10 Subagentes | *Delegar* com contexto e permissões isolados | Etapa 10: tool `task` com sessão-filha |
+| 11 Verificação | *Construir* eval mínima com juiz e respostas gravadas | Etapa 11: suíte de evals do próprio Arreio |
+| 12 Extensibilidade | *Expor* hooks nos pontos do ciclo de vida | Etapa 12: hooks pre/post tool |
 | 13 Interfaces | *Separar* núcleo de superfície | (retrospectiva: o chat foi um adapter o tempo todo) |
-| 16 Aprendizado | *Fechar* um ciclo mínimo de skill learning com anti-padrões | Etapa 12 (avançada): skills que o Arreio escreve |
+| 16 Aprendizado | *Fechar* um ciclo mínimo de skill learning com anti-padrões | Etapa 13 (avançada): skills que o Arreio escreve |
 | 14/15/17 | *Analisar* convergências, embutidos e protocolos | sem etapa (capítulos analíticos) |
 
 *(Ordem das etapas ≠ ordem dos capítulos em dois pontos — tools antes de contexto — porque a construção exige; o livro sinaliza os desvios.)*
@@ -124,15 +126,15 @@ Cada capítulo de dimensão passa a ter oito seções fixas:
 
 **Cap. 08 (Memória):** ⭐ *Survey on Memory Mechanism of LLM-based Agents* — [2404.13501](https://arxiv.org/abs/2404.13501); *From Storage to Experience* — [2605.06716](https://arxiv.org/abs/2605.06716); *From Human Memory to AI Memory* — [2504.15965](https://arxiv.org/pdf/2504.15965); *Governing Evolving Memory (SSGM)* — [2603.11768](https://arxiv.org/pdf/2603.11768)
 
-**Cap. 09 (Planejamento):** *Understanding the Planning of LLM Agents* (m, 2402.02716); *PLANET: benchmarks de planejamento* — [2504.14773](https://arxiv.org/pdf/2504.14773); *Task-Decoupled Planning* — [2601.07577](https://arxiv.org/pdf/2601.07577)
+**Cap. 10 (Planejamento):** *Understanding the Planning of LLM Agents* (m, 2402.02716); *PLANET: benchmarks de planejamento* — [2504.14773](https://arxiv.org/pdf/2504.14773); *Task-Decoupled Planning* — [2601.07577](https://arxiv.org/pdf/2601.07577)
 
-**Cap. 10 (Multi-agente):** survey multi-agente (m, 2412.17481); *MultiAgentBench* (m); *D3MAS* — [2510.10585](https://arxiv.org/pdf/2510.10585)
+**Cap. 11 (Multi-agente):** survey multi-agente (m, 2412.17481); *MultiAgentBench* (m); *D3MAS* — [2510.10585](https://arxiv.org/pdf/2510.10585)
 
-**Cap. 11 (Evals):** ⭐ *Survey on Evaluation of LLM-based Agents* — [2503.16416](https://arxiv.org/abs/2503.16416); SWE-bench (m, 2310.06770); *2025 AI Agent Index* — [2602.17753](https://arxiv.org/abs/2602.17753)
+**Cap. 12 (Evals):** ⭐ *Survey on Evaluation of LLM-based Agents* — [2503.16416](https://arxiv.org/abs/2503.16416); SWE-bench (m, 2310.06770); *2025 AI Agent Index* — [2602.17753](https://arxiv.org/abs/2602.17753)
 
-**Cap. 16 (Aprendizado):** ⭐ *A Survey of Self-Evolving Agents* — [2507.21046](https://arxiv.org/abs/2507.21046); *Comprehensive Survey of Self-Evolving AI Agents* (m, 2508.07407); Voyager (m, 2305.16291); *Adaptation of Agentic AI: Post-Training, Memory, and Skills* — [2512.16301](https://arxiv.org/pdf/2512.16301)
+**Cap. 17 (Aprendizado):** ⭐ *A Survey of Self-Evolving Agents* — [2507.21046](https://arxiv.org/abs/2507.21046); *Comprehensive Survey of Self-Evolving AI Agents* (m, 2508.07407); Voyager (m, 2305.16291); *Adaptation of Agentic AI: Post-Training, Memory, and Skills* — [2512.16301](https://arxiv.org/pdf/2512.16301)
 
-**Caps. 12/13/15/17:** dimensões com literatura acadêmica rarefeita (extensibilidade, interfaces, embutidos, protocolos) — a lacuna é em si um achado a registrar no livro; cobrir com specs, papers industriais e o survey-âncora transversal.
+**Caps. 13/14/16/18:** dimensões com literatura acadêmica rarefeita (extensibilidade, interfaces, embutidos, protocolos) — a lacuna é em si um achado a registrar no livro; cobrir com specs, papers industriais e o survey-âncora transversal.
 
 ---
 
