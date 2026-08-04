@@ -1,4 +1,4 @@
-# 13 — Compactação e Isolamento
+# 14 — Compactação e Isolamento
 
 > **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
@@ -33,7 +33,7 @@ E há um segundo problema, mais sutil: compactar tem **custo de qualidade que n�
 
 - **Compactação por sumarização** — a prática dominante em assistentes de execução longa: ao aproximar-se do limite, resumir os turnos antigos em um bloco e continuar. A engenharia está nos detalhes: quando disparar, o que preservar literalmente, e como sinalizar ao usuário que aconteceu.
 - **Isolamento por subagente** — a alternativa arquitetural: em vez de compactar um contexto que cresce, distribuir o trabalho entre contextos que não se misturam. Cada subagente recebe uma tarefa fechada e devolve um resultado curto; o contexto principal nunca vê o meio do caminho. Troca compressão por delegação.
-- **Descarregar para fora da janela** — manter o estado em arquivo ou estrutura externa e recuperar sob demanda, em vez de carregar no histórico. É o encontro deste capítulo com o cap. 09: o histórico vira corpus.
+- **Descarregar para fora da janela** — manter o estado em arquivo ou estrutura externa e recuperar sob demanda, em vez de carregar no histórico. É o encontro deste capítulo com o cap. 10: o histórico vira corpus.
 
 ## O estado da arte
 
@@ -55,7 +55,7 @@ Uma lista curta e inegociável:
 
 - **Restrições estabelecidas pelo usuário.** "Nunca me mande e-mail" precisa sobreviver a toda compactação. Restrição vira estado estruturado, não texto no histórico.
 - **Decisões e seus identificadores.** Números de pedido, IDs, valores acordados, nomes de arquivo. São exatamente o que a sumarização apaga primeiro, porque parecem detalhe.
-- **A memória de trabalho.** O plano da tarefa em andamento (cap. 12): se estava implícito no histórico, a compactação o destrói.
+- **A memória de trabalho.** O plano da tarefa em andamento (cap. 13): se estava implícito no histórico, a compactação o destrói.
 - **O que a política exige registrar.** Consentimento, aviso dado, confirmação recebida.
 
 A implicação de arquitetura é o ponto do capítulo: **essas coisas não deveriam estar no histórico em primeiro lugar.** Elas pertencem a estado estruturado, fora do texto compactável. Compactação segura começa antes de compactar — na decisão de que informação crítica não mora em prosa.
@@ -86,9 +86,9 @@ Isolamento é frequentemente a resposta certa para trabalho **decomponível** (a
 
 Toda conversa longa chega ao limite, e a escolha do que sai é feita por alguém — por você, ou pelo acaso da implementação. Nenhuma estratégia é sem perda; a pergunta não é "qual perde menos" e sim **"qual perde o que eu posso perder"**. **O que roubar:** a lista do que **nunca** se compacta (restrições do usuário, identificadores e decisões, memória de trabalho, registros exigidos por política) — e a implicação de arquitetura que ela carrega: **essas coisas não deveriam estar no histórico em primeiro lugar**, e sim em estado estruturado fora do texto compactável. **A alternativa que se esquece:** **isolamento** (subagentes com contextos próprios) resolve trabalho *decomponível* melhor que qualquer resumo; compactação é para conversa *contínua* — e muito sistema aplica a segunda quando precisava da primeira. **Operacional:** dispare por percentual do orçamento (não pelo erro de estouro), corte em fronteira segura, **avise o usuário**, e guarde o original para auditar o que o resumo destruiu.
 
-## Mão na massa — contexto-zero, etapa 12
+## Mão na massa — contexto-zero, etapa 13
 
-Na etapa 12 o `contexto-zero` ganha compactação: gatilho em 70% do orçamento da etapa 7, sumarização em fronteira de turno, e um bloco de **estado estruturado** que nunca é compactado (restrições, identificadores, plano). O teste que fecha a etapa é o que importa: uma restrição estabelecida no turno 2 continua sendo respeitada no turno 40, depois de duas compactações. O exercício de completude: o extrator de estado vem esqueletado — você decide o que promove de prosa para estrutura.
+Na etapa 13 o `contexto-zero` ganha compactação: gatilho em 70% do orçamento da etapa 7, sumarização em fronteira de turno, e um bloco de **estado estruturado** que nunca é compactado (restrições, identificadores, plano). O teste que fecha a etapa é o que importa: uma restrição estabelecida no turno 2 continua sendo respeitada no turno 40, depois de duas compactações. O exercício de completude: o extrator de estado vem esqueletado — você decide o que promove de prosa para estrutura.
 
 ## Verificação
 

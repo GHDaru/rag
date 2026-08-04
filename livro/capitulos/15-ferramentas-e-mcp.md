@@ -1,4 +1,4 @@
-# 14 — Ferramentas e Contexto Externo
+# 15 — Ferramentas e Contexto Externo
 
 > **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
@@ -17,7 +17,7 @@ Ao final deste capítulo, você deve ser capaz de:
 
 Um agente com ferramentas tem uma porta pela qual entra conteúdo que ninguém revisou, em volume que ninguém previu. Uma consulta a um banco pode devolver 40 mil tokens. Uma página web pode devolver instruções disfarçadas de conteúdo. Uma listagem de arquivos pode encher a janela com ruído irrelevante.
 
-O erro conceitual que causa quase todos os problemas deste capítulo: tratar a chamada de ferramenta como **ação** e esquecer que o resultado é **contexto**. Ele ocupa orçamento (cap. 08), pode conter instrução (cap. 16), e permanece no histórico consumindo espaço em todos os turnos seguintes até alguém compactá-lo (cap. 13).
+O erro conceitual que causa quase todos os problemas deste capítulo: tratar a chamada de ferramenta como **ação** e esquecer que o resultado é **contexto**. Ele ocupa orçamento (cap. 08), pode conter instrução (cap. 17), e permanece no histórico consumindo espaço em todos os turnos seguintes até alguém compactá-lo (cap. 14).
 
 Há ainda um custo que precede a chamada: **as definições das ferramentas também ocupam contexto**, em toda requisição. Vinte ferramentas com descrições generosas são um bloco fixo caro, pago mesmo quando nenhuma é usada.
 
@@ -25,7 +25,7 @@ Há ainda um custo que precede a chamada: **as definições das ferramentas tamb
 
 - **Raciocínio integrado a ferramentas** — o survey [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) trata *tool-integrated reasoning* como uma das quatro implementações da engenharia de contexto, ao lado de RAG, memória e multiagente. Ferramenta não é anexo: é fonte de contexto de primeira classe. `[a validar]`
 - **ReAct** — o padrão que formaliza a intercalação de raciocínio e ação, e portanto a entrada de observação externa no contexto. `[a validar]`
-- **Injeção via ferramenta** — há trabalho específico sobre ferramentas de desenvolvimento assistido por IA e sua exposição a *prompt injection* ([arXiv 2603.21642](https://arxiv.org/abs/2603.21642)); a superfície nasce aqui e é tratada no cap. 16. `[a validar]`
+- **Injeção via ferramenta** — há trabalho específico sobre ferramentas de desenvolvimento assistido por IA e sua exposição a *prompt injection* ([arXiv 2603.21642](https://arxiv.org/abs/2603.21642)); a superfície nasce aqui e é tratada no cap. 17. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 
@@ -49,8 +49,8 @@ As mitigações, em ordem de importância:
 
 - **Teto por ferramenta, aplicado no lado do sistema.** Não peça ao modelo que "não traga muito"; trunque no adaptador, e diga explicitamente que truncou.
 - **Resumir antes de inserir** quando o resultado é grande e o que importa é pouco. Uma chamada de resumo é mais barata que 30 mil tokens carregados por dez turnos.
-- **Referência em vez de conteúdo.** Devolver um identificador e permitir que o modelo peça o detalhe se precisar — o just-in-time do cap. 11 aplicado a ferramentas.
-- **Expirar do histórico.** Resultado de ferramenta antigo é o primeiro candidato à compactação (cap. 13), e raramente precisa sobreviver literal.
+- **Referência em vez de conteúdo.** Devolver um identificador e permitir que o modelo peça o detalhe se precisar — o just-in-time do cap. 12 aplicado a ferramentas.
+- **Expirar do histórico.** Resultado de ferramenta antigo é o primeiro candidato à compactação (cap. 14), e raramente precisa sobreviver literal.
 
 ### 2. O custo fixo das definições
 
@@ -76,7 +76,7 @@ A conclusão prática: adotar MCP resolve encanamento e não resolve engenharia 
 
 ### 4. As três defesas mínimas
 
-Para todo conteúdo que entra pela porta das ferramentas (tratamento completo no cap. 16):
+Para todo conteúdo que entra pela porta das ferramentas (tratamento completo no cap. 17):
 
 1. **Marcar a procedência.** O contexto deve deixar explícito que aquele bloco veio de fora e é dado, não instrução.
 2. **Privilégio mínimo.** Uma ferramenta que só lê não deve poder escrever. A combinação perigosa é ler de fonte não confiável **e** ter ferramenta de efeito colateral no mesmo laço.
@@ -86,9 +86,9 @@ Para todo conteúdo que entra pela porta das ferramentas (tratamento completo no
 
 O erro que causa quase tudo neste capítulo é tratar a chamada de ferramenta como **ação** e esquecer que o resultado é **contexto** — que ocupa orçamento, pode conter instrução, e fica no histórico consumindo espaço em todos os turnos seguintes. É o pior concorrente da janela: tamanho imprevisível, conteúdo não revisado e persistente. **O que roubar:** teto por ferramenta aplicado **no adaptador** (não peça ao modelo que se contenha), resumir antes de inserir, devolver **referência em vez de conteúdo**, e expirar resultado antigo do histórico. **O custo que se esquece:** as *definições* das ferramentas são pagas em toda requisição — menos ferramentas bem descritas vencem muitas mal descritas, e a descrição deve ensinar **quando** usar, não como a API funciona. **Sobre MCP:** resolve o encanamento (integração N×M) e **não** resolve engenharia de contexto — um agente com trinta servidores conectados ganhou um problema de orçamento e um de segurança. **Mínimo inegociável:** marcar procedência, privilégio mínimo, e aprovação humana para o irreversível.
 
-## Mão na massa — contexto-zero, etapa 13
+## Mão na massa — contexto-zero, etapa 14
 
-Na etapa 13 o `contexto-zero` ganha ferramentas de verdade, com o adaptador fazendo o trabalho que o modelo não deve fazer: teto de tokens por ferramenta, truncamento anunciado, marcação de procedência no bloco de resultado, e contabilização do custo fixo do catálogo. O teste da etapa injeta uma ferramenta que devolve 50 mil tokens e prova que o orçamento da etapa 7 sobrevive. O exercício de completude: a política de expiração de resultados antigos vem esqueletada — você decide quando um resultado deixa de valer o espaço que ocupa.
+Na etapa 14 o `contexto-zero` ganha ferramentas de verdade, com o adaptador fazendo o trabalho que o modelo não deve fazer: teto de tokens por ferramenta, truncamento anunciado, marcação de procedência no bloco de resultado, e contabilização do custo fixo do catálogo. O teste da etapa injeta uma ferramenta que devolve 50 mil tokens e prova que o orçamento da etapa 7 sobrevive. O exercício de completude: a política de expiração de resultados antigos vem esqueletada — você decide quando um resultado deixa de valer o espaço que ocupa.
 
 ## Verificação
 

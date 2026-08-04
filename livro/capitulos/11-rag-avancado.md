@@ -1,4 +1,4 @@
-# 10 — RAG Avançado
+# 11 — RAG Avançado
 
 > **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
@@ -15,10 +15,10 @@ Ao final deste capítulo, você deve ser capaz de:
 
 ## O problema
 
-O RAG do cap. 09 funciona bem para uma classe de pergunta: fato localizado, expresso com vocabulário próximo do documento, contido em um trecho. Fora dessa classe, ele falha de quatro maneiras distintas — e a cura é diferente para cada uma.
+O RAG do cap. 10 funciona bem para uma classe de pergunta: fato localizado, expresso com vocabulário próximo do documento, contido em um trecho. Fora dessa classe, ele falha de quatro maneiras distintas — e a cura é diferente para cada uma.
 
 1. **O chunk perdeu o contexto de onde veio.** "A margem caiu 12%" é inútil sem saber de que produto e de que trimestre. O índice não sabe; o chunk não diz.
-2. **A pergunta não se parece com a resposta.** O usuário pergunta "por que meu pedido não chegou?" e o documento diz "SLA de entrega em regiões remotas". Nenhum estágio do cap. 09 fecha essa distância.
+2. **A pergunta não se parece com a resposta.** O usuário pergunta "por que meu pedido não chegou?" e o documento diz "SLA de entrega em regiões remotas". Nenhum estágio do cap. 10 fecha essa distância.
 3. **A resposta exige juntar peças.** "Quem aprovou a política que o time do João segue?" precisa de dois ou três saltos entre documentos.
 4. **A pergunta é global.** "Quais são os temas recorrentes nestes 800 chamados?" não tem trecho que a responda — nenhum `top_k` resolve.
 
@@ -61,7 +61,7 @@ E há a assimetria que muda a decisão: custo de **indexação** é pago uma vez
 Melhorar o índice é caro e demorado; melhorar a consulta costuma ser rápido e é frequentemente onde está o ganho:
 
 - **Reescrita** — transformar a pergunta do usuário em uma consulta com o vocabulário do domínio. Em conversas, isso inclui **resolver a referência**: "e no ano passado?" não é uma consulta buscável sem o turno anterior. Esta é a falha 2 na sua forma mais comum e mais ignorada.
-- **Múltiplas consultas** (*RAG Fusion*) — decompor uma pergunta composta em várias, buscar cada uma, e fundir os rankings. É a ponte natural para o cap. 11.
+- **Múltiplas consultas** (*RAG Fusion*) — decompor uma pergunta composta em várias, buscar cada uma, e fundir os rankings. É a ponte natural para o cap. 12.
 - **HyDE** — gerar uma resposta hipotética e usá-la como consulta, porque uma resposta se parece mais com o documento do que a pergunta se parece. Elegante, e vulnerável quando o modelo alucina uma hipótese fora do domínio.
 - **Step-back prompting** — generalizar a pergunta antes de buscar ("qual é o princípio por trás disto?"), recuperar o contexto amplo e só então responder o específico. É o inverso da decomposição: sobe um nível em vez de descer.
 
@@ -83,7 +83,7 @@ GraphRAG muda **do que** se recupera: em vez de trechos, um grafo de entidades e
 
 **Vale quando** o corpus tem entidades recorrentes com relações reais (pessoas, sistemas, contratos, incidentes) e as perguntas exigem atravessá-las — ou quando são globais ("quais os temas", "quem se conecta a quem"), que nenhum `top_k` responde.
 
-**Não vale quando** o corpus é um conjunto de documentos independentes e as perguntas são factuais e locais. Nesse caso o grafo adiciona um pipeline de extração caro, uma fonte nova de erro (extração errada de entidade) e nenhuma resposta que o cap. 09 não desse.
+**Não vale quando** o corpus é um conjunto de documentos independentes e as perguntas são factuais e locais. Nesse caso o grafo adiciona um pipeline de extração caro, uma fonte nova de erro (extração errada de entidade) e nenhuma resposta que o cap. 10 não desse.
 
 O erro típico é adotar grafo pela promessa e descobrir que o problema real era chunk sem contexto — que custava uma fração e se resolvia no índice.
 
@@ -91,7 +91,7 @@ O erro típico é adotar grafo pela promessa e descobrir que o problema real era
 
 Como este capítulo é uma lista de melhorias possíveis, a regra de sequência importa mais que qualquer delas:
 
-1. **Meça primeiro** qual das quatro falhas você tem (cap. 15 dá o instrumento: se a *context recall* está baixa, o problema é achar; se está alta e a *faithfulness* está baixa, o problema não é este capítulo).
+1. **Meça primeiro** qual das quatro falhas você tem (cap. 16 dá o instrumento: se a *context recall* está baixa, o problema é achar; se está alta e a *faithfulness* está baixa, o problema não é este capítulo).
 2. **Aplique uma técnica por vez**, com medição antes e depois. Duas de uma vez e você não sabe qual pagou.
 3. **Recuse o que não pagou.** Complexidade não removida é dívida permanente — e um pipeline com cinco estágios que ninguém entende é pior que um simples que erra de forma conhecida.
 
@@ -99,9 +99,9 @@ Como este capítulo é uma lista de melhorias possíveis, a regra de sequência 
 
 O RAG básico falha de **quatro** maneiras — chunk sem contexto, pergunta que não se parece com a resposta, resposta que exige juntar peças, e pergunta global — e cada uma tem cura própria. **O que roubar:** *contextual retrieval* e *late chunking* resolvem a **mesma** falha com contas muito diferentes (uma passada de LLM sobre todo o corpus × só o modelo de embedding) — escolha pela conta, não pela fama. E lembre da assimetria: custo de **indexação** é pago uma vez; custo de **consulta**, para sempre. **O ganho mais rápido e mais ignorado:** trabalhar do lado da **pergunta** — reescrita (sempre a primeira, por ser a mais barata), múltiplas consultas, HyDE e *step-back*; e, em conversa, resolver referência entre turnos ("e no ano passado?" não é consulta buscável). **Para pergunta global** (a falha que nenhum `top_k` resolve), a cura é criar na indexação os resumos que o corpus não tem — **RAPTOR** (agrupar, resumir, repetir até uma árvore) ou comunidades de grafo; RAPTOR sai mais barato, porque dispensa extração de entidades. **Sobre grafo:** vale para entidades recorrentes com relações reais e perguntas globais; é sobre-engenharia para documentos independentes com perguntas locais — e o erro típico é adotá-lo quando o problema era chunk sem contexto. **A regra que vale mais que as técnicas:** meça qual das quatro falhas você tem, aplique **uma por vez**, e remova o que não pagou.
 
-## Mão na massa — contexto-zero, etapa 9
+## Mão na massa — contexto-zero, etapa 10
 
-Na etapa 9 você fecha o pipeline do `contexto-zero`: embeddings sobre os chunks da etapa 8, fusão com o BM25 que já existe, reranking dos 20 primeiros, e uma variante de *contextual retrieval* aplicada a um subconjunto do corpus. Cada estágio entra com medição antes e depois, sobre o mesmo conjunto de perguntas — e a tabela resultante é o entregável da etapa, mais do que o código. O exercício de completude: a fusão de rankings vem esqueletada; você implementa o peso entre os dois sinais e descobre que o peso ótimo depende do tipo de pergunta.
+Na etapa 10 você fecha o pipeline do `contexto-zero`: embeddings sobre os chunks da etapa 9, fusão com o BM25 que já existe, reranking dos 20 primeiros, e uma variante de *contextual retrieval* aplicada a um subconjunto do corpus. Cada estágio entra com medição antes e depois, sobre o mesmo conjunto de perguntas — e a tabela resultante é o entregável da etapa, mais do que o código. O exercício de completude: a fusão de rankings vem esqueletada; você implementa o peso entre os dois sinais e descobre que o peso ótimo depende do tipo de pergunta.
 
 ## Verificação
 

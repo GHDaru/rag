@@ -19,7 +19,7 @@
 
 RAG é um **subconjunto próprio** da engenharia de contexto — o que resolve "o conhecimento não está nos pesos e não cabe todo na janela". Quem troca o rótulo e mantém o mesmo pipeline só renomeou o problema. O raciocínio completo está na [introdução](livro/00-introducao.md) e no [panorama da comunidade](estudos/2026-08-03-panorama-comunidade.md).
 
-Por isso o livro trata **duas disciplinas em relação**, e dá ao RAG três capítulos dentro da segunda — não o título.
+Por isso o livro trata **duas disciplinas em relação**, e dá ao RAG **quatro** capítulos dentro da segunda (do corpus ao agente) — não o título.
 
 ## O livro
 
@@ -43,24 +43,24 @@ Por isso o livro trata **duas disciplinas em relação**, e dá ao RAG três cap
 | | |
 |---|---|
 | [08 — A Janela como Orçamento](livro/capitulos/08-janela-como-orcamento.md) | *Context rot*; contexto longo × recuperação |
-| [09 — Recuperação: o Núcleo do RAG](livro/capitulos/09-recuperacao.md) | Chunking, embeddings, busca híbrida, reranking |
-| [10 — RAG Avançado](livro/capitulos/10-rag-avancado.md) | Contextual retrieval, late chunking, GraphRAG |
-| [11 — RAG Agêntico](livro/capitulos/11-rag-agentico.md) | Quando o agente decide se, quando e como buscar |
-| [12 — Memória e Estado](livro/capitulos/12-memoria.md) | Fatos, grafo temporal, paginação — e memória × RAG |
-| [13 — Compactação e Isolamento](livro/capitulos/13-compactacao.md) | Caber na janela sem perder o fio |
-| [14 — Ferramentas e Contexto Externo](livro/capitulos/14-ferramentas-e-mcp.md) | Resultado de ferramenta também é contexto |
+| [09 — Recuperação: o Núcleo do RAG](livro/capitulos/10-recuperacao.md) | Chunking, embeddings, busca híbrida, reranking |
+| [10 — RAG Avançado](livro/capitulos/11-rag-avancado.md) | Contextual retrieval, late chunking, GraphRAG |
+| [11 — RAG Agêntico](livro/capitulos/12-rag-agentico.md) | Quando o agente decide se, quando e como buscar |
+| [12 — Memória e Estado](livro/capitulos/13-memoria.md) | Fatos, grafo temporal, paginação — e memória × RAG |
+| [13 — Compactação e Isolamento](livro/capitulos/14-compactacao.md) | Caber na janela sem perder o fio |
+| [14 — Ferramentas e Contexto Externo](livro/capitulos/15-ferramentas-e-mcp.md) | Resultado de ferramenta também é contexto |
 
 ### Parte III — O sistema em produção
 | | |
 |---|---|
-| [15 — Avaliação de Sistemas](livro/capitulos/15-avaliacao-de-sistemas.md) | As quatro métricas e a tabela de diagnóstico |
-| [16 — Segurança do Contexto](livro/capitulos/16-seguranca-do-contexto.md) | *Prompt injection* como propriedade da arquitetura |
-| [17 — Custo, Latência e Cache](livro/capitulos/17-custo-latencia-cache.md) | A conta do contexto, e o cache de prefixo |
+| [15 — Avaliação de Sistemas](livro/capitulos/16-avaliacao-de-sistemas.md) | As quatro métricas e a tabela de diagnóstico |
+| [16 — Segurança do Contexto](livro/capitulos/17-seguranca-do-contexto.md) | *Prompt injection* como propriedade da arquitetura |
+| [17 — Custo, Latência e Cache](livro/capitulos/18-custo-latencia-cache.md) | A conta do contexto, e o cache de prefixo |
 
 ### Fechamento e aparato
 | | |
 |---|---|
-| [18 — Convergências e Tendências](livro/18-convergencias.md) | Consenso, disputa aberta e **seis apostas datadas** |
+| [18 — Convergências e Tendências](livro/19-convergencias.md) | Consenso, disputa aberta e **seis apostas datadas** |
 | [Catálogo de técnicas](livro/apendice-tecnicas.md) | Uma ficha por técnica: o que é, quando usa, o que custa |
 | [Apêndice — O ecossistema](livro/apendice-ecossistema.md) | Frameworks e coleções, por problema que resolvem |
 | [Glossário](livro/glossario.md) · [Bibliografia](livro/bibliografia.md) | Termos e fontes com status de validação |
@@ -73,11 +73,12 @@ Não pelo sumário — pela **tabela de sintomas** do [cap. 01](livro/01-fundame
 | Sintoma | Onde ler |
 |---|---|
 | "Melhorei o prompt" e não sei se melhorou | [cap. 07](livro/capitulos/07-avaliacao-de-prompts.md) |
-| O modelo não sabe informação da minha organização | [cap. 09](livro/capitulos/09-recuperacao.md) |
-| Recupera errado / não encontra o óbvio | [caps. 09](livro/capitulos/09-recuperacao.md), [10](livro/capitulos/10-rag-avancado.md) |
-| Recupera certo mas responde errado | [cap. 15](livro/capitulos/15-avaliacao-de-sistemas.md) |
-| Piora quando a conversa fica longa | [caps. 08](livro/capitulos/08-janela-como-orcamento.md), [13](livro/capitulos/13-compactacao.md) |
-| Funciona, mas custa demais | [cap. 17](livro/capitulos/17-custo-latencia-cache.md) |
+| O modelo não sabe informação da minha organização | [cap. 10](livro/capitulos/10-recuperacao.md) |
+| Ele cita documento revogado / desatualizado | [cap. 09](livro/capitulos/09-corpus.md) |
+| Recupera errado / não encontra o óbvio | [caps. 10](livro/capitulos/10-recuperacao.md), [10](livro/capitulos/11-rag-avancado.md) |
+| Recupera certo mas responde errado | [cap. 16](livro/capitulos/16-avaliacao-de-sistemas.md) |
+| Piora quando a conversa fica longa | [caps. 08](livro/capitulos/08-janela-como-orcamento.md), [13](livro/capitulos/14-compactacao.md) |
+| Funciona, mas custa demais | [cap. 18](livro/capitulos/18-custo-latencia-cache.md) |
 
 E se você só puder aplicar sete coisas, elas estão listadas, em ordem, no fim do [catálogo de técnicas](livro/apendice-tecnicas.md#as-sete-que-valem-começar-por-aqui).
 
@@ -102,7 +103,7 @@ O método está na [constituição](.specify/memory/constitution.md) (8 princíp
 2. **A fonte-base é a técnica reprodutível** — paper (o que foi proposto e medido) **+** implementação pública (como vira código). Sem as duas, não entra.
 3. **O escopo é o par, não a moda** — todo capítulo responde: "que decisão sobre o que o modelo vê ele ajuda a tomar?".
 
-E o livro é **vivo**: cada capítulo declara sua data de captura, e o [cap. 18](livro/18-convergencias.md) registra **seis apostas datadas** sobre o que vai expirar — com prazo e critério, para serem cobradas. Uma delas prevê que o próprio título expire antes do conteúdo.
+E o livro é **vivo**: cada capítulo declara sua data de captura, e o [cap. 19](livro/19-convergencias.md) registra **seis apostas datadas** sobre o que vai expirar — com prazo e critério, para serem cobradas. Uma delas prevê que o próprio título expire antes do conteúdo.
 
 ## Este repositório
 

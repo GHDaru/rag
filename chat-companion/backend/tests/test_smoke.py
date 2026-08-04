@@ -42,13 +42,13 @@ def test_chat_and_history():
 
 
 def test_gating_progressive_hides_future_tools():
-    # cap. 9 progressivo: RAG agêntico (cap. 11) ainda não ligou o loop -> sem tools
-    assert capabilities.tools_ativas(9, "progressivo") == set()
-    # cap. 11 progressivo: loop + 'hora' + a busca já liberada no cap. 9
-    assert {"hora", "buscar_no_livro"} <= capabilities.tools_ativas(11, "progressivo")
-    # 'calcular' só no cap. 14 (ferramentas)
-    assert "calcular" not in capabilities.tools_ativas(11, "progressivo")
-    assert "calcular" in capabilities.tools_ativas(14, "progressivo")
+    # cap. 11 progressivo: RAG agêntico (cap. 12) ainda não ligou o loop -> sem tools
+    assert capabilities.tools_ativas(11, "progressivo") == set()
+    # cap. 12 progressivo: loop + 'hora' + a busca já liberada no cap. 10
+    assert {"hora", "buscar_no_livro"} <= capabilities.tools_ativas(12, "progressivo")
+    # 'calcular' só no cap. 15 (ferramentas)
+    assert "calcular" not in capabilities.tools_ativas(12, "progressivo")
+    assert "calcular" in capabilities.tools_ativas(15, "progressivo")
     # avançado libera tudo mesmo no cap. 0
     assert {"hora", "calcular", "buscar_no_livro"} <= capabilities.tools_ativas(0, "avancado")
 

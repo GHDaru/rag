@@ -1,4 +1,4 @@
-# 09 — Recuperação: o Núcleo do RAG
+# 10 — Recuperação: o Núcleo do RAG
 
 > **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
@@ -30,7 +30,7 @@ A maioria dos sistemas de RAG que "não funciona" falha aqui, no primeiro estág
 - **Chunking tem literatura própria** — *Reconstructing Context: Evaluating Advanced Chunking Strategies for RAG* ([arXiv 2504.19754](https://arxiv.org/abs/2504.19754)) avalia estratégias avançadas em vez de assumi-las, e é o ponto de partida para não escolher tamanho de chunk por superstição. `[a validar]`
 - **Seleção adaptativa de método** — há trabalho recente sobre escolher a estratégia de chunking por documento em vez de fixar uma para o corpus inteiro ([arXiv 2603.25333](https://arxiv.org/abs/2603.25333)), o que reconhece formalmente que "um tamanho serve para tudo" é a hipótese errada. `[a validar]`
 - **Recuperação como componente da disciplina** — o survey [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) posiciona "context retrieval and generation" como o primeiro dos três componentes, com o RAG como implementação que o combina com os demais. `[a validar]`
-- **Benchmarks de recuperação pura** — **BEIR** (recuperação zero-shot em domínios variados) e **MTEB** (avaliação ampla de modelos de embedding) são as referências para medir **este** estágio isolado do resto do pipeline. A separação importa: um sistema pode ter recuperação ótima e resposta ruim, e o diagnóstico depende de medir os dois separadamente (cap. 15). `[a validar]`
+- **Benchmarks de recuperação pura** — **BEIR** (recuperação zero-shot em domínios variados) e **MTEB** (avaliação ampla de modelos de embedding) são as referências para medir **este** estágio isolado do resto do pipeline. A separação importa: um sistema pode ter recuperação ótima e resposta ruim, e o diagnóstico depende de medir os dois separadamente (cap. 16). `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 
@@ -84,34 +84,27 @@ A economia do arranjo é o ponto: o modelo caro só vê o que o barato já filtr
 
 O ganho reportado pelos praticantes é cumulativo com os estágios anteriores — a curva importa mais que os números: cada estágio adiciona, e o reranking é o que mais adiciona **por último**. Os números específicos publicados (ver [panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md)) vêm de corpus dos próprios proponentes, e este livro os trata como hipótese a reproduzir.
 
-### 4. O teto que ninguém mede: o corpus
+### 4. O teto vem de antes: o corpus
 
-Todos os estágios anteriores são otimizações **sobre o que está no índice**. Nenhum deles inventa informação que o corpus não tem, e nenhum deles distingue um documento correto de um obsoleto — os dois embeddam igual.
+Todos os estágios anteriores são otimizações **sobre o que está no índice**. Nenhum deles inventa informação que o corpus não tem, e nenhum distingue um documento correto de um obsoleto — os dois embeddam igual.
 
-Isso significa que a qualidade de recuperação tem um **teto** definido antes de qualquer decisão técnica deste capítulo, e o teto é o corpus:
-
-- **Frescor.** Um documento revogado que continua indexado é recuperado com a mesma confiança do vigente. Data no metadado e política de expiração do índice não são higiene — são correção.
-- **Procedência.** Quando duas versões conflitam, o sistema precisa saber qual é a canônica. Sem isso, a resposta depende de qual chunk ranqueou melhor, que é o mesmo que dizer: depende da sorte.
-- **Duplicação.** O mesmo conteúdo em cinco documentos ocupa cinco lugares do `top_k` e desloca a informação que faltava. Deduplicar na ingestão devolve orçamento (cap. 08) sem tocar em modelo nenhum.
-- **Permissão como metadado**, para poder filtrar antes de buscar (ver abaixo).
-
-Esta é a seção mais fraca da edição 0.1 e o livro admite: não há aqui tratamento à altura do problema. O argumento foi levantado por fonte da indústria com interesse declarado (fornecedores de catálogo de dados), o que exige ceticismo — mas se sustenta sozinho, porque nenhuma técnica dos caps. 09–11 conserta um corpus podre. Aprofundar é trabalho da rodada 2 do ROADMAP.
+Isso é assunto do **[cap. 09](09-corpus.md)**, que vem antes deste exatamente por isso: frescor, procedência, deduplicação e permissão definem o teto de tudo que este capítulo otimiza. Se o seu recall está baixo, verifique lá antes de mexer aqui — é mais barato e é mais frequente.
 
 ### 5. O que quase sempre falta
 
 Três coisas ausentes na maioria dos pipelines, em ordem de dano:
 
 - **Filtro por permissão antes da busca.** Recuperar e depois filtrar vaza — na latência e, dependendo da implementação, no conteúdo. É requisito de segurança, não de performance.
-- **Um caminho para "não encontrei".** Sistema que sempre devolve `top_k` resultados sempre devolve algo — mesmo quando o corpus não tem a resposta. Sem limiar de similaridade e sem caminho de abstenção, a alucinação fundamentada em ruído é inevitável. O sinal operacional correspondente — a **taxa de resultado zero** — é o instrumento que mostra se esse caminho existe e com que frequência é usado (cap. 15).
-- **Medição isolada deste estágio.** Sem medir recuperação separada da geração, todo diagnóstico vira palpite (cap. 15).
+- **Um caminho para "não encontrei".** Sistema que sempre devolve `top_k` resultados sempre devolve algo — mesmo quando o corpus não tem a resposta. Sem limiar de similaridade e sem caminho de abstenção, a alucinação fundamentada em ruído é inevitável. O sinal operacional correspondente — a **taxa de resultado zero** — é o instrumento que mostra se esse caminho existe e com que frequência é usado (cap. 16).
+- **Medição isolada deste estágio.** Sem medir recuperação separada da geração, todo diagnóstico vira palpite (cap. 16).
 
 ### Leitura executiva
 
-Recuperação é um pipeline de **três estágios com métricas próprias**: candidatos baratos → fusão de sinais → reranking caro sobre poucos. **O que roubar, em ordem de retorno:** (1) **busca híbrida** — densa e esparsa erram em direções complementares (densa perde código e nome próprio; esparsa perde paráfrase), e a fusão é o upgrade de melhor relação benefício/esforço; (2) **reranking** como terceiro estágio, que é o que mais adiciona por último; (3) **metadado junto do chunk**, porque filtrar antes de buscar rende mais que ajustar similaridade. **O padrão de projeto do capítulo:** *desacople a unidade de busca da unidade de entrega* — o que se indexa (pequeno, preciso) não precisa ser o que se envia (maior, com contexto). É o que sentence-window, proposition e chunking hierárquico têm em comum. **O corte decide tudo:** o tamanho ótimo depende da **pergunta**, não do documento. **O teto que ninguém mede é o corpus:** frescor, procedência e duplicação limitam a recuperação antes de qualquer escolha técnica — documento revogado embedda igual ao vigente. **O que quase sempre falta:** filtro por permissão **antes** da busca, um caminho explícito para "não encontrei" (com a taxa de resultado zero monitorada), e medir este estágio isolado da geração.
+Recuperação é um pipeline de **três estágios com métricas próprias**: candidatos baratos → fusão de sinais → reranking caro sobre poucos. **O que roubar, em ordem de retorno:** (1) **busca híbrida** — densa e esparsa erram em direções complementares (densa perde código e nome próprio; esparsa perde paráfrase), e a fusão é o upgrade de melhor relação benefício/esforço; (2) **reranking** como terceiro estágio, que é o que mais adiciona por último; (3) **metadado junto do chunk**, porque filtrar antes de buscar rende mais que ajustar similaridade. **O padrão de projeto do capítulo:** *desacople a unidade de busca da unidade de entrega* — o que se indexa (pequeno, preciso) não precisa ser o que se envia (maior, com contexto). É o que sentence-window, proposition e chunking hierárquico têm em comum. **O corte decide tudo:** o tamanho ótimo depende da **pergunta**, não do documento. **O teto vem de antes:** frescor, procedência e duplicação limitam a recuperação antes de qualquer escolha técnica deste capítulo — documento revogado embedda igual ao vigente (cap. 09). **O que quase sempre falta:** filtro por permissão **antes** da busca, um caminho explícito para "não encontrei" (com a taxa de resultado zero monitorada), e medir este estágio isolado da geração.
 
-## Mão na massa — contexto-zero, etapa 8
+## Mão na massa — contexto-zero, etapa 9
 
-Na etapa 8 você constrói a recuperação do `contexto-zero` **na mão, antes de qualquer biblioteca**: um BM25 em cerca de 40 linhas sobre o texto deste livro, com chunking estrutural por seção e metadados. Sem vector store, sem framework. O objetivo pedagógico é que você veja o ranking acontecer. Na etapa 9 entram embeddings, fusão e reranking — e a comparação entre as duas etapas é o conteúdo, não o resultado final.
+Na etapa 9 você constrói a recuperação do `contexto-zero` **na mão, antes de qualquer biblioteca**: um BM25 em cerca de 40 linhas sobre o texto deste livro, com chunking estrutural por seção e metadados. Sem vector store, sem framework. O objetivo pedagógico é que você veja o ranking acontecer. Na etapa 10 entram embeddings, fusão e reranking — e a comparação entre as duas etapas é o conteúdo, não o resultado final.
 
 ## Verificação
 

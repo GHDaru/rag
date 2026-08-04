@@ -18,7 +18,7 @@
 | **TextGrad** | prompt como variável textual otimizável | mais simples de montar; melhor com dificuldade uniforme |
 | **Promptomatix** · [arXiv 2507.14241](https://arxiv.org/abs/2507.14241) | reduz o setup manual exigido | |
 
-## Recuperar (caps. 09, 10)
+## Recuperar (caps. 10, 11)
 
 **Busca esparsa** — BM25 e variantes. Acha termo literal, código, identificador. É a linha de base honesta e o remédio para "o RAG não encontra o óbvio".
 
@@ -38,7 +38,7 @@
 | **Reescrita de consulta** | consulta | vocabulário do domínio; referência entre turnos |
 | **GraphRAG** e família | indexação pesada + consulta | multi-hop e perguntas globais |
 
-## Lembrar (cap. 12)
+## Lembrar (cap. 13)
 
 | Sistema | Arquitetura | Escolha quando |
 |---|---|---|
@@ -61,12 +61,12 @@
 
 A leitura de 2026: **RAGAS fornece o arcabouço conceitual; DeepEval, a execução em pipeline.** São complementares, não concorrentes.
 
-## Proteger (cap. 16)
+## Proteger (cap. 17)
 
 - **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — a classificação de referência. *Prompt injection* é LLM01 em todas as edições publicadas.
 - **Ferramentas de red teaming** — teste adversarial em pipeline, com cobertura mapeada à classificação. A conexão importante: **teste adversarial é eval**, e roda no mesmo lugar (cap. 07).
 
-## Conectar (cap. 14)
+## Conectar (cap. 15)
 
 - **MCP (Model Context Protocol)** — padroniza transporte, descoberta, schema de ferramentas, recursos e autorização. Resolve integração N×M; **não** resolve orçamento de contexto nem confiança na fonte.
 
@@ -87,5 +87,5 @@ A leitura de 2026: **RAGAS fornece o arcabouço conceitual; DeepEval, a execuç�
 Registrado por honestidade (Princípio I), e é trabalho das próximas rodadas:
 
 - **Nenhuma avaliação comparada.** Não há nota, ranking nem "melhor para". Isso exige metodologia e evidência — é a rodada 4.
-- **Ausências conhecidas**: bancos vetoriais e motores de busca (deliberadamente fora — o livro trata de técnica, não de infraestrutura de armazenamento); frameworks de orquestração de agentes (adjacentes, entram se um capítulo exigir); ferramentas de observabilidade de LLM (entram junto com o cap. 17 aprofundado).
+- **Ausências conhecidas**: bancos vetoriais e motores de busca (deliberadamente fora — o livro trata de técnica, não de infraestrutura de armazenamento); frameworks de orquestração de agentes (adjacentes, entram se um capítulo exigir); ferramentas de observabilidade de LLM (entram junto com o cap. 18 aprofundado).
 - **Viés declarado**: levantamento em inglês, por busca aberta, sem bases pagas. Projetos fora do eixo GitHub/arXiv estão sub-representados.

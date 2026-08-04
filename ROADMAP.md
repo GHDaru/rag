@@ -35,21 +35,21 @@ O que **ainda não** existe, e é deliberado:
 **Escopo:**
 1. **Validar os surveys estruturantes** (S1, S2, S3 da [bibliografia](livro/bibliografia.md)) pela skill `academic-research`: ler, conferir o que o livro afirma sobre eles, registrar ✓.
 2. **Validar a lacuna prioritária**: a afirmação do cap. 08 de que a degradação em contexto longo é dirigida pela **similaridade entre alvo e distratores** (hoje a citação mais frágil do livro).
-3. **Registrar condição experimental** de todo número citado — em especial os de otimização de prompt (cap. 06), *contextual retrieval* (cap. 10) e memória (cap. 12), todos auto-reportados pelos proponentes.
+3. **Registrar condição experimental** de todo número citado — em especial os de otimização de prompt (cap. 06), *contextual retrieval* (cap. 11) e memória (cap. 13), todos auto-reportados pelos proponentes.
 4. **Preencher os Apêndices A** dos capítulos com o tratamento por implementação.
 5. **Aprofundar o corpo** dos capítulos onde a validação trouxer material novo.
 6. **Validar as seis técnicas nomeadas** que entraram no adendo 0.1.1 (RAPTOR · Self-RAG · CRAG · FLARE · Adaptive RAG · step-back), cada uma com fonte primária e condição experimental.
-7. **Decidir a pergunta aberta do adendo 0.1.1**: governança e ingestão do corpus viram **capítulo próprio** na Parte II, ou continuam como seção do cap. 09? Hoje é a única parte do pipeline que nenhuma das três partes cobre — e é o teto de tudo que os caps. 09–11 otimizam.
+7. **Dar base de evidência ao cap. 09** (Ingestão e Governança do Corpus, criado no adendo 0.1.2). É hoje o capítulo mais fraco do livro em citação: a área trata ingestão como pré-processamento e raramente a estuda. Pergunta a responder: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
 
 **Critério de conclusão:** ao menos 60% das referências com status ✓; nenhum número no corpo sem condição experimental; nenhum capítulo com Apêndice A vazio.
 
-**Sugestão de fatiamento em specs:** `002-evidencia-parte-i` (caps. 02–07) · `003-evidencia-parte-ii` (caps. 08–14) · `004-evidencia-parte-iii` (caps. 15–18).
+**Sugestão de fatiamento em specs:** `002-evidencia-parte-i` (caps. 02–07) · `003-evidencia-parte-ii` (caps. 08–14) · `004-evidencia-parte-iii` (caps. 16–19).
 
 ---
 
 ## Rodada 3 — `contexto-zero` (a trilha prática)
 
-**Objetivo:** o livro executável. 16 etapas, uma por capítulo, Python + FastAPI, custo zero e sem GPU.
+**Objetivo:** o livro executável. 18 etapas, uma por capítulo, Python + FastAPI, custo zero e sem GPU.
 
 **Escopo:**
 
@@ -63,19 +63,20 @@ O que **ainda não** existe, e é deliberado:
 | 5 | 06 | otimizador mínimo na mão (60 linhas), depois com framework |
 | 6 | 07 | conjunto de eval + **calibração do juiz** |
 | 7 | 08 | orçamento com política de corte declarada |
-| 8 | 09 | BM25 na mão (~40 linhas) + chunking estrutural |
-| 9 | 09–10 | embeddings + fusão + reranking + contextual retrieval, com medição por estágio |
-| 10 | 11 | recuperação como ferramenta + reflexão + teto |
-| 11 | 12 | memória com procedência, data e exclusão real |
-| 12 | 13 | compactação + estado estruturado que nunca compacta |
-| 13 | 14 | ferramentas com teto no adaptador e procedência marcada |
-| 14 | 15 | as quatro métricas + tabela de diagnóstico |
-| 15 | 16 | **atacar o próprio sistema** e medir o que cada camada bloqueia |
-| 16 | 17 | painel: custo por parcela + cache + latência + qualidade |
+| 8 | 09 | **ingestão**: extração, dedup, metadado com status, política de saída |
+| 9 | 10 | BM25 na mão (~40 linhas) + chunking estrutural |
+| 10 | 10–11 | embeddings + fusão + reranking + contextual retrieval, com medição por estágio |
+| 11 | 12 | recuperação como ferramenta + reflexão + teto |
+| 12 | 13 | memória com procedência, data e exclusão real |
+| 13 | 14 | compactação + estado estruturado que nunca compacta |
+| 14 | 15 | ferramentas com teto no adaptador e procedência marcada |
+| 15 | 16 | as quatro métricas + tabela de diagnóstico |
+| 16 | 17 | **atacar o próprio sistema** e medir o que cada camada bloqueia |
+| 17 | 18 | painel: custo por parcela + cache + latência + qualidade |
 
 **Também nesta rodada:** ligar o **chat companion** em produção (o companion *é* o `contexto-zero` rodando, e vira o exemplo real que o livro disseca), com gating de capacidades por capítulo.
 
-**Critério de conclusão:** as 16 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
+**Critério de conclusão:** as 18 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
 
 ---
 

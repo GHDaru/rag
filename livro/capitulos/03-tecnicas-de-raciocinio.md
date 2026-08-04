@@ -11,7 +11,7 @@ Ao final deste capítulo, você deve ser capaz de:
 1. **Nomear** as seis famílias de técnica de prompting e o problema que cada uma ataca;
 2. **Escolher** entre elas por critério de custo/benefício, não por popularidade;
 3. **Reconhecer** quando uma técnica de raciocínio deixou de pagar porque o modelo passou a fazer aquilo sozinho;
-4. **Conectar** a família *decomposition* + *thought generation* à ponte que leva ao RAG agêntico (cap. 11).
+4. **Conectar** a família *decomposition* + *thought generation* à ponte que leva ao RAG agêntico (cap. 12).
 
 ## O problema
 
@@ -24,7 +24,7 @@ O problema real do capítulo não é "quais técnicas existem" (o catálogo é p
 - **A taxonomia de referência** — *The Prompt Report* ([arXiv 2406.06608](https://arxiv.org/abs/2406.06608)) organiza 58 técnicas textuais em **seis famílias**: *zero-shot*, *few-shot*, *thought generation*, *ensembling*, *self-criticism*, *decomposition*. A estrutura deste capítulo é essa. `[a validar]`
 - **Chain-of-Thought** — a proposta original de induzir passos intermediários explícitos antes da resposta. É a fundação da família *thought generation*. `[a validar]`
 - **Self-Consistency** — amostrar vários caminhos de raciocínio e escolher a resposta mais consistente entre eles; a materialização mais simples e mais cara da família *ensembling*. `[a validar]`
-- **ReAct** — o ciclo pensamento → ação → observação, que integra raciocínio e uso de ferramenta. É a técnica que **atravessa a fronteira** deste livro: nasce como padrão de prompt (Parte I) e vira arquitetura de recuperação (cap. 11). `[a validar]`
+- **ReAct** — o ciclo pensamento → ação → observação, que integra raciocínio e uso de ferramenta. É a técnica que **atravessa a fronteira** deste livro: nasce como padrão de prompt (Parte I) e vira arquitetura de recuperação (cap. 12). `[a validar]`
 - **Avaliação comparada** — há evidência sistemática comparando variantes de CoT em domínios específicos ([exemplo em QA médico](https://www.sciencedirect.com/science/article/pii/S0010482525009655)); o padrão que emerge é que o ganho depende fortemente do domínio e do modelo, o que reforça a regra de medir. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
@@ -54,19 +54,19 @@ A leitura que importa: **as três primeiras linhas ficaram mais baratas e menos 
 
 Três perguntas, nesta ordem, resolvem a escolha na prática:
 
-1. **O erro é de raciocínio ou de conhecimento?** Se o modelo não sabe o fato, nenhuma técnica desta lista ajuda — o problema é da Parte II (recuperação, cap. 09). Esta é a confusão mais cara da área: times gastam semanas otimizando prompt para um problema de contexto.
+1. **O erro é de raciocínio ou de conhecimento?** Se o modelo não sabe o fato, nenhuma técnica desta lista ajuda — o problema é da Parte II (recuperação, cap. 10). Esta é a confusão mais cara da área: times gastam semanas otimizando prompt para um problema de contexto.
 2. **O erro é caro?** Ensembling multiplica o custo por N. Só se justifica quando errar custa mais do que N chamadas.
 3. **O ganho sobrevive ao seu eval?** Toda técnica aqui tem evidência publicada em *algum* benchmark. Nenhuma tem garantia no **seu**. O capítulo 07 existe por causa desta pergunta.
 
 ### 3. A ponte para a Parte II
 
-*Decomposition* + *thought generation* + uso de ferramenta é literalmente a arquitetura do **ReAct**: pensar sobre o que falta, agir para obter, observar o resultado, repetir. Quando a "ação" é uma busca em corpus, isso deixa de ser técnica de prompt e vira **RAG agêntico** (cap. 11).
+*Decomposition* + *thought generation* + uso de ferramenta é literalmente a arquitetura do **ReAct**: pensar sobre o que falta, agir para obter, observar o resultado, repetir. Quando a "ação" é uma busca em corpus, isso deixa de ser técnica de prompt e vira **RAG agêntico** (cap. 12).
 
-Vale marcar a passagem porque ela é a costura entre as duas metades do livro: a mesma ideia — gastar computação antes de responder — muda de natureza quando o que se gasta é uma **ida ao mundo externo** em vez de tokens de pensamento. O custo passa a ser latência e superfície de ataque (cap. 16), não só fatura.
+Vale marcar a passagem porque ela é a costura entre as duas metades do livro: a mesma ideia — gastar computação antes de responder — muda de natureza quando o que se gasta é uma **ida ao mundo externo** em vez de tokens de pensamento. O custo passa a ser latência e superfície de ataque (cap. 17), não só fatura.
 
 ### Leitura executiva
 
-Seis famílias: *zero-shot*, *few-shot*, *thought generation*, *decomposition*, *ensembling*, *self-criticism*. Com modelos que já raciocinam por padrão, o valor **migrou das três primeiras para as três últimas** — de induzir raciocínio para estruturar trabalho. **O que roubar:** antes de escolher técnica, responda se o erro é de raciocínio ou de conhecimento — se for de conhecimento, você está no livro errado (vá ao cap. 09); e trate *ensembling* como decisão financeira (N× o custo), não como upgrade. **A ponte:** *decomposition* + ferramenta = ReAct = a arquitetura do cap. 11. **O que vai expirar:** as receitas de indução de CoT — o raciocínio virou parâmetro de compra, não truque de redação.
+Seis famílias: *zero-shot*, *few-shot*, *thought generation*, *decomposition*, *ensembling*, *self-criticism*. Com modelos que já raciocinam por padrão, o valor **migrou das três primeiras para as três últimas** — de induzir raciocínio para estruturar trabalho. **O que roubar:** antes de escolher técnica, responda se o erro é de raciocínio ou de conhecimento — se for de conhecimento, você está no livro errado (vá ao cap. 10); e trate *ensembling* como decisão financeira (N× o custo), não como upgrade. **A ponte:** *decomposition* + ferramenta = ReAct = a arquitetura do cap. 12. **O que vai expirar:** as receitas de indução de CoT — o raciocínio virou parâmetro de compra, não truque de redação.
 
 ## Mão na massa — contexto-zero, etapa 2
 
@@ -76,7 +76,7 @@ Na etapa 2 você implementa duas famílias no `contexto-zero` e as compara com n
 
 1. Seu sistema erra ao responder perguntas sobre a política interna da empresa. Qual das seis famílias resolve? (Cuidado: é pegadinha.)
 2. Um time aplica self-consistency com N=5 num classificador que roda 2 milhões de vezes por dia. Que pergunta você faz antes de discutir a técnica?
-3. Explique por que ReAct pertence tanto ao cap. 03 quanto ao cap. 11, e o que muda de natureza na passagem.
+3. Explique por que ReAct pertence tanto ao cap. 03 quanto ao cap. 12, e o que muda de natureza na passagem.
 
 ---
 

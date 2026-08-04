@@ -52,8 +52,9 @@ const CONCEITOS = [
 const ETAPAS = [
   "00 chat + porta LLM", "01 prompt em camadas", "02 raciocínio", "03 saída estruturada",
   "04 persona e regras", "05 otimizador de prompt", "06 eval de prompt", "07 orçamento",
-  "08 índice e busca", "09 híbrido + rerank", "10 RAG agêntico", "11 memória",
-  "12 compactação", "13 ferramentas", "14 eval do sistema", "15 defesa de injeção",
+  "08 ingestão do corpus", "09 índice e busca", "10 híbrido + rerank", "11 RAG agêntico",
+  "12 memória", "13 compactação", "14 ferramentas", "15 eval do sistema",
+  "16 defesa de injeção", "17 painel de custo",
 ];
 
 const GH = "https://github.com/GHDaru/rag/tree/main/contexto-zero";
@@ -103,7 +104,7 @@ export function gerarGrafo(itens, RAIZ, versao) {
     const porEtapa = {};
     for (const m of texto.matchAll(/\betapas?\s+(\d{1,2})\b/gi)) {
       const n = String(parseInt(m[1], 10)).padStart(2, "0");
-      if (parseInt(n, 10) <= 15) porEtapa[n] = (porEtapa[n] || 0) + 1;
+      if (parseInt(n, 10) <= 17) porEtapa[n] = (porEtapa[n] || 0) + 1;
     }
     for (const n of Object.keys(porEtapa)) addAresta(id, "etapa-" + n, porEtapa[n]);
   }

@@ -24,10 +24,10 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 |---|---|---|:---:|
 | S1 | *The Prompt Report: A Systematic Survey of Prompting Techniques* — [arXiv 2406.06608](https://arxiv.org/abs/2406.06608) | caps. 01, 02, 03 | ⏳ |
 | S2 | *A Survey of Context Engineering for Large Language Models* — [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) | caps. 01, 04, 05, 08, 09, 12, 13, 14 | ⏳ |
-| S3 | *Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG* — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | cap. 11 | ⏳ |
+| S3 | *Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG* — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | cap. 12 | ⏳ |
 | S4 | *Exploring Prompt Engineering: A Systematic Review with SWOT Analysis* — [arXiv 2410.12843](https://arxiv.org/abs/2410.12843) | cap. 03 | ⏳ |
-| S5 | *A Systematic Review of Key RAG Systems* — [arXiv 2507.18910](https://arxiv.org/abs/2507.18910) | caps. 09, 10 | ⏳ |
-| S6 | *Context Engineering 2.0: The Context of Context Engineering* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | cap. 18 | ⏳ |
+| S5 | *A Systematic Review of Key RAG Systems* — [arXiv 2507.18910](https://arxiv.org/abs/2507.18910) | caps. 10, 11 | ⏳ |
+| S6 | *Context Engineering 2.0: The Context of Context Engineering* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | cap. 19 | ⏳ |
 
 ## Por capítulo
 
@@ -92,9 +92,9 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
 | M1 | MemGPT / Letta | paginação autogerida | ⏳ |
-| M2 | *ES-Mem: Event Segmentation-Based Memory for Long-Term Dialogue Agents* — [arXiv 2601.07582](https://arxiv.org/abs/2601.07582) | segmentar por evento (caps. 12, 13) | ⏳ |
+| M2 | *ES-Mem: Event Segmentation-Based Memory for Long-Term Dialogue Agents* — [arXiv 2601.07582](https://arxiv.org/abs/2601.07582) | segmentar por evento (caps. 13, 14) | ⏳ |
 | M3 | *MemR³: Memory Retrieval via Reflective Reasoning* — [arXiv 2512.20237](https://arxiv.org/abs/2512.20237) | recuperação reflexiva de memória | ⏳ |
-| M4 | *MemGuard: Preventing Memory Contamination* — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | contaminação (caps. 12, 16) | ⏳ |
+| M4 | *MemGuard: Preventing Memory Contamination* — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | contaminação (caps. 13, 17) | ⏳ |
 | M5 | *MemSyco-Bench: Benchmarking Sycophancy in Agent Memory* — [arXiv 2607.01071](https://arxiv.org/abs/2607.01071) | bajulação acumulada | ⏳ |
 | M6 | *Nautilus Compass: Black-box Persona Drift Detection* — [arXiv 2605.09863](https://arxiv.org/abs/2605.09863) | deriva de persona (caps. 05, 12) | ⏳ |
 
@@ -112,7 +112,7 @@ Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
 | G1 | [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | LLM01; defesa em profundidade | ⏳ |
-| G2 | *Are AI-assisted Development Tools Immune to Prompt Injection?* — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) | injeção via ferramenta (caps. 14, 16) | ⏳ |
+| G2 | *Are AI-assisted Development Tools Immune to Prompt Injection?* — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) | injeção via ferramenta (caps. 15, 17) | ⏳ |
 | G3 | *Multimodal Prompt Injection Attacks* — [arXiv 2509.05883](https://arxiv.org/abs/2509.05883) | filtrar texto não basta | ⏳ |
 | G4 | *Know Thy Enemy: Securing LLMs Against Prompt Injection…* — [arXiv 2601.04666](https://arxiv.org/abs/2601.04666) | defesas por treinamento | ⏳ |
 

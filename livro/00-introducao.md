@@ -38,7 +38,7 @@ Engenharia de contexto é a disciplina que decide o conjunto todo — instruçã
 | Decide | o que ocupa a janela, em que ordem, e o que sai | que trechos do corpus respondem à pergunta |
 | Falha típica | *context rot*, instrução afogada, orçamento estourado | recall baixo, chunk cortado, resposta sem fundamento |
 
-A consequência prática é que quem adota a moldura passa a fazer perguntas que o RAG isolado não faz: *quanto* do orçamento vale gastar com recuperação; se aquele trecho compete com a memória; se recuperar agora ou deixar o agente decidir depois (cap. 11). Quem só troca o rótulo continua com o mesmo pipeline e o mesmo problema.
+A consequência prática é que quem adota a moldura passa a fazer perguntas que o RAG isolado não faz: *quanto* do orçamento vale gastar com recuperação; se aquele trecho compete com a memória; se recuperar agora ou deixar o agente decidir depois (cap. 12). Quem só troca o rótulo continua com o mesmo pipeline e o mesmo problema.
 
 Este livro trata, portanto, **duas disciplinas em relação** — e dá ao RAG três capítulos (09, 10 e 11), que é o peso que ele merece dentro da segunda.
 
@@ -48,9 +48,9 @@ Este livro trata, portanto, **duas disciplinas em relação** — e dá ao RAG t
 
 **Parte II — Engenharia de Contexto** (caps. 08–14). O que se monta em runtime. Abre com a janela como orçamento e a tensão contexto longo × recuperação; desce ao RAG em três níveis (recuperação, avançado, agêntico); e sobe de volta para memória, compactação e o contexto que vem de ferramentas.
 
-**Parte III — O sistema em produção** (caps. 15–17). O que atravessa as duas: avaliar, proteger e pagar a conta. Estes três morreriam diluídos se ficassem espalhados nos capítulos anteriores.
+**Parte III — O sistema em produção** (caps. 16–18). O que atravessa as duas: avaliar, proteger e pagar a conta. Estes três morreriam diluídos se ficassem espalhados nos capítulos anteriores.
 
-**Fechamento** (cap. 18). O que já é consenso, o que ainda é disputa aberta e o que este livro aposta que vai expirar — com data.
+**Fechamento** (cap. 19). O que já é consenso, o que ainda é disputa aberta e o que este livro aposta que vai expirar — com data.
 
 Fora da linha narrativa, dois apoios de consulta (Diátaxis: *reference* nunca se mistura com *explanation*): o **[Catálogo de técnicas](apendice-tecnicas.md)**, com uma ficha por técnica, e o **[Apêndice do ecossistema](apendice-ecossistema.md)**, com frameworks e bibliotecas organizados por problema que resolvem.
 

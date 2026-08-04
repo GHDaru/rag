@@ -47,10 +47,10 @@ Cinco fontes disputam o mesmo espaço em toda requisição:
 | Fonte | Cresce com | Quem costuma cortar |
 |---|---|---|
 | Prompt de sistema e regras | releases e incidentes | ninguém (cap. 05) |
-| Histórico da conversa | número de turnos | compactação (cap. 13) |
+| Histórico da conversa | número de turnos | compactação (cap. 14) |
 | Recuperado | `top_k` e tamanho do chunk | quase sempre o primeiro a ser cortado |
-| Memória de longo prazo | tempo de relacionamento | raramente instrumentado (cap. 12) |
-| Resultado de ferramenta | imprevisível, e é o pior | quase ninguém (cap. 14) |
+| Memória de longo prazo | tempo de relacionamento | raramente instrumentado (cap. 13) |
+| Resultado de ferramenta | imprevisível, e é o pior | quase ninguém (cap. 15) |
 
 A linha crítica é a última: resultado de ferramenta é a única fonte cujo tamanho **você não controla** no momento de pedir. Uma consulta que devolve 40 mil tokens não avisa antes. Sistemas sem teto por ferramenta descobrem isso em produção.
 
@@ -73,7 +73,7 @@ Orçamento sem instrumentação é intenção. Quatro números que um sistema ma
 
 - **Composição do contexto por fonte** (tokens por bloco, por requisição). É o painel básico e quase ninguém tem.
 - **Taxa de estouro** — com que frequência o orçamento aperta, e quem foi cortado quando apertou.
-- **Utilidade do recuperado** — quantos dos trechos enviados foram efetivamente citados na resposta. Um `top_k` de 20 com 2 usados é 18 blocos de ruído pagos (a métrica formal disso é *context precision*, cap. 15).
+- **Utilidade do recuperado** — quantos dos trechos enviados foram efetivamente citados na resposta. Um `top_k` de 20 com 2 usados é 18 blocos de ruído pagos (a métrica formal disso é *context precision*, cap. 16).
 - **Qualidade × comprimento** — a mesma pergunta com contextos de tamanhos diferentes. É o teste que mostra se o seu sistema está em regime de *context rot* ou não, e nenhuma referência externa substitui rodá-lo no seu dado.
 
 ### Leitura executiva

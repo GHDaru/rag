@@ -20,7 +20,7 @@ Um sistema real não consome prosa: consome campos. E o ponto onde a maioria dos
 O problema tem duas metades que costumam ser confundidas:
 
 - **Sintática** — a saída é parseável e respeita o schema? Esta metade está essencialmente **resolvida** por funcionalidade de plataforma, e é onde este capítulo mais vai expirar.
-- **Semântica** — os campos estão *corretos*? Um JSON perfeitamente válido com o valor errado passa em toda validação de formato e falha em produção. Esta metade não tem solução de plataforma: é eval (cap. 07) e fundamentação (cap. 15).
+- **Semântica** — os campos estão *corretos*? Um JSON perfeitamente válido com o valor errado passa em toda validação de formato e falha em produção. Esta metade não tem solução de plataforma: é eval (cap. 07) e fundamentação (cap. 16).
 
 ## Fundamentos científicos
 
@@ -67,11 +67,11 @@ O padrão de produção é: gerar → validar → se falhar, re-solicitar anexan
 Duas regras que separam quem já apanhou disso de quem ainda vai apanhar:
 
 - **Teto obrigatório e falha explícita.** Sem teto, um schema impossível de satisfazer vira laço infinito com fatura aberta. A falha após o teto deve ser um erro tratado, não um valor vazio silencioso.
-- **Contar as tentativas como métrica.** A taxa de reparo é um indicador de saúde do schema. Se subiu, alguma coisa mudou — modelo, prompt ou dado de entrada. Este número pertence ao painel do cap. 15, não ao log.
+- **Contar as tentativas como métrica.** A taxa de reparo é um indicador de saúde do schema. Se subiu, alguma coisa mudou — modelo, prompt ou dado de entrada. Este número pertence ao painel do cap. 16, não ao log.
 
 ### Leitura executiva
 
-Duas metades: a **sintática** está resolvida por plataforma (schema nativo, decodificação restrita) e é onde este capítulo vai expirar; a **semântica** — o campo válido com o valor errado — não tem solução de plataforma e é eval (cap. 07) e fundamentação (cap. 15). **O que roubar:** restrinja quando puder, **valide sempre** (garantia de forma não é garantia de valor); ponha um campo de raciocínio antes dos campos de decisão, use enum em domínio fechado, e dê ao modelo um lugar explícito para dizer "não sei". **O sinal operacional:** monitore a **taxa de reparo** — ela é o termômetro do schema, e mudanças nela avisam antes de o usuário reclamar.
+Duas metades: a **sintática** está resolvida por plataforma (schema nativo, decodificação restrita) e é onde este capítulo vai expirar; a **semântica** — o campo válido com o valor errado — não tem solução de plataforma e é eval (cap. 07) e fundamentação (cap. 16). **O que roubar:** restrinja quando puder, **valide sempre** (garantia de forma não é garantia de valor); ponha um campo de raciocínio antes dos campos de decisão, use enum em domínio fechado, e dê ao modelo um lugar explícito para dizer "não sei". **O sinal operacional:** monitore a **taxa de reparo** — ela é o termômetro do schema, e mudanças nela avisam antes de o usuário reclamar.
 
 ## Mão na massa — contexto-zero, etapa 3
 

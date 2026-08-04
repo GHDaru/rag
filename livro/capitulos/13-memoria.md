@@ -1,4 +1,4 @@
-# 12 — Memória e Estado
+# 13 — Memória e Estado
 
 > **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
 >
@@ -44,7 +44,7 @@ A confusão que custa caro: tratar memória como "RAG sobre o histórico". Tecni
 
 | Horizonte | O que guarda | Mecanismo | Falha típica |
 |---|---|---|---|
-| **Histórico** | os turnos desta conversa | a própria janela | estoura; vira ruído (cap. 13) |
+| **Histórico** | os turnos desta conversa | a própria janela | estoura; vira ruído (cap. 14) |
 | **Memória de trabalho** | o estado da tarefa em andamento | estrutura explícita (plano, resultados parciais) | some no reinício; não sobrevive à compactação |
 | **Longo prazo** | fatos e preferências que atravessam sessões | extração + armazenamento + recuperação | contamina, envelhece, deriva |
 
@@ -54,7 +54,7 @@ O horizonte do meio é o mais negligenciado. Times investem em memória de longo
 
 - **Fatos extraídos.** Um passo de extração identifica afirmações salientes e as guarda como memórias curtas. Barato de recuperar, legível, auditável. Perde nuance e depende inteiramente da qualidade da extração — o que a extração não capturou, não existe.
 - **Grafo temporal.** Entidades, relações e **validade no tempo**. Responde "o que era verdade quando?" e lida com fato que muda. Custa manutenção de grafo e complexidade de consulta.
-- **Paginação autogerida.** O modelo decide o que trazer e o que arquivar, via ferramentas. Elegante e geral; paga em latência e em imprevisibilidade — os mesmos custos do cap. 11, pelas mesmas razões.
+- **Paginação autogerida.** O modelo decide o que trazer e o que arquivar, via ferramentas. Elegante e geral; paga em latência e em imprevisibilidade — os mesmos custos do cap. 12, pelas mesmas razões.
 
 Nenhuma domina. A escolha honesta vem de uma pergunta: **os seus fatos mudam?** Se mudam (endereço, cargo, preferência, estado de assinatura), grafo temporal ou versionamento explícito. Se não mudam (fatos históricos, decisões registradas), fatos extraídos resolvem por muito menos.
 
@@ -80,11 +80,11 @@ A linha "escrita" é a que mais importa: **memória tem um caminho de escrita, e
 
 ### Leitura executiva
 
-Memória é a decisão de **o que vale a pena sobreviver** — e é irreversível: o que não foi guardado não volta. Três horizontes (histórico · trabalho · longo prazo), e o mais negligenciado é o do meio: **memória de trabalho deixada implícita no histórico é a primeira coisa que a compactação destrói**. Três arquiteturas de longo prazo — fatos extraídos (barata, auditável, perde nuance), grafo temporal (responde "o que era verdade quando?"), paginação autogerida (geral, cara em latência) — e a pergunta que escolhe entre elas é uma só: **os seus fatos mudam?** **A distinção que evita o erro caro:** RAG recupera trechos **imutáveis**; memória mantém afirmações que **mudam de valor de verdade**. **O risco estrutural:** memória tem caminho de **escrita**, e todo caminho de escrita é superfície de ataque — uma afirmação falsa gravada envenena todas as sessões futuras (cap. 16). Nunca grave direto do que foi lido de fonte externa.
+Memória é a decisão de **o que vale a pena sobreviver** — e é irreversível: o que não foi guardado não volta. Três horizontes (histórico · trabalho · longo prazo), e o mais negligenciado é o do meio: **memória de trabalho deixada implícita no histórico é a primeira coisa que a compactação destrói**. Três arquiteturas de longo prazo — fatos extraídos (barata, auditável, perde nuance), grafo temporal (responde "o que era verdade quando?"), paginação autogerida (geral, cara em latência) — e a pergunta que escolhe entre elas é uma só: **os seus fatos mudam?** **A distinção que evita o erro caro:** RAG recupera trechos **imutáveis**; memória mantém afirmações que **mudam de valor de verdade**. **O risco estrutural:** memória tem caminho de **escrita**, e todo caminho de escrita é superfície de ataque — uma afirmação falsa gravada envenena todas as sessões futuras (cap. 17). Nunca grave direto do que foi lido de fonte externa.
 
-## Mão na massa — contexto-zero, etapa 11
+## Mão na massa — contexto-zero, etapa 12
 
-Na etapa 11 o `contexto-zero` ganha memória: extração de fatos ao fim do turno, armazenamento com data e procedência, e recuperação no início do turno seguinte — dentro do orçamento da etapa 7, e não em cima dele. Dois testes fecham a etapa: um fato marcado como vindo de fonte externa **não** é gravado como fato do usuário; e o endpoint de exclusão apaga de verdade. O exercício de completude: o critério de saliência da extração vem esqueletado — você decide o que merece virar memória, e percebe que essa é a decisão de produto do capítulo.
+Na etapa 12 o `contexto-zero` ganha memória: extração de fatos ao fim do turno, armazenamento com data e procedência, e recuperação no início do turno seguinte — dentro do orçamento da etapa 7, e não em cima dele. Dois testes fecham a etapa: um fato marcado como vindo de fonte externa **não** é gravado como fato do usuário; e o endpoint de exclusão apaga de verdade. O exercício de completude: o critério de saliência da extração vem esqueletado — você decide o que merece virar memória, e percebe que essa é a decisão de produto do capítulo.
 
 ## Verificação
 

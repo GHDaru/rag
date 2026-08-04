@@ -134,7 +134,7 @@ const T = EN
       bibliografiaHtml: "bibliografia.html",
       verCitacao: "ver na Bibliografia",
       splashDesc: "As duas disciplinas que decidem o que o modelo vê: <em>o que se escreve</em> (prompt) e <em>o que se monta em runtime</em> (contexto) — com o RAG no lugar certo, dentro da segunda.",
-      splashAlt: "Capa de Engenharia de Prompt e Engenharia de Contexto: uma janela de contexto luminosa, em âmbar, montada em camadas — instrução, recuperação, memória e ferramentas — sobre fundo azul-escuro com traços de blueprint.",
+      splashAlt: "Capa de Engenharia de Prompt e Engenharia de Contexto: o título em branco e âmbar sobre fundo azul-escuro com malha de blueprint, e abaixo um diagrama da janela de contexto em cinco camadas — instrução, exemplos e regras, recuperado (RAG), memória e ferramentas — com a legenda \"tudo isso disputa um orçamento único\".",
       entrarLivro: "Entrar no livro →",
       benchmarkBtn: "Técnicas",
       guiaBtn: "Guia Editorial",
@@ -146,7 +146,7 @@ const T = EN
       verRadar: "ver o Radar completo →",
       nestaEdicao: "Nesta edição",
       historicoNome: "Histórico",
-      creditos: `<strong><a href="autor.html">Gilsiley Henrique Darú</a></strong> — edição, direção e orquestração · <a class="splash-linkedin" href="https://www.linkedin.com/in/gilsiley-dar%C3%BA/">LinkedIn</a><br><strong>Claude (Anthropic)</strong> — pesquisa e geração de texto (co-autoria) · <strong>GPT (OpenAI)</strong> — imagem de capa`,
+      creditos: `<strong><a href="autor.html">Gilsiley Henrique Darú</a></strong> — edição, direção e orquestração · <a class="splash-linkedin" href="https://www.linkedin.com/in/gilsiley-dar%C3%BA/">LinkedIn</a><br><strong>Claude (Anthropic)</strong> — pesquisa e geração de texto (co-autoria) · capa tipográfica gerada pelo próprio motor do livro`,
       atualizadoEm: "atualizado em",
       kickerEntrada: "Livro vivo",
       comecar: "▶ Começar do início — 00",
@@ -184,17 +184,21 @@ const COMPANION_CAPS = [
   { chave: "auto_otimizacao", rotulo: "Prompt otimizado", libera: 6 },
   { chave: "eval_prompt", rotulo: "Eval de prompt", libera: 7 },
   { chave: "orcamento", rotulo: "Orçamento de janela", libera: 8 },
-  { chave: "recuperacao", rotulo: "Recuperação (RAG)", libera: 9 },
-  { chave: "rag_avancado", rotulo: "RAG avançado", libera: 10 },
-  { chave: "rag_agentico", rotulo: "RAG agêntico", libera: 11 },
-  { chave: "memoria", rotulo: "Memória entre sessões", libera: 12 },
-  { chave: "compactacao", rotulo: "Compactação", libera: 13 },
-  { chave: "ferramentas", rotulo: "Ferramentas e MCP", libera: 14 },
-  { chave: "evals", rotulo: "Avaliação do sistema", libera: 15 },
-  { chave: "seguranca", rotulo: "Contexto não confiável", libera: 16 },
+  { chave: "corpus", rotulo: "Corpus curado", libera: 9 },
+  { chave: "recuperacao", rotulo: "Recuperação (RAG)", libera: 10 },
+  { chave: "rag_avancado", rotulo: "RAG avançado", libera: 11 },
+  { chave: "rag_agentico", rotulo: "RAG agêntico", libera: 12 },
+  { chave: "memoria", rotulo: "Memória entre sessões", libera: 13 },
+  { chave: "compactacao", rotulo: "Compactação", libera: 14 },
+  { chave: "ferramentas", rotulo: "Ferramentas e MCP", libera: 15 },
+  { chave: "evals", rotulo: "Avaliação do sistema", libera: 16 },
+  { chave: "seguranca", rotulo: "Contexto não confiável", libera: 17 },
 ];
 const capituloDe = (titulo) => parseInt((String(titulo).match(/^\s*(\d+)/) || [])[1], 10) || 0;
 function companionSnippet(chapter) {
+  // Sem backend configurado, o widget não é injetado: um chat que não responde
+  // é pior que chat nenhum. Volta quando o companion for publicado (rodada 3).
+  if (!COMPANION_BACKEND) return "";
   const cfg = JSON.stringify({ backend: COMPANION_BACKEND, chapter, mode: "progressivo", lang: LANG, capabilities: COMPANION_CAPS });
   return `<script>window.COMPANION=${cfg.replace(/</g, "\\u003c")}</script>
 <link rel="stylesheet" href="${A}companion.css">

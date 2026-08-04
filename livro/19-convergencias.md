@@ -1,4 +1,4 @@
-# 18 — Convergências e Tendências
+# 19 — Convergências e Tendências
 
 > **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](HISTORICO.md)
 >

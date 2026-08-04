@@ -31,7 +31,7 @@ Sub-problemas: onde vivem as regras e como são descobertas; se o prompt deve va
 
 ## Fontes da indústria
 
-- **Cache por prefixo** — a mecânica que decide a ordem das camadas: provedores cobram menos (e respondem mais rápido) por tokens que repetem um **prefixo já visto**. Qualquer conteúdo volátil no topo invalida tudo abaixo dele. O tratamento completo é o cap. 17; aqui entra como restrição de arquitetura.
+- **Cache por prefixo** — a mecânica que decide a ordem das camadas: provedores cobram menos (e respondem mais rápido) por tokens que repetem um **prefixo já visto**. Qualquer conteúdo volátil no topo invalida tudo abaixo dele. O tratamento completo é o cap. 18; aqui entra como restrição de arquitetura.
 - **[AGENTS.md](https://agents.md/)** — o "README para agentes" convergiu como formato portável de regras de projeto, com governança neutra e adoção ampla. A lição transferível para qualquer sistema: regras versionadas, próximas do que descrevem, em formato aberto.
 - **Hierarquia de instruções** — os provedores treinam precedência entre camadas (sistema > desenvolvedor > usuário > conteúdo externo). A montagem deve refletir essa hierarquia; contrariá-la é pedir comportamento indefinido.
 
@@ -64,7 +64,7 @@ A distinção que mais rende a médio prazo:
 
 Misturadas no mesmo bloco, as duas se degradam: a política vira sugestão de tom ("seja cuidadoso com dados sensíveis") em vez de restrição verificável, e a voz vira lista de proibições que deixa o assistente ríspido. Separadas — arquivos distintos, blocos distintos, donos distintos — cada uma pode ser testada pelo método que lhe cabe.
 
-E há um argumento de segurança: **política que não é verificável não é política** (cap. 16). Se a regra existe só como frase no prompt e não tem contraparte no que as ferramentas permitem, ela é uma preferência.
+E há um argumento de segurança: **política que não é verificável não é política** (cap. 17). Se a regra existe só como frase no prompt e não tem contraparte no que as ferramentas permitem, ela é uma preferência.
 
 ### 3. Cascata com precedência declarada
 

@@ -15,7 +15,7 @@ Como o grafo nasce do texto, ele é sempre honesto: se um capítulo não cita um
 - **Conceitos** (verde) — os verbetes do [glossário](glossario.md).
 - **contexto-zero** (roxo) — as 16 etapas da trilha prática.
 
-Arestas mais grossas são menções mais frequentes. Capítulo→capítulo aparece quando um texto cita outro por número ("cap. 09").
+Arestas mais grossas são menções mais frequentes. Capítulo→capítulo aparece quando um texto cita outro por número ("cap. 10").
 
 ## O que o grafo revela nesta edição
 

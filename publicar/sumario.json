@@ -62,33 +62,38 @@
           "teaser": "Context rot, contexto longo × recuperação, e o que medir."
         },
         {
-          "arquivo": "livro/capitulos/09-recuperacao.md",
-          "titulo": "09 — Recuperação: o Núcleo do RAG",
+          "arquivo": "livro/capitulos/09-corpus.md",
+          "titulo": "09 — Ingestão e Governança do Corpus",
+          "teaser": "O teto de tudo que vem depois: o que entra no índice."
+        },
+        {
+          "arquivo": "livro/capitulos/10-recuperacao.md",
+          "titulo": "10 — Recuperação: o Núcleo do RAG",
           "teaser": "Chunking, embeddings, busca híbrida e reranking."
         },
         {
-          "arquivo": "livro/capitulos/10-rag-avancado.md",
-          "titulo": "10 — RAG Avançado",
+          "arquivo": "livro/capitulos/11-rag-avancado.md",
+          "titulo": "11 — RAG Avançado",
           "teaser": "Contextual retrieval, late chunking, multi-hop e GraphRAG."
         },
         {
-          "arquivo": "livro/capitulos/11-rag-agentico.md",
-          "titulo": "11 — RAG Agêntico",
+          "arquivo": "livro/capitulos/12-rag-agentico.md",
+          "titulo": "12 — RAG Agêntico",
           "teaser": "Quando o agente decide se, quando e como recuperar."
         },
         {
-          "arquivo": "livro/capitulos/12-memoria.md",
-          "titulo": "12 — Memória e Estado",
+          "arquivo": "livro/capitulos/13-memoria.md",
+          "titulo": "13 — Memória e Estado",
           "teaser": "O que sobrevive ao turno, à sessão e ao mês."
         },
         {
-          "arquivo": "livro/capitulos/13-compactacao.md",
-          "titulo": "13 — Compactação e Isolamento",
+          "arquivo": "livro/capitulos/14-compactacao.md",
+          "titulo": "14 — Compactação e Isolamento",
           "teaser": "Caber na janela sem perder o fio."
         },
         {
-          "arquivo": "livro/capitulos/14-ferramentas-e-mcp.md",
-          "titulo": "14 — Ferramentas e Contexto Externo",
+          "arquivo": "livro/capitulos/15-ferramentas-e-mcp.md",
+          "titulo": "15 — Ferramentas e Contexto Externo",
           "teaser": "Resultado de ferramenta também é contexto — e é o mais caro."
         }
       ]
@@ -97,18 +102,18 @@
       "nome": "Parte III — O sistema em produção",
       "itens": [
         {
-          "arquivo": "livro/capitulos/15-avaliacao-de-sistemas.md",
-          "titulo": "15 — Avaliação de Sistemas de Contexto",
+          "arquivo": "livro/capitulos/16-avaliacao-de-sistemas.md",
+          "titulo": "16 — Avaliação de Sistemas de Contexto",
           "teaser": "Medir recuperação e geração separadamente, e em CI."
         },
         {
-          "arquivo": "livro/capitulos/16-seguranca-do-contexto.md",
-          "titulo": "16 — Segurança do Contexto",
+          "arquivo": "livro/capitulos/17-seguranca-do-contexto.md",
+          "titulo": "17 — Segurança do Contexto",
           "teaser": "Prompt injection: todo dado recuperado é hostil até prova em contrário."
         },
         {
-          "arquivo": "livro/capitulos/17-custo-latencia-cache.md",
-          "titulo": "17 — Custo, Latência e Cache",
+          "arquivo": "livro/capitulos/18-custo-latencia-cache.md",
+          "titulo": "18 — Custo, Latência e Cache",
           "teaser": "A conta do contexto, e como o cache de prefixo a reduz."
         }
       ]
@@ -117,8 +122,8 @@
       "nome": "Fechamento",
       "itens": [
         {
-          "arquivo": "livro/18-convergencias.md",
-          "titulo": "18 — Convergências e Tendências",
+          "arquivo": "livro/19-convergencias.md",
+          "titulo": "19 — Convergências e Tendências",
           "teaser": "O que já é consenso, o que ainda é disputa, o que vai expirar."
         }
       ]

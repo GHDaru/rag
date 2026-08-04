@@ -31,7 +31,7 @@ Este capítulo fixa os termos e desenha o mapa. É o capítulo de referência ao
 
 - **[Prompt Engineering Guide](https://github.com/dair-ai/prompt-engineering-guide)** (DAIR.AI) — o guia de referência da área. O dado editorial mais interessante não é o conteúdo, é o índice: o mesmo repositório cobre *prompt engineering*, *context engineering*, *RAG* e *agentes*. A comunidade já trata o par como uma coisa só.
 - **[Awesome-Context-Engineering](https://github.com/Meirtz/Awesome-Context-Engineering)** — a coleção viva associada ao survey 2507.13334; ponto de partida do garimpo de cada capítulo da Parte II.
-- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — fixa o vocabulário de risco que o cap. 16 usa; *prompt injection* é LLM01 em todas as edições publicadas.
+- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — fixa o vocabulário de risco que o cap. 17 usa; *prompt injection* é LLM01 em todas as edições publicadas.
 
 ## O estado da arte
 
@@ -49,7 +49,7 @@ Este capítulo fixa os termos e desenha o mapa. É o capítulo de referência ao
 | **memória** | estado que sobrevive além do turno atual, deliberadamente mantido | não é o histórico bruto da conversa |
 | **orçamento de contexto** | a alocação explícita de tokens entre os concorrentes | não é "o que couber" |
 
-A distinção que mais rende no dia a dia é a última linha da tabela do meio: **recuperação não é RAG**. Buscar é metade. RAG é buscar *e* gerar uma resposta fundamentada no que se buscou — e o segundo termo é onde mora a maior parte das falhas de produção (cap. 15).
+A distinção que mais rende no dia a dia é a última linha da tabela do meio: **recuperação não é RAG**. Buscar é metade. RAG é buscar *e* gerar uma resposta fundamentada no que se buscou — e o segundo termo é onde mora a maior parte das falhas de produção (cap. 16).
 
 ### 2. O caminho de uma requisição
 
@@ -60,15 +60,15 @@ pedido do usuário
    │
    ├─ [prompt]     instrução + exemplos + formato pedido      ← Parte I
    ├─ [regras]     política do sistema, persona, restrições   ← cap. 05
-   ├─ [memória]    o que ficou de sessões anteriores          ← cap. 12
-   ├─ [recuperado] trechos buscados no corpus                 ← caps. 09-11
-   ├─ [ferramenta] resultados de chamadas externas            ← cap. 14
-   └─ [histórico]  os turnos desta conversa (talvez compactado) ← cap. 13
+   ├─ [memória]    o que ficou de sessões anteriores          ← cap. 13
+   ├─ [recuperado] trechos buscados no corpus                 ← caps. 10-12
+   ├─ [ferramenta] resultados de chamadas externas            ← cap. 15
+   └─ [histórico]  os turnos desta conversa (talvez compactado) ← cap. 14
    │
    ▼
    MONTAGEM  ── decide ordem, corte e orçamento ──────────────  cap. 08
    ▼
-   inferência ──► resposta ──► avaliação (cap. 15) e custo (cap. 17)
+   inferência ──► resposta ──► avaliação (cap. 16) e custo (cap. 18)
 ```
 
 Duas leituras deste desenho valem o capítulo inteiro:
@@ -85,13 +85,13 @@ O jeito útil de entrar no livro não é por tema, é por sintoma. Leve o seu pr
 | A resposta varia muito entre execuções idênticas | prompt (falta de âncora ou de formato) | caps. 02, 04 |
 | O modelo erra em tarefas que exigem passos | prompt (falta de estratégia de raciocínio) | cap. 03 |
 | "Melhorei o prompt" e não sei se melhorou | falta de eval | cap. 07 |
-| O modelo não sabe informação da minha organização | contexto (falta recuperação) | cap. 09 |
-| Ele recupera coisa errada / não encontra o óbvio | recuperação (chunking, busca, ranking) | caps. 09, 10 |
-| Ele recupera certo mas responde errado | geração não fundamentada | cap. 15 |
+| O modelo não sabe informação da minha organização | contexto (falta recuperação) | cap. 10 |
+| Ele recupera coisa errada / não encontra o óbvio | recuperação (chunking, busca, ranking) | caps. 10, 11 |
+| Ele recupera certo mas responde errado | geração não fundamentada | cap. 16 |
 | Piora quando a conversa fica longa | orçamento e *context rot* | caps. 08, 13 |
-| Esquece o que o usuário disse semana passada | memória | cap. 12 |
-| Um documento fez o agente agir contra o usuário | segurança (*prompt injection*) | cap. 16 |
-| Funciona, mas custa/demora demais | custo, latência, cache | cap. 17 |
+| Esquece o que o usuário disse semana passada | memória | cap. 13 |
+| Um documento fez o agente agir contra o usuário | segurança (*prompt injection*) | cap. 17 |
+| Funciona, mas custa/demora demais | custo, latência, cache | cap. 18 |
 
 ### 4. A cláusula de expiração
 

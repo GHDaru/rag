@@ -6,7 +6,7 @@
 
 ## Por que existe
 
-O livro afirma coisas como "busca híbrida é o upgrade de melhor relação benefício/esforço" (cap. 09) e "*contextual retrieval* e *late chunking* resolvem o mesmo problema com contas muito diferentes" (cap. 10). Hoje essas afirmações se apoiam em medições **de terceiros**, feitas em corpus de terceiros — e o Princípio I obriga a dizer isso a cada vez.
+O livro afirma coisas como "busca híbrida é o upgrade de melhor relação benefício/esforço" (cap. 10) e "*contextual retrieval* e *late chunking* resolvem o mesmo problema com contas muito diferentes" (cap. 11). Hoje essas afirmações se apoiam em medições **de terceiros**, feitas em corpus de terceiros — e o Princípio I obriga a dizer isso a cada vez.
 
 Esta seção existe para o livro parar de dever: medir aqui, com receita publicada, o que hoje ele só cita.
 
@@ -28,7 +28,7 @@ Cada técnica avaliada recebe uma ficha com cinco dimensões:
 
 | Dimensão | Pergunta | Como se mede |
 |---|---|---|
-| **Eficácia** | resolve o problema que promete? | métrica do estágio (cap. 15): recall, precision, faithfulness |
+| **Eficácia** | resolve o problema que promete? | métrica do estágio (cap. 16): recall, precision, faithfulness |
 | **Custo de indexação** | o que se paga uma vez? | chamadas de LLM, tempo, armazenamento — por 1k chunks |
 | **Custo de consulta** | o que se paga sempre? | chamadas extras, tokens, latência p50/p95 — por pergunta |
 | **Complexidade** | o que se adiciona de peça móvel? | componentes novos e novos modos de falha |
@@ -40,7 +40,7 @@ A dimensão **sensibilidade** é a que mais importa e a que a literatura mais om
 
 `0` não paga · `1` paga em caso específico (declarado) · `2` paga na maioria dos casos · `3` paga quase sempre, e o custo é baixo
 
-A nota **nunca** é comparável entre dimensões diferentes, e só é comparável entre técnicas que atacam o **mesmo problema** (as quatro falhas do cap. 10). Comparar *contextual retrieval* com reescrita de consulta é erro de categoria: elas curam falhas diferentes.
+A nota **nunca** é comparável entre dimensões diferentes, e só é comparável entre técnicas que atacam o **mesmo problema** (as quatro falhas do cap. 11). Comparar *contextual retrieval* com reescrita de consulta é erro de categoria: elas curam falhas diferentes.
 
 ## Regras de evidência (Princípio I aplicado a nós mesmos)
 
@@ -67,7 +67,7 @@ Rodar em dois é o mínimo para a dimensão **sensibilidade** significar alguma 
 Registrado antes de começar, por honestidade:
 
 - **O corpus do livro é fácil demais.** Texto bem estruturado, com seções nomeadas, favorece chunking estrutural e infla o recall. Os números serão otimistas.
-- **Perguntas sintéticas superestimam o recall** (cap. 15) — a pergunta gerada de um trecho é respondível por aquele trecho.
+- **Perguntas sintéticas superestimam o recall** (cap. 16) — a pergunta gerada de um trecho é respondível por aquele trecho.
 - **Um autor avaliando as técnicas que escolheu descrever** tem viés de confirmação. A mitigação possível é publicar a receita e convidar contestação; não há mitigação completa.
 
 Declarar isso antes de medir é mais barato do que descobrir depois — e é o que o livro cobra de todo mundo que cita.
