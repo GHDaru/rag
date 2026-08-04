@@ -19,7 +19,7 @@ Quase todo time que trabalha com LLM tem a mesma história: alguém "melhorou o 
 
 A causa é que a saída é texto e texto não tem `assert` óbvio. A consequência é que a disciplina de engenharia inteira — versionar, testar, revisar, reverter — deixa de operar exatamente onde o comportamento do produto é decidido.
 
-Este capítulo é o portão da Parte I. Sem ele, o cap. 16 é perigoso e o cap. 12 é folclore.
+Este capítulo é o portão da Parte IV. Sem ele, o cap. 16 é perigoso e o cap. 12 é folclore.
 
 ## Fundamentos científicos
 
@@ -88,7 +88,7 @@ Três propriedades que fazem esse ciclo funcionar:
 
 ### Leitura executiva
 
-Sem eval, mudar prompt é apostar — e este capítulo é o portão da Parte I: sem ele o cap. 16 é perigoso e o cap. 12 é folclore. Suba a escada só o necessário: **todo critério que puder virar `assert` deve virar `assert`**; o juiz é para o que sobrar. **O que roubar:** monte o conjunto a partir de **falhas reais registradas** (não de casos imaginados), faça todo incidente virar caso, e versione prompt + modelo + conjunto **juntos** — número comparado entre conjuntos diferentes é auto-engano. **Se usar juiz:** modelo de outra família, critérios binários, ordem alternada, e **meça a concordância com humano** antes de confiar — juiz não calibrado é número inventado com aparência de rigor. **A lacuna aberta:** quase toda métrica mede um turno; os sistemas falham ao longo da conversa.
+Sem eval, mudar prompt é apostar — e este capítulo é o portão da Parte IV: sem ele o cap. 16 é perigoso e o cap. 12 é folclore. Suba a escada só o necessário: **todo critério que puder virar `assert` deve virar `assert`**; o juiz é para o que sobrar. **O que roubar:** monte o conjunto a partir de **falhas reais registradas** (não de casos imaginados), faça todo incidente virar caso, e versione prompt + modelo + conjunto **juntos** — número comparado entre conjuntos diferentes é auto-engano. **Se usar juiz:** modelo de outra família, critérios binários, ordem alternada, e **meça a concordância com humano** antes de confiar — juiz não calibrado é número inventado com aparência de rigor. **A lacuna aberta:** quase toda métrica mede um turno; os sistemas falham ao longo da conversa.
 
 ## Mão na massa — rag-zero, etapa 10 (o gerador)
 

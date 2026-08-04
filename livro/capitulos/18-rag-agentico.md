@@ -15,7 +15,7 @@ Ao final deste capítulo, você deve ser capaz de:
 
 ## O problema
 
-Nos caps. 06 e 09, a recuperação é um **pipeline**: chega a pergunta, busca-se, monta-se o contexto, gera-se. O caminho é sempre o mesmo, mesmo quando a pergunta não pede busca nenhuma, mesmo quando a primeira busca voltou vazia, mesmo quando a resposta exigiria três buscas encadeadas.
+Nos caps. 06 a 10, a recuperação é um **pipeline**: chega a pergunta, busca-se, monta-se o contexto, gera-se. O caminho é sempre o mesmo, mesmo quando a pergunta não pede busca nenhuma, mesmo quando a primeira busca voltou vazia, mesmo quando a resposta exigiria três buscas encadeadas.
 
 RAG agêntico inverte o controle: o modelo **decide** se busca, o que busca, onde busca, e se o que voltou basta. A recuperação deixa de ser etapa e vira **ferramenta** — uma tool com schema (cap. 13), exposta ao modelo junto das outras.
 
@@ -55,7 +55,7 @@ A recomendação honesta: **suba um grau por vez, e só com evidência de que o 
 ### 2. Os quatro padrões
 
 - **Reflexão** — o agente critica o resultado da busca antes de usá-lo ("isto responde à pergunta? falta algo?") e decide buscar de novo. É o padrão de maior retorno e o mais barato de implementar; resolve o caso da busca vazia e o do resultado parcial.
-- **Planejamento** — decompor a pergunta em subperguntas antes de buscar, e buscar cada uma. É a resposta natural ao multi-hop do cap. 09.
+- **Planejamento** — decompor a pergunta em subperguntas antes de buscar, e buscar cada uma. É a resposta natural ao multi-hop do cap. 10.
 - **Roteamento** — escolher a fonte certa entre várias (documentação, banco, API, web) antes de buscar. É frequentemente o que o sistema realmente precisava quando alguém propôs "agente".
 - **Colaboração** — agentes especializados por fonte ou por etapa, coordenados. É o padrão mais caro e o mais difícil de avaliar; exige justificativa explícita.
 

@@ -6,6 +6,19 @@
 
 ## Histórico de edições
 
+### Adendo 0.2.1 — 2026-08-04 · Geração de metadado, e a dívida da renumeração
+
+**A pergunta do editor:** *"na ingestão, acredito que teremos coisas do tipo geração de metadados, etc, ou não é isto?"* — e estava certo: o cap. 04 listava "enriquecimento" numa linha de tabela e depois só tratava do metadado **que já existe** (origem, data, permissão). A camada onde o metadado é **criado** é justamente a parte cara e mais rendosa da ingestão, e faltava.
+
+**O que mudou:**
+
+- **Cap. 04 ganha duas seções.** *Geração de metadado* — as três procedências (**herdado**, **derivado**, **gerado**), e o que vale gerar em ordem de retorno: resumo contextual (que é o *contextual retrieval* do cap. 09 sob outro nome), **perguntas hipotéticas** (HyDE invertido e movido para a indexação, pago uma vez em vez de em toda consulta), vigência extraída da prosa, classificação, entidades. E *o metadado gerado errado é pior que o ausente* — a falha silenciosa em que o documento certo some **antes** da busca, com o log mostrando uma consulta normal; daí a regra de que metadado gerado **impulsiona, nunca filtra de forma dura**.
+- **A dívida da renumeração 0.2, paga.** A reestruturação renumerou os capítulos mas não alcançou o **aparato**: o catálogo de técnicas inteiro ainda apontava para a numeração original (busca em "09", RAPTOR em "10"), o glossário tinha o cluster de recuperação errado, e cinco capítulos citavam partes do sumário antigo ("a Parte II adiciona superfície de ataque"). Corrigido em 16 referências de capítulo e nas três páginas de aparato.
+- **Catálogo reorganizado** na ordem das partes atuais, com as técnicas dos dois capítulos removidos retiradas e as da geração fundamentada (cap. 15) acrescentadas. As "sete que valem começar por aqui" viram **oito**, e agora começam pelo corpus — não pelo prompt.
+- **Glossário** com os verbetes que a edição 0.2 passou a exigir: os quatro paradigmas, contrato, procedência, fusão por posição, metadado gerado, abstenção, fundamentação, atribuição por afirmação, multi-hop, pergunta global.
+
+**Atribuição:** crítica editorial — Gilsiley Henrique Darú. Redação e correção — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-04.
+
 ### Edição 0.2 — 2026-08-04 · O livro vira *Engenharia de RAG*
 
 **A crítica que originou a rodada**, do editor: o livro anterior (*Engenharia de Prompt e Engenharia de Contexto*) **duplicava o livro irmão**. Quatro capítulos — memória, compactação, ferramentas/MCP, segurança de contexto — eram território do *Engenharia de Harness*, e o que era genuinamente deste livro (corpus, recuperação, RAG avançado, agêntico) estava espremido no meio. A crítica estava certa.

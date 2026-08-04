@@ -19,7 +19,7 @@ Ao final deste capítulo, você deve ser capaz de:
 
 A separação mínima é entre **achar** e **usar**:
 
-- A recuperação trouxe o que precisava? (falha aqui = caps. 06 e 09)
+- A recuperação trouxe o que precisava? (falha aqui = caps. 05–10)
 - A resposta usou o que foi trazido, sem inventar? (falha aqui = geração, prompt, cap. 11/13)
 
 Um sistema pode ter recuperação excelente e resposta péssima. E — o caso que mais engana — pode ter recuperação péssima e resposta que **parece** boa, porque o modelo preencheu as lacunas com conhecimento paramétrico plausível. Este segundo caso passa em qualquer avaliação superficial e falha exatamente onde importa: no caso raro, no dado novo, no que a empresa tem de específico.
@@ -46,7 +46,7 @@ Um sistema pode ter recuperação excelente e resposta péssima. E — o caso qu
 
 | Métrica | Pergunta | Estágio | Falha indica |
 |---|---|---|---|
-| **Context recall** | os trechos necessários foram recuperados? | recuperação | índice, chunking, busca (caps. 06–09) |
+| **Context recall** | os trechos necessários foram recuperados? | recuperação | índice, chunking, busca (caps. 05, 06, 09) |
 | **Context precision** | os trechos recuperados eram relevantes? | recuperação | `top_k` alto, ranking fraco, orçamento desperdiçado (cap. 20) |
 | **Faithfulness** | a resposta é sustentada pelo que foi recuperado? | geração | alucinação; prompt sem regra de fundamentação (cap. 11) |
 | **Answer relevance** | a resposta responde à pergunta feita? | geração | o modelo respondeu outra coisa |
@@ -59,10 +59,10 @@ A combinação das métricas localiza o problema — é o instrumento que o cap.
 
 | Recall | Precision | Faithfulness | Diagnóstico | Onde agir |
 |:---:|:---:|:---:|---|---|
-| baixo | — | — | não acha | chunking, busca híbrida, reescrita (caps. 06, 09) |
-| alto | baixo | — | acha e traz lixo junto | reranking, `top_k` menor (cap. 06) |
+| baixo | — | — | não acha | chunking, busca híbrida, reescrita (caps. 05, 06, 08) |
+| alto | baixo | — | acha e traz lixo junto | reranking, `top_k` menor (cap. 07) |
 | alto | alto | baixo | tem tudo e inventa | prompt de fundamentação, regra de abstenção (cap. 11) |
-| alto | alto | alto | e ainda erra | a pergunta exige raciocínio (cap. 12) ou multi-hop (cap. 09) |
+| alto | alto | alto | e ainda erra | a pergunta exige raciocínio (cap. 12) ou multi-hop (cap. 10) |
 
 Esta tabela é, sozinha, o motivo de o capítulo existir. Sem ela, "melhorar o RAG" é tentativa e erro caro.
 
