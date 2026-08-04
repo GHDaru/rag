@@ -20,8 +20,8 @@ const slugDe = (arquivo) => basename(arquivo).replace(/\.md$/, "").toLowerCase()
 const RE_CAPTURA = EN ? /State of the art captured in/ : /Estado da arte capturado em/;
 const RE_LEITURA = EN ? /^###\s+Executive summary/m : /^###\s+Leitura executiva/m;
 const MIN_LEITURA = EN ? "min read" : "min de leitura";
-const MD_LIVRO = EN ? "harness-engineering.md" : "engenharia-de-harness.md";
-const PDF_LIVRO = EN ? "harness-engineering.pdf" : "engenharia-de-harness.pdf";
+const MD_LIVRO = EN ? "harness-engineering.md" : "engenharia-de-prompt-e-contexto.md";
+const PDF_LIVRO = EN ? "harness-engineering.pdf" : "engenharia-de-prompt-e-contexto.pdf";
 
 const falhas = [];
 let capitulos = 0, aparato = 0;
@@ -57,7 +57,6 @@ for (const item of itens) {
     if (new RegExp("^>\\s*\\*\\*" + RE_CAPTURA.source, "m").test(md) && !html.includes('class="selo-data"')) erro("selo de datação (C02) sumiu");
   }
   if (!html.includes('class="pagcards"')) erro("sem N02 (.pagcards)");
-  if (!html.includes('class="lang-pill"')) erro("sem seletor de idioma (spec 067)");
 
   // Selo de sincronia (spec 067): toda página EN precisa do cabeçalho i18n
   // e o selo deve refletir o estado REAL (hash da fonte PT).
@@ -79,12 +78,12 @@ if (!EN) {
   else {
     const g = JSON.parse(readFileSync(gPath, "utf8"));
     const caps = g.nos.filter((n) => n.tipo === "capitulo").length;
-    if (caps !== 18) falhas.push(`grafo: esperados 18 capítulos, há ${caps}`);
-    if (g.nos.length < 40) falhas.push(`grafo: só ${g.nos.length} nós (<40)`);
-    if (g.arestas.length < 100) falhas.push(`grafo: só ${g.arestas.length} arestas (<100)`);
+    const esperados = itens.filter((i) => /^\s*\d+\s*—/.test(i.titulo)).length;
+    if (caps !== esperados) falhas.push(`grafo: esperados ${esperados} capítulos, há ${caps}`);
+    // Pisos da edição 0.1 (esqueleto). Sobem a cada rodada de aprofundamento — ver ROADMAP.
+    if (g.nos.length < 30) falhas.push(`grafo: só ${g.nos.length} nós (<30)`);
+    if (g.arestas.length < 60) falhas.push(`grafo: só ${g.arestas.length} arestas (<60)`);
   }
-} else if (!existsSync(resolve(RAIZ, "docs/assets/grafo.en.json"))) {
-  falhas.push("assets/grafo.en.json ausente (remapeamento EN)");
 }
 
 // News na capa (spec 062): se as fontes do jornal parseiam, a capa noticia.

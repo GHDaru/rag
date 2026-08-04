@@ -1,104 +1,85 @@
-# Benchmark de Harnesses — Metodologia
+# Avaliação de técnicas — metodologia
 
-> **Status: exploratório.** Esta seção nasceu de forma amadora e exploratória — leitura assistida de código, uma rodada, três harnesses — e amadurece a cada iteração. As notas são provisórias e comparáveis apenas dentro da mesma rodada metodológica.
+> A seção empírica do livro. **O objeto avaliado aqui é a técnica, não o produto.**
+>
+> Edição 0.1 · captura em 2026-08 · **status: metodologia esboçada, nenhuma avaliação executada.** As avaliações são a [rodada 4](../ROADMAP.md#rodada-4--avaliação-de-técnicas-o-benchmark-deste-livro) do ROADMAP.
 
-## O que avaliamos
+## Por que existe
 
-Harnesses de agentes de IA de código aberto, avaliados **por dimensão de engenharia de harness** — as 12 funcionalidades que estruturam os capítulos do livro (`livro/capitulos/`). Não avaliamos qualidade de modelo, popularidade ou UX subjetiva: avaliamos o scaffolding, lendo o código.
+O livro afirma coisas como "busca híbrida é o upgrade de melhor relação benefício/esforço" (cap. 09) e "*contextual retrieval* e *late chunking* resolvem o mesmo problema com contas muito diferentes" (cap. 10). Hoje essas afirmações se apoiam em medições **de terceiros**, feitas em corpus de terceiros — e o Princípio I obriga a dizer isso a cada vez.
 
-## Método
+Esta seção existe para o livro parar de dever: medir aqui, com receita publicada, o que hoje ele só cita.
 
-1. **Exploração do código-fonte** — cada repositório é vasculhado sistematicamente (agentes de leitura paralelos, um por repo), dimensão por dimensão.
-2. **Evidência obrigatória** — toda afirmação exige o caminho do arquivo onde a funcionalidade está implementada. Sem evidência, não pontua. READMEs prometem; código entrega.
-3. **Avaliação padronizada** — o instrumento é o [template HARNESS_EVAL](template/HARNESS_EVAL.md): 12 dimensões, perguntas-chave fixas, nota 0–3.
-4. **Consolidação** — as avaliações alimentam o [comparativo](comparativo.md) e os capítulos do livro.
+Há também um argumento de coerência: um livro que exige condição experimental de todo número que cita não pode publicar números próprios sem a mesma exigência. **A metodologia é o preço da cobrança.**
 
-## Escala de notas
+## O que se avalia — e o que não
 
-| Nota | Significado |
-|---|---|
-| **0 — Ausente** | A dimensão não existe no código. |
-| **1 — Básico** | Existe de forma mínima: uma estratégia única, sem configuração, sem casos de borda. |
-| **2 — Sólido** | Implementação completa e configurável; cobre os casos principais. |
-| **3 — Referência** | Estado da arte entre os avaliados; é o código que você citaria como exemplo da dimensão. |
+**Avalia-se:** técnicas comparáveis sobre o mesmo corpus, com a mesma pergunta e o mesmo modelo. Exemplos: busca densa × esparsa × híbrida; com e sem reranking; *contextual retrieval* × *late chunking*; estratégias de chunking; famílias de raciocínio (cap. 03); otimizadores de prompt (cap. 06).
 
-Regras de calibração:
-- "3" é relativo à coorte avaliada, não a um ideal absoluto — pode ser rebaixado quando um harness melhor entra.
-- A nota julga o que **está no código na data da avaliação** (versão/commit registrados nos metadados), não o roadmap.
-- Empates são esperados e não devem ser desfeitos artificialmente.
+**Não se avalia:**
 
-## Avaliações realizadas
+- **Produtos e fornecedores.** Nenhuma nota para "melhor vector store" ou "melhor framework". Isso é comparação de infraestrutura e envelhece em semanas — além de colidir com o Princípio VI (neutralidade).
+- **Modelos.** Já existem benchmarks públicos melhores do que qualquer coisa que este projeto faria.
+- **Qualquer coisa sem receita reproduzível.** Se o leitor não consegue rodar de novo, não é resultado — é anedota com número.
 
-**Categoria código** (rodadas 1–2):
+## As dimensões
 
-| Harness | Avaliação | Total (0–36) |
+Cada técnica avaliada recebe uma ficha com cinco dimensões:
+
+| Dimensão | Pergunta | Como se mede |
 |---|---|---|
-| gemini-cli | [avaliacoes/gemini-cli.md](avaliacoes/gemini-cli.md) | 36 |
-| Codex CLI | [avaliacoes/codex-cli.md](avaliacoes/codex-cli.md) | 35 |
-| Goose | [avaliacoes/goose.md](avaliacoes/goose.md) | 34 |
-| opencode | [avaliacoes/opencode.md](avaliacoes/opencode.md) | 31 |
-| OpenHarness | [avaliacoes/openharness.md](avaliacoes/openharness.md) | 29 |
-| Aider | [avaliacoes/aider.md](avaliacoes/aider.md) | 28 |
-| OpenHands (Canvas)* | [avaliacoes/openhands.md](avaliacoes/openhands.md) | 27* |
+| **Eficácia** | resolve o problema que promete? | métrica do estágio (cap. 15): recall, precision, faithfulness |
+| **Custo de indexação** | o que se paga uma vez? | chamadas de LLM, tempo, armazenamento — por 1k chunks |
+| **Custo de consulta** | o que se paga sempre? | chamadas extras, tokens, latência p50/p95 — por pergunta |
+| **Complexidade** | o que se adiciona de peça móvel? | componentes novos e novos modos de falha |
+| **Sensibilidade** | o ganho sobrevive à mudança de corpus/modelo? | repetir em ≥2 corpora |
 
-**Categoria agentes pessoais** (rodada 2; + dims suplementares 13/14):
+A dimensão **sensibilidade** é a que mais importa e a que a literatura mais omite. Um ganho que só aparece em um corpus não é um resultado — é uma coincidência documentada.
 
-| Harness | Avaliação | Total (0–36) | Aprendizado | Proatividade |
-|---|---|---|---|---|
-| OpenClaw | [avaliacoes/openclaw.md](avaliacoes/openclaw.md) | 36 | 1 | 3 |
-| Hermes Agent | [avaliacoes/hermes-agent.md](avaliacoes/hermes-agent.md) | 35 | **3** | 2 |
-| IronClaw | [avaliacoes/ironclaw.md](avaliacoes/ironclaw.md) | 34 | 2 | 3 |
-| ohmo | [avaliacoes/ohmo.md](avaliacoes/ohmo.md) | 34 | 2 | 3 |
+## A escala
 
-**Categoria harnesses embutidos** (rodada 2):
+`0` não paga · `1` paga em caso específico (declarado) · `2` paga na maioria dos casos · `3` paga quase sempre, e o custo é baixo
 
-| Harness | Avaliação | Total (0–36) |
-|---|---|---|
-| n8n (nó AI Agent) | [avaliacoes/n8n.md](avaliacoes/n8n.md) | 29 (não comparável aos dedicados) |
+A nota **nunca** é comparável entre dimensões diferentes, e só é comparável entre técnicas que atacam o **mesmo problema** (as quatro falhas do cap. 10). Comparar *contextual retrieval* com reescrita de consulta é erro de categoria: elas curam falhas diferentes.
 
-\* OpenHands: mede só o control-plane — o núcleo migrou para `software-agent-sdk` (na fila).
+## Regras de evidência (Princípio I aplicado a nós mesmos)
 
-> O total é um resumo grosseiro — a leitura útil é o **perfil** por dimensão (em que o harness é referência, onde é básico) e o arquétipo. Ver o [comparativo](comparativo.md).
+Toda avaliação publica, junto do número:
 
-## Fila de avaliação
+1. **O corpus** — origem, tamanho, número de documentos e de chunks, e se é público.
+2. **As perguntas** — quantas, de onde vieram (sintéticas × reais), e quem verificou as respostas.
+3. **O modelo** — qual, com que parâmetros, e em que data (modelos mudam sob o mesmo nome).
+4. **O orçamento** — `top_k`, tamanho de chunk, limites, tetos.
+5. **A receita** — o comando que reproduz, no repositório.
+6. **O intervalo** — resultado de execução única não é resultado. Mínimo de 3 execuções, com dispersão reportada.
 
-O benchmark se organiza em **categorias** — harnesses só são ranqueados contra pares do mesmo arquétipo (as notas 0–3 continuam comparáveis; a leitura de "referência" é por categoria).
+**Sem os seis itens, a avaliação não é publicada.** É a mesma régua que o livro aplica às fontes que cita.
 
-**Categoria: harnesses de código**
-- ✅ Rodada 2 concluída: Codex CLI (hipótese de sandboxing **confirmada**), Goose (MCP-nativo **confirmado**), Aider (context-first **confirmado**), OpenHands (hipótese de evals **refutada para o repo** — núcleo migrou para SDK).
-- **Próximos:** `OpenHands/software-agent-sdk` (o núcleo que faltou), Cline ou Roo Code (IDE), SWE-agent / mini-swe-agent (harness mínimo), Crush (Go/TUI), smolagents (code-as-action).
+## Os corpora planejados
 
-**Categoria: agentes pessoais self-hosted** (ver [nota de pesquisa](../estudos/2026-07-24-panorama-agentes-pessoais.md))
-- ✅ Rodada 2 concluída: OpenClaw (36), Hermes (35 + aprendizado 3), IronClaw (34 + novo paradigma de segurança).
-- A **dimensão 13 (Aprendizado)** foi promovida a suplementar do template pela evidência do Hermes; a **14 (Proatividade)** é obrigatória nesta categoria.
-- ✅ **Retro dim. 13 na rodada 1 concluída** (2026-07-24): gemini-cli **3** (Auto Memory + skill extraction com inbox humana — segundo design nível 3), OpenHarness 1 (auto-fatos com staleness), opencode 0. Ver capítulo 16.
-- ✅ **Avaliação dedicada do ohmo concluída** (34/36 — 3º da categoria; gap na dim. 6 com conserto de alavancagem identificado para o upstream).
+1. **O próprio livro** — pequeno, em português, conhecido pelo autor, bom para diagnóstico e para o companion. Enviesado por ser texto didático bem estruturado.
+2. **Um corpus de domínio** — documentação técnica real, com perguntas verificadas por gente. É o que dá validade externa, e é o item caro.
 
-**Categoria: harnesses embutidos**
-- ✅ n8n avaliado (29/36; tese da categoria confirmada — as dimensões fracas são as que o ambiente dispensa). Primos candidatos: Zapier Agents, Make, Dify, Flowise.
+Rodar em dois é o mínimo para a dimensão **sensibilidade** significar alguma coisa.
 
-**Categoria: frameworks de harness** (ver [nota de pesquisa](../estudos/2026-07-24-panorama-frameworks.md); template: [FRAMEWORK_EVAL](template/FRAMEWORK_EVAL.md))
-- ✅ **Rodada frameworks-1 concluída** (2026-07-24):
+## O que já se sabe que vai dar errado
 
-| Framework | Avaliação | A (0–18) | D (0–12) |
-|---|---|---|---|
-| OpenAI Agents SDK | [avaliacoes/openai-agents-sdk.md](avaliacoes/openai-agents-sdk.md) | 18 | 11 |
-| CrewAI | [avaliacoes/crewai.md](avaliacoes/crewai.md) | 18 | 11 |
-| software-agent-sdk* | [avaliacoes/software-agent-sdk.md](avaliacoes/software-agent-sdk.md) | 18 | 11 |
-| LangGraph | [avaliacoes/langgraph.md](avaliacoes/langgraph.md) | 16 | 10 |
+Registrado antes de começar, por honestidade:
 
-\* avaliação dupla — também completa as dimensões de harness do OpenHands (H 14/15: loop 3, condenser 3⭐, tools 3, evals 2, segurança 3).
-- **Pendentes do lote 1:** Claude Agent SDK (aguardando fork). **Lote frameworks-2:** Microsoft Agent Framework, Pydantic AI, Mastra, smolagents.
+- **O corpus do livro é fácil demais.** Texto bem estruturado, com seções nomeadas, favorece chunking estrutural e infla o recall. Os números serão otimistas.
+- **Perguntas sintéticas superestimam o recall** (cap. 15) — a pergunta gerada de um trecho é respondível por aquele trecho.
+- **Um autor avaliando as técnicas que escolheu descrever** tem viés de confirmação. A mitigação possível é publicar a receita e convidar contestação; não há mitigação completa.
 
-**Camada de protocolos** (MCP, A2A, ACP, agentskills.io, AGENTS.md): não recebe notas 0–3 — é avaliada por **adoção medida** (matriz no [capítulo 17](../livro/capitulos/17-protocolos.md), extraída das avaliações deste benchmark) e saúde de governança. A matriz é atualizada a cada rodada.
+Declarar isso antes de medir é mais barato do que descobrir depois — e é o que o livro cobra de todo mundo que cita.
 
-**Fora do benchmark — harnesses fechados** (estudo via documentação, no livro, sem notas por falta de evidência de código): Antigravity (Google), Claude Code (Anthropic), Cursor.
+---
 
-**Watchlist**: HoloDesktop (HCompany), Buzz (Dorsey), Omnigent (Databricks), Kilo Code, metaharness (ruvnet).
+## Estrutura desta pasta (a partir da rodada 4)
 
-## Limitações conhecidas
-
-- Leitura de código por agentes de IA pode errar ou desatualizar; achados relevantes devem ser re-verificados no arquivo citado.
-- Uma rodada = uma foto; harnesses ativos mudam rápido (registrar versão/commit é obrigatório).
-- A escala 0–3 comprime nuances; o texto da avaliação importa mais que o número.
-- Ainda não executamos os harnesses em tarefas padronizadas (benchmark *comportamental*) — hoje o método é estático. É a evolução natural da seção.
+```
+benchmark/
+├── README.md          ← esta metodologia
+├── corpora/           ← descrição e receita de preparo de cada corpus
+├── avaliacoes/        ← uma ficha por técnica avaliada
+└── comparativo.md     ← a tabela consolidada, por problema
+```

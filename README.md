@@ -1,97 +1,149 @@
-# Engenharia de Harness — O Livro
+# Engenharia de Prompt e Engenharia de Contexto — O Livro
 
-> Um livro aberto, em português, sobre a disciplina de construir o *scaffolding* que envolve agentes de IA — escrito a partir do estudo sistemático de harnesses de código aberto reais.
+> Um livro aberto, em português, sobre as **duas disciplinas que decidem o que o modelo vê**: o que se escreve (prompt) e o que se monta em runtime (contexto) — com o RAG no lugar certo, dentro da segunda.
 
-## O que é este repositório
+**Edição 0.1 (fundação)** · captura em 2026-08 · [Histórico](livro/HISTORICO.md) · [ROADMAP](ROADMAP.md)
 
-Este é o repositório oficial de escrita do projeto. Todos os estudos, análises de código, avaliações e comparativos são reportados aqui, e o conjunto forma um livro sobre **engenharia de harness**: a disciplina de projetar entrega de contexto, interfaces de ferramentas, artefatos de planejamento, loops de verificação, sistemas de memória e sandboxes que determinam se um agente de IA tem sucesso ou falha em tarefas reais.
+## A pergunta que originou o projeto
 
-O método do livro é empírico: em vez de teorizar no abstrato, lemos o código-fonte de harnesses reais (opencode, gemini-cli, OpenHarness, e outros por vir) e extraímos os padrões, as convergências e as divergências de implementação.
+> *Engenharia de contexto poderia assumir como substituto do RAG?*
 
-## Estrutura
+**Não como substituto — como moldura.** As duas coisas não estão no mesmo nível:
 
-### O Livro (`livro/`)
-
-| Parte | Conteúdo |
-|---|---|
-| [00 — Introdução](livro/00-introducao.md) | O que é um harness, por que a disciplina existe, método do livro |
-| [01 — Fundamentos](livro/01-fundamentos.md) | Definições, teoria, artigos canônicos, taxonomia por problema |
-| **Capítulos por funcionalidade** | |
-| [02 — Loop do Agente](livro/capitulos/02-loop-do-agente.md) | O ciclo prompt → decisão → ferramenta → resultado |
-| [03 — Entrega de Contexto](livro/capitulos/03-entrega-de-contexto.md) | System prompts, arquivos de regras, montagem hierárquica |
-| [04 — Compactação](livro/capitulos/04-compactacao.md) | Gestão da janela de contexto: prune, sumarização, truncamento |
-| [05 — Design de Ferramentas](livro/capitulos/05-ferramentas.md) | Tools built-in, schemas, seleção por modelo |
-| [06 — MCP](livro/capitulos/06-mcp.md) | Model Context Protocol: transportes, OAuth, descoberta |
-| [07 — Permissões e Sandboxing](livro/capitulos/07-permissoes-sandbox.md) | Modos de aprovação, policy engines, sandbox de SO |
-| [08 — Memória e Estado](livro/capitulos/08-memoria-estado.md) | Sessões, persistência, memória de longo prazo, checkpointing |
-| [09 — Planejamento](livro/capitulos/09-planejamento.md) | Plan mode, todo lists, decomposição de tarefas |
-| [10 — Subagentes e Orquestração](livro/capitulos/10-subagentes-orquestracao.md) | Delegação, isolamento, times, protocolos (A2A) |
-| [11 — Verificação e Evals](livro/capitulos/11-verificacao-evals.md) | Testes do harness, evals comportamentais, LSP em runtime |
-| [12 — Extensibilidade](livro/capitulos/12-extensibilidade.md) | Hooks, plugins, skills, provedores de modelo |
-| [13 — Interfaces](livro/capitulos/13-interfaces.md) | TUI, headless, IDE, CI, chat |
-| [14 — Convergências e Tendências](livro/14-convergencias.md) | O que a indústria já padronizou e a "cláusula de expiração" |
-| [15 — O Harness Embutido](livro/capitulos/15-harness-embutido.md) | Agentes dentro de motores de workflow (n8n): o harness invertido |
-| [16 — Aprendizado e Auto-melhoria](livro/capitulos/16-aprendizado-auto-evolutivo.md) | O harness que se escreve: dois designs nível 3 (Hermes autônomo × gemini-cli inbox) |
-| [17 — A Camada de Protocolos](livro/capitulos/17-protocolos.md) | MCP, A2A, ACP, agentskills.io, AGENTS.md — com matriz de adoção medida no código |
-| [Bibliografia](livro/bibliografia.md) | Referências científicas por capítulo, com status de validação |
-| [Histórico](livro/HISTORICO.md) | Livro vivo: edições datadas, snapshot por capítulo e o **registro de expiração** (placar das previsões) |
-
-### A Construção (`harness-zero/`)
-
-Trilha prática do livro: um harness completo construído do zero, uma etapa por capítulo (Python + FastAPI + chat mínimo), com arquitetura hexagonal **por refatoração** e DDD leve. Método pedagógico: Backward Design + 4C/ID + Diátaxis + Carga Cognitiva (ver [parecer editorial](estudos/2026-07-25-parecer-editorial-plano-pedagogico.md)). Etapas 0 (chat + porta LLM) e 1 (o loop) prontas e testadas — [mapa completo](harness-zero/README.md).
-
-### O Benchmark (`benchmark/`)
-
-Seção empírica do livro: avaliação padronizada de harnesses de código aberto, por dimensão, com escala 0–3 e exigência de evidência no código-fonte.
-
-- [Metodologia](benchmark/README.md) — escala, regras de evidência, categorias, fila
-- [Template de avaliação](benchmark/template/HARNESS_EVAL.md) — 12 dimensões + 2 suplementares
-- [Comparativo consolidado](benchmark/comparativo.md) — tabelas por categoria, campeões por dimensão, achados transversais
-- Avaliações — **código**: [gemini-cli](benchmark/avaliacoes/gemini-cli.md) (36) · [Codex CLI](benchmark/avaliacoes/codex-cli.md) (35) · [Goose](benchmark/avaliacoes/goose.md) (34) · [opencode](benchmark/avaliacoes/opencode.md) (31) · [OpenHarness](benchmark/avaliacoes/openharness.md) (29) · [Aider](benchmark/avaliacoes/aider.md) (28) · [OpenHands](benchmark/avaliacoes/openhands.md) (27*) — **agentes pessoais**: [OpenClaw](benchmark/avaliacoes/openclaw.md) (36) · [Hermes](benchmark/avaliacoes/hermes-agent.md) (35) · [IronClaw](benchmark/avaliacoes/ironclaw.md) (34) — **embutidos**: [n8n](benchmark/avaliacoes/n8n.md) (29)
-
-> **Status**: exploratório, rodada 2 concluída (11 harnesses, 3 categorias). Notas provisórias, por leitura assistida de código com evidência por arquivo.
-
-## Harnesses estudados até agora
-
-| Harness | Stack | Categoria / arquétipo |
+|  | Engenharia de contexto | RAG |
 |---|---|---|
-| [gemini-cli](https://github.com/google-gemini/gemini-cli) | TypeScript | Código — controle e verificação |
-| [Codex CLI](https://github.com/openai/codex) | Rust (97 crates) | Código — contenção de SO em 3 camadas |
-| [Goose](https://github.com/block/goose) | Rust | Código — MCP-nativo |
-| [opencode](https://github.com/anomalyco/opencode) | TypeScript + Effect-TS | Código — arquitetura de contexto/estado |
-| [OpenHarness](https://github.com/HKUDS/OpenHarness) | Python | Código — port didático + swarm |
-| [Aider](https://github.com/Aider-AI/aider) | Python | Código — context-first (repo-map) |
-| [OpenHands](https://github.com/All-Hands-AI/OpenHands) | Python + React | Código — control-plane multi-harness |
-| [OpenClaw](https://github.com/openclaw/openclaw) | Node.js/TS | Pessoal — plataforma completa (23 canais) |
-| [Hermes Agent](https://github.com/NousResearch/hermes-agent) | Python | Pessoal — aprendizado auto-evolutivo |
-| [IronClaw](https://github.com/nearai/ironclaw) | Rust (63 crates) | Pessoal — kernel de autoridade zero-trust |
-| [n8n](https://github.com/n8n-io/n8n) (nó AI Agent) | TypeScript/LangChain | Embutido — o harness invertido |
+| Nível | **disciplina** | **técnica** |
+| Decide | o que ocupa a janela, em que ordem, e o que sai quando falta espaço | que trechos do corpus respondem à pergunta |
+| Concorrentes | prompt, memória, recuperado, resultado de ferramenta, histórico | — |
+| Falha típica | *context rot*, instrução afogada, orçamento estourado | recall baixo, chunk cortado, resposta sem fundamento |
 
-Referencial teórico: [awesome-harness-engineering](https://github.com/ai-boost/awesome-harness-engineering) (~426 recursos curados, taxonomia por problema).
+RAG é um **subconjunto próprio** da engenharia de contexto — o que resolve "o conhecimento não está nos pesos e não cabe todo na janela". Quem troca o rótulo e mantém o mesmo pipeline só renomeou o problema. O raciocínio completo está na [introdução](livro/00-introducao.md) e no [panorama da comunidade](estudos/2026-08-03-panorama-comunidade.md).
 
-## Ferramentas (`scripts/`)
+Por isso o livro trata **duas disciplinas em relação**, e dá ao RAG três capítulos dentro da segunda — não o título.
 
-- [`sync-forks.ps1`](scripts/sync-forks.ps1) — script PowerShell para rodar **localmente** e manter todos os forks do projeto sincronizados com seus upstreams (clona se faltar, `fetch upstream` + merge fast-forward-only + push para o fork). Uso: `.\scripts\sync-forks.ps1` (opções: `-BaseDir`, `-Only repo1,repo2`, `-NoPush`). O merge é ff-only de propósito: commits locais divergentes geram aviso, nunca sobrescrita.
+## O livro
 
-## Como contribuir
+### Abertura
+| | |
+|---|---|
+| [00 — Introdução](livro/00-introducao.md) | As duas disciplinas, o lugar do RAG, o método |
+| [01 — Fundamentos](livro/01-fundamentos.md) | Vocabulário, o caminho de uma requisição, taxonomia por sintoma |
 
-O livro cresce por estudo: cada novo harness avaliado alimenta os capítulos com novos padrões de implementação. Avaliações seguem o [template](benchmark/template/HARNESS_EVAL.md) — afirmações sobre um harness exigem evidência (caminho de arquivo no código-fonte).
+### Parte I — Engenharia de Prompt (*o que se escreve*)
+| | |
+|---|---|
+| [02 — Anatomia de um Prompt](livro/capitulos/02-anatomia-do-prompt.md) | Seis partes funcionais; separar instrução de dado |
+| [03 — Técnicas de Raciocínio](livro/capitulos/03-tecnicas-de-raciocinio.md) | As seis famílias, e quando cada uma ainda paga |
+| [04 — Saídas Estruturadas](livro/capitulos/04-saidas-estruturadas.md) | Schema, decodificação restrita, validar e reparar |
+| [05 — Prompt de Sistema, Persona e Regras](livro/capitulos/05-persona-e-regras.md) | Camadas por volatilidade; voz ≠ política |
+| [06 — Otimização Automática de Prompts](livro/capitulos/06-otimizacao-de-prompts.md) | Do artesanato ao compilador (DSPy, GEPA, TextGrad) |
+| [07 — Avaliação de Prompts](livro/capitulos/07-avaliacao-de-prompts.md) | Sem eval, mudar prompt é apostar |
 
-## Como citar
+### Parte II — Engenharia de Contexto (*o que se monta em runtime*)
+| | |
+|---|---|
+| [08 — A Janela como Orçamento](livro/capitulos/08-janela-como-orcamento.md) | *Context rot*; contexto longo × recuperação |
+| [09 — Recuperação: o Núcleo do RAG](livro/capitulos/09-recuperacao.md) | Chunking, embeddings, busca híbrida, reranking |
+| [10 — RAG Avançado](livro/capitulos/10-rag-avancado.md) | Contextual retrieval, late chunking, GraphRAG |
+| [11 — RAG Agêntico](livro/capitulos/11-rag-agentico.md) | Quando o agente decide se, quando e como buscar |
+| [12 — Memória e Estado](livro/capitulos/12-memoria.md) | Fatos, grafo temporal, paginação — e memória × RAG |
+| [13 — Compactação e Isolamento](livro/capitulos/13-compactacao.md) | Caber na janela sem perder o fio |
+| [14 — Ferramentas e Contexto Externo](livro/capitulos/14-ferramentas-e-mcp.md) | Resultado de ferramenta também é contexto |
 
-Esta obra é um **livro vivo**: cada edição é datada e versionada. O registro de DOI (via [Zenodo](https://zenodo.org)/DataCite) segue o mesmo modelo — um **concept DOI** para a obra como um todo (sempre a versão mais recente) e um **DOI de versão** para cada edição.
+### Parte III — O sistema em produção
+| | |
+|---|---|
+| [15 — Avaliação de Sistemas](livro/capitulos/15-avaliacao-de-sistemas.md) | As quatro métricas e a tabela de diagnóstico |
+| [16 — Segurança do Contexto](livro/capitulos/16-seguranca-do-contexto.md) | *Prompt injection* como propriedade da arquitetura |
+| [17 — Custo, Latência e Cache](livro/capitulos/17-custo-latencia-cache.md) | A conta do contexto, e o cache de prefixo |
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21632412.svg)](https://doi.org/10.5281/zenodo.21632412)
+### Fechamento e aparato
+| | |
+|---|---|
+| [18 — Convergências e Tendências](livro/18-convergencias.md) | Consenso, disputa aberta e **seis apostas datadas** |
+| [Catálogo de técnicas](livro/apendice-tecnicas.md) | Uma ficha por técnica: o que é, quando usa, o que custa |
+| [Apêndice — O ecossistema](livro/apendice-ecossistema.md) | Frameworks e coleções, por problema que resolvem |
+| [Glossário](livro/glossario.md) · [Bibliografia](livro/bibliografia.md) | Termos e fontes com status de validação |
+| [Guia Editorial](livro/GUIA-EDITORIAL.md) · [Histórico](livro/HISTORICO.md) | Como é escrito; edições e registro de expiração |
 
-Cite assim (o GitHub também mostra um botão **"Cite this repository"** a partir do [`CITATION.cff`](CITATION.cff)):
+## Por onde começar
 
-> Darú, Gilsiley Henrique. *Engenharia de Harness — Um livro vivo sobre o scaffolding que envolve agentes de IA*. 2026. https://doi.org/10.5281/zenodo.21632412
+Não pelo sumário — pela **tabela de sintomas** do [cap. 01](livro/01-fundamentos.md). Leve o seu problema real:
 
-Autoria e método: obra co-produzida por humano e IA, sob responsabilidade e curadoria humanas; o autor (creator) é Gilsiley Henrique Darú ([ORCID 0000-0002-8979-0461](https://orcid.org/0000-0002-8979-0461)) e a assistência de IA é declarada abertamente (Guia Editorial §6), sem figurar como autora (ICMJE/COPE).
+| Sintoma | Onde ler |
+|---|---|
+| "Melhorei o prompt" e não sei se melhorou | [cap. 07](livro/capitulos/07-avaliacao-de-prompts.md) |
+| O modelo não sabe informação da minha organização | [cap. 09](livro/capitulos/09-recuperacao.md) |
+| Recupera errado / não encontra o óbvio | [caps. 09](livro/capitulos/09-recuperacao.md), [10](livro/capitulos/10-rag-avancado.md) |
+| Recupera certo mas responde errado | [cap. 15](livro/capitulos/15-avaliacao-de-sistemas.md) |
+| Piora quando a conversa fica longa | [caps. 08](livro/capitulos/08-janela-como-orcamento.md), [13](livro/capitulos/13-compactacao.md) |
+| Funciona, mas custa demais | [cap. 17](livro/capitulos/17-custo-latencia-cache.md) |
+
+E se você só puder aplicar sete coisas, elas estão listadas, em ordem, no fim do [catálogo de técnicas](livro/apendice-tecnicas.md#as-sete-que-valem-começar-por-aqui).
+
+## Estado desta edição (honestidade obrigatória)
+
+A edição 0.1 é a **fundação**: a moldura completa com profundidade de esqueleto. Isso é uma escolha — moldura completa antes de profundidade parcial.
+
+O que isso significa na prática:
+
+- **Nenhuma referência tem status ✓.** Todas estão marcadas ⏳ na [bibliografia](livro/bibliografia.md) e `[a validar]` nos capítulos. A validação é a [rodada 2](ROADMAP.md#rodada-2--evidência-a-que-tira-os-).
+- **Os Apêndices A** (tratamento por implementação) estão enfileirados, não escritos.
+- **Nenhum número de terceiro** aparece no corpo sem a marcação e a condição experimental.
+- **A trilha prática `contexto-zero`** está descrita capítulo a capítulo, e é implementada na [rodada 3](ROADMAP.md#rodada-3--contexto-zero-a-trilha-prática).
+
+Fora do escopo por decisão: edição em inglês, Radar de atualização automática, benchmark quantitativo de frameworks. Tudo com rodada marcada no [ROADMAP](ROADMAP.md).
+
+## Como o livro é feito
+
+O método está na [constituição](.specify/memory/constitution.md) (8 princípios) e no [Guia Editorial](livro/GUIA-EDITORIAL.md). Os três que mais restringem o dia a dia:
+
+1. **Evidência acima de retórica** — número sem condição experimental ao lado não entra no corpo, nem vindo de fornecedor grande.
+2. **A fonte-base é a técnica reprodutível** — paper (o que foi proposto e medido) **+** implementação pública (como vira código). Sem as duas, não entra.
+3. **O escopo é o par, não a moda** — todo capítulo responde: "que decisão sobre o que o modelo vê ele ajuda a tomar?".
+
+E o livro é **vivo**: cada capítulo declara sua data de captura, e o [cap. 18](livro/18-convergencias.md) registra **seis apostas datadas** sobre o que vai expirar — com prazo e critério, para serem cobradas. Uma delas prevê que o próprio título expire antes do conteúdo.
+
+## Este repositório
+
+| Diretório | O quê |
+|---|---|
+| `livro/` | o livro (capítulos, apêndices, glossário, bibliografia, histórico, guia) |
+| `publicar/` | o motor de publicação (Markdown → HTML). `npm run build` gera `docs/` |
+| `chat-companion/` | o assistente do livro — FastAPI + RAG sobre o próprio texto |
+| `estudos/` | notas de pesquisa (panorama da comunidade, parecer editorial) |
+| `benchmark/` | metodologia de avaliação de técnicas (avaliações na rodada 4) |
+| `adr/` | Architecture Decision Records |
+| `.specify/` | spec-kit: constituição, scripts e templates |
+
+### Publicar localmente
+
+```bash
+cd publicar
+npm ci
+npm run build     # gera docs/ e verifica links e template
+```
+
+### Rodar o companion
+
+```bash
+cd chat-companion/backend
+pip install -r requirements.txt
+python -m pytest          # 14 smoke tests, sem rede e sem banco
+uvicorn app:app --reload  # sem chave -> adapter echo; sem banco -> memória
+```
+
+Nenhuma credencial vive no repositório (Princípio V). Use `.env.example` como molde; `.env` é gitignored.
+
+## Contribuir
+
+Toda melhoria passa pelo ciclo spec-driven, em branch própria — ver [`CLAUDE.md`](CLAUDE.md) e o [ROADMAP](ROADMAP.md). A [rodada 2](ROADMAP.md#rodada-2--evidência-a-que-tira-os-) (validar referências) é a mais valiosa e a mais fatiável: cada referência validada é uma contribuição fechada.
 
 ## Licença
 
-Licenciamento **duplo**, por natureza da obra:
+Texto sob [CC BY 4.0](LICENSE) · código sob [MIT](LICENSE-CODE).
 
-- **Conteúdo** (texto do livro, figuras, material editorial em `livro/`, `benchmark/`, `estudos/` e páginas do site): **[CC BY 4.0](LICENSE)** — reuso livre, inclusive comercial, com atribuição.
-- **Código** (software em `harness-zero/`, `publicar/`, `chat-companion/`): **[MIT](LICENSE-CODE)**.
+---
+
+**Autor:** [Gilsiley Henrique Darú](livro/autor.md) — edição, direção e orquestração.
+**Co-autoria de IA** declarada e registrada por edição no [Histórico](livro/HISTORICO.md).

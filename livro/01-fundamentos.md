@@ -1,137 +1,124 @@
 # 01 — Fundamentos
 
-> **Estado da arte capturado em 2026-07** · última revisão 2026-08-01 · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](HISTORICO.md)
+>
+> **Maturidade: fundação.** O vocabulário e a taxonomia estão fechados. As referências marcadas `[a validar]` viram citação com status ✓ na rodada 2 do ROADMAP.
 
-Este capítulo fixa o vocabulário, a **origem** e o **método** do livro. Antes de comparar harnesses (capítulos 02–13) é preciso responder três perguntas que a primeira edição deixou em aberto: *o que é* um harness, *de onde ele veio* (e o que havia antes), e *com que rigor* este livro o estuda.
+## Objetivos de aprendizagem
 
-## 1. O que é um harness (definição)
+Ao final deste capítulo, você deve ser capaz de:
 
-A definição de trabalho vem da lista curada [awesome-harness-engineering](https://github.com/GHDaru/awesome-harness-engineering):
+1. **Definir** os termos que o livro inteiro usa: janela, token, contexto, prompt, chunk, embedding, recuperação, memória;
+2. **Descrever** o caminho de uma requisição — o que o sistema monta antes de a inferência começar;
+3. **Classificar** um problema real na taxonomia por sintoma (é prompt? é recuperação? é orçamento? é memória?);
+4. **Aplicar** a cláusula de expiração: identificar, num texto técnico desta área, o que provavelmente não vale mais em 18 meses.
 
-> **Engenharia de harness** é a disciplina de projetar o *scaffolding* — **andaime** ou estrutura de suporte — que envolve um agente de IA (entrega de contexto, interfaces de ferramentas, artefatos de planejamento, loops de verificação, sistemas de memória e sandboxes) e determina se ele tem sucesso ou falha em tarefas reais.
+## O problema
 
-Com o princípio orientador:
+Todo campo novo sofre de vocabulário instável, e este sofre mais do que a média: "contexto" nomeia ao mesmo tempo a janela física do modelo, o conteúdo que se coloca nela, o arquivo de regras do projeto e a disciplina inteira. Sem desambiguar, duas pessoas discutem arquitetura falando de coisas diferentes com a mesma palavra.
 
-> O foco é o *harness*, não o modelo. Cada componente existe porque o modelo não consegue fazê-lo sozinho — e os melhores harnesses são projetados sabendo que esses componentes se tornarão desnecessários conforme os modelos melhoram.
+Este capítulo fixa os termos e desenha o mapa. É o capítulo de referência ao qual os outros voltam.
 
-Note o termo central: **scaffolding** (andaime). É a metáfora do livro — a estrutura provisória erguida em volta de algo em construção, que sustenta o trabalho e depois é removida. Guarde a palavra: ela reaparece no subtítulo, no título de cada parte e na §8 (a cláusula de expiração).
+## Fundamentos científicos
 
-> **Para quem está chegando agora — uma imagem que sustenta o livro inteiro.** Pense no modelo como um profissional brilhante no primeiro dia de trabalho numa empresa que ele não conhece: capaz, mas sem mesa, sem acesso aos sistemas, sem saber as regras da casa — e com memória que zera a cada conversa. O harness é tudo que a empresa monta em volta dele: o dossiê do projeto que ele lê ao chegar (contexto, cap. 03), as ferramentas na bancada (cap. 05), o crachá que define onde pode entrar (permissões, cap. 07), o caderno de anotações que sobrevive ao fim do expediente (memória, cap. 08), o supervisor que revisa a entrega antes de ela sair (verificação, cap. 11) — e o expediente em si, o ritmo de trabalhar-conferir-continuar (o loop, cap. 02). Quando os capítulos ficarem técnicos, volte a esta imagem: cada dimensão do livro é uma peça desse escritório.
+- **A disciplina tem taxonomia formal.** O survey *A Survey of Context Engineering for LLMs* ([arXiv 2507.13334](https://arxiv.org/abs/2507.13334)) organiza a área a partir de 1400+ trabalhos em três **componentes** — recuperação e geração de contexto, processamento de contexto, gestão de contexto — e quatro **implementações** que os combinam: RAG, sistemas de memória, raciocínio integrado a ferramentas e sistemas multiagente. Esta é a espinha da Parte II do livro. `[a validar]`
+- **O prompting também tem taxonomia formal.** *The Prompt Report* ([arXiv 2406.06608](https://arxiv.org/abs/2406.06608)) cataloga 58 técnicas de prompting textual e 33 termos de vocabulário, em seis famílias: *zero-shot*, *few-shot*, *thought generation*, *ensembling*, *self-criticism* e *decomposition*. É a espinha da Parte I. `[a validar]`
+- **A degradação não é linear.** *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) mostra que informação posicionada no meio de um contexto longo é sistematicamente pior aproveitada do que a que está nas bordas. Não é um detalhe de tuning: é uma restrição arquitetural que decide onde cada coisa vai. `[a validar]`
 
-## 2. O que havia antes — e por que não eram agentes
+(Bibliografia completa e status de validação: [`bibliografia.md`](bibliografia.md).)
 
-"Software que age por você" é uma ideia antiga. As gerações anteriores, porém, resolviam o problema **sem um modelo de linguagem no centro do laço de decisão** — e é isso que as separa de um agente:
+## Fontes da indústria
 
-- **Sistemas especialistas** (anos 1980): regras `if-then` escritas à mão. Automatizavam decisões, mas não interpretavam objetivos em linguagem natural nem se recuperavam de exceções não previstas.
-- **RPA — Robotic Process Automation** (UiPath, Automation Anywhere): robôs que repetem cliques e digitações por *script* fixo. Frágeis a qualquer mudança de tela; sem objetivo, sem recuperação.
-- **Chatbots** de intenção (de ELIZA às árvores de diálogo): produziam texto, mas **não executavam ações** no mundo.
-- **Assistentes de código como autocomplete**: o **GitHub Copilot** (technical preview em jun/2021), movido pelo modelo **OpenAI Codex** (descendente do GPT-3 ajustado em código), sugeria a próxima linha *dentro do editor* — sem plano, sem ferramentas, sem laço de verificação.
+- **[Prompt Engineering Guide](https://github.com/dair-ai/prompt-engineering-guide)** (DAIR.AI) — o guia de referência da área. O dado editorial mais interessante não é o conteúdo, é o índice: o mesmo repositório cobre *prompt engineering*, *context engineering*, *RAG* e *agentes*. A comunidade já trata o par como uma coisa só.
+- **[Awesome-Context-Engineering](https://github.com/Meirtz/Awesome-Context-Engineering)** — a coleção viva associada ao survey 2507.13334; ponto de partida do garimpo de cada capítulo da Parte II.
+- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — fixa o vocabulário de risco que o cap. 16 usa; *prompt injection* é LLM01 em todas as edições publicadas.
 
-Nenhum deles tinha as **quatro peças** que hoje definem um harness (§4). Faltava-lhes autonomia orientada a objetivos e a capacidade de agir sobre o ambiente **e corrigir o próprio rumo**.
+## O estado da arte
 
-## 3. Como chegamos aqui — a linhagem técnica
+### 1. O vocabulário mínimo
 
-A passagem de "modelo que responde" para "agente que age" foi construída em camadas, cada uma removendo um obstáculo:
-
-1. **Raciocínio explícito.** O *Chain-of-Thought* (Wei et al., 2022) mostrou que pedir ao modelo para "pensar passo a passo" melhora tarefas de raciocínio.
-2. **O loop.** O marco decisivo foi **ReAct — *Synergizing Reasoning and Acting in Language Models*** (Yao et al., [arXiv:2210.03629](https://arxiv.org/abs/2210.03629), out/2022; ICLR 2023), que intercalou **Pensamento → Ação → Observação**: o modelo raciocina, chama uma ferramenta, observa o resultado e continua. Esse ciclo é o esqueleto de praticamente todo harness moderno (capítulo 02).
-3. **A chamada de ferramentas.** Faltava um modo confiável de o modelo *invocar* ferramentas — resolvido quando a OpenAI lançou o **function calling** (jun/2023): o modelo emite JSON estruturado para acionar funções (capítulo 05).
-4. **A onda autônoma — e sua lição.** Com raciocínio + ação + ferramentas, veio 2023: **AutoGPT** (Significant Gravitas, mar/2023) e **BabyAGI** (Yohei Nakajima, abr/2023) — loops que se decompunham em subtarefas e se executavam sozinhos. "Falharam" no sentido prático (entravam em círculos, gastavam tokens, perdiam o fio) porque tinham *o loop* mas **não** as outras três peças: gestão de contexto, ferramentas bem projetadas e controle. A lição fundadora da disciplina nasce aí: **o modelo sozinho não basta; o andaime em volta é que decide o sucesso.**
-5. **O amadurecimento — os CLIs de código.** As quatro peças foram embutidas em ferramentas de terminal ligadas ao sistema de arquivos e ao Git: **Aider** (Paul Gauthier, abr/2023), **Claude Code** (Anthropic, research preview em fev/2025), **OpenAI Codex CLI** (open source, abr/2025), além de projetos como **Cline**, **OpenHands** e **SWE-agent**.
-6. **A padronização.** Com agentes proliferando, vieram os protocolos: o **Model Context Protocol (MCP)**, aberto pela Anthropic (nov/2024), padronizou a conexão a ferramentas e dados (capítulo 06); o **AGENTS.md** consolidou-se como "README para agentes"; o **Agent2Agent (A2A (Agent-to-Agent))** (Google, abr/2025; depois doado à Linux Foundation) endereçou a comunicação *entre* agentes (capítulo 17).
-
-**Linha do tempo (marcos):** 1980s sistemas especialistas · 2000s–2010s RPA e chatbots · **jun/2021** Copilot (autocomplete) · **out/2022** ReAct · **mar–abr/2023** GPT-4, AutoGPT, BabyAGI, Aider · **jun/2023** function calling · **nov/2024** MCP · **fev/2025** Claude Code · **abr/2025** Codex CLI e A2A.
-
-> **Nota de rigor.** "Codex" designa três coisas distintas — o *modelo* de 2021 (base do Copilot), a *linha de produto* Codex da OpenAI e o *Codex CLI* open source de 2025. O texto as mantém separadas. Datas e fontes desta seção estão na [Bibliografia](bibliografia.md); itens ainda a verificar estão marcados lá.
-
-## 4. A definição constitutiva: os quatro elementos
-
-A literatura da disciplina converge numa definição do harness como uma **camada de runtime** com quatro elementos necessários e suficientes:
-
-1. **Loop do agente** — o ciclo que alterna entre invocar o modelo e executar o que ele decidiu, até um critério de parada (cap. 02).
-2. **Interface de ferramentas** — o contrato pelo qual o modelo age sobre o mundo: ler arquivos, rodar comandos, chamar APIs (cap. 05).
-3. **Gestão de contexto** — a montagem, priorização e compressão do que o modelo enxerga a cada chamada (caps. 03–04).
-4. **Mecanismos de controle** — permissões, aprovações, sandboxes e limites que restringem o que o agente pode fazer (cap. 07).
-
-Um sistema sem qualquer um dos quatro **não é um harness completo**: um chatbot com ferramentas mas sem loop é um "function caller"; um loop sem controle é um incidente esperando acontecer; ferramentas sem gestão de contexto colapsam em tarefas longas. **Esta é a definição operacional que serve de teste de inclusão** do estudo (§5–6).
-
-**As quatro peças numa tarefa real.** Peça a um agente: "o teste `test_login` está falhando, corrija". O que acontece, peça a peça: a **gestão de contexto** monta o que o modelo vai enxergar (as regras do projeto, a mensagem, talvez o arquivo do teste); o modelo lê e decide pedir uma ação — "rode o teste e me mostre o erro" — que a **interface de ferramentas** executa de verdade no terminal; o resultado volta, o modelo propõe editar um arquivo, e os **mecanismos de controle** decidem se essa edição pode acontecer direto ou se precisa da sua aprovação; aplicada a edição, o **loop** realimenta o modelo com o novo estado — teste passa? — e repete o ciclo até o critério de parada. Quatro peças, um turno de trabalho. Os capítulos 02–13 são este parágrafo em câmera lenta.
-
-## 5. De onde vêm os harnesses deste estudo
-
-O corpus é **de código aberto** (o Princípio II do livro: a fonte-base é o código) e se divide em cinco arquétipos — os mesmos do capítulo 00:
-
-- **Harnesses de código** (opencode, gemini-cli, OpenHarness, Codex CLI, Goose, Aider, OpenHands, Grok Build, Pi, Kimi Code): implementações de referência que juntam as quatro peças num executável.
-- **Agentes pessoais self-hosted** (OpenClaw, Hermes Agent, IronClaw, ohmo): o harness a serviço de uma pessoa, com identidade, memória e canais próprios.
-- **Agentes organizacionais** (QM): o harness a serviço de uma organização — escopos, permissões por audiência e auditoria como primitivas, com o loop do agente como motor trocável.
-- **Harnesses embutidos** (n8n, nó AI Agent): o loop como componente dentro de um produto maior.
-- **Frameworks** (LangGraph, CrewAI, OpenAI Agents SDK, Software Agent SDK): expõem loop, estado e ferramentas como primitivas programáveis.
-
-O **teste de inclusão** é a definição da §4: entra quem tem *loop + ferramentas + gestão de contexto + controle*; ficam de fora bibliotecas de modelo puro e meros *wrappers* de uma ferramenta. A lista avaliada, com o repositório e o commit lido de cada um, está no [Comparativo](../benchmark/comparativo.md) e no apêndice do estudo. Recursos consultáveis além do corpus estão na coleção viva [Awesome Harness Engineering](https://github.com/GHDaru/awesome-harness-engineering).
-
-## 6. O método do estudo (rigor)
-
-Este livro **lê o código-fonte de harnesses reais**, os compara por dimensões e depois **constrói um harness do zero**. Isso não é "opinião de engenheiro": é um desenho de pesquisa híbrido que se apoia em tradições metodológicas consolidadas. Explicitá-las converte o livro de coletânea de impressões em **estudo empírico auditável** — coerente com o Princípio I ("evidência acima de retórica").
-
-**Em linguagem simples, antes dos nomes técnicos:** o método é (1) escolher sistemas que representem *tipos* diferentes de harness, não os mais famosos; (2) ler o código de cada um seguindo **o mesmo roteiro de perguntas**, anotando o arquivo exato que prova cada resposta; (3) dar notas por uma régua fixa e publicada, para que qualquer pessoa possa discordar olhando a mesma evidência; e (4) construir um harness do zero para testar se os padrões extraídos realmente se sustentam. Os parágrafos a seguir dão os nomes formais de cada uma dessas escolhas e de onde elas vêm — são a genealogia do rigor, e podem ser lidos em diagonal na primeira passada.
-
-**Duas fases, dois motores.**
-- **Fase 1 — descritiva/comparativa:** um **estudo de casos múltiplos** (Yin) apoiado em **Mining Software Repositories** (Hassan, 2008), tratando cada repositório como *dado primário*. A unidade de análise é **o código-fonte**, não o material de marketing nem o comportamento observado em uso.
-- **Fase 2 — construtiva/prescritiva:** o `harness-zero` é um exercício de **Design Science Research** (Hevner et al., 2004; processo DSRM de Peffers et al., 2007): projetar e avaliar um artefato que instancia os princípios extraídos na Fase 1.
-
-**Como as dimensões viram medida.** As dimensões de comparação descem pelo método **Goal–Question–Metric** (Basili, Caldiera & Rombach): para cada objetivo de harness (contexto, ferramentas, permissões, memória, verificação, loop, orquestração) formulam-se perguntas e, para cada pergunta, **indicadores observáveis no código** (ex.: existe mecanismo de compactação? qual a granularidade do modelo de permissões? há camada de verificação pós-ação?).
-
-**Seleção por replicação, não por amostragem.** Os casos são escolhidos pela **lógica de replicação** de Yin — *literal* (espera-se o mesmo padrão) ou *teórica* (espera-se diferença previsível) — com critérios explícitos: código aberto e inspecionável na data de corte; pertencer à classe "harness" (§4); relevância de adoção **ou** singularidade arquitetural; diversidade de arquétipos (§5). Para cada caso registram-se **URL, commit/tag e data de leitura**.
-
-**Codificação e síntese.** A leitura segue um protocolo comum a todos os casos (Runeson & Höst, 2009), combinando codificação indutiva inspirada em *grounded theory* (Stol, Ralph & Fitzgerald, 2016) na descoberta das dimensões e *análise de conteúdo* (Hsieh & Shannon, 2005) com grade fixa na pontuação. A síntese comparativa é uma **feature analysis** no estilo **DESMET** (Kitchenham, Linkman & Law, 1997), na tradição do *benchmarking* como motor de progresso científico (Sim, Easterbrook & Holt, 2003).
-
-**Ameaças à validade** (taxonomia de Cook & Campbell, 1979, adaptada a estudo de caso):
-
-| Tipo | Ameaça | Mitigação declarada |
+| Termo | O que é neste livro | O que **não** é |
 |---|---|---|
-| Constructo | as "dimensões" não capturarem o que define um harness | derivação por GQM; definições operacionais publicadas |
-| Interna | atribuir a "boa prática" o que é acaso histórico do projeto | protocolo único; cada afirmação rastreada a trecho/commit |
-| Externa / **obsolescência** | não generalizar; o campo muda em meses | seleção por arquétipos; **data de corte + commits fixos**; a **cláusula de expiração** (§8) é a mitigação declarada, não um enfeite |
-| Conclusão | tratar notas qualitativas como métrica exata | escala e critérios explícitos (DESMET); sem agregação numérica espúria |
+| **token** | a unidade que o modelo processa e que a fatura cobra | não é palavra |
+| **janela de contexto** | o limite físico de tokens de uma chamada | não é "memória do modelo" |
+| **contexto** | o conteúdo efetivamente montado para uma chamada | não é a janela (o limite) nem o arquivo de regras (uma das fontes) |
+| **prompt** | a parte do contexto que é instrução autoral e estável | não é o contexto todo |
+| **chunk** | o pedaço de documento que é indexado e recuperado como unidade | não é parágrafo, necessariamente |
+| **embedding** | representação vetorial usada para medir similaridade semântica | não é compreensão |
+| **recuperação (*retrieval*)** | selecionar trechos de um corpus por relevância a uma consulta | não é RAG (RAG = recuperação **+** geração fundamentada) |
+| **memória** | estado que sobrevive além do turno atual, deliberadamente mantido | não é o histórico bruto da conversa |
+| **orçamento de contexto** | a alocação explícita de tokens entre os concorrentes | não é "o que couber" |
 
-Assim cada afirmação do livro remete a **um dado no repositório** e a **um procedimento nomeado**. O detalhamento operacional está no [Comparativo](../benchmark/comparativo.md) e no template de avaliação; as referências, na [Bibliografia](bibliografia.md).
+A distinção que mais rende no dia a dia é a última linha da tabela do meio: **recuperação não é RAG**. Buscar é metade. RAG é buscar *e* gerar uma resposta fundamentada no que se buscou — e o segundo termo é onde mora a maior parte das falhas de produção (cap. 15).
 
-## 7. Taxonomia por problema
+### 2. O caminho de uma requisição
 
-Convenção herdada do referencial: organizar a disciplina **pelo problema resolvido, não por fabricante ou modelo**. É a taxonomia que estrutura os capítulos:
+Toda arquitetura desta área, por mais elaborada, é uma variação deste caminho:
 
-| Problema | Capítulo |
-|---|---|
-| Como o ciclo de decisão-ação funciona e quando para | 02 — Loop do Agente |
-| O que o modelo enxerga e como isso é montado | 03 — Entrega de Contexto |
-| O que fazer quando a janela de contexto acaba | 04 — Compactação |
-| Como o modelo age sobre o mundo | 05 — Design de Ferramentas |
-| Como integrar capacidades externas de forma padronizada | 06 — MCP |
-| O que o agente pode fazer, e onde | 07 — Permissões e Sandboxing |
-| O que persiste entre turnos e entre sessões | 08 — Memória e Estado |
-| Como trabalho grande vira passos verificáveis | 09 — Planejamento |
-| Como distribuir trabalho entre múltiplos agentes | 10 — Subagentes e Orquestração |
-| Como saber se o agente (e o harness) funcionam | 11 — Verificação e Evals |
-| Como terceiros estendem o harness | 12 — Extensibilidade |
-| Por onde humanos e sistemas usam o agente | 13 — Interfaces |
+```
+pedido do usuário
+   │
+   ├─ [prompt]     instrução + exemplos + formato pedido      ← Parte I
+   ├─ [regras]     política do sistema, persona, restrições   ← cap. 05
+   ├─ [memória]    o que ficou de sessões anteriores          ← cap. 12
+   ├─ [recuperado] trechos buscados no corpus                 ← caps. 09-11
+   ├─ [ferramenta] resultados de chamadas externas            ← cap. 14
+   └─ [histórico]  os turnos desta conversa (talvez compactado) ← cap. 13
+   │
+   ▼
+   MONTAGEM  ── decide ordem, corte e orçamento ──────────────  cap. 08
+   ▼
+   inferência ──► resposta ──► avaliação (cap. 15) e custo (cap. 17)
+```
 
-## 8. A cláusula de expiração
+Duas leituras deste desenho valem o capítulo inteiro:
 
-A tese mais importante — e menos praticada — da disciplina: **todo componente de harness é uma prótese temporária.** A compactação existe porque janelas de contexto são finitas; o *plan mode* existe porque modelos agem precipitadamente; o *policy engine* existe porque modelos não são confiáveis com comandos destrutivos. Cada premissa tem prazo de validade.
+- **A montagem é o produto.** Os componentes são commodities — todo mundo tem um vector store, todo mundo tem um modelo. A diferença de qualidade entre dois sistemas está quase sempre na linha "MONTAGEM": o que entra, em que ordem, e o que é sacrificado quando falta espaço.
+- **Os concorrentes disputam o mesmo orçamento.** Memória, recuperação, histórico e resultado de ferramenta competem por tokens. Aumentar o `top_k` da recuperação não é uma decisão isolada: é tirar espaço de outro. Quase nenhum sistema em produção declara essa alocação explicitamente — e é por isso que quase todos degradam quando a conversa fica longa.
 
-O corolário prático: todo componente deveria documentar **qual melhoria de capacidade do modelo o tornaria desnecessário**. Harnesses que não fazem isso acumulam *scaffolding* morto — complexidade que sobrevive à limitação que a justificava. Como visto na §6, essa cláusula é também a **mitigação declarada** da ameaça de obsolescência: o livro se assume datado. Voltamos a ela no capítulo 14.
+### 3. A taxonomia por sintoma
 
-## 9. Artefatos operacionais
+O jeito útil de entrar no livro não é por tema, é por sintoma. Leve o seu problema real a esta tabela:
 
-A disciplina produziu artefatos-padrão que reaparecem, com variações, em quase todos os harnesses estudados:
+| Sintoma observado | Provável natureza | Onde ler |
+|---|---|---|
+| A resposta varia muito entre execuções idênticas | prompt (falta de âncora ou de formato) | caps. 02, 04 |
+| O modelo erra em tarefas que exigem passos | prompt (falta de estratégia de raciocínio) | cap. 03 |
+| "Melhorei o prompt" e não sei se melhorou | falta de eval | cap. 07 |
+| O modelo não sabe informação da minha organização | contexto (falta recuperação) | cap. 09 |
+| Ele recupera coisa errada / não encontra o óbvio | recuperação (chunking, busca, ranking) | caps. 09, 10 |
+| Ele recupera certo mas responde errado | geração não fundamentada | cap. 15 |
+| Piora quando a conversa fica longa | orçamento e *context rot* | caps. 08, 13 |
+| Esquece o que o usuário disse semana passada | memória | cap. 12 |
+| Um documento fez o agente agir contra o usuário | segurança (*prompt injection*) | cap. 16 |
+| Funciona, mas custa/demora demais | custo, latência, cache | cap. 17 |
 
-- **Arquivo de instruções de projeto** (`AGENTS.md` / `CLAUDE.md` / `GEMINI.md`): regras, convenções e limites que o agente lê antes de qualquer tarefa. Fronteiras claras superam restrições vagas.
-- **Artefato de plano** (`PLAN.md`): criado no início da tarefa e atualizado durante a execução, com marcos verificáveis e fronteiras de escopo.
-- **Log de implementação** (`IMPLEMENT.md`): registro *append-only* de decisões e desvios do plano.
-- **Checklist de harness** (`HARNESS_CHECKLIST.md`): revisão pré-produção cobrindo instruções, ferramentas, contexto, planejamento, permissões e verificação — com a tabela de expiração da §8.
+### 4. A cláusula de expiração
 
-Esses artefatos são o embrião do nosso instrumento de avaliação (ver `benchmark/template/HARNESS_EVAL.md`).
+A tese que o livro assume desde o primeiro capítulo: **boa parte do que se descreve aqui é temporária, e a honestidade é dizer qual parte.**
 
----
+Três forças fazem o conteúdo expirar nesta área, em velocidades diferentes:
 
-*As fontes deste capítulo (históricas e metodológicas) estão consolidadas na [Bibliografia](bibliografia.md), separando as **confirmadas** das que ainda pedem verificação — fiel ao Princípio I.*
+1. **Capacidade do modelo.** Toda técnica que existe para compensar uma limitação some quando a limitação some. Muita engenharia de prompt de 2023 morreu porque os modelos passaram a fazer aquilo sozinhos.
+2. **Preço e janela.** Decisões de orçamento assumem uma relação custo/token e um tamanho de janela. Ambos mudaram de ordem de grandeza mais de uma vez.
+3. **Padronização.** O que hoje é técnica manual vira funcionalidade de plataforma (saída estruturada é o caso exemplar) — e o capítulo que ensinava a fazer na mão vira história.
+
+O que **não** expira, e é onde o livro aposta seu peso: o raciocínio de **orçamento** (o que vale a pena ocupar a janela), a **separação instrução × dado** (que é segurança, não estilo) e a **disciplina de medir** — porque essas são propriedades do problema, não do modelo da vez.
+
+O registro dessas apostas, com data e veredito posterior, fica no [registro de expiração](HISTORICO.md).
+
+### Leitura executiva
+
+**Contexto** é o que se monta; **janela** é o limite; **prompt** é a parte autoral e estável; **recuperação não é RAG** (RAG é recuperação + geração fundamentada). Toda arquitetura da área é uma variação do mesmo caminho, e o produto está na linha da **montagem** — porque os concorrentes (prompt, memória, recuperado, ferramenta, histórico) disputam **um orçamento único** que quase ninguém declara. **O que roubar:** entre no livro pela tabela de sintomas, não pelo sumário; e escreva a alocação de tokens do seu sistema em uma linha antes de mexer em qualquer `top_k`. **O que vai expirar:** as técnicas que compensam limitação de modelo. **O que não vai:** orçamento, separação instrução×dado, e medir.
+
+## Mão na massa — contexto-zero, etapa 0
+
+Na etapa 0 você levanta o esqueleto do `contexto-zero`: um chat mínimo (HTML+JS) sobre FastAPI, com o modelo atrás de uma `LLMPort` — a porta que impede o livro inteiro de apodrecer junto com um fornecedor. Nenhuma técnica ainda: só o chão sobre o qual as quinze etapas seguintes se apoiam, e um script que imprime a **contagem de tokens de cada bloco** do contexto montado. Esse contador é o instrumento do livro: você vai olhar para ele em todos os capítulos.
+
+> A trilha prática entra na **rodada 3** do ROADMAP. Nesta edição, as seções "Mão na massa" descrevem a etapa e seu objetivo pedagógico.
+
+## Verificação
+
+1. Um colega diz "aumentei a janela para 200k, agora não preciso mais de RAG". Cite duas razões — uma de qualidade, uma de custo — para duvidar.
+2. Classifique na taxonomia por sintoma: *"o assistente responde bem nas primeiras 5 perguntas e depois começa a ignorar as regras do sistema"*. Qual é a natureza do problema e por quê?
+3. Aponte, no seu próprio sistema, quem são os concorrentes pelo orçamento de contexto. Qual deles você nunca mediu?

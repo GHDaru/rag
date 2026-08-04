@@ -10,8 +10,7 @@ publicar/node_modules/
 # site gerado (o CI reconstrói e publica)
 docs/
 
-# harness-zero etapa 04 (banco local de sessões)
-harness-zero/**/sessoes.db
-harness-zero/**/auditoria.jsonl
-harness-zero/**/skills/pendentes/
-harness-zero/**/skills/aprovadas/
+# contexto-zero (artefatos locais das etapas)
+contexto-zero/**/sessoes.db
+contexto-zero/**/*.index
+contexto-zero/**/.cache/

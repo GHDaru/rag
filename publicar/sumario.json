@@ -1,7 +1,7 @@
 {
-  "titulo": "Engenharia de Harness",
-  "subtitulo": "Um livro vivo sobre o scaffolding que envolve agentes de IA",
-  "companion_backend": "https://harnessengineering-production.up.railway.app",
+  "titulo": "Engenharia de Prompt e Engenharia de Contexto",
+  "subtitulo": "Um livro vivo sobre as duas disciplinas que decidem o que o modelo vê",
+  "companion_backend": "",
   "partes": [
     {
       "nome": "Abertura",
@@ -9,107 +9,117 @@
         {
           "arquivo": "livro/00-introducao.md",
           "titulo": "00 — Introdução",
-          "teaser": "O que é um harness e por que ele importa."
+          "teaser": "Duas disciplinas, um problema: o que entra na janela."
         },
         {
           "arquivo": "livro/01-fundamentos.md",
           "titulo": "01 — Fundamentos",
-          "teaser": "Vocabulário, cláusula de expiração, o mapa do território."
+          "teaser": "Vocabulário, a janela como orçamento, o mapa do território."
         }
       ]
     },
     {
-      "nome": "Capítulos por funcionalidade",
+      "nome": "Parte I — Engenharia de Prompt",
       "itens": [
         {
-          "arquivo": "livro/capitulos/02-loop-do-agente.md",
-          "titulo": "02 — Loop do Agente",
-          "teaser": "O ciclo que transforma um chat em agente."
+          "arquivo": "livro/capitulos/02-anatomia-do-prompt.md",
+          "titulo": "02 — Anatomia de um Prompt",
+          "teaser": "Instrução, dado e exemplo: separar o que o modelo obedece do que ele lê."
         },
         {
-          "arquivo": "livro/capitulos/03-entrega-de-contexto.md",
-          "titulo": "03 — Entrega de Contexto",
-          "teaser": "Montar o contexto certo, na hora certa."
+          "arquivo": "livro/capitulos/03-tecnicas-de-raciocinio.md",
+          "titulo": "03 — Técnicas de Raciocínio",
+          "teaser": "As seis famílias de prompting, e quando cada uma paga."
         },
         {
-          "arquivo": "livro/capitulos/04-compactacao.md",
-          "titulo": "04 — Compactação",
+          "arquivo": "livro/capitulos/04-saidas-estruturadas.md",
+          "titulo": "04 — Saídas Estruturadas",
+          "teaser": "Do texto solto ao contrato: schema, validação e retry."
+        },
+        {
+          "arquivo": "livro/capitulos/05-persona-e-regras.md",
+          "titulo": "05 — Prompt de Sistema, Persona e Regras",
+          "teaser": "Camadas por volatilidade e a diferença entre voz e política."
+        },
+        {
+          "arquivo": "livro/capitulos/06-otimizacao-de-prompts.md",
+          "titulo": "06 — Otimização Automática de Prompts",
+          "teaser": "Do artesanato ao compilador: prompt como artefato otimizado."
+        },
+        {
+          "arquivo": "livro/capitulos/07-avaliacao-de-prompts.md",
+          "titulo": "07 — Avaliação de Prompts",
+          "teaser": "Sem eval, mudar prompt é apostar."
+        }
+      ]
+    },
+    {
+      "nome": "Parte II — Engenharia de Contexto",
+      "itens": [
+        {
+          "arquivo": "livro/capitulos/08-janela-como-orcamento.md",
+          "titulo": "08 — A Janela como Orçamento",
+          "teaser": "Context rot, contexto longo × recuperação, e o que medir."
+        },
+        {
+          "arquivo": "livro/capitulos/09-recuperacao.md",
+          "titulo": "09 — Recuperação: o Núcleo do RAG",
+          "teaser": "Chunking, embeddings, busca híbrida e reranking."
+        },
+        {
+          "arquivo": "livro/capitulos/10-rag-avancado.md",
+          "titulo": "10 — RAG Avançado",
+          "teaser": "Contextual retrieval, late chunking, multi-hop e GraphRAG."
+        },
+        {
+          "arquivo": "livro/capitulos/11-rag-agentico.md",
+          "titulo": "11 — RAG Agêntico",
+          "teaser": "Quando o agente decide se, quando e como recuperar."
+        },
+        {
+          "arquivo": "livro/capitulos/12-memoria.md",
+          "titulo": "12 — Memória e Estado",
+          "teaser": "O que sobrevive ao turno, à sessão e ao mês."
+        },
+        {
+          "arquivo": "livro/capitulos/13-compactacao.md",
+          "titulo": "13 — Compactação e Isolamento",
           "teaser": "Caber na janela sem perder o fio."
         },
         {
-          "arquivo": "livro/capitulos/05-ferramentas.md",
-          "titulo": "05 — Design de Ferramentas",
-          "teaser": "O contrato entre o modelo e o mundo."
-        },
-        {
-          "arquivo": "livro/capitulos/06-mcp.md",
-          "titulo": "06 — MCP",
-          "teaser": "O protocolo que pluga ferramentas externas."
-        },
-        {
-          "arquivo": "livro/capitulos/07-permissoes-sandbox.md",
-          "titulo": "07 — Permissões e Sandboxing",
-          "teaser": "Poder com contenção: a regra de ouro."
-        },
-        {
-          "arquivo": "livro/capitulos/08-memoria-estado.md",
-          "titulo": "08 — Memória e Estado",
-          "teaser": "O que o agente lembra entre turnos e sessões."
-        },
-        {
-          "arquivo": "livro/capitulos/09-planejamento.md",
-          "titulo": "09 — Planejamento",
-          "teaser": "Pensar antes de agir, quando a tarefa pede."
-        },
-        {
-          "arquivo": "livro/capitulos/10-subagentes-orquestracao.md",
-          "titulo": "10 — Subagentes e Orquestração",
-          "teaser": "Dividir para conquistar tarefas grandes."
-        },
-        {
-          "arquivo": "livro/capitulos/11-verificacao-evals.md",
-          "titulo": "11 — Verificação e Evals",
-          "teaser": "Como saber se o agente está certo."
-        },
-        {
-          "arquivo": "livro/capitulos/12-extensibilidade.md",
-          "titulo": "12 — Extensibilidade",
-          "teaser": "Hooks, plugins e o harness que cresce."
-        },
-        {
-          "arquivo": "livro/capitulos/13-interfaces.md",
-          "titulo": "13 — Interfaces",
-          "teaser": "CLI, IDE, web: onde o humano encontra o agente."
-        },
-        {
-          "arquivo": "livro/14-convergencias.md",
-          "titulo": "14 — Convergências e Tendências",
-          "teaser": "Para onde a disciplina está indo."
-        },
-        {
-          "arquivo": "livro/capitulos/15-harness-embutido.md",
-          "titulo": "15 — O Harness Embutido",
-          "teaser": "Quando o harness vira produto."
-        },
-        {
-          "arquivo": "livro/capitulos/16-aprendizado-auto-evolutivo.md",
-          "titulo": "16 — Aprendizado e Auto-melhoria",
-          "teaser": "O harness que aprende com o uso."
-        },
-        {
-          "arquivo": "livro/capitulos/17-protocolos.md",
-          "titulo": "17 — A Camada de Protocolos",
-          "teaser": "Os padrões que unem o ecossistema."
+          "arquivo": "livro/capitulos/14-ferramentas-e-mcp.md",
+          "titulo": "14 — Ferramentas e Contexto Externo",
+          "teaser": "Resultado de ferramenta também é contexto — e é o mais caro."
         }
       ]
     },
     {
-      "nome": "Benchmark",
+      "nome": "Parte III — O sistema em produção",
       "itens": [
         {
-          "arquivo": "benchmark/comparativo.md",
-          "titulo": "Comparativo dos Harnesses",
-          "teaser": "10 harnesses reais, comparados por dimensão."
+          "arquivo": "livro/capitulos/15-avaliacao-de-sistemas.md",
+          "titulo": "15 — Avaliação de Sistemas de Contexto",
+          "teaser": "Medir recuperação e geração separadamente, e em CI."
+        },
+        {
+          "arquivo": "livro/capitulos/16-seguranca-do-contexto.md",
+          "titulo": "16 — Segurança do Contexto",
+          "teaser": "Prompt injection: todo dado recuperado é hostil até prova em contrário."
+        },
+        {
+          "arquivo": "livro/capitulos/17-custo-latencia-cache.md",
+          "titulo": "17 — Custo, Latência e Cache",
+          "teaser": "A conta do contexto, e como o cache de prefixo a reduz."
+        }
+      ]
+    },
+    {
+      "nome": "Fechamento",
+      "itens": [
+        {
+          "arquivo": "livro/18-convergencias.md",
+          "titulo": "18 — Convergências e Tendências",
+          "teaser": "O que já é consenso, o que ainda é disputa, o que vai expirar."
         }
       ]
     },
@@ -117,24 +127,19 @@
       "nome": "Aparato do livro",
       "itens": [
         {
+          "arquivo": "livro/apendice-tecnicas.md",
+          "titulo": "Catálogo de técnicas",
+          "teaser": "Cada técnica em uma ficha: o que é, quando usa, o que custa."
+        },
+        {
+          "arquivo": "livro/apendice-ecossistema.md",
+          "titulo": "Apêndice — O ecossistema",
+          "teaser": "Frameworks, bibliotecas e coleções, organizados por problema."
+        },
+        {
           "arquivo": "livro/glossario.md",
           "titulo": "Glossário",
           "teaser": "Siglas por extenso, com explicação e contexto."
-        },
-        {
-          "arquivo": "livro/apendice-estudo.md",
-          "titulo": "Apêndice — O estudo",
-          "teaser": "Todos os harnesses avaliados: origem, fork/commit e análises."
-        },
-        {
-          "arquivo": "livro/apendice-supply-chain.md",
-          "titulo": "Apêndice — A cadeia de suprimentos",
-          "teaser": "Quem consome quem no corpus: o mapa das dependências entre harnesses, com evidência por elo."
-        },
-        {
-          "arquivo": "livro/apendice-uso.md",
-          "titulo": "Apêndice — Uso do livro",
-          "teaser": "Como o livro é lido: telemetria agregada, ao vivo."
         },
         {
           "arquivo": "livro/apendice-grafo.md",
@@ -142,14 +147,9 @@
           "teaser": "O mapa de conexões do livro, interativo e sempre em sincronia."
         },
         {
-          "arquivo": "livro/apendice-harness-um.md",
-          "titulo": "Apêndice — harness-um (a referência)",
-          "teaser": "O livro inteiro, executável: as features dos capítulos 02–13 num harness de referência, com linguagem ubíqua em português."
-        },
-        {
           "arquivo": "livro/bibliografia.md",
           "titulo": "Bibliografia",
-          "teaser": "Fontes científicas e da indústria, verificadas."
+          "teaser": "Fontes científicas e da indústria, com status de validação."
         },
         {
           "arquivo": "livro/HISTORICO.md",

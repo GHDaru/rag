@@ -1,5 +1,5 @@
 // Gera os PDFs do livro a partir do site já construído (docs/):
-//   docs/pdf/engenharia-de-harness.pdf  — livro completo (capa + tudo)
+//   docs/pdf/engenharia-de-prompt-e-contexto.pdf  — livro completo (capa + tudo)
 //   docs/pdf/<slug>.pdf                 — um por capítulo numerado (spec 045)
 // Uso: node build.mjs && node pdf.mjs
 // Nota (spec 043): o <article> das páginas de capítulo não tem mais <h1> nem
@@ -24,7 +24,7 @@ const hist = readFileSync(resolve(RAIZ, "livro/HISTORICO.md"), "utf8");
 const mv = hist.match(/^###\s+Edição\s+(\d+)\.(\d+)/m);
 const versao = mv ? `v${mv[1]}.${mv[2]}.0` : "v0.0.0";
 const dataStr = new Intl.DateTimeFormat(EN ? "en-US" : "pt-BR", { dateStyle: "long" }).format(new Date());
-const DOI = "10.5281/zenodo.21632412";
+const DOI = "";
 
 // Extrai o conteúdo e, quando houver, a linha de meta do cabeçalho C01.
 function extrair(slug) {
@@ -87,7 +87,7 @@ const capaLivro = `<div class="capa-pdf">
   <h1>${sumario.titulo}</h1>
   <div class="sub">${sumario.subtitulo}</div>
   <div class="meta">Gilsiley Henrique Darú · ${EN ? "with AI co-authorship (Claude, Anthropic)" : "com co-autoria de IA (Claude, Anthropic)"}<br>
-  ${versao} · ${EN ? "generated on" : "gerado em"} ${dataStr}<br>DOI ${DOI} · ghdaru.github.io/harness_engineering</div>
+  ${versao} · ${EN ? "generated on" : "gerado em"} ${dataStr}<br>ghdaru.github.io/rag</div>
 </div>`;
 
 const rodape = (rotulo) =>
@@ -112,7 +112,7 @@ for (const parte of sumario.partes) {
   corpo += `<h1 class="parte">${parte.nome}</h1>`;
   for (const item of parte.itens) { if (item.arquivo) corpo += secao(item); }
 }
-await imprimir(docHtml(corpo, capaLivro), resolve(PDFS, EN ? "harness-engineering.pdf" : "engenharia-de-harness.pdf"), sumario.titulo);
+await imprimir(docHtml(corpo, capaLivro), resolve(PDFS, EN ? "harness-engineering.pdf" : "engenharia-de-prompt-e-contexto.pdf"), sumario.titulo);
 console.log(`✓ PDF do livro [${EN ? "en" : "pt"}]: ${EN ? "docs/en" : "docs"}/pdf/`);
 
 // 2) Um PDF por capítulo numerado

@@ -2,7 +2,7 @@
 // da experiência de entrada (spec 021). Dependency-free.
 (function () {
   var raiz = document.documentElement;
-  var chave = "harness-tema";
+  var chave = "livro-tema";
   var salvo = localStorage.getItem(chave);
   if (salvo) raiz.setAttribute("data-tema", salvo);
   else if (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches)

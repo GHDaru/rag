@@ -1,5 +1,7 @@
 # Parecer editorial e plano pedagógico do livro
 
+> **Nota de herança (2026-08-04).** Este parecer foi escrito para o livro irmão *Engenharia de Harness* e é mantido aqui **como escrito**, porque é a origem documentada do **Princípio III** (o método pedagógico combinado: Backward Design + 4C/ID + Diátaxis + Carga Cognitiva) que este projeto adota. Os exemplos são daquele domínio (harnesses, `harness-zero`); a **escolha metodológica** que ele fundamenta é a mesma. O plano de capítulos deste livro está no [ROADMAP](../ROADMAP.md) e no [Guia Editorial](../livro/GUIA-EDITORIAL.md).
+
 > Data: 2026-07-25 · Papel: editor pedagógico e de escrita · Escopo: (1) avaliar a proposta "construção de um harness completo com DDD + Hexagonal + chat"; (2) escolher o framework pedagógico e de escrita; (3) planejar os capítulos com objetivos de aprendizagem; (4) mapear a bibliografia científica candidata por capítulo.
 
 ---

@@ -27,7 +27,7 @@ No serviço do backend (Railway → Variables), defina:
 | `SUGGESTION_EMAIL_TO` | o endereço que **recebe** (default já é a conta do autor) |
 
 Redeploy do serviço e pronto — a próxima sugestão chega na caixa de entrada com
-assunto `[Engenharia de Harness] Sugestão de leitor (<página>)`.
+assunto `[Engenharia de Prompt e Contexto] Sugestão de leitor (<página>)`.
 
 ## Regras de segurança
 

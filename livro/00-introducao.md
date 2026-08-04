@@ -1,74 +1,75 @@
 # 00 — Introdução
 
-> **Estado da arte capturado em 2026-07** · última revisão 2026-08-01 · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.1 (esqueleto) · [histórico e registro de expiração](HISTORICO.md)
+>
+> **Maturidade: fundação.** O argumento e a moldura do livro estão fechados. O aprofundamento por capítulo é o trabalho das rodadas seguintes — ver [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
 
-## Agente = modelo + harness
+## Objetivos de aprendizagem
 
-Comece por uma pergunta que qualquer pessoa que já usou um chat de IA consegue fazer: por que o ChatGPT *responde* sobre o seu problema, mas não *resolve* o seu problema? Ele explica como corrigir o bug — mas não abre o arquivo, não roda o teste, não confere se funcionou. A resposta curta: um chat é só o **modelo**. Para o modelo *agir* — mexer em arquivos, executar comandos, verificar o próprio trabalho e parar na hora certa — é preciso construir uma estrutura inteira em volta dele. Essa estrutura é o assunto deste livro.
+Ao final desta introdução, você deve ser capaz de:
 
-Quando um agente de IA resolve uma tarefa real — corrigir um bug, migrar um módulo, responder com base em dezenas de arquivos — duas coisas distintas estão trabalhando. A primeira é o **modelo**: a rede que lê contexto e decide o próximo passo. A segunda é tudo o que está em volta dele: quem monta o contexto que ele lê, quem executa as ferramentas que ele invoca, quem decide o que ele pode ou não fazer, quem lembra o que aconteceu ontem, quem verifica se o resultado está certo. Esse "tudo em volta" é o **harness** — em tradução livre, o arreio, o andaime, o *scaffolding*.
+1. **Distinguir** engenharia de prompt de engenharia de contexto pelo que cada uma decide;
+2. **Situar** o RAG como técnica dentro da engenharia de contexto, e explicar por que a troca de rótulo sozinha não muda nada;
+3. **Reconhecer** o problema comum às duas disciplinas — a janela é finita e o que entra nela é uma decisão de engenharia;
+4. **Navegar** o livro: as três partes, o catálogo de referência e a trilha prática.
 
-A fórmula que organiza este livro é simples:
+## O problema
 
-> **agente = modelo + harness**
+Um modelo de linguagem não sabe nada sobre a sua tarefa além do que aparece na chamada. Nem o seu banco de dados, nem a conversa de ontem, nem a regra que "todo mundo sabe" na sua empresa. O que ele vê é uma sequência de tokens que **alguém montou** — e essa montagem tem orçamento, ordem, custo e consequência.
 
-<figure class="figura">
-  <img src="assets/harness-diagrama.svg" alt="Diagrama esquemático: o modelo de IA no centro, envolto pelos seis blocos do harness — loop do agente, contexto, ferramentas, memória, permissões e verificação — dentro de uma moldura tracejada rotulada 'harness (o andaime)'; à direita, o mundo (arquivos, APIs, terminal) com setas de ida e volta.">
-  <figcaption>O modelo no centro; o harness — o andaime — em volta. Cada bloco é um capítulo deste livro.</figcaption>
-</figure>
+Duas disciplinas cresceram em volta dessa montagem, e a confusão entre elas custa caro:
 
-O modelo é intercambiável e melhora a cada geração. O harness é engenharia de software clássica — e é nele que a maioria dos agentes falha ou tem sucesso. Dois produtos usando exatamente o mesmo modelo entregam resultados radicalmente diferentes conforme a qualidade do harness: como o contexto chega ao modelo, quais ferramentas ele tem, como os erros retornam, o que acontece quando a **janela de contexto** (o limite de texto que o modelo consegue "enxergar" de uma vez) acaba.
+- **Engenharia de prompt** decide **o que se escreve**: a instrução, os exemplos, o formato pedido, a estratégia de raciocínio induzida. É trabalho de *design de linguagem* — em grande parte estático, versionável, testável como código.
+- **Engenharia de contexto** decide **o que se monta em runtime**: quais trechos recuperar, o que lembrar da sessão passada, qual resultado de ferramenta cabe, o que descartar quando o orçamento acabar. É trabalho de *arquitetura de sistema* — dinâmico, por requisição, com custo mensurável em tokens e latência.
 
-**Engenharia de harness** é a disciplina de projetar esse scaffolding: entrega de contexto, interfaces de ferramentas, artefatos de planejamento, loops de verificação, sistemas de memória e sandboxes.
+A primeira pergunta que a maioria dos projetos faz é "como escrevo um prompt melhor?". A pergunta que resolve o problema, quase sempre, é a segunda: **"o que deveria estar na janela agora, e o que não deveria?"**
 
-## Por que um livro — e por que agora
+## RAG não é o tema — é a técnica central da segunda disciplina
 
-Entre 2024 e 2026, os harnesses de agentes de código deixaram de ser experimentos e viraram uma categoria de produto: Claude Code, Codex CLI, Gemini CLI, opencode, Aider, Cline, Goose, OpenHands e dezenas de outros. O mais notável não é a quantidade, mas a **convergência**: projetos independentes, em linguagens diferentes, chegaram às mesmas soluções — arquivos de contexto hierárquicos, compactação em camadas, plan mode como modo de permissão, hooks de ciclo de vida, MCP (Model Context Protocol) como padrão de integração.
+Vale gastar um parágrafo nisto porque foi a pergunta que originou este livro: *engenharia de contexto substitui RAG?*
 
-Quando implementações independentes convergem, existe uma disciplina por trás. Este livro documenta essa disciplina.
+**Não como substituto — como moldura.** RAG (*Retrieval-Augmented Generation*) resolve um problema específico e bem definido: o conhecimento necessário não está nos pesos do modelo e não cabe inteiro na janela, então buscamos os pedaços relevantes em um corpus externo e os colocamos no contexto. Isso é **uma** forma de preencher **parte** da janela.
 
-## O método: ler código, não marketing
+Engenharia de contexto é a disciplina que decide o conjunto todo — instrução, exemplos, histórico, memória de longo prazo, resultado de ferramenta, estado do ambiente **e** trechos recuperados — e como esses concorrentes dividem um orçamento finito.
 
-Este livro é empírico. Cada capítulo trata de uma funcionalidade do harness (o loop, o contexto, a compactação, as permissões...) e é escrito a partir da leitura do código-fonte de harnesses reais de código aberto. A regra editorial mais importante do projeto:
+|  | Engenharia de contexto | RAG |
+|---|---|---|
+| Nível | disciplina | técnica |
+| Decide | o que ocupa a janela, em que ordem, e o que sai | que trechos do corpus respondem à pergunta |
+| Falha típica | *context rot*, instrução afogada, orçamento estourado | recall baixo, chunk cortado, resposta sem fundamento |
 
-> Afirmações sobre um harness exigem **evidência**: o caminho do arquivo no código-fonte onde a funcionalidade está implementada.
+A consequência prática é que quem adota a moldura passa a fazer perguntas que o RAG isolado não faz: *quanto* do orçamento vale gastar com recuperação; se aquele trecho compete com a memória; se recuperar agora ou deixar o agente decidir depois (cap. 11). Quem só troca o rótulo continua com o mesmo pipeline e o mesmo problema.
 
-READMEs prometem; código entrega. Vários projetos anunciam dimensões que o código não tem — a exigência de evidência é o que separa avaliação de marketing.
+Este livro trata, portanto, **duas disciplinas em relação** — e dá ao RAG três capítulos (09, 10 e 11), que é o peso que ele merece dentro da segunda.
 
-## Nota de autoria e método
+## Como o livro é organizado
 
-Por transparência — e coerência com a regra de evidência acima — este livro é **co-escrito com um agente de IA** (Claude Code, da Anthropic) operando sob **autoria, curadoria e responsabilidade humanas**. O agente executa a pesquisa, a redação e o ciclo de produção; o autor humano define o escopo, decide, **verifica cada fonte** e responde pelo conteúdo. Seguindo as políticas editoriais de autoria (ICMJE, COPE, *Nature*, *Science*), a IA **não** é listada como autora — não pode ser responsável — e seu uso é divulgado aqui, na abertura.
+**Parte I — Engenharia de Prompt** (caps. 02–07). O que se escreve. Começa na anatomia (separar instrução de dado), passa pelas famílias de técnica de raciocínio, pelo contrato de saída estruturada, pela camada de sistema/persona, e termina onde a disciplina virou engenharia de verdade: **otimização automática** (o prompt compilado contra uma métrica) e **avaliação** (sem a qual mudar prompt é apostar).
 
-Isso não é um detalhe: um livro sobre a disciplina de instrumentar bem os agentes de IA usa essa mesma disciplina para se escrever, e a expõe. O método completo — pesquisa dupla verificada por busca cruzada, ciclo spec-driven, revisão e datação — está documentado no [Guia Editorial §6](GUIA-EDITORIAL.md), com um *survey* das metodologias de escrita tradicionais e da era-IA que o fundamentam.
+**Parte II — Engenharia de Contexto** (caps. 08–14). O que se monta em runtime. Abre com a janela como orçamento e a tensão contexto longo × recuperação; desce ao RAG em três níveis (recuperação, avançado, agêntico); e sobe de volta para memória, compactação e o contexto que vem de ferramentas.
 
-## Como ler este livro — três portas de entrada
+**Parte III — O sistema em produção** (caps. 15–17). O que atravessa as duas: avaliar, proteger e pagar a conta. Estes três morreriam diluídos se ficassem espalhados nos capítulos anteriores.
 
-O livro foi escrito para ser denso; esta seção existe para que a densidade não seja uma parede. Escolha a sua porta:
+**Fechamento** (cap. 18). O que já é consenso, o que ainda é disputa aberta e o que este livro aposta que vai expirar — com data.
 
-- **Se você está chegando agora** (usou chats de IA, mas nunca construiu um agente): leia 00→01→02 em sequência, sem pressa, usando o [Glossário](glossario.md) como apoio — toda sigla do livro está lá, por extenso e explicada (na versão online, basta passar o mouse sobre a sigla). Depois do 02, os capítulos 03–13 podem ser lidos em qualquer ordem: cada um é autocontido e abre definindo o próprio problema.
-- **Se você já opera um agente** (usa Claude Code, Codex, Cursor ou similares e quer entender o que há por dentro): a **Leitura executiva** ao fim de cada capítulo é o seu atalho — o estado da arte da dimensão em um parágrafo, com a seção "o que roubar". Vá direto aos capítulos do seu interesse e desça ao corpo quando quiser a evidência.
-- **Se você constrói harnesses**: o livro inteiro é seu, incluindo os Apêndices A (evidência por repositório, com caminhos de arquivo), o [Benchmark](../benchmark/comparativo.md) e as duas trilhas práticas — o **harness-zero** (construção didática, uma feature por etapa) e o **harness-um** (a implementação de referência completa, [apêndice próprio](apendice-harness-um.md)).
+Fora da linha narrativa, dois apoios de consulta (Diátaxis: *reference* nunca se mistura com *explanation*): o **[Catálogo de técnicas](apendice-tecnicas.md)**, com uma ficha por técnica, e o **[Apêndice do ecossistema](apendice-ecossistema.md)**, com frameworks e bibliotecas organizados por problema que resolvem.
 
-## Estrutura do livro
+## O método
 
-- **Fundamentos** (capítulo 01): as definições formais, os artigos canônicos e a taxonomia de problemas que organiza tudo o que vem depois.
-- **Capítulos 02–13**: uma funcionalidade por capítulo. Cada um define o problema, apresenta os padrões de implementação conhecidos e mostra, com evidência, como cada harness estudado implementa.
-- **Convergências e tendências** (capítulo 14): o que a indústria já padronizou, onde ainda há divergência real, e a "cláusula de expiração" — a tese de que todo componente de harness existe porque o modelo ainda não faz aquilo sozinho, e deve ser desenhado sabendo que um dia será desnecessário.
-- **Capítulos 15–17**: as fronteiras — o harness embutido em produto (15), o harness que aprende com o uso (16) e a camada de protocolos que une o ecossistema (17).
-- **Benchmark** (`benchmark/`): a seção empírica — avaliações padronizadas, por dimensão, com notas 0–3 e evidência, de cada harness estudado, mais o comparativo consolidado.
+O livro é **vivo** e **empírico**, e assume as consequências das duas coisas.
 
-## Os harnesses do estudo
+**Vivo** significa que todo capítulo declara sua data de captura, e que a revisão é uma nova rodada registrada no [Histórico](HISTORICO.md) — nunca uma sobrescrita silenciosa. A área muda rápido demais para fingir permanência; a honestidade é datar.
 
-O estudo cobre, até esta edição, **vinte sistemas de código aberto**, avaliados por leitura sistemática de código em cinco arquétipos (o método está no [capítulo 01, §6](01-fundamentos.md)):
+**Empírico** significa que uma técnica só entra no corpo do livro com duas coisas: a **fonte primária** (o paper ou a documentação oficial que propôs e mediu) e a **implementação pública** (o código consultável que mostra como aquilo vira sistema). Número sem condição experimental ao lado não entra — nem quando vem de fornecedor grande, nem quando confirma o que gostaríamos que fosse verdade.
 
-- **Harnesses de código** — opencode, gemini-cli, OpenHarness, Codex CLI, Goose, Aider, OpenHands, Grok Build, Pi e Kimi Code;
-- **Agentes pessoais self-hosted** — OpenClaw, Hermes Agent, IronClaw, ohmo;
-- **Agentes organizacionais** — QM;
-- **Harnesses embutidos** — n8n (nó AI Agent);
-- **Frameworks** — LangGraph, CrewAI, OpenAI Agents SDK (Software Development Kit), Software Agent SDK.
+E há uma regra que vale como aviso ao leitor: **toda medição citada aqui foi feita por alguém, em algum corpus, com algum modelo**. Reproduza no seu.
 
-Cada um foi escolhido por representar um *arquétipo* diferente (lógica de replicação, não amostragem): produto maduro agnóstico de provedor (opencode), regime de controle de big tech (gemini-cli), port didático legível (OpenHarness), sandbox-first (Codex CLI), MCP-nativo (Goose), context-first (Aider), cultura de eval acadêmica (OpenHands), agente da organização inteira com o loop trocável (QM), e assim por diante.
+### Leitura executiva
 
-A lista completa — com **origem, versão, fork e commit exatos lidos** em cada avaliação, e o link para a análise e o diagnóstico de cada um — está no **[Apêndice — O estudo](apendice-estudo.md)**. O placar consolidado por dimensão está no [Comparativo](../benchmark/comparativo.md).
+O modelo só sabe o que você mostra. Engenharia de **prompt** decide o que se escreve; engenharia de **contexto** decide o que se monta em runtime — e **RAG é a técnica central da segunda, não a moldura de nada**. As duas resolvem o mesmo problema por ângulos diferentes: a janela é finita, e o que ocupa cada token é uma decisão de engenharia com custo e consequência. **Por onde começar:** se você já escreve prompts e o resultado é inconsistente, vá para o cap. 07 (avaliação) antes de escrever o próximo. Se o seu problema é "o modelo não sabe da minha empresa", comece no cap. 08 — e resista ao impulso de ir direto para o 09.
 
-Como referencial teórico e para explorar o ecossistema além do corpus, soma-se a coleção viva **[Awesome Harness Engineering](https://github.com/GHDaru/awesome-harness-engineering)** (~426 recursos organizados por problema, na mesma organização deste livro) — de onde vêm a definição de harness usada no capítulo 01 e a taxonomia que estrutura os capítulos.
+## Verificação
+
+1. Uma equipe diz que "migrou de RAG para engenharia de contexto" e descreve o mesmo pipeline de antes. O que exatamente não mudou?
+2. Dê um exemplo de decisão que a engenharia de contexto toma e que nenhuma escolha de prompt consegue tomar.
+3. Por que este livro exige *paper* **e** *implementação pública* antes de colocar uma técnica no corpo? Que erro cada uma das duas exigências previne sozinha?

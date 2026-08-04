@@ -4,6 +4,10 @@ Registros de decisões arquiteturais e editoriais do projeto. Cada decisão rele
 
 Convenção: arquivos `NNNN-titulo-curto.md`, numerados em sequência. Status: `Proposto` · `Aceito` · `Substituído por NNNN` · `Descontinuado`.
 
+> **Herança (edição 0.1).** Os ADRs 0001–0007 foram **herdados do livro irmão *Engenharia de Harness***, que compartilha com este projeto o método editorial, o motor de publicação e o modelo de governança. Eles são mantidos **como escritos** — reescrever um ADR apaga a decisão que ele registra — e por isso citam exemplos daquele domínio (harnesses, `harness-zero`). A **decisão** que cada um documenta continua valendo aqui; só os exemplos são de outro livro. ADRs a partir do 0009 são deste projeto.
+>
+> Uma remoção: o **0008** (Radar diário automatizado) saiu do índice — o Radar está fora do escopo da v1 e volta na rodada 6 do ROADMAP, quando ganha ADR próprio.
+
 ## Índice
 - [0001 — Modelo de publicação (main=live, branch por spec, release p/ DOI)](0001-modelo-de-publicacao.md) · Aceito
 - [0002 — Licenciamento duplo (CC BY 4.0 + MIT)](0002-licenciamento-duplo.md) · Aceito
@@ -12,5 +16,4 @@ Convenção: arquivos `NNNN-titulo-curto.md`, numerados em sequência. Status: `
 - [0005 — Template dos capítulos: um spec de motor, verificação por capítulo](0005-template-capitulos-um-spec.md) · Aceito
 - [0006 — Design system: entregáveis como componentes de tela](0006-design-system-componentes.md) · Aceito
 - [0007 — Cadência de revisão do livro vivo](0007-cadencia-livro-vivo.md) · Aceito
-- [0008 — Radar diário automatizado](0008-radar-diario-automatizado.md) · Aceito
 - [template](template.md)

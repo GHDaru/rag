@@ -1,5 +1,5 @@
 {
-  "title": "Engenharia de Harness — Um livro vivo sobre o scaffolding que envolve agentes de IA",
+  "title": "Engenharia de Prompt e Engenharia de Contexto — Um livro vivo sobre as duas disciplinas que decidem o que o modelo vê",
   "upload_type": "publication",
   "publication_type": "book",
   "access_right": "open",
@@ -11,25 +11,27 @@
       "orcid": "0000-0002-8979-0461"
     }
   ],
-  "description": "<p>Livro vivo, em português, sobre a disciplina de <strong>engenharia de harness</strong>: o <em>scaffolding</em> (loop de agente, ferramentas, entrega de contexto, compactação, memória, permissões e sandboxing, verificação, orquestração de subagentes) que envolve modelos de IA e os transforma em agentes capazes de tarefas longas. A obra nasce do estudo sistemático de harnesses de código aberto reais, inclui um benchmark comparativo e uma construção prática do zero (<code>harness-zero</code>), e assume sua própria tese &mdash; a cl&aacute;usula de expira&ccedil;&atilde;o: cada edi&ccedil;&atilde;o &eacute; datada e versionada (concept DOI para a obra viva; DOI por vers&atilde;o para cada edi&ccedil;&atilde;o).</p><p><strong>Autoria e método:</strong> a obra é co-produzida por humano e IA, sob responsabilidade e curadoria humanas. O autor (creator) é Gilsiley Henrique Darú; a assistência de IA (pesquisa e geração de texto) é declarada abertamente, seguindo as diretrizes ICMJE/COPE &mdash; a IA não figura como autora. Detalhes na nota de co-autoria da introdução e no Guia Editorial &sect;6.</p>",
+  "description": "<p>Livro vivo, em português, sobre as duas disciplinas que decidem o que um modelo de linguagem vê: a <strong>engenharia de prompt</strong> (o que se escreve &mdash; anatomia do prompt, técnicas de raciocínio, saída estruturada, prompt de sistema e persona, otimização automática e avaliação) e a <strong>engenharia de contexto</strong> (o que se monta em runtime &mdash; a janela como orçamento, recuperação, RAG em três níveis, RAG agêntico, memória, compactação e contexto vindo de ferramentas), mais a camada de sistema que atravessa as duas: avaliação, segurança do contexto e custo.</p><p><strong>Tese central:</strong> RAG não é a moldura, é a técnica central da engenharia de contexto &mdash; a disciplina que decide quais tokens ocupam a janela, em que ordem, e o que sai quando falta espaço. A obra assume sua própria cláusula de expiração: cada capítulo é datado e cada edição registra apostas verificáveis sobre o que vai deixar de valer, com prazo e critério.</p><p><strong>Autoria e método:</strong> a obra é co-produzida por humano e IA, sob responsabilidade e curadoria humanas. O autor (creator) é Gilsiley Henrique Darú; a assistência de IA (pesquisa e geração de texto) é declarada abertamente, seguindo as diretrizes ICMJE/COPE &mdash; a IA não figura como autora. Detalhes no Guia Editorial e no Histórico, que registra o modelo usado em cada edição.</p>",
   "keywords": [
-    "agentes de IA",
-    "AI agents",
-    "agent harness",
-    "scaffolding",
+    "engenharia de prompt",
+    "prompt engineering",
+    "engenharia de contexto",
+    "context engineering",
+    "RAG",
+    "retrieval-augmented generation",
     "LLM",
-    "tool calling",
-    "engenharia de harness",
+    "avaliação de LLM",
+    "prompt injection",
     "livro vivo"
   ],
   "related_identifiers": [
     {
-      "identifier": "https://ghdaru.github.io/harness_engineering/",
+      "identifier": "https://ghdaru.github.io/rag/",
       "relation": "isDocumentedBy",
       "scheme": "url"
     },
     {
-      "identifier": "https://github.com/GHDaru/harness_engineering",
+      "identifier": "https://github.com/GHDaru/rag",
       "relation": "isSupplementTo",
       "scheme": "url"
     }

@@ -1,10 +1,12 @@
 """Índice leve de busca no texto do livro — sem dependências, sem rede.
 
 O tutor responde do livro (Princípio I: evidência). Este módulo carrega os
-Markdown de `livro/` (+ o comparativo do benchmark), quebra em blocos por
+Markdown de `livro/`, quebra em blocos por
 cabeçalho/parágrafo e pontua por sobreposição de termos. Não é um vetor de
-embeddings — é um BM25- zero honesto, suficiente para ancorar respostas e
-citar de onde vieram. Quando uma etapa futura pedir RAG real, troca-se aqui.
+embeddings — é o BM25 da etapa 8 do contexto-zero, honesto e suficiente para
+ancorar respostas e citar de onde vieram. A etapa 9 (embeddings + fusão +
+reranking) entra aqui na rodada 3 do ROADMAP: o companion é o próprio livro
+rodando, e evolui capítulo a capítulo.
 """
 
 from __future__ import annotations

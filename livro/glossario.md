@@ -1,49 +1,101 @@
 # Glossário
 
-As siglas deste livro, **por extenso**, com uma explicação curta e o **contexto** em que aparecem. No corpo dos capítulos, passar o mouse sobre uma sigla mostra o seu significado (`abbr`); aqui está a referência completa. As expansões foram conferidas no próprio texto (Princípio I).
+> Siglas por extenso e termos com o sentido **que este livro usa**. Quando um termo tem uso ambíguo na indústria, a ambiguidade está registrada — desambiguar é metade do trabalho (cap. 01).
+>
+> Edição 0.1 · captura em 2026-08. Verbetes novos entram quando o capítulo correspondente é aprofundado.
 
-## Agentes, protocolos e orquestração
+## A–C
 
-- **MCP — Model Context Protocol.** Protocolo aberto que padroniza como um harness pluga ferramentas, dados e prompts externos ao modelo. *Aparece em:* cap. 06 (MCP) e cap. 17 (Protocolos).
-- **ACP — Agent Client Protocol.** Protocolo (origem Zed) para a conversa **agente ↔ editor/cliente**. Não confundir com o *Agent Communication Protocol* da IBM (também "ACP"), encerrado e fundido ao A2A. *Aparece em:* cap. 13 (Interfaces), cap. 17.
-- **MRTR — Multi Round-Trip Requests.** Padrão da spec MCP 2026-07-28 que substitui as requisições iniciadas pelo servidor (sampling/elicitation): o servidor responde `input_required` e o cliente retenta com as respostas. *Aparece em:* cap. 06.
-- **DCR — Dynamic Client Registration.** Registro dinâmico de clientes OAuth; depreciado na spec MCP 2026-07-28 em favor do CIMD. *Aparece em:* cap. 06.
-- **CIMD — Client ID Metadata Documents.** Sucessor do DCR na autorização do MCP: a identidade do cliente vem de um documento de metadados. *Aparece em:* cap. 06.
-- **A2A — Agent-to-Agent.** Protocolo de **delegação entre agentes** (origem Google, doado à Linux Foundation). *Aparece em:* cap. 10 (Subagentes), cap. 17.
-- **LSP — Language Server Protocol.** Padrão que inspirou os protocolos de agente: separa a "inteligência" (server) da interface (client). *Aparece em:* cap. 11, cap. 12, cap. 14.
-- **RPC — Remote Procedure Call.** Chamar um procedimento em outro processo/máquina como se fosse local; base de vários protocolos. *Aparece em:* caps. 05, 06, 10 e 12.
-- **MAST — Multi-Agent System Failure Taxonomy.** Taxonomia de modos de falha de sistemas multiagente (do artigo *"Why Do Multi-Agent LLM Systems Fail?"*). *Aparece em:* cap. 10 (Subagentes), bibliografia.
-- **RAG — Retrieval-Augmented Generation.** Geração aumentada por recuperação: buscar trechos relevantes e injetá-los no contexto. *Aparece em:* cap. 03 (Contexto), cap. 08.
+**Alucinação** — afirmação produzida com confiança e sem sustentação. Em sistemas com recuperação, o caso perigoso é a *alucinação fundamentada em ruído*: o modelo usa trechos irrelevantes que foram recuperados por falta de um caminho de abstenção (cap. 09). Métrica associada: *faithfulness* (cap. 15).
 
-## Modelos e IA
+**Answer relevance** — métrica que mede se a resposta endereça a pergunta feita. Não diz nada sobre correção (cap. 15).
 
-- **IA — Inteligência Artificial** (em inglês, **AI — Artificial Intelligence**). *Aparece em:* todo o livro.
-- **LLM — Large Language Model** (modelo de linguagem grande). O modelo que o harness envolve. *Aparece em:* todo o livro.
-- **GPT — Generative Pre-trained Transformer.** Família de modelos de linguagem. *Aparece em:* caps. 01, 05 e 09, bibliografia.
-- **SWE-bench / SWE-agent — Software Engineering** (benchmark / agente de engenharia de software). *Aparece em:* cap. 11 (Evals).
+**BEIR** — *Benchmark for Information Retrieval*: conjunto de avaliação de recuperação zero-shot em domínios variados. Mede o estágio de recuperação isolado do resto do pipeline (cap. 15).
 
-## Ferramentas, interfaces e rede
+**BM25** — função de pontuação léxica clássica (família *best matching*). É a busca esparsa de referência: acha termos literais, falha em paráfrase (cap. 09).
 
-- **API — Application Programming Interface.** Contrato pelo qual programas se falam. *Aparece em:* todo o livro.
-- **SDK — Software Development Kit.** Kit para construir sobre uma plataforma (ex.: o Agent SDK). *Aparece em:* cap. 12 (Extensibilidade), cap. 13.
-- **CLI — Command-Line Interface.** Interface de linha de comando. *Aparece em:* cap. 13.
-- **TUI — Text (Terminal) User Interface.** Interface de texto interativa no terminal. *Aparece em:* cap. 13.
-- **IDE — Integrated Development Environment.** Ambiente integrado de desenvolvimento (ex.: VS Code). *Aparece em:* cap. 13.
-- **UI — User Interface** / **UX — User Experience.** Interface e experiência do usuário. *Aparece em:* cap. 13.
-- **HCI — Human-Computer Interaction.** Interação humano-computador (campo científico). *Aparece em:* cap. 13.
-- **HTTP — HyperText Transfer Protocol.** Protocolo da web. *Aparece em:* caps. 06, 10, 11 e 13.
-- **SSE — Server-Sent Events.** Streaming de eventos do servidor para o cliente (usado no chat). *Aparece em:* cap. 13.
-- **JSON — JavaScript Object Notation.** Formato de dados dos schemas de ferramentas. *Aparece em:* cap. 05, 06.
-- **SO — Sistema Operacional.** *Aparece em:* cap. 07 (Permissões e Sandboxing).
-- **CI — Continuous Integration** (integração contínua). *Aparece em:* cap. 11, aparato.
-- **DDD — Domain-Driven Design.** Design orientado a domínio; guia o `harness-zero`. *Aparece em:* construção prática.
+**Chunk** — a unidade de texto indexada e recuperada. Não equivale a parágrafo; o corte é decisão de engenharia e é irreversível adiante (cap. 09).
 
-## Editorial, publicação e pesquisa
+**Chunking** — a estratégia de corte. Fixo, estrutural, semântico ou hierárquico; o tamanho ótimo depende do **tipo de pergunta**, não do documento (cap. 09).
 
-- **DOI — Digital Object Identifier.** Identificador persistente da obra (Zenodo). *Aparece em:* aparato, capa.
-- **ORCID — Open Researcher and Contributor ID.** Identificador do pesquisador (do autor). *Aparece em:* aparato, "Sobre o autor".
-- **ISBN — International Standard Book Number.** Identificador padrão de livros. *Aparece em:* Guia Editorial.
-- **CC — Creative Commons.** Família de licenças abertas (o conteúdo é CC BY 4.0). *Aparece em:* licença, aparato.
-- **MIT.** Licença permissiva de software (nome vem do *Massachusetts Institute of Technology*); cobre o código. *Aparece em:* licença.
-- **ICMJE — International Committee of Medical Journal Editors** e **COPE — Committee on Publication Ethics.** Diretrizes de autoria/ética seguidas na divulgação de co-autoria de IA. *Aparece em:* Guia Editorial §6.
-- **ICLR — International Conference on Learning Representations.** Conferência científica citada na bibliografia. *Aparece em:* bibliografia.
+**Contexto** — o conteúdo efetivamente montado para uma chamada. Distinto da **janela** (o limite) e do **prompt** (a parte autoral e estável) — cap. 01.
+
+**Context precision** — dos trechos recuperados, quantos eram relevantes. Precisão baixa significa orçamento gasto com ruído (caps. 08, 15).
+
+**Context recall** — dos trechos necessários, quantos foram recuperados. Recall baixo é problema de índice, chunking ou busca (cap. 15).
+
+**Context rot** — degradação de qualidade conforme o contexto cresce. Não é linear com o comprimento: é dirigida pela similaridade entre o alvo e os distratores (cap. 08).
+
+**Contextual retrieval** — prefixar cada chunk, antes de embeddar, com um resumo do seu lugar no documento. Ataca a perda de contexto no corte; custa uma passada de LLM sobre o corpus (cap. 10).
+
+**CoT (*Chain-of-Thought*)** — induzir passos intermediários explícitos antes da resposta. Família *thought generation* (cap. 03).
+
+**Cross-encoder** — modelo que lê consulta e documento **juntos** para pontuar relevância, em vez de comparar vetores calculados separadamente. É a arquitetura típica de reranker: preciso e caro (cap. 09).
+
+## D–L
+
+**Decodificação restrita (*constrained decoding*)** — restringir a amostragem para garantir que a saída obedeça a uma gramática ou schema. Garante forma, não valor (cap. 04).
+
+**DSPy** — framework que trata prompts como parâmetros a serem compilados contra uma métrica, com otimizadores (BootstrapFewShot, COPRO, MIPROv2, GEPA) — cap. 06.
+
+**Embedding** — representação vetorial de texto usada para medir similaridade semântica. Similaridade não é compreensão (cap. 09).
+
+**Faithfulness** — proporção das afirmações da resposta que são inferíveis do contexto fornecido. Uma resposta **correta** pode ter *faithfulness* baixa — e isso é informação, não defeito: o modelo respondeu de memória (cap. 15).
+
+**Few-shot** — incluir exemplos no prompt. Fixa formato e fronteiras de rótulo; custa tokens em toda chamada (cap. 03).
+
+**GEPA** — otimizador de prompt que evolui instruções por reflexão em linguagem natural sobre traços de execução, com seleção genético-Pareto (cap. 06).
+
+**GraphRAG** — construir um grafo de entidades e relações, sumarizar regiões densas e recuperar sobre essa estrutura. Muda **do que** se recupera (cap. 10).
+
+**HyDE** (*Hypothetical Document Embeddings*) — gerar uma resposta hipotética e buscar por ela, porque uma resposta se parece mais com o documento do que a pergunta (cap. 10).
+
+**Injeção indireta** — *prompt injection* em que o texto hostil chega por conteúdo que o sistema lê (documento, página, e-mail, memória), e não pela mensagem do usuário. É a forma que sistemas de RAG criam (cap. 16).
+
+**Janela de contexto** — o limite físico de tokens de uma chamada. Não é "memória do modelo" (cap. 01).
+
+**Late chunking** — embeddar o documento inteiro e aplicar o corte **depois** do transformer, antes do *pooling*. Resolve a perda de contexto sem chamada de LLM, limitado pelo comprimento máximo do modelo de embedding (cap. 10).
+
+**LLM-as-judge** — usar um modelo para julgar saídas de outro. Padrão de fato e fraqueza metodológica simultaneamente; exige calibração contra julgamento humano (cap. 07).
+
+## M–R
+
+**MCP (*Model Context Protocol*)** — protocolo que padroniza como um sistema expõe ferramentas, recursos e prompts a um modelo. Resolve integração; **não** resolve orçamento nem confiança (cap. 14).
+
+**Mem0** — sistema de memória que extrai fatos salientes das mensagens e os guarda como memórias compactas (cap. 12).
+
+**Memória** — estado deliberadamente mantido além do turno atual. Distinta do histórico bruto, e distinta de RAG: memória guarda afirmações que **mudam de valor de verdade** (cap. 12).
+
+**MemGPT / Letta** — arquitetura que trata o LLM como sistema operacional gerenciando a própria memória, paginando entre contexto principal, *recall* e *archival* (cap. 12).
+
+**MIPROv2** — otimizador que busca instruções e exemplos conjuntamente, via otimização bayesiana e bootstrap (cap. 06).
+
+**MTEB** — *Massive Text Embedding Benchmark*: avaliação ampla de modelos de embedding em múltiplas tarefas (cap. 15).
+
+**Orçamento de contexto** — a alocação explícita de tokens entre os concorrentes (prompt, memória, recuperado, ferramenta, histórico). Sistemas sem essa alocação declarada degradam de forma inexplicável (cap. 08).
+
+**OWASP LLM Top 10** — a classificação de referência de riscos em aplicações com LLM. *Prompt injection* é LLM01 em todas as edições publicadas (cap. 16).
+
+**Prompt** — a parte do contexto que é instrução autoral e relativamente estável. Não é o contexto todo (cap. 01).
+
+**Prompt injection** — fazer o modelo obedecer a texto que deveria ser tratado como dado. Propriedade da arquitetura, não bug (cap. 16).
+
+**RAG (*Retrieval-Augmented Generation*)** — recuperar trechos de um corpus externo **e** gerar resposta fundamentada neles. Recuperação sozinha não é RAG. Neste livro, é a técnica central da engenharia de contexto — não a moldura (caps. 00, 09).
+
+**RAGAS** — framework de avaliação que fixou o vocabulário de fato: *faithfulness*, *answer relevance*, *context precision*, *context recall* (cap. 15).
+
+**ReAct** — ciclo pensamento → ação → observação. Nasce como técnica de prompt (cap. 03) e vira arquitetura de recuperação (cap. 11).
+
+**Reranking** — reordenar os primeiros candidatos com um modelo mais caro e mais preciso. Terceiro estágio do pipeline; o de maior retorno marginal (cap. 09).
+
+## S–Z
+
+**Saída estruturada** — restringir a resposta a um schema. Garante forma, nunca valor; a validação semântica continua sendo sua (cap. 04).
+
+**Self-consistency** — amostrar vários caminhos de raciocínio e agregar por voto. Multiplica o custo por N; é decisão financeira (cap. 03).
+
+**Token** — a unidade que o modelo processa e que a fatura cobra. Não é palavra (cap. 01).
+
+**Trajetória** — a sequência de decisões (buscas, chamadas, reflexões) que levou a uma resposta em um sistema agêntico. Duas trajetórias podem dar a mesma resposta com custos muito diferentes — e a instrumentação madura ainda não a mede (caps. 11, 15).
+
+**Zep** — sistema de memória que adiciona grafo de conhecimento **temporal** sobre recuperação densa, para raciocinar sobre fatos que mudam com o tempo (cap. 12).

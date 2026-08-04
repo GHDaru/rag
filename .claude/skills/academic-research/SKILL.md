@@ -1,9 +1,9 @@
 ---
 name: academic-research
-description: Pesquisa acadêmica para o livro de Engenharia de Harness — localizar, validar e citar papers científicos (arXiv, surveys, benchmarks) seguindo as regras editoriais do projeto. Use quando o usuário pedir para "buscar papers", "validar referências", "atualizar a bibliografia", "fundamentar um capítulo cientificamente", "pesquisa acadêmica", "literature review", ou quando um capítulo novo/retrofitado precisar da seção "Fundamentos científicos".
+description: Pesquisa acadêmica para o livro de Engenharia de Prompt e Engenharia de Contexto — localizar, validar e citar papers científicos (arXiv, surveys, benchmarks) seguindo as regras editoriais do projeto. Use quando o usuário pedir para "buscar papers", "validar referências", "atualizar a bibliografia", "fundamentar um capítulo cientificamente", "pesquisa acadêmica", "literature review", ou quando um capítulo novo/retrofitado precisar da seção "Fundamentos científicos".
 ---
 
-# Pesquisa acadêmica do livro de Engenharia de Harness
+# Pesquisa acadêmica do livro de Engenharia de Prompt e Engenharia de Contexto
 
 ## Contexto do projeto
 
@@ -44,4 +44,6 @@ Restrição conhecida deste ambiente: **arxiv.org e api.semanticscholar.org reto
 - Apagar uma referência que falhou na validação: rebaixe para ⏳ com nota do que falhou.
 
 ## Papers-âncora já validados (não rebuscar)
-Ver `livro/bibliografia.md`. Destaques transversais: *From QA to Task Completion: Survey on Agent System and Harness Design* (2606.20683), *Recursive Agent Harnesses* (2606.13643), ReAct (2210.03629), MemGPT (2310.08560), SWE-bench (2310.06770), Lost in the Middle (2307.03172), Greshake prompt injection (2302.12173), Voyager (2305.16291).
+Ver `livro/bibliografia.md`. Âncoras transversais: *The Prompt Report* (2406.06608), *A Survey of Context Engineering for LLMs* (2507.13334), *Agentic RAG: A Survey* (2501.09136), Lost in the Middle (2307.03172), U-NIAH (2503.00353), ReAct (2210.03629), MemGPT (2310.08560).
+
+**Estado (edição 0.1): nenhuma referência tem status ✓.** Tirar os ⏳ é a rodada 2 do ROADMAP — é para isso que esta skill existe agora.

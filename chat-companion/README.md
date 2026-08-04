@@ -1,6 +1,6 @@
-# chat-companion — o backend (harness-zero ao vivo)
+# chat-companion — o backend (contexto-zero ao vivo)
 
-O **companion** é o assistente do livro vivo *Engenharia de Harness*: aparece desde a capa, ajuda o leitor e mostra, a cada capítulo, **quais capacidades tem naquele momento**. Este diretório é o **backend** — um serviço FastAPI que **é o harness-zero rodando em produção** (reusa `LLMPort` e o loop de tool-calling). O **widget** (front-end no site) é uma feature à parte.
+O **companion** é o assistente do livro vivo *Engenharia de Prompt e Engenharia de Contexto*: aparece desde a capa, ajuda o leitor e mostra, a cada capítulo, **quais capacidades tem naquele momento**. Este diretório é o **backend** — um serviço FastAPI que **é o `contexto-zero` rodando em produção** (reusa `LLMPort`, o índice BM25 da etapa 8 e o loop de tool-calling). É também o exemplo real que o livro disseca: o próprio livro respondendo ao leitor, com um RAG que evolui capítulo a capítulo. O **widget** (front-end no site) é uma feature à parte.
 
 > Feita pelo ciclo oficial do spec-kit: [`specs/016-chat-companion-backend/`](../specs/016-chat-companion-backend/).
 
@@ -85,7 +85,7 @@ Sem `.env`, sobe em modo **echo** + **memória** — ótimo para testar o fluxo.
 
 ### Parte 3 · Backend no Railway
 
-1. Em **[railway.app](https://railway.app)**, crie um projeto: **New Project → Deploy from GitHub repo** → selecione `GHDaru/harness_engineering`.
+1. Em **[railway.app](https://railway.app)**, crie um projeto: **New Project → Deploy from GitHub repo** → selecione `GHDaru/rag`.
 2. Em **Settings → Root Directory**, defina **`chat-companion/backend`** (o Railway constrói e roda a partir daí; ele lê `railway.json`/`Procfile` e `requirements.txt`).
 3. Em **Variables**, adicione:
    | Variável | Valor |

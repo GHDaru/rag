@@ -42,13 +42,13 @@ def test_chat_and_history():
 
 
 def test_gating_progressive_hides_future_tools():
-    # cap. 1 progressivo: loop ainda não liberado (libera no cap. 2) -> sem tools
-    assert capabilities.tools_ativas(1, "progressivo") == set()
-    # cap. 2 progressivo: loop + 'hora'
-    assert "hora" in capabilities.tools_ativas(2, "progressivo")
-    # 'calcular' só no cap. 5
-    assert "calcular" not in capabilities.tools_ativas(2, "progressivo")
-    assert "calcular" in capabilities.tools_ativas(5, "progressivo")
+    # cap. 9 progressivo: RAG agêntico (cap. 11) ainda não ligou o loop -> sem tools
+    assert capabilities.tools_ativas(9, "progressivo") == set()
+    # cap. 11 progressivo: loop + 'hora' + a busca já liberada no cap. 9
+    assert {"hora", "buscar_no_livro"} <= capabilities.tools_ativas(11, "progressivo")
+    # 'calcular' só no cap. 14 (ferramentas)
+    assert "calcular" not in capabilities.tools_ativas(11, "progressivo")
+    assert "calcular" in capabilities.tools_ativas(14, "progressivo")
     # avançado libera tudo mesmo no cap. 0
     assert {"hora", "calcular", "buscar_no_livro"} <= capabilities.tools_ativas(0, "avancado")
 
@@ -58,7 +58,7 @@ def test_capabilities_endpoint():
     j = r.json()
     assert j["loop_ativo"] is False
     ativos = {c["chave"] for c in j["capabilities"] if c["ativa"]}
-    assert "tutor" in ativos and "loop" not in ativos
+    assert "tutor" in ativos and "rag_agentico" not in ativos
 
 
 def test_rate_limit_429():
@@ -87,7 +87,7 @@ def test_delete_session():
 
 def test_suggestion_persists_and_lists():
     sid = "s-sug"
-    r = client.post("/suggestion", json={"session_id": sid, "texto": "ótimo livro, cap 5 podia ter mais exemplos", "pagina": "05-ferramentas.html"})
+    r = client.post("/suggestion", json={"session_id": sid, "texto": "ótimo livro, o cap. 5 podia ter mais exemplos", "pagina": "05-persona-e-regras.html"})
     assert r.status_code == 200
     body = r.json()
     assert body["ok"] is True and body["email_enviado"] is False  # sem SMTP no teste
@@ -136,14 +136,14 @@ def test_rate_limit_sobrevive_a_restart():
 def test_debug_bastidores():
     """spec 053: /chat e o done do stream expõem o bloco debug (transparência)."""
     import json
-    r = client.post("/chat", json={"session_id": "t-debug", "message": "o que é loop?"})
+    r = client.post("/chat", json={"session_id": "t-debug", "message": "o que é orçamento de contexto?"})
     d = r.json()["debug"]
     assert d["tokens_estimados"] > 0 and d["janela_tokens"] > 0
     assert d["historico_msgs"] >= 1 and isinstance(d["trechos"], list)
     assert "Tutor do livro" in d["capacidades_ativas"]
 
     with client.stream("POST", "/chat/stream",
-                       json={"session_id": "t-debug2", "message": "e compactação?"}) as r:
+                       json={"session_id": "t-debug2", "message": "e a busca híbrida?"}) as r:
         eventos = [json.loads(l[6:]) for l in r.iter_lines() if l.startswith("data: ")]
     done = [e for e in eventos if e.get("done")][0]
     assert done["debug"]["tokens_estimados"] > 0
@@ -154,18 +154,18 @@ def test_consent_telemetria_objetivo():
     persiste, aparece no GET e entra como camada do system prompt (debug)."""
     sid = "t-054"
     # telemetria ANTES do aceite: não grava
-    r = client.post("/telemetry", json={"session_id": sid, "slug": "02-loop-do-agente"})
+    r = client.post("/telemetry", json={"session_id": sid, "slug": "02-anatomia-do-prompt"})
     assert r.json()["ok"] is False
     # aceite
     r = client.post("/consent", json={"session_id": sid, "versao": "v1"})
     assert r.json()["ok"] is True
     # telemetria depois: grava
-    r = client.post("/telemetry", json={"session_id": sid, "slug": "02-loop-do-agente"})
+    r = client.post("/telemetry", json={"session_id": sid, "slug": "02-anatomia-do-prompt"})
     assert r.json()["ok"] is True
     # resumo exige token
     assert client.get("/telemetry").status_code == 403
     # objetivo
-    r = client.post("/objetivo", json={"session_id": sid, "texto": "construir um agente para meu ERP"})
+    r = client.post("/objetivo", json={"session_id": sid, "texto": "construir um RAG sobre a documentação do meu ERP"})
     assert r.json()["ok"] is True
     assert client.get("/objetivo", params={"session_id": sid}).json()["objetivo"].startswith("construir")
     # camada no prompt: via debug do /chat
@@ -179,9 +179,9 @@ def test_telemetry_publico_agregado():
     """spec 055: projeção pública só tem agregados — nada de sessões/timestamps."""
     sid = "t-055"
     client.post("/consent", json={"session_id": sid, "versao": "v1"})
-    for slug in ("02-loop-do-agente", "02-loop-do-agente", "glossario"):
+    for slug in ("02-anatomia-do-prompt", "02-anatomia-do-prompt", "glossario"):
         client.post("/telemetry", json={"session_id": sid, "slug": slug})
     d = client.get("/telemetry/publico").json()
     assert d["total"] >= 3 and d["paginas_distintas"] >= 2
-    assert d["por_pagina"].get("02-loop-do-agente", 0) >= 2
+    assert d["por_pagina"].get("02-anatomia-do-prompt", 0) >= 2
     assert set(d.keys()) == {"total", "paginas_distintas", "por_pagina"}  # nada além do agregado
