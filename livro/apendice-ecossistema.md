@@ -2,7 +2,7 @@
 
 > Frameworks, bibliotecas e coleções **organizados pelo problema que resolvem** — não por popularidade, e nunca como recomendação (Princípio VI: nenhum framework é "o jeito certo").
 >
-> Edição 0.1 · captura em 2026-08. Origem: [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md).
+> Edição 0.2 · captura em 2026-08. Origem: [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md).
 >
 > **Como ler:** esta página é *reference* (Diátaxis) — consulta, não leitura linear. A avaliação comparada por dimensão, com evidência, é a **rodada 4** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md); até lá, o que está aqui é mapa, não veredito.
 
@@ -18,7 +18,7 @@
 | **TextGrad** | prompt como variável textual otimizável | mais simples de montar; melhor com dificuldade uniforme |
 | **Promptomatix** · [arXiv 2507.14241](https://arxiv.org/abs/2507.14241) | reduz o setup manual exigido | |
 
-## Recuperar (caps. 06, 09)
+## Recuperar (caps. 05–10)
 
 **Busca esparsa** — BM25 e variantes. Acha termo literal, código, identificador. É a linha de base honesta e o remédio para "o RAG não encontra o óbvio".
 
@@ -48,7 +48,7 @@
 
 > Ressalva registrada pelos praticantes: a paginação autogerida adiciona complexidade e latência que nem sempre se pagam em benchmarks padrão. E os números publicados de memória (LoCoMo, LongMemEval) são majoritariamente auto-reportados — leia com o Princípio I na mão.
 
-## Avaliar (caps. 17, 15)
+## Avaliar (caps. 17, 21)
 
 | Ferramenta | Papel |
 |---|---|
@@ -66,16 +66,16 @@ A leitura de 2026: **RAGAS fornece o arcabouço conceitual; DeepEval, a execuç�
 - **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — a classificação de referência. *Prompt injection* é LLM01 em todas as edições publicadas.
 - **Ferramentas de red teaming** — teste adversarial em pipeline, com cobertura mapeada à classificação. A conexão importante: **teste adversarial é eval**, e roda no mesmo lugar (cap. 17).
 
-## Conectar
+## Fora do escopo deste livro
 
-- **MCP (Model Context Protocol)** — padroniza transporte, descoberta, schema de ferramentas, recursos e autorização. Resolve integração N×M; **não** resolve orçamento de contexto nem confiança na fonte.
+- **MCP (Model Context Protocol)** e os frameworks de orquestração de agente aparecem em toda lista de "ferramentas de RAG", mas resolvem **integração**, não recuperação. O tratamento deles é do livro irmão, *[Engenharia de Harness](https://ghdaru.github.io/harness_engineering/)* — aqui eles entram só quando a recuperação vira ferramenta na mão do modelo (cap. 18).
 
 ## As coleções vivas (por onde continuar)
 
 | Coleção | O que reúne |
 |---|---|
 | [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/prompt-engineering-guide) | prompt, contexto, RAG e agentes no mesmo índice — o sinal de que o par é uma disciplina só |
-| [Meirtz/Awesome-Context-Engineering](https://github.com/Meirtz/Awesome-Context-Engineering) | centenas de papers e implementações da Parte II |
+| [Meirtz/Awesome-Context-Engineering](https://github.com/Meirtz/Awesome-Context-Engineering) | centenas de papers e implementações do lado do contexto — a fronteira com o livro irmão |
 | [asinghcsu/AgenticRAG-Survey](https://github.com/asinghcsu/AgenticRAG-Survey) | o companion do survey de RAG agêntico |
 | [promptslab](https://github.com/promptslab/awesome-prompt-engineering) · [natnew](https://github.com/natnew/Awesome-Prompt-Engineering) | variantes e casos de uso por domínio |
 | [tópico `context-engineering`](https://github.com/topics/context-engineering) | o termômetro do que a comunidade publica agora |
@@ -87,5 +87,5 @@ A leitura de 2026: **RAGAS fornece o arcabouço conceitual; DeepEval, a execuç�
 Registrado por honestidade (Princípio I), e é trabalho das próximas rodadas:
 
 - **Nenhuma avaliação comparada.** Não há nota, ranking nem "melhor para". Isso exige metodologia e evidência — é a rodada 4.
-- **Ausências conhecidas**: bancos vetoriais e motores de busca (deliberadamente fora — o livro trata de técnica, não de infraestrutura de armazenamento); frameworks de orquestração de agentes (adjacentes, entram se um capítulo exigir); ferramentas de observabilidade de LLM (entram junto com o cap. 23 aprofundado).
+- **Ausências conhecidas**: bancos vetoriais e motores de busca (deliberadamente fora — o livro trata de técnica, não de infraestrutura de armazenamento); frameworks de orquestração de agentes (adjacentes, entram se um capítulo exigir); ferramentas de observabilidade de LLM (entram junto com o cap. 21 aprofundado).
 - **Viés declarado**: levantamento em inglês, por busca aberta, sem bases pagas. Projetos fora do eixo GitHub/arXiv estão sub-representados.

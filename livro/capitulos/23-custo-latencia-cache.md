@@ -19,7 +19,7 @@ Sistemas de contexto degradam economicamente de forma silenciosa. Cada melhoria 
 
 E há a assimetria que engana: **contexto é pago em toda requisição, para sempre.** Uma linha acrescentada ao prompt de sistema custa o produto do seu tamanho pelo número de chamadas do sistema, até alguém removê-la. Quase ninguém calcula esse produto antes de acrescentar.
 
-Este é o capítulo que fecha a Parte III porque é o que impõe realidade às decisões dos dezesseis anteriores.
+Este é o capítulo que fecha a Parte V porque é o que impõe realidade às decisões de todos os capítulos anteriores.
 
 ## Fundamentos científicos
 

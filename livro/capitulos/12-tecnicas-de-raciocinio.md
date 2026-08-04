@@ -24,7 +24,7 @@ O problema real do capítulo não é "quais técnicas existem" (o catálogo é p
 - **A taxonomia de referência** — *The Prompt Report* ([arXiv 2406.06608](https://arxiv.org/abs/2406.06608)) organiza 58 técnicas textuais em **seis famílias**: *zero-shot*, *few-shot*, *thought generation*, *ensembling*, *self-criticism*, *decomposition*. A estrutura deste capítulo é essa. `[a validar]`
 - **Chain-of-Thought** — a proposta original de induzir passos intermediários explícitos antes da resposta. É a fundação da família *thought generation*. `[a validar]`
 - **Self-Consistency** — amostrar vários caminhos de raciocínio e escolher a resposta mais consistente entre eles; a materialização mais simples e mais cara da família *ensembling*. `[a validar]`
-- **ReAct** — o ciclo pensamento → ação → observação, que integra raciocínio e uso de ferramenta. É a técnica que **atravessa a fronteira** deste livro: nasce como padrão de prompt (Parte I) e vira arquitetura de recuperação (cap. 18). `[a validar]`
+- **ReAct** — o ciclo pensamento → ação → observação, que integra raciocínio e uso de ferramenta. É a técnica que **atravessa a fronteira** deste livro: nasce como padrão de prompt (Parte IV) e vira arquitetura de recuperação (cap. 18). `[a validar]`
 - **Avaliação comparada** — há evidência sistemática comparando variantes de CoT em domínios específicos ([exemplo em QA médico](https://www.sciencedirect.com/science/article/pii/S0010482525009655)); o padrão que emerge é que o ganho depende fortemente do domínio e do modelo, o que reforça a regra de medir. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
@@ -54,11 +54,11 @@ A leitura que importa: **as três primeiras linhas ficaram mais baratas e menos 
 
 Três perguntas, nesta ordem, resolvem a escolha na prática:
 
-1. **O erro é de raciocínio ou de conhecimento?** Se o modelo não sabe o fato, nenhuma técnica desta lista ajuda — o problema é da Parte II (recuperação, cap. 06). Esta é a confusão mais cara da área: times gastam semanas otimizando prompt para um problema de contexto.
+1. **O erro é de raciocínio ou de conhecimento?** Se o modelo não sabe o fato, nenhuma técnica desta lista ajuda — o problema é da Parte III (recuperação, caps. 04–10). Esta é a confusão mais cara da área: times gastam semanas otimizando prompt para um problema de contexto.
 2. **O erro é caro?** Ensembling multiplica o custo por N. Só se justifica quando errar custa mais do que N chamadas.
 3. **O ganho sobrevive ao seu eval?** Toda técnica aqui tem evidência publicada em *algum* benchmark. Nenhuma tem garantia no **seu**. O capítulo 17 existe por causa desta pergunta.
 
-### 3. A ponte para a Parte II
+### 3. A ponte para a recuperação
 
 *Decomposition* + *thought generation* + uso de ferramenta é literalmente a arquitetura do **ReAct**: pensar sobre o que falta, agir para obter, observar o resultado, repetir. Quando a "ação" é uma busca em corpus, isso deixa de ser técnica de prompt e vira **RAG agêntico** (cap. 18).
 

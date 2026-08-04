@@ -21,7 +21,7 @@ O primeiro é de **qualidade**: a capacidade de usar o que está na janela não 
 
 O segundo é de **conta**: contexto é cobrado por token e a latência cresce com ele. Um sistema que enche a janela por preguiça de decidir paga essa preguiça em toda requisição, para sempre.
 
-Este capítulo abre a Parte II porque é o capítulo que transforma "colocar informação no prompt" em **decisão de alocação**.
+Este capítulo é o que transforma "colocar informação no prompt" em **decisão de alocação**.
 
 ## Fundamentos científicos
 
