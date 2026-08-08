@@ -6,13 +6,15 @@
 
 ## Onde estamos
 
-**Edição 0.1 — a fundação.** O esqueleto está de pé: moldura definida, sumário em três partes, 19 capítulos com argumento fechado e explicação de abertura, catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada e o site publicando.
+**Edição 0.2 (+ adendo 0.2.1) — o esqueleto do sistema.** O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
+
+O que a 0.2 fez além de renomear: os três capítulos que fechavam a lacuna real (**02** anatomia, **03** arquiteturas de referência, **15** geração fundamentada), a Parte III desdobrada em cinco, e a fronteira com o livro irmão tornada explícita na constituição.
 
 O que **ainda não** existe, e é deliberado:
 
 | Ausente | Por quê | Volta em |
 |---|---|:---:|
-| Referências validadas (status ✓) | o levantamento localizou; validar exige ler | rodada 2 |
+| Referências validadas (status ✓) | **0 de 55** — o levantamento localizou; validar exige ler | rodada 2 |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 2–3 |
 | Trilha prática `rag-zero` | descrita nos capítulos, não implementada | rodada 3 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
