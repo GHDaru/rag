@@ -25,9 +25,11 @@ E o aviso que abre o capítulo, porque é o erro mais caro daqui: **cada técnic
 
 ## Fundamentos científicos
 
-- **Chunking avaliado** — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) compara estratégias avançadas de reconstrução de contexto em vez de assumir sua superioridade. `[a validar]`
-- **Corte alinhado entre documentos** — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) trata o corte considerando tópicos que atravessam documentos, atacando a falha na raiz. `[a validar]`
-- **O lugar no paradigma** — na taxonomia de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)), estas são técnicas de **indexação refinada** do Advanced RAG. O movimento de 2026 é justamente o deslocamento do esforço de otimização para a etapa de indexação. `[a validar]`
+- **A comparação direta entre as duas** — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) põe *late chunking* e *contextual retrieval* lado a lado e conclui: *"**contextual retrieval preserves semantic coherence more effectively but requires greater computational resources**. In contrast, **late chunking offers higher efficiency but tends to sacrifice relevance and completeness**"*. ✓
+
+  **Correção registrada (rodada 2).** A edição 0.2 dizia que as duas resolvem a mesma falha e que a escolha entre elas é **"aritmética, não estética"** — isto é, só uma questão de preço. A evidência corrige: **há troca de qualidade, não só de custo**. O *late chunking* é mais barato **e** entrega menos coerência. A decisão continua sendo sua, mas ela tem dois eixos, não um.
+- **Corte alinhado entre documentos** — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) reconstrói o conhecimento **no nível do corpus**: identifica tópicos entre documentos e sintetiza segmentos em chunks unificados. Números com a condição: no HotpotQA (multi-hop), *faithfulness* **0,93** contra **0,83** do *contextual retrieval* e **0,78** do corte semântico (p < 0,05); em `k = 3`, mantém **0,91** enquanto os métodos semânticos caem para **0,68**. O custo de indexação é maior — e a contrapartida é exatamente a assimetria da próxima seção: chunks mais densos *"reduce query-time retrieval needs"*. ✓
+- **O lugar no paradigma** — a survey de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) nomeia esta etapa: *"To tackle the indexing issues, Advanced RAG **refines its indexing techniques** through the use of a sliding window approach, fine-grained segmentation, and the **incorporation of metadata**"*. Note o terceiro item — **metadado é listado como refinamento de indexação**, que é exatamente o argumento do cap. 04 visto daqui. O movimento de 2026 é o deslocamento do esforço de otimização para esta etapa. ✓
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 
@@ -55,7 +57,7 @@ E o aviso que abre o capítulo, porque é o erro mais caro daqui: **cada técnic
 | **Contextual Retrieval** | prefixa cada chunk com um resumo do seu lugar no documento, antes de embeddar | **1 chamada de LLM por chunk** | preço, em corpus grande |
 | **Late Chunking** | embeda o documento inteiro, corta depois do transformer | só o modelo de embedding | comprimento máximo do embedder |
 
-Esta tabela é a mensagem do capítulo. As duas resolvem **a mesma falha**, e a diferença de conta é de ordem de grandeza. Para corpus de milhões de chunks com orçamento apertado, a decisão é aritmética, não estética.
+Esta tabela é a mensagem do capítulo — com a ressalva que a comparação publicada acrescenta. As duas atacam **a mesma falha**, e a diferença de conta é de ordem de grandeza; mas elas **não entregam o mesmo resultado**: o *contextual retrieval* preserva mais coerência semântica, e o *late chunking* sacrifica relevância e completude em troca de eficiência. Para corpus de milhões de chunks com orçamento apertado, a decisão pende para o barato — sabendo o que se está trocando.
 
 O que decide entre elas:
 
@@ -87,7 +89,7 @@ O passo 3 é o que quase ninguém faz, e é o que separa um sistema que evolui d
 
 ### Leitura executiva
 
-A falha deste capítulo é uma só: **o chunk perdeu o contexto de onde veio** — "a margem caiu 12%" é inútil sem saber de que produto e trimestre. **O que roubar:** *contextual retrieval* e *late chunking* curam a **mesma** falha com contas de ordem de grandeza diferente — a primeira paga **uma chamada de LLM por chunk** sobre o corpus inteiro (US$ 1,02 por milhão de tokens de documento, com cache); a segunda usa **só o modelo de embedding**, sem treino adicional, limitada pelo comprimento máximo dele. Para corpus grande, a decisão é aritmética, não estética. **A assimetria que decide muita coisa:** indexação é paga uma vez e amortizada; consulta é paga para sempre — muitas consultas sobre corpus estável pedem indexação, corpus volátil pede o lado da pergunta, e "muitas consultas + corpus volátil" é o caso difícil que transforma reindexação incremental em decisão de arquitetura. **A regra que vale mais que as técnicas:** meça qual falha você tem antes de escolher, aplique **uma por vez** com medição dos dois lados, e **remova o que não pagou** — este último passo quase ninguém faz, e é o que separa um sistema que evolui de um que só acumula. **Sobre os números publicados:** o 67% do *contextual retrieval* é a **taxa de falha no top-20 caindo de 5,7% para 1,9% com a pilha inteira, reranker incluído** — sozinha, a técnica leva a 3,7% (35%). Cite a curva, não o número.
+A falha deste capítulo é uma só: **o chunk perdeu o contexto de onde veio** — "a margem caiu 12%" é inútil sem saber de que produto e trimestre. **O que roubar:** *contextual retrieval* e *late chunking* curam a **mesma** falha com contas de ordem de grandeza diferente — a primeira paga **uma chamada de LLM por chunk** sobre o corpus inteiro (US$ 1,02 por milhão de tokens de documento, com cache); a segunda usa **só o modelo de embedding**, sem treino adicional, limitada pelo comprimento máximo dele. Para corpus grande, a decisão é aritmética, não estética. **A assimetria que decide muita coisa:** indexação é paga uma vez e amortizada; consulta é paga para sempre — muitas consultas sobre corpus estável pedem indexação, corpus volátil pede o lado da pergunta, e "muitas consultas + corpus volátil" é o caso difícil que transforma reindexação incremental em decisão de arquitetura. **A regra que vale mais que as técnicas:** meça qual falha você tem antes de escolher, aplique **uma por vez** com medição dos dois lados, e **remova o que não pagou** — este último passo quase ninguém faz, e é o que separa um sistema que evolui de um que só acumula. **Sobre os números publicados:** o 67% do *contextual retrieval* é a **taxa de falha no top-20 caindo de 5,7% para 1,9% com a pilha inteira, reranker incluído** — sozinha, a técnica leva a 3,7% (35%). Cite a curva, não o número. **E a escolha entre as duas não é só de preço:** a comparação publicada mostra que o *late chunking* economiza sacrificando relevância e completude.
 
 ## Mão na massa — rag-zero, etapa 8
 
@@ -95,7 +97,7 @@ Na etapa 8 você aplica *contextual retrieval* a um subconjunto do corpus do `ra
 
 ## Verificação
 
-1. Você tem 2 milhões de chunks e orçamento apertado de indexação. Entre as duas técnicas, qual escolhe e o que precisa verificar antes?
+1. Você tem 2 milhões de chunks e orçamento apertado de indexação. Entre as duas técnicas, qual escolhe — e, dada a troca de qualidade medida, o que precisa verificar antes de aceitar a mais barata?
 2. Seu corpus muda várias vezes por dia e recebe milhares de consultas. Por que esse é o caso difícil, e o que ele exige do cap. 04?
 3. Você aplicou três técnicas de uma vez e o recall subiu 8 pontos. Qual é o problema com essa informação?
 

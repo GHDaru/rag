@@ -81,7 +81,8 @@ Não pelo sumário — pela **tabela de sintomas** do [cap. 01](livro/01-fundame
 
 ## Estado desta edição (honestidade obrigatória)
 
-- **26 referências com status ✓, ~30 ainda ⏳** na [bibliografia](livro/bibliografia.md). A primeira leva da [rodada 2](ROADMAP.md) conferiu **todos os 49 identificadores arXiv** contra o arXiv real (nenhum inventado), leu as fontes que sustentam mais peso, e **corrigiu três afirmações do livro** — inclusive uma atribuição errada em *Lost in the Middle*. A segunda leva é o restante.
+- **42 das 55 referências com status ✓ (76%)** na [bibliografia](livro/bibliografia.md). A [rodada 2](ROADMAP.md) conferiu **todos os 49 identificadores arXiv** contra o arXiv real (nenhum inventado), leu as fontes, e **corrigiu quatro afirmações do livro** — duas delas na espinha de um capítulo. As 13 restantes são de menor peso estrutural e seguem `[a validar]`.
+- **Falta preencher os Apêndices A** dos capítulos (tratamento por implementação). É o item aberto do critério de conclusão da rodada 2.
 - **Os Apêndices A** (tratamento por implementação) estão enfileirados, não escritos.
 - **Nenhum número de terceiro** entra no corpo sem a condição experimental ao lado.
 - **A trilha prática `rag-zero`** está descrita capítulo a capítulo, e é construída na rodada 3.

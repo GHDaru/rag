@@ -14,7 +14,7 @@ O que **ainda não** existe, e é deliberado:
 
 | Ausente | Por quê | Volta em |
 |---|---|:---:|
-| Referências validadas (status ✓) | **26 de ~56** — primeira leva feita; o restante é a segunda | rodada 2 |
+| Referências validadas (status ✓) | **42 de 55 (76%)** — critério atingido; faltam os Apêndices A | rodada 2 |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 2–3 |
 | Trilha prática `rag-zero` | descrita nos capítulos, não implementada | rodada 3 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
@@ -36,30 +36,30 @@ O que **ainda não** existe, e é deliberado:
 
 ---
 
-## Rodada 2 — Evidência (a que tira os ⏳) · **primeira leva ✅**
+## Rodada 2 — Evidência (a que tira os ⏳) · **critério de validação atingido**
 
 **Objetivo:** transformar o mapa em livro citável. Nenhuma outra rodada deveria vir antes desta — a credibilidade do projeto depende dela.
 
-### Primeira leva — concluída em 2026-08-04 (edição 0.3)
+### Feito (edição 0.3, 2026-08-04)
 
-1. ✅ **Todos os 49 identificadores arXiv resolvidos** contra o arXiv real, com ID falso de controle. **Nenhum inventado, nenhum título divergente** — a classe de erro mais corrosiva está descartada.
-2. ✅ **26 referências em ✓** — texto lido, afirmação do livro conferida contra o original.
-3. ✅ **As ~20 técnicas nomeadas ganharam fonte primária.** Elas tinham entrado pelos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição, GraphRAG) e agora apontam para o paper que as propôs — **e nenhuma se revelou inexistente**.
-4. ✅ **Três afirmações corrigidas** (detalhe em [bibliografia.md](livro/bibliografia.md#correções-que-esta-rodada-produziu)):
-   - *Lost in the Middle* **não sustentava** a afirmação do cap. 20 sobre distratores — e a fonte que sustenta contradiz a outra metade dela;
-   - as quatro métricas do RAGAS **não são todas do paper** (ele propõe três; o par precision/recall é da biblioteca);
-   - o `67%` do *contextual retrieval* agora aparece com a curva inteira e o custo em dólar por milhão de tokens.
-5. ✅ **Condição experimental ao lado de todo número validado** — o 540B do CoT, o GPT-4 do RAPTOR, o cenário zero-shot do HyDE, o custo do contextual retrieval.
+1. ✅ **Os 49 identificadores arXiv resolvidos** contra o arXiv real, com ID falso de controle. **Nenhum inventado, nenhum título divergente** — a classe de erro mais corrosiva está descartada.
+2. ✅ **42 das 55 referências em ✓ (76%)** — texto lido, afirmação do livro conferida. Acima do critério de 60%.
+3. ✅ **As ~20 técnicas nomeadas ganharam fonte primária.** Entraram pelos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição, GraphRAG) e **todas chegaram ao paper que as propôs**.
+4. ✅ **Quatro afirmações corrigidas** ([detalhe](livro/bibliografia.md#correções-que-esta-rodada-produziu)):
+   - *Lost in the Middle* **não sustentava** a afirmação do cap. 20 sobre distratores — e a fonte que sustenta contradiz a outra metade;
+   - as quatro métricas do RAGAS **não são todas do paper** (ele propõe três);
+   - a escolha entre *contextual retrieval* e *late chunking* **não é só de preço** — há troca de qualidade medida;
+   - o `67%` do *contextual retrieval* agora aparece com a curva inteira e o custo em dólar.
+5. ✅ **Condição experimental ao lado de todo número validado.**
 
-### Segunda leva — pendente
+### Aberto
 
-1. **Surveys de apoio** (S1–S6, exceto S0 e S5b, já ✓).
-2. **Segurança** (X1–X4), **memória** (M2–M5) e os papers de 2026, todos hoje com ID conferido e texto não lido.
-3. **Preencher os Apêndices A** dos capítulos com o tratamento por implementação.
-4. **Dar base de evidência ao cap. 04.** Segue o capítulo mais fraco em citação, e a pergunta em aberto continua sem resposta: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
-5. **Aprofundar o corpo** dos capítulos onde a validação trouxer material novo.
+1. **Preencher os Apêndices A** dos capítulos com o tratamento por implementação. **É o item restante do critério de conclusão.**
+2. **As 13 referências ⏳** — otimizadores secundários (P7–P10), modos de falha de memória (M2–M5), e três de escopo estreito (Q3, E3, Z1). Nenhuma sustenta sozinha uma tese de capítulo.
+3. **Base de evidência do cap. 04.** Segue o capítulo mais fraco em citação, e a pergunta continua sem resposta: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
+4. **Aprofundar o corpo** dos capítulos onde a validação trouxe material novo — em especial 05 (métricas intrínsecas de chunking) e 09 (a troca de qualidade).
 
-**Critério de conclusão da rodada:** ao menos 60% das referências com status ✓ (hoje: **~46%**); nenhum número no corpo sem condição experimental (**feito** para os validados); nenhum capítulo com Apêndice A vazio (**pendente**).
+**Critério de conclusão:** ≥ 60% das referências em ✓ (**76% — atingido**); nenhum número no corpo sem condição experimental (**atingido** para os validados); nenhum capítulo com Apêndice A vazio (**pendente**).
 
 ---
 

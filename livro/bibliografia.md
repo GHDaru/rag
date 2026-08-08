@@ -2,7 +2,7 @@
 
 > Fontes científicas e da indústria, por capítulo, com **status de validação**.
 >
-> Edição 0.3 · captura em 2026-08 · **rodada 2 (evidência) — primeira leva**.
+> Edição 0.3 · captura em 2026-08 · **rodada 2 (evidência) — concluída no critério de validação**.
 
 ## Como ler o status (Princípio I da constituição)
 
@@ -14,16 +14,14 @@
 
 ### O que a rodada 2 fez, e o que ainda não fez
 
-**Feito:**
+**Feito — as duas levas:**
 
 1. **Todos os 49 identificadores arXiv do repositório foram resolvidos contra o arXiv real**, com um ID falso como controle (que devolve *"Article identifier not recognized"*, provando que o teste discrimina). **Nenhum ID inventado, nenhum título divergente.** A classe de erro mais corrosiva para um livro — a citação alucinada — está descartada.
-2. **26 referências passaram à validação plena (✓)**: o texto foi lido e a afirmação que o livro faz sobre elas, conferida.
-3. **~20 técnicas nomeadas que estavam sem URL ganharam fonte primária.** Elas tinham entrado pela porta dos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposition, GraphRAG…) e agora apontam para o paper que as propôs.
-4. **Três afirmações do livro foram corrigidas** contra a fonte — ver *Correções* abaixo.
+2. **42 das 55 referências (76%) passaram à validação plena (✓)**: o texto foi lido e a afirmação que o livro faz sobre elas, conferida. Isso cumpre o critério de conclusão da rodada 2 (≥ 60%).
+3. **~20 técnicas nomeadas que estavam sem URL ganharam fonte primária.** Elas tinham entrado pela porta dos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição, GraphRAG…) e agora apontam para o paper que as propôs.
+4. **Quatro afirmações do livro foram corrigidas** contra a fonte — ver *Correções* abaixo. Duas delas atingiam a espinha de um capítulo.
 
-**Não feito:** as referências ⏳ restantes (surveys de apoio, segurança, memória, e os papers de 2026) seguem com ID conferido e texto não lido. São a segunda leva da rodada 2.
-
----
+**Não feito:** 13 referências seguem ⏳ — com ID conferido e texto não lido. São, por desenho, as de menor peso estrutural: otimizadores secundários de prompt (P7–P10), modos de falha de memória (M2–M5), e três de escopo estreito (Q3, E3, Z1). Nenhuma sustenta sozinha uma tese de capítulo. Falta também **preencher os Apêndices A**, que é o item restante do critério de conclusão.---
 
 ## Correções que esta rodada produziu
 
@@ -40,6 +38,10 @@ A fonte correta é o relatório *Context Rot* da Chroma (abaixo) — que, lido, 
 O livro atribuía ao paper do RAGAS o quarteto *faithfulness · answer relevance · context precision · context recall*. Lido o original ([arXiv 2309.15217](https://arxiv.org/abs/2309.15217), EACL 2024): *"We focus in particular three quality aspects… First, **Faithfulness**… Second, **Answer Relevance**… Finally, **Context Relevance**"*. O par *context precision / context recall* é da **biblioteca**, que desdobrou *context relevance* em duas. Corrigido no cap. 21, no glossário e no apêndice do ecossistema.
 
 > Nota de método: a primeira consulta automática a este PDF devolveu uma citação inventada afirmando *"We propose four metrics"*. O erro só apareceu porque o texto foi extraído e lido diretamente. **Resumo automático de fonte não é validação** — é exatamente o que o status ✓ existe para impedir.
+
+### ✗ C4 — a escolha entre *contextual retrieval* e *late chunking* não é só de preço
+
+O cap. 09 afirmava que as duas técnicas resolvem a mesma falha e que a decisão entre elas é **"aritmética, não estética"** — ou seja, só orçamento. A comparação direta ([arXiv 2504.19754](https://arxiv.org/abs/2504.19754)) mede outra coisa: *"**contextual retrieval preserves semantic coherence more effectively** but requires greater computational resources. In contrast, **late chunking offers higher efficiency but tends to sacrifice relevance and completeness**"*. Há **troca de qualidade**, não só de custo. Corrigido no cap. 09 — a decisão tem dois eixos.
 
 ### ⚠ C3 — o `67%` do *contextual retrieval*, com a condição ao lado
 
@@ -63,13 +65,13 @@ O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundária
 | **F0** | **Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks** — [arXiv 2005.11401](https://arxiv.org/abs/2005.11401) (Lewis et al., 2020) | o paper que cunha o termo: combinar memória **paramétrica** e **não-paramétrica**; e já levanta *"providing provenance for their decisions"* como problema — a procedência do cap. 02 nasce aqui | ✓ |
 | **S0** ⭐ | **Retrieval-Augmented Generation for LLMs: A Survey** — [arXiv 2312.10997](https://arxiv.org/abs/2312.10997) (Gao et al.) | a taxonomia **Naive → Advanced → Modular** (caps. 01, 03) e a base tripartite **retrieval · generation · augmentation** (cap. 02), ambas verbatim no abstract | ✓ |
 | **S5b** ⭐ | **Modular RAG: LEGO-like Reconfigurable Frameworks** — [arXiv 2407.21059](https://arxiv.org/abs/2407.21059) | *"decomposing complex RAG systems into independent modules and specialized operators"*, e que o modular **"transcends the traditional linear architecture"** — o teste de modularidade do cap. 03 | ✓ |
-| S1 | *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques* — [arXiv 2406.06608](https://arxiv.org/abs/2406.06608) | a taxonomia de prompting (caps. 11, 12) | ⏳ |
-| S2 | *A Survey of Context Engineering for LLMs* — [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) | fronteira com o livro irmão | ⏳ |
-| S3 | *Agentic RAG: A Survey* — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | os padrões do cap. 18 | ⏳ |
-| S4 | *Exploring Prompt Engineering: A Systematic Review with SWOT* — [arXiv 2410.12843](https://arxiv.org/abs/2410.12843) | cap. 12 | ⏳ |
-| S5 | *A Systematic Review of Key RAG Systems* — [arXiv 2507.18910](https://arxiv.org/abs/2507.18910) | caps. 06, 09 | ⏳ |
-| S5c | *Reasoning RAG via System 1 or System 2* — [arXiv 2506.10408](https://arxiv.org/abs/2506.10408) | caps. 03, 18 | ⏳ |
-| S6 | *Context Engineering 2.0* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | cap. 24 | ⏳ |
+| S1 ⭐ | **The Prompt Report** — [arXiv 2406.06608](https://arxiv.org/abs/2406.06608) | revisão **PRISMA**: 33 termos de vocabulário, **58 técnicas textuais**, 40 para outros modais. A estrutura do cap. 12 é a dela — com a precisão de que *zero-shot* e *few-shot* são irmãos sob **In-Context Learning**, não pares dos outros quatro ramos. Classifica **step-back sob *thought generation***, corroborando a ressalva de Q2 | ✓ |
+| S2 | **A Survey of Context Engineering for LLMs** — [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) | síntese de **mais de 1.400 papers**. Componentes: *context retrieval and generation*, *context processing*, *context management*; implementações: **RAG**, sistemas de memória com uso de ferramenta, e multiagente. É o mapa que situa a fronteira com o livro irmão | ✓ |
+| S3 ⭐ | **Agentic RAG: A Survey** — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | a limitação que justifica o cap. 18 (*"constrained by **static workflows**"*) e os quatro padrões, verbatim: *"reflection, planning, tool use, and multi-agent collaboration"*, para *"dynamically manage retrieval strategies"* | ✓ |
+| S4 | *Exploring Prompt Engineering: A Systematic Review with SWOT* — [arXiv 2410.12843](https://arxiv.org/abs/2410.12843) | análise SWOT das técnicas com ênfase em princípios linguísticos; cobre abordagens por template e *fine-tuning*. Peso editorial menor: é análise qualitativa, sem medição | ✓ |
+| S5 | *A Systematic Review of Key RAG Systems* — [arXiv 2507.18910](https://arxiv.org/abs/2507.18910) | revisão ano a ano, de QA em domínio aberto ao estado atual; examina mecanismos de recuperação, geração seq2seq e **estratégias de fusão**, e trata do desdobramento em **sistemas de empresa** | ✓ |
+| S5c | **Reasoning RAG via System 1 or System 2** — [arXiv 2506.10408](https://arxiv.org/abs/2506.10408) | a divisão que o livro usa entre Partes III e V: ***predefined reasoning*** (*"follows fixed modular pipelines"*) × ***agentic reasoning*** (*"the model **autonomously orchestrates** tool interaction during inference"*) | ✓ |
+| S6 | *Context Engineering 2.0* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | argumenta que a prática **antecede o hype em mais de vinte anos** (desde o início dos anos 1990), em fases marcadas pelo nível de inteligência da máquina. Bom antídoto para o cap. 24: o que parece novo raramente é | ✓ |
 
 ## 01 — Fundamentos · 20 — A Janela como Orçamento
 
@@ -77,7 +79,7 @@ O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundária
 |---|---|---|:---:|
 | J1 | **Lost in the Middle** — [arXiv 2307.03172](https://arxiv.org/abs/2307.03172) | degradação **posicional**: melhor nas pontas, pior no meio, *"even for explicitly long-context models"*. **Só isso** — ver correção C1 | ✓ |
 | J2 ⭐ | **Context Rot: How Increasing Input Tokens Impacts LLM Performance** — [Chroma](https://www.trychroma.com/research/context-rot) (Hong, Troynikov, Huber · 2025-07-14 · **18 modelos**, quatro fornecedores) | (a) isolando a variável, **o comprimento degrada sozinho**, mesmo em tarefas triviais; (b) a queda é mais íngreme quando a similaridade pergunta–alvo é baixa; (c) **um único distrator já reduz o desempenho**, e distratores **não têm impacto uniforme** | ✓ |
-| J3 | *U-NIAH: Unified RAG and LLM Evaluation for Long Context NIAH* — [arXiv 2503.00353](https://arxiv.org/abs/2503.00353) | os dois regimes no mesmo protocolo | ⏳ |
+| J3 | **U-NIAH** — [arXiv 2503.00353](https://arxiv.org/abs/2503.00353) | contexto longo × RAG no **mesmo protocolo controlado**, com *multi-needle*, *long-needle* e *needle-in-needle*. O detalhe de método que vale copiar: corpus **sintético e ficcional** (*Starlight Academy*) *"to eliminate biases from pre-trained knowledge"* | ✓ |
 
 > **Fonte da indústria, não revisada por pares.** J2 é relatório técnico de uma empresa de banco vetorial — parte interessada no argumento "curadoria supera janela cheia". O livro adota o que o relatório **mede** (protocolo descrito, 18 modelos) e marca a origem. É a mesma régua aplicada aos guias de praticante.
 
@@ -86,10 +88,10 @@ O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundária
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
 | K1 ⭐ | **Dense X Retrieval: What Retrieval Granularity Should We Use?** — [arXiv 2312.06648](https://arxiv.org/abs/2312.06648) | a **proposição** como unidade: *"atomic expressions… each encapsulating a distinct factoid… concise, self-contained"*; e que a granularidade fina **supera passagem** na recuperação — com ganho a jusante **"given a specific computation budget"** | ✓ |
-| K2 | *Reconstructing Context: Evaluating Advanced Chunking Strategies for RAG* — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) | estratégias de corte avaliadas, não assumidas | ⏳ |
-| K3 | *Adaptive Chunking: Optimizing Chunking-Method Selection for RAG* — [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) | seleção por documento | ⏳ |
-| K4 | *Cross-Document Topic-Aligned Chunking for RAG* — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) | tópicos que atravessam documentos | ⏳ |
-| K5 | *MemGuard: Preventing Memory Contamination* — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | o caminho de escrita como superfície (caps. 04, 22) | ⏳ |
+| K2 ⭐ | **Reconstructing Context: Evaluating Advanced Chunking Strategies for RAG** — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) | a comparação direta *late chunking* × *contextual retrieval*: o segundo *"preserves semantic coherence more effectively but requires greater computational resources"*; o primeiro *"offers higher efficiency but **tends to sacrifice relevance and completeness**"*. **Ver correção C4** | ✓ |
+| K3 | **Adaptive Chunking** — [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) | seleção do método **por documento**, e a lacuna que nomeia: *"chunking **lacks a dedicated evaluation framework**… independently of downstream performance"*. Propõe cinco métricas **intrínsecas** (completude de referências, coesão interna, coerência com o documento, integridade de bloco, conformidade de tamanho) | ✓ |
+| K4 | **Cross-Document Topic-Aligned (CDTA) Chunking** — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) | nomeia *"the knowledge fragmentation problem"* e corta no nível do **corpus**. Números com condição: HotpotQA, *faithfulness* **0,93** × 0,83 (contextual retrieval) × 0,78 (semântico), p < 0,05; em `k = 3`, **0,91** × 0,68. Indexação mais cara, mas *"reduce query-time retrieval needs"* | ✓ |
+| K5 | **MemGuard** — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | a *heterogeneous memory contamination*: colapsar fatos estáveis, eventos e regras no mesmo espaço faz com que sejam usados *"as interchangeable evidence"*. A cura — **papel funcional explícito no momento da escrita** — é a procedência do cap. 04 aplicada à memória (caps. 19, 22) | ✓ |
 
 > **Lacuna mantida (prioridade da segunda leva).** Segue sem trabalho localizado que meça o impacto **isolado** de frescor, deduplicação e procedência sobre métricas de RAG. Se não existir, vira experimento próprio na rodada 4.
 
@@ -171,10 +173,10 @@ O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundária
 
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| X1 | [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | LLM01; defesa em profundidade | ⏳ |
-| X2 | *Are AI-assisted Development Tools Immune to Prompt Injection?* — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) | injeção via ferramenta | ⏳ |
-| X3 | *Multimodal Prompt Injection Attacks* — [arXiv 2509.05883](https://arxiv.org/abs/2509.05883) | filtrar texto não basta | ⏳ |
-| X4 | *Know Thy Enemy: Securing LLMs Against Prompt Injection* — [arXiv 2601.04666](https://arxiv.org/abs/2601.04666) | defesas por treinamento | ⏳ |
+| X1 | [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | *prompt injection* como **LLM01**. Confirmado por fonte revisada independente, que o repete sem ressalva: *"Prompt injection is listed as the **number-one vulnerability class** in the OWASP Top 10 for LLM Applications"* (X2) | ✓ |
+| X2 | *Are AI-assisted Development Tools Immune to Prompt Injection?* — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) | **primeira análise empírica** de *tool poisoning* em **sete clientes MCP reais**, nomeados. Mesmo vetor deste livro: conteúdo lido virando instrução obedecida | ✓ |
+| X3 | *Multimodal Prompt Injection Attacks* — [arXiv 2509.05883](https://arxiv.org/abs/2509.05883) | **oito modelos comerciais** testados *"without supplementary sanitization, relying solely on its built-in safeguards"* — fraquezas exploráveis em todos. É a medição da linha de base sem camada própria | ✓ |
+| X4 | *Know Thy Enemy* (InstruCoT) — [arXiv 2601.04666](https://arxiv.org/abs/2601.04666) | *fine-tuning* com CoT em nível de instrução. As duas dificuldades que ele nomeia explicam por que nenhuma defesa fecha: vetores **diversos**, e instruções injetadas que *"lack clear semantic boundaries from the surrounding context"* | ✓ |
 
 ## 23 — Custo, Latência e Cache
 

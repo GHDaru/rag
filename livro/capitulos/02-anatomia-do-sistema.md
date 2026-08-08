@@ -27,7 +27,7 @@ E há uma razão mais dura para ele existir: **"engenharia" só se sustenta se h
 
 - **A base tripartite** — a survey de referência de RAG ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997), Gao et al.) escrutina *"the tripartite foundation of RAG frameworks, which includes the **retrieval**, the **generation** and the **augmentation** techniques"*. A distinção que mais rende é a do meio: *aumento* é o que acontece **entre** buscar e responder — filtrar, reordenar, comprimir, ordenar, montar — e é justamente a parte que quase nenhum tutorial trata como etapa própria. ✓
 - **O sistema como módulos reconfiguráveis** — *Modular RAG* ([arXiv 2407.21059](https://arxiv.org/html/2407.21059v1)) propõe *"decomposing complex RAG systems into independent **modules** and specialized **operators**"*, em vez de um pipeline fixo. É a formalização mais próxima de "arquitetura" que a área tem. ✓
-- **A camada de raciocínio** — surveys recentes de RAG agêntico com raciocínio ([arXiv 2506.10408](https://arxiv.org/abs/2506.10408)) acrescentam ao desenho um componente que decide *se* e *como* os demais são acionados. É o orquestrador virando objeto de estudo. `[a validar]`
+- **A camada de raciocínio** — [arXiv 2506.10408](https://arxiv.org/abs/2506.10408) separa os sistemas entre ***predefined reasoning***, que *"follows fixed modular pipelines"*, e ***agentic reasoning***, em que *"the model **autonomously orchestrates** tool interaction during inference"*. É o orquestrador virando objeto de estudo — e o componente que decide *se* e *como* os demais são acionados. ✓
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 

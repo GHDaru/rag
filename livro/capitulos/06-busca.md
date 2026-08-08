@@ -25,13 +25,13 @@ Há também o problema que ninguém vê até virar incidente: o sistema **sempre
 
 - **A tradição** — recuperação por sobreposição de termos, com ponderação por frequência e raridade, é a base de *Information Retrieval* há décadas (a família **BM25**). Sobreviveu a todas as gerações de modelo por resolver uma propriedade do problema: casar o **literal** — e o BEIR o mede com todas as letras: ***"BM25 is a robust baseline"***. Se o seu sistema não bate BM25, ele não está pronto. ✓
 - **A vez do denso** — a recuperação por similaridade de vetores resolve a paráfrase, que a esparsa nunca resolveu. **BEIR** ([arXiv 2104.08663](https://arxiv.org/abs/2104.08663)) mede recuperação zero-shot em 18 datasets sobre 10 sistemas — e o resultado desmonta a expectativa de que denso substitui esparso: *"dense and sparse-retrieval models are computationally more efficient but **often underperform** other approaches"*. ✓
-- **A fusão** — combinar rankings de sinais diferentes é técnica clássica de IR, e é o que sustenta a busca híbrida. Na taxonomia de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)), híbrido é um dos acréscimos que definem o Advanced RAG. `[a validar]`
+- **A fusão, e a razão dela** — a survey de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) enuncia a tese central deste capítulo com todas as letras: *"Sparse and dense embedding approaches **capture different relevance features** and can **benefit from each other by leveraging complementary relevance information**"*. Não é que uma seja melhor — é que os sinais são **complementares**, e por isso a fusão ganha. Híbrido está entre as estratégias de **pré-recuperação** que definem o Advanced RAG. ✓
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 
 ## Fontes da indústria
 
-- **O consenso mais firme da área** — a leitura publicada é que praticamente todo benchmark recente mostra **BM25 + denso fundidos superando qualquer um sozinho**. É a afirmação com maior convergência independente deste livro — e a metade dela que tem medição primária no livro é a robustez do BM25 (BEIR, acima); a superioridade da **fusão** ainda é ⏳.
+- **O consenso mais firme da área** — a leitura publicada é que praticamente todo benchmark recente mostra **BM25 + denso fundidos superando qualquer um sozinho**. É a afirmação com maior convergência independente deste livro, e agora com as duas metades ancoradas: a robustez do BM25 pelo BEIR, e a **complementaridade dos sinais** pela survey de Gao.
 - **A fusão de fato** — combinar por posição no ranking (em vez de por nota bruta) é a prática dominante, porque dispensa calibrar escalas incomparáveis entre os dois sistemas.
 - **O sintoma que denuncia falta de esparsa** — "o RAG não encontra o óbvio". Quase sempre o óbvio é um código, uma sigla ou um nome próprio que o índice denso não representa.
 
