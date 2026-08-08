@@ -6,6 +6,29 @@
 
 ## Histórico de edições
 
+### Edição 0.3 — 2026-08-04 · Rodada 2, primeira leva: o livro passa a ser citável
+
+**O que é.** A primeira rodada de **evidência**. Até aqui o livro tinha um mapa de fontes e nenhuma delas conferida — 55 referências ⏳, zero ✓. Esta edição fecha a parte que sustenta mais peso.
+
+**O que foi feito:**
+
+- **Os 49 identificadores arXiv do repositório foram resolvidos contra o arXiv real**, com um ID falso de controle para provar que o teste discrimina. **Nenhum inventado, nenhum título divergente.** A citação alucinada — a falha mais corrosiva possível num livro assim — está descartada como classe.
+- **26 referências passaram a ✓**: texto lido, afirmação do livro conferida contra o original.
+- **As ~20 técnicas nomeadas que estavam sem URL ganharam fonte primária.** RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição e GraphRAG entraram no livro pela porta dos guias de praticante, e a rodada 2 confirmou que **todas chegam ao paper que as propôs**. O que se revelou distorcido foi um número, não uma técnica.
+- **Condição experimental ao lado de cada número validado** — o modelo de 540B do Chain-of-Thought, o GPT-4 acoplado ao RAPTOR, o cenário zero-shot sem rótulo do HyDE, o custo por milhão de tokens do *contextual retrieval*.
+
+**As três correções — o resultado mais valioso da rodada:**
+
+1. **✗ *Lost in the Middle* não sustentava a afirmação do cap. 20.** O livro dizia que a degradação em contexto longo "não é linear com o comprimento, é dirigida pela similaridade entre alvo e distratores", e citava aquele paper. Ele estabelece degradação **posicional** e não trata de distratores. Pior: a fonte que **de fato** mede distratores (relatório *Context Rot*, 18 modelos) contradiz a outra metade — isolando a variável, **o comprimento degrada sozinho**, mesmo em tarefa trivial. O certo é "é o comprimento, e distratores próximos tornam a queda mais íngreme". Era a afirmação que o próprio livro marcava como a mais frágil; estava frágil pelos dois lados.
+2. **✗ As quatro métricas não são todas do paper do RAGAS.** O original propõe **três** — *faithfulness*, *answer relevance*, *context relevance*. O par *context precision* / *context recall* é da **biblioteca**, que desdobrou o terceiro. O livro construiu um capítulo inteiro sobre o quarteto atribuindo-o à fonte errada.
+3. **⚠ O `67%` do *contextual retrieval* ganhou a curva inteira**: taxa de falha no top-20 caindo de 5,7% para 3,7% (técnica sozinha), 2,9% (com BM25) e 1,9% (com reranker). O número que circula é o da pilha completa.
+
+**Nota de método que vale registrar.** A primeira consulta automática ao PDF do RAGAS devolveu uma citação **inventada** — "We propose four metrics" — que teria confirmado o erro do livro em vez de revelá-lo. Só apareceu porque o texto foi extraído e lido diretamente. **Resumo automático de fonte não é validação.** É exatamente para isso que o status ✓ existe.
+
+**Estado da evidência:** **26 ✓ · ~30 ⏳ · 2 ✗**. A segunda leva (surveys de apoio, segurança, memória) segue pendente.
+
+**Atribuição:** direção editorial — Gilsiley Henrique Darú. Validação, correções e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-04.
+
 ### Adendo 0.2.1 — 2026-08-04 · Geração de metadado, e a dívida da renumeração
 
 **A pergunta do editor:** *"na ingestão, acredito que teremos coisas do tipo geração de metadados, etc, ou não é isto?"* — e estava certo: o cap. 04 listava "enriquecimento" numa linha de tabela e depois só tratava do metadado **que já existe** (origem, data, permissão). A camada onde o metadado é **criado** é justamente a parte cara e mais rendosa da ingestão, e faltava.

@@ -1,6 +1,6 @@
 # 12 — Técnicas de Raciocínio
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** As seis famílias e o critério de escolha estão fechados; a ficha por técnica e as medições comparadas são a rodada 2 do ROADMAP.
 
@@ -22,9 +22,9 @@ O problema real do capítulo não é "quais técnicas existem" (o catálogo é p
 ## Fundamentos científicos
 
 - **A taxonomia de referência** — *The Prompt Report* ([arXiv 2406.06608](https://arxiv.org/abs/2406.06608)) organiza 58 técnicas textuais em **seis famílias**: *zero-shot*, *few-shot*, *thought generation*, *ensembling*, *self-criticism*, *decomposition*. A estrutura deste capítulo é essa. `[a validar]`
-- **Chain-of-Thought** — a proposta original de induzir passos intermediários explícitos antes da resposta. É a fundação da família *thought generation*. `[a validar]`
-- **Self-Consistency** — amostrar vários caminhos de raciocínio e escolher a resposta mais consistente entre eles; a materialização mais simples e mais cara da família *ensembling*. `[a validar]`
-- **ReAct** — o ciclo pensamento → ação → observação, que integra raciocínio e uso de ferramenta. É a técnica que **atravessa a fronteira** deste livro: nasce como padrão de prompt (Parte IV) e vira arquitetura de recuperação (cap. 18). `[a validar]`
+- **Chain-of-Thought** ([arXiv 2201.11903](https://arxiv.org/abs/2201.11903)) — induzir passos intermediários explícitos antes da resposta; a fundação da família *thought generation*. **A condição experimental é a parte que quase todo mundo omite:** o efeito *"emerge naturally in **sufficiently large** language models"* — a demonstração é um modelo de **540B** com **oito** exemplares, no GSM8K. Em modelo pequeno, CoT não reproduz o ganho. ✓
+- **Self-Consistency** ([arXiv 2203.11171](https://arxiv.org/abs/2203.11171)) — amostrar caminhos diversos em vez do guloso e escolher por *"marginalizing out the sampled reasoning paths"*; a materialização mais simples e mais cara da família *ensembling*. Ganhos publicados: GSM8K **+17,9%**, SVAMP **+11,0%**, AQuA **+12,2%**. ✓
+- **ReAct** ([arXiv 2210.03629](https://arxiv.org/abs/2210.03629)) — gerar raciocínio e ação *"in an interleaved manner"*, com as ações servindo para *"interface with external sources, **such as knowledge bases**"*. Essa última frase é literalmente a ponte deste livro: o paper já previa a base de conhecimento como destino da ação. Nasce como padrão de prompt (Parte IV) e vira arquitetura de recuperação (cap. 18). ✓
 - **Avaliação comparada** — há evidência sistemática comparando variantes de CoT em domínios específicos ([exemplo em QA médico](https://www.sciencedirect.com/science/article/pii/S0010482525009655)); o padrão que emerge é que o ganho depende fortemente do domínio e do modelo, o que reforça a regra de medir. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)

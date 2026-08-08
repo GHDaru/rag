@@ -1,6 +1,6 @@
 # 13 — Saídas Estruturadas
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento está fechado; o comparativo entre modos de garantia (schema nativo × gramática × validação externa) é a rodada 2 do ROADMAP.
 

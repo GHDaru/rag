@@ -1,6 +1,6 @@
 # 07 — Reranking
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **reranker** (cap. 02).
 
@@ -24,7 +24,7 @@ O reranking existe porque as duas tarefas são diferentes o bastante para exigir
 ## Fundamentos científicos
 
 - **A diferença arquitetural** — a busca densa compara vetores calculados **separadamente** para pergunta e documento (*bi-encoder*): rápida, indexável, e cega para a interação entre os dois textos. O reranker típico é um *cross-encoder*: lê pergunta e documento **juntos** e pontua a relevância da relação. Ganha em precisão exatamente onde o outro é estruturalmente limitado. `[a validar]`
-- **A linhagem** — reordenação em estágios é prática consolidada em *Information Retrieval* muito antes dos LLMs (SIGIR, TREC). O arranjo "recuperar barato, reordenar caro" sobreviveu a várias gerações de modelo, o que é evidência de que ele resolve uma propriedade do problema, não da tecnologia. `[a validar]`
+- **A linhagem, e a conta** — reordenação em estágios é prática consolidada em *Information Retrieval* muito antes dos LLMs. E o BEIR ([arXiv 2104.08663](https://arxiv.org/abs/2104.08663)) mede as duas metades da tese deste capítulo numa frase só: *"**re-ranking** and late-interaction-based models on average achieve the **best zero-shot performances**, however, **at high computational costs**"*. Maior retorno **e** maior custo — é por isso que ele é o terceiro estágio, e não o primeiro. ✓
 - **O lugar no paradigma** — na taxonomia de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)), reranking é uma das técnicas de **pós-recuperação** que definem o Advanced RAG. É um dos três acréscimos que separam o ingênuo do avançado (cap. 03). `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)

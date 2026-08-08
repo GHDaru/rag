@@ -1,6 +1,6 @@
 # 14 — Prompt de Sistema, Persona e Regras
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A arquitetura em camadas e a separação voz × política estão fechadas; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -23,7 +23,7 @@ Sub-problemas: onde vivem as regras e como são descobertas; se o prompt deve va
 
 ## Fundamentos científicos
 
-- **Posição e volume degradam** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) sustenta que um prompt de sistema crescente não é neutro: ele empurra conteúdo relevante para a zona de pior aproveitamento. Crescer o bloco de regras tem custo de qualidade, além do custo de token. `[a validar]`
+- **Posição e volume degradam** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) mede a zona de pior aproveitamento (o meio); um prompt de sistema crescente não é neutro, porque empurra conteúdo relevante para lá. Crescer o bloco de regras tem custo de qualidade, além do custo de token. ✓
 - **Gestão de contexto como componente** — o survey [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) trata organização e compressão do contexto como componente de primeira classe, e não como higiene. A camada de sistema é o caso mais simples e mais ignorado desse componente. `[a validar]`
 - **Deriva de persona** — há linha de pesquisa recente sobre detecção de *persona drift* em agentes de produção (a identidade declarada erodindo ao longo de conversas longas), o que dá suporte empírico à separação entre voz e política. `[a validar]`
 

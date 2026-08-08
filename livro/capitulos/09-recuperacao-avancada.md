@@ -1,6 +1,6 @@
 # 09 — Recuperação Avançada
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **chunking** e **embedding**, do lado da indexação (cap. 02).
 
@@ -33,9 +33,18 @@ E o aviso que abre o capítulo, porque é o erro mais caro daqui: **cada técnic
 
 ## Fontes da indústria
 
-- **Contextual Retrieval** (Anthropic, fim de 2024) — antes de embeddar, prefixa-se cada chunk com um resumo curto, gerado por LLM, do seu lugar no documento. Ataca a falha na raiz; custa uma passada de LLM sobre o **corpus inteiro**. Os ganhos publicados são cumulativos com busca esparsa e com reranking — e a curva importa mais que os números (ver a ressalva abaixo).
-- **Late Chunking** (Jina AI, 2024) — inverte a ordem: embeda o documento inteiro e só **depois** do transformer, antes do *pooling*, aplica o corte. Cada chunk carrega contexto dos vizinhos **sem nenhuma chamada de LLM**. Resolve a mesma falha por muito menos dinheiro, limitado pelo comprimento máximo do modelo de embedding (cap. 05).
-- **A ressalva do Princípio I** — os números de *contextual retrieval* são o caso de deriva documentado no [panorama §6.2](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md): a redução de ~67% é resultado dos **três estágios cumulativos** e reaparece, em fontes secundárias, como mérito da técnica sozinha. Este livro cita a curva, não o número solto.
+- **Contextual Retrieval** ([Anthropic](https://www.anthropic.com/engineering/contextual-retrieval), 2024) — antes de embeddar, prefixa-se cada chunk com **50–100 tokens** de contexto gerado por um modelo pequeno, e o mesmo prefixo entra no índice BM25. Custo declarado: **US$ 1,02 por milhão de tokens de documento**, com cache de prompt. ✓
+- **Late Chunking** ([arXiv 2409.04701](https://arxiv.org/abs/2409.04701), Jina AI) — inverte a ordem: *"first embed all tokens of the long text, with chunking applied **after the transformer model and just before mean pooling**"*. Cada chunk carrega contexto dos vizinhos, e o método ***"works without additional training"*** — nenhuma chamada de LLM, nenhum treino. Resolve a mesma falha por muito menos dinheiro, limitado pelo comprimento máximo do embedder (cap. 05). ✓
+- **A ressalva do Princípio I, agora com os números da fonte** — todos sobre a **taxa de falha de recuperação no top-20**, partindo de 5,7%:
+
+  | Configuração | Taxa de falha | Redução |
+  |---|:---:|:---:|
+  | linha de base | 5,7% | — |
+  | *Contextual Embeddings* | 3,7% | **35%** |
+  | + *Contextual BM25* | 2,9% | **49%** |
+  | + reranking | 1,9% | **67%** |
+
+  O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundárias como mérito da técnica sozinha. Note também o que a tabela diz ao capítulo anterior: o salto de 35% para 49% é **só por acrescentar BM25**, o que é a busca híbrida do cap. 06 aparecendo de novo, agora medida. ✓ ([caso de deriva no panorama §6.2](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md))
 
 ## O estado da arte
 
@@ -78,7 +87,7 @@ O passo 3 é o que quase ninguém faz, e é o que separa um sistema que evolui d
 
 ### Leitura executiva
 
-A falha deste capítulo é uma só: **o chunk perdeu o contexto de onde veio** — "a margem caiu 12%" é inútil sem saber de que produto e trimestre. **O que roubar:** *contextual retrieval* e *late chunking* curam a **mesma** falha com contas de ordem de grandeza diferente — a primeira paga **uma chamada de LLM por chunk** sobre o corpus inteiro; a segunda usa **só o modelo de embedding**, limitada pelo comprimento máximo dele. Para corpus grande, a decisão é aritmética, não estética. **A assimetria que decide muita coisa:** indexação é paga uma vez e amortizada; consulta é paga para sempre — muitas consultas sobre corpus estável pedem indexação, corpus volátil pede o lado da pergunta, e "muitas consultas + corpus volátil" é o caso difícil que transforma reindexação incremental em decisão de arquitetura. **A regra que vale mais que as técnicas:** meça qual falha você tem antes de escolher, aplique **uma por vez** com medição dos dois lados, e **remova o que não pagou** — este último passo quase ninguém faz, e é o que separa um sistema que evolui de um que só acumula. **Sobre os números publicados:** o ~67% do *contextual retrieval* é resultado de três estágios cumulativos e circula como mérito de um só; cite a curva, não o número.
+A falha deste capítulo é uma só: **o chunk perdeu o contexto de onde veio** — "a margem caiu 12%" é inútil sem saber de que produto e trimestre. **O que roubar:** *contextual retrieval* e *late chunking* curam a **mesma** falha com contas de ordem de grandeza diferente — a primeira paga **uma chamada de LLM por chunk** sobre o corpus inteiro (US$ 1,02 por milhão de tokens de documento, com cache); a segunda usa **só o modelo de embedding**, sem treino adicional, limitada pelo comprimento máximo dele. Para corpus grande, a decisão é aritmética, não estética. **A assimetria que decide muita coisa:** indexação é paga uma vez e amortizada; consulta é paga para sempre — muitas consultas sobre corpus estável pedem indexação, corpus volátil pede o lado da pergunta, e "muitas consultas + corpus volátil" é o caso difícil que transforma reindexação incremental em decisão de arquitetura. **A regra que vale mais que as técnicas:** meça qual falha você tem antes de escolher, aplique **uma por vez** com medição dos dois lados, e **remova o que não pagou** — este último passo quase ninguém faz, e é o que separa um sistema que evolui de um que só acumula. **Sobre os números publicados:** o 67% do *contextual retrieval* é a **taxa de falha no top-20 caindo de 5,7% para 1,9% com a pilha inteira, reranker incluído** — sozinha, a técnica leva a 3,7% (35%). Cite a curva, não o número.
 
 ## Mão na massa — rag-zero, etapa 8
 

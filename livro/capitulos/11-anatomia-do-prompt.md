@@ -1,6 +1,6 @@
 # 11 — Anatomia de um Prompt
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento do capítulo está fechado; a evidência por técnica e o Apêndice A completo são a rodada 2 do ROADMAP.
 
@@ -24,7 +24,7 @@ Sub-problemas clássicos: onde colocar a tarefa quando o material é longo; como
 ## Fundamentos científicos
 
 - **Vocabulário e taxonomia** — *The Prompt Report* ([arXiv 2406.06608](https://arxiv.org/abs/2406.06608)) padroniza os termos que este capítulo usa (*exemplar*, *instruction*, *role prompting*) e é a referência para não reinventar nomenclatura. `[a validar]`
-- **Posição importa** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)): informação no meio de contextos longos é mal aproveitada. Consequência direta de anatomia: instrução no início, tarefa concreta no fim, material longo no meio — nessa ordem, e por razão empírica. `[a validar]`
+- **Posição importa** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)): o aproveitamento é melhor no **começo e no fim** e cai no meio. Consequência direta de anatomia: instrução no início, tarefa concreta no fim, material longo no meio — nessa ordem, e por razão empírica. ✓
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 

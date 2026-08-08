@@ -1,6 +1,6 @@
 # 05 — Chunking e Representação
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **chunking** e **embedding** (cap. 02).
 
@@ -26,7 +26,7 @@ O que torna este capítulo caro de errar é que **as duas decisões são anterio
 - **Chunking avaliado, não assumido** — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) compara estratégias avançadas de reconstrução de contexto em vez de presumir que as mais elaboradas vencem. `[a validar]`
 - **Seleção adaptativa** — [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) propõe escolher o método de corte **por documento**, reconhecendo formalmente que "um tamanho serve para tudo" é a hipótese errada. `[a validar]`
 - **Tópicos que atravessam documentos** — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) trata o corte considerando o corpus como conjunto, e não o documento isolado. `[a validar]`
-- **Avaliação de representação** — **MTEB** mede modelos de embedding em múltiplas tarefas e é a referência para escolher sem confundir com o resto do pipeline. A ressalva vale mais que o ranking: posição em benchmark geral **não transfere** para domínio específico (cap. 21). `[a validar]`
+- **Avaliação de representação** — **MTEB** ([arXiv 2210.07316](https://arxiv.org/abs/2210.07316)) mede embeddings em 8 tarefas, 58 datasets e 112 idiomas, sobre 33 modelos. O achado que importa aqui não é o ranking, é a conclusão: *"**no particular text embedding method dominates across all tasks**"* — ou seja, não existe "o melhor embedder", existe o melhor para a sua tarefa. E posição em benchmark geral não transfere para domínio específico (cap. 21). ✓
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 

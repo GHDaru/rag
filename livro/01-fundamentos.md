@@ -1,6 +1,6 @@
 # 01 — Fundamentos
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](HISTORICO.md)
 >
 > **Maturidade: fundação.** O vocabulário e a taxonomia por sintoma estão fechados. As referências `[a validar]` viram citação com status ✓ na rodada 2.
 
@@ -26,7 +26,7 @@ Este capítulo fixa os termos, dá a linhagem, e entrega o mapa de entrada por s
 - **A herança** — *Information Retrieval* é um campo com décadas de acumulação: SIGIR, TREC, e um corpo de métricas, benchmarks e métodos que o RAG herdou quase inteiro. **Neural IR** é a virada que trouxe representações densas para dentro dele. Ignorar essa linhagem é reinventar mal o que já estava resolvido. `[a validar]`
 - **A absorção** — a comunidade de IR não tratou o RAG como estranho: criou **track dedicado no TREC**, com avaliação de atribuição de fonte e completude, não só de correção. É o sinal mais forte de que RAG é subcampo de IR, e não disciplina paralela. `[a validar]`
 - **A sistematização** — a survey de Gao et al. ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) organiza a área em três fundamentos (**recuperação · aumento · geração**) e três paradigmas (Naive, Advanced, Modular). É a referência mais citada e a espinha dos caps. 02 e 03. `[a validar]`
-- **A degradação que justifica recuperar** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) mostra que informação no meio de contexto longo é mal aproveitada. Não é detalhe de tuning: é a razão empírica de "mandar tudo" ser anti-padrão (cap. 20). `[a validar]`
+- **A degradação que justifica recuperar** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) mede que o aproveitamento é melhor nas pontas e cai no meio, *"even for explicitly long-context models"*. Não é detalhe de tuning: é a razão empírica de "mandar tudo" ser anti-padrão (cap. 20). ✓
 
 (Bibliografia completa: [`bibliografia.md`](bibliografia.md).)
 

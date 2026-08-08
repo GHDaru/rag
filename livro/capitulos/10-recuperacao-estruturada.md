@@ -1,6 +1,6 @@
 # 10 — Recuperação Estruturada
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **índice** e **retriever**, quando o corpus deixa de ser só texto (cap. 02).
 
@@ -26,8 +26,8 @@ Este capítulo trata do que fazer quando **a estrutura do conhecimento importa**
 
 ## Fundamentos científicos
 
-- **GraphRAG e a família de grafo** — construir um grafo de entidades e relações, sumarizar as regiões densamente conectadas, e recuperar sobre essa estrutura. A distinção que a literatura marca: **GraphRAG muda *do que* se recupera; RAG agêntico muda *como*** (cap. 18). `[a validar]`
-- **RAPTOR** — agrupar chunks por similaridade, resumir cada grupo, tratar os resumos como nós e repetir, até uma árvore em que as folhas são o texto e a raiz é o conjunto condensado. A recuperação passa a acontecer **em qualquer nível**. É a resposta mais barata à pergunta global. `[a validar]`
+- **GraphRAG** ([arXiv 2404.16130](https://arxiv.org/abs/2404.16130)) — o paper nomeia a falha exatamente como este capítulo: *"RAG **fails on global questions** directed at an entire text corpus, such as **'What are the main themes in the dataset?'**"*, porque isso é sumarização orientada a consulta, não recuperação. O mecanismo tem duas etapas: derivar um **grafo de entidades** e **pré-gerar resumos de comunidade** para grupos de entidades relacionadas. Cada resumo gera uma resposta parcial, e as parciais são resumidas na final. A distinção que a literatura marca: **GraphRAG muda *do que* se recupera; RAG agêntico muda *como*** (cap. 18). ✓
+- **RAPTOR** ([arXiv 2401.18059](https://arxiv.org/abs/2401.18059)) — *"recursively embedding, clustering, and summarizing chunks of text, constructing a tree with differing levels of summarization from the bottom up"*, com recuperação *"at different levels of abstraction"*. **Número com a condição ao lado:** +20% de acurácia absoluta no QuALITY sobre o melhor anterior — **acoplado ao GPT-4**, não isolado. ✓
 - **Grafo + agente** — a convergência das duas linhas, com o agente navegando a estrutura em vez de receber trechos ([arXiv 2509.22009](https://arxiv.org/abs/2509.22009)). `[a validar]`
 - **Surveys de RAG agêntico sobre grafo** — a área tem revisão própria, sinal de que deixou de ser experimento. `[a validar]`
 
@@ -48,7 +48,7 @@ Este capítulo trata do que fazer quando **a estrutura do conhecimento importa**
 | **Sumarização hierárquica (RAPTOR)** | agrupa, resume, repete → árvore | pergunta global; visão por nível | indexação: embeddings + resumos |
 | **Grafo (GraphRAG)** | entidades + relações + resumo de comunidades | multi-hop e global | indexação: **extração de entidades** + grafo |
 
-A diferença prática que decide: **RAPTOR precisa apenas de embeddings e agrupamento; grafo precisa extrair entidades e relações.** Essa extração é um modelo a mais, um erro a mais e um custo a mais — e é ela que faz a maior parte da diferença de preço entre as duas.
+A diferença prática que decide: **RAPTOR precisa apenas de embeddings e agrupamento; grafo precisa extrair entidades e relações.** Essa extração é um modelo a mais, um erro a mais e um custo a mais — e é ela que faz a maior parte da diferença de preço entre as duas. Vale notar que os dois papers **descrevem o próprio mecanismo assim**: o RAPTOR fala em *embedding, clustering and summarizing*; o GraphRAG, em *derive an entity knowledge graph* como primeira das duas etapas. A conta não é interpretação do livro — está nas fontes.
 
 A recomendação que decorre: **se a pergunta é global, tente RAPTOR antes de grafo.** Se a pergunta é multi-hop sobre entidades reais e recorrentes, grafo é o caminho.
 

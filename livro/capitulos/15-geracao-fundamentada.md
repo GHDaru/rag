@@ -1,6 +1,6 @@
 # 15 — Geração Fundamentada
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço novo.** Capítulo criado na edição 0.2 para fechar o elo que faltava entre recuperar e responder. Componente que aprofunda: **gerador** (cap. 02).
 

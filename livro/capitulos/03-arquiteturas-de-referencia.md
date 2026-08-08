@@ -1,6 +1,6 @@
 # 03 — Arquiteturas de Referência
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Os quatro paradigmas e os padrões de fluxo estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -25,8 +25,8 @@ Entre os dois extremos existe uma progressão nomeada pela literatura, com degra
 
 ## Fundamentos científicos
 
-- **Os três paradigmas** — a survey de Gao et al. ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) organiza a evolução do campo em **Naive RAG → Advanced RAG → Modular RAG**. Não é cronologia apenas: é uma escada de sofisticação arquitetural, em que cada degrau existe para curar um defeito nomeado do anterior. É a taxonomia mais citada da área. `[a validar]`
-- **Modular RAG** — [arXiv 2407.21059](https://arxiv.org/html/2407.21059v1) leva o terceiro degrau à sua formulação completa: o sistema como **framework reconfigurável**, com módulos, operadores e **padrões de fluxo** recombináveis, em vez de um pipeline fixo. É de onde vem a seção 3 deste capítulo. `[a validar]`
+- **Os três paradigmas** — a survey de Gao et al. ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) examina *"the progression of RAG paradigms, encompassing the **Naive RAG**, the **Advanced RAG**, and the **Modular RAG**"*. Não é cronologia apenas: é uma escada de sofisticação arquitetural, em que cada degrau existe para curar um defeito nomeado do anterior. É a taxonomia mais citada da área. ✓
+- **Modular RAG** — [arXiv 2407.21059](https://arxiv.org/html/2407.21059v1) leva o terceiro degrau à sua formulação completa: um framework *"highly reconfigurable"* que *"**transcends the traditional linear architecture**"*, com módulos, operadores e padrões de fluxo recombináveis. É de onde vem a seção 3 deste capítulo — e a frase sobre a arquitetura linear é o que justifica tratar fluxo como decisão de projeto. ✓
 - **O quarto degrau** — o survey de RAG agêntico ([arXiv 2501.09136](https://arxiv.org/abs/2501.09136)) formaliza a topologia em que um agente **decide** o fluxo em tempo de execução; e trabalhos sobre raciocínio em RAG agêntico ([arXiv 2506.10408](https://arxiv.org/abs/2506.10408)) discutem quando esse raciocínio é raso ou deliberado. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)

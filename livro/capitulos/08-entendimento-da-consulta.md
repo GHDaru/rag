@@ -1,6 +1,6 @@
 # 08 — Entendimento da Consulta
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **entendimento da consulta** (cap. 02).
 
@@ -28,9 +28,9 @@ Melhorar o índice para curar isso é caro e demorado. Melhorar a consulta é um
 
 ## Fundamentos científicos
 
-- **HyDE** — gerar um documento hipotético que responda à pergunta e buscar por **ele**, porque uma resposta se parece mais com o documento do que a pergunta se parece. `[a validar]`
-- **Step-back prompting** — generalizar a pergunta antes de recuperar, para trazer o princípio e não só o detalhe. É o inverso da decomposição: sobe um nível em vez de descer. `[a validar]`
-- **Reescrita em múltiplos turnos** — trabalho aplicado combina reescrita de consulta e recuperação híbrida para RAG conversacional ([arXiv 2606.28352](https://arxiv.org/abs/2606.28352)) — a falha de referência no cenário mais difícil. `[a validar]`
+- **HyDE** ([arXiv 2212.10496](https://arxiv.org/abs/2212.10496)) — gerar um documento hipotético que responda à pergunta e buscar por **ele**, porque uma resposta se parece mais com o documento do que a pergunta se parece. O documento gerado *"captures relevance patterns but is unreal and may contain false details"*, e é o gargalo denso do encoder que filtra o que foi inventado. **A condição experimental muda a recomendação:** foi proposto para o cenário **zero-shot, sem rótulo de relevância**, comparado a um retriever denso não supervisionado. Se você já tem híbrido bom (cap. 06), o caso a favor do HyDE é bem mais fraco do que a fama sugere. ✓
+- **Step-back prompting** ([arXiv 2310.06117](https://arxiv.org/abs/2310.06117)) — generalizar a pergunta antes de recuperar, para trazer o princípio e não só o detalhe. É o inverso da decomposição: sobe um nível em vez de descer. **Ressalva de procedência:** o paper propõe uma técnica de **raciocínio** (abstrair para primeiros princípios), medida em STEM e QA — PaLM-2L com MMLU Física +7%, Química +11%, TimeQA +27%, MuSiQue +7%. Usá-la como **etapa de recuperação** é leitura derivada da prática, não do paper. ✓
+- **Reescrita em múltiplos turnos** — trabalho aplicado combina reescrita de consulta e recuperação híbrida para RAG conversacional ([arXiv 2606.28352](https://arxiv.org/abs/2606.28352)) — a falha de referência no cenário mais difícil. É um **paper de sistema de competição** (SemEval-2026, tarefa 8), não um método geral: serve de indício de prática, não de evidência de superioridade. `[a validar]`
 - **O lugar no paradigma** — na taxonomia de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)), estas são as técnicas de **pré-recuperação** do Advanced RAG. Junto com busca híbrida e reranking, formam os três acréscimos que definem o degrau (cap. 03). `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)

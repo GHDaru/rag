@@ -1,6 +1,6 @@
 # 16 — Otimização Automática de Prompts
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento e as três famílias de otimizador estão fechados; as medições comparadas e o Apêndice A são a rodada 2 do ROADMAP.
 
@@ -23,8 +23,8 @@ Isso muda o trabalho de lugar. A pergunta deixa de ser *"como escrevo isto melho
 
 ## Fundamentos científicos
 
-- **GEPA** — otimizador reflexivo que evolui instruções a partir de **reflexão em linguagem natural sobre traços de execução**, com seleção genético-Pareto. Foi avaliado em seis tarefas contra GRPO e MIPROv2, com ganho agregado reportado sobre ambos. É o representante da terceira família. `[a validar — conferir condição experimental e modelos usados]`
-- **MIPROv2** — otimização conjunta de instruções e exemplos em sistemas compostos, via otimização bayesiana e busca por bootstrap. Representante da família que trata o problema como busca em espaço estruturado. `[a validar]`
+- **GEPA** ([arXiv 2507.19457](https://arxiv.org/abs/2507.19457)) — amostra trajetórias (*"reasoning, tool calls, and tool outputs"*) e reflete sobre elas em linguagem natural para *"diagnose problems, propose and test prompt updates"*, combinando lições pela **fronteira de Pareto** das próprias tentativas. O argumento do paper é o do capítulo: linguagem é meio de aprendizado mais rico que **recompensa escalar esparsa** — daí o contraste com RL/GRPO, que *"often require thousands of rollouts"*. ✓
+- **MIPROv2** ([arXiv 2406.11695](https://arxiv.org/abs/2406.11695)) — otimizar instruções **e** demonstrações de cada módulo *"without access to module-level labels or gradients"*, com avaliação estocástica em mini-lotes para aprender um modelo surrogate do objetivo. O problema que ele nomeia é o que torna sistema composto difícil: **atribuição de crédito entre módulos**. ✓
 - **TextGrad** — trata o prompt como variável textual otimizável e propaga "gradiente" em linguagem natural, mantendo os pesos do modelo fixos. Mais simples de montar; funciona melhor quando a dificuldade das amostras é uniforme. `[a validar]`
 - **Promptomatix** ([arXiv 2507.14241](https://arxiv.org/abs/2507.14241)) — framework de otimização automática que reduz o setup manual exigido do usuário. `[a validar]`
 - **Evidência de contexto** — estudos empíricos aplicados (por exemplo, otimização automática de prompt para construção de grafo de conhecimento, [arXiv 2506.19773](https://arxiv.org/abs/2506.19773)) sugerem que o ganho é real mas **dependente de tarefa** — o que é a moral do capítulo. `[a validar]`

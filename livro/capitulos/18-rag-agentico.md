@@ -1,6 +1,6 @@
 # 18 — RAG Agêntico
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **orquestrador** (cap. 02). A distinção pipeline × agente e os padrões estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -24,7 +24,7 @@ O ganho é claro — o sistema passa a lidar com perguntas que nenhum pipeline f
 ## Fundamentos científicos
 
 - **A formalização** — *Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG* ([arXiv 2501.09136](https://arxiv.org/abs/2501.09136)) sistematiza a área: agentes autônomos embutidos no pipeline de RAG, usando padrões de projeto — reflexão, planejamento, uso de ferramenta e colaboração multiagente — para gerir dinamicamente a estratégia de recuperação. É a referência estrutural do capítulo. `[a validar]`
-- **ReAct** — o padrão original de intercalar raciocínio e ação. Quando a ação é buscar, ReAct **é** RAG agêntico na sua forma mínima. É a mesma técnica do cap. 12, agora como arquitetura. `[a validar]`
+- **ReAct** ([arXiv 2210.03629](https://arxiv.org/abs/2210.03629)) — intercalar raciocínio e ação, com a ação servindo para *"interface with external sources, such as knowledge bases"*. Quando a ação é buscar, ReAct **é** RAG agêntico na sua forma mínima. Mesma técnica do cap. 12, agora como arquitetura. ✓
 - **Grafo + agente** — a convergência das duas linhas: o agente navega uma estrutura de grafo em vez de receber trechos ([exemplo de workflow de busca profunda em grafo](https://arxiv.org/abs/2509.22009)). A distinção que a literatura marca: GraphRAG muda **do que** se recupera; RAG agêntico muda **como** a recuperação acontece. `[a validar]`
 - **Os problemas abertos** — os surveys da área convergem na lista: avaliação, coordenação, gestão de memória, eficiência e governança. Nenhum deles é resolvido; todos aparecem em produção. `[a validar]`
 
