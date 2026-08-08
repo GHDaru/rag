@@ -1,6 +1,6 @@
 # 02 — Anatomia de um Sistema de RAG
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O inventário de componentes e os contratos entre eles estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -25,8 +25,8 @@ E há uma razão mais dura para ele existir: **"engenharia" só se sustenta se h
 
 ## Fundamentos científicos
 
-- **A base tripartite** — a survey de referência de RAG ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997), Gao et al.) organiza o campo em três fundamentos: **recuperação**, **aumento** e **geração**. A distinção que mais rende é a do meio: *aumento* é o que acontece **entre** buscar e responder — filtrar, reordenar, comprimir, ordenar, montar — e é justamente a parte que quase nenhum tutorial trata como etapa própria. `[a validar]`
-- **O sistema como módulos reconfiguráveis** — *Modular RAG* ([arXiv 2407.21059](https://arxiv.org/html/2407.21059v1)) propõe decompor o processo ponta a ponta em **módulos e operadores** recombináveis, em vez de um pipeline fixo. É a formalização mais próxima de "arquitetura" que a área tem. `[a validar]`
+- **A base tripartite** — a survey de referência de RAG ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997), Gao et al.) escrutina *"the tripartite foundation of RAG frameworks, which includes the **retrieval**, the **generation** and the **augmentation** techniques"*. A distinção que mais rende é a do meio: *aumento* é o que acontece **entre** buscar e responder — filtrar, reordenar, comprimir, ordenar, montar — e é justamente a parte que quase nenhum tutorial trata como etapa própria. ✓
+- **O sistema como módulos reconfiguráveis** — *Modular RAG* ([arXiv 2407.21059](https://arxiv.org/html/2407.21059v1)) propõe *"decomposing complex RAG systems into independent **modules** and specialized **operators**"*, em vez de um pipeline fixo. É a formalização mais próxima de "arquitetura" que a área tem. ✓
 - **A camada de raciocínio** — surveys recentes de RAG agêntico com raciocínio ([arXiv 2506.10408](https://arxiv.org/abs/2506.10408)) acrescentam ao desenho um componente que decide *se* e *como* os demais são acionados. É o orquestrador virando objeto de estudo. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)

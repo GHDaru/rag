@@ -2,7 +2,7 @@
 
 > Siglas por extenso e termos com o sentido **que este livro usa**. Quando um termo tem uso ambíguo na indústria, a ambiguidade está registrada — desambiguar é metade do trabalho (cap. 01).
 >
-> Edição 0.2 · captura em 2026-08. Verbetes novos entram quando o capítulo correspondente é aprofundado.
+> Edição 0.3 · captura em 2026-08. Verbetes novos entram quando o capítulo correspondente é aprofundado.
 
 ## A–C
 
@@ -32,7 +32,7 @@
 
 **Context recall** — dos trechos necessários, quantos foram recuperados. Recall baixo é problema de corpus, chunking ou busca (cap. 21).
 
-**Context rot** — degradação de qualidade conforme o contexto cresce. Não é linear com o comprimento: é dirigida pela similaridade entre o alvo e os distratores (cap. 20).
+**Context rot** — degradação de qualidade conforme o contexto cresce. Duas causas somadas, não uma: o **comprimento** degrada sozinho (medido isolando a variável, em tarefas triviais), e **distratores semanticamente próximos** do alvo tornam a queda mais íngreme — um único distrator já reduz o desempenho (cap. 20).
 
 **Contextual retrieval** — prefixar cada chunk, antes de embeddar, com um resumo do seu lugar no documento. Ataca a perda de contexto no corte; custa uma passada de LLM sobre o corpus. Visto do cap. 04, é **geração de metadado** que vai para dentro do texto embeddado em vez de para um campo (cap. 09).
 
@@ -114,7 +114,7 @@
 
 **Proposition chunking** — decompor o documento em afirmações autocontidas e indexar cada uma. Precisão alta para pergunta factual; caro, e perde o encadeamento (cap. 05).
 
-**RAGAS** — framework de avaliação que fixou o vocabulário de fato: *faithfulness*, *answer relevance*, *context precision*, *context recall* (cap. 21).
+**RAGAS** — framework de avaliação **reference-free** (sem anotação humana) que fixou o vocabulário de fato da área. O paper propõe **três** aspectos — *faithfulness*, *answer relevance* e *context relevance*; o par *context precision* / *context recall* é da **biblioteca**, que desdobrou o terceiro em dois. A distinção importa porque as duas metades diagnosticam falhas diferentes (cap. 21).
 
 **RAG (*Retrieval-Augmented Generation*)** — recuperar trechos de um corpus externo **e** gerar resposta fundamentada neles. Recuperação sozinha não é RAG: as duas metades da sigla têm peso, e é por isso que a geração tem uma parte inteira do livro (caps. 00, 01, 15).
 

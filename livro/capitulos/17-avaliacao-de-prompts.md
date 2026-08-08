@@ -1,6 +1,6 @@
 # 17 — Avaliação de Prompts
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento e a escada de métodos estão fechados; o tratamento por ferramenta é a rodada 2 do ROADMAP.
 

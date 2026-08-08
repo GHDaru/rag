@@ -1,6 +1,6 @@
 # 21 — Avaliação e Observabilidade
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **avaliador** e **observabilidade** (cap. 02). As quatro métricas e a tabela de diagnóstico estão fechadas; o tratamento por ferramenta e benchmark é a rodada 2 do ROADMAP.
 
@@ -26,16 +26,16 @@ Um sistema pode ter recuperação excelente e resposta péssima. E — o caso qu
 
 ## Fundamentos científicos
 
-- **Benchmarks de recuperação** — **BEIR** (recuperação zero-shot em domínios variados) e **MTEB** (avaliação ampla de modelos de embedding) medem o estágio isolado. São a referência para escolher modelo de embedding sem confundir com o resto do pipeline. `[a validar]`
+- **Benchmarks de recuperação** — **BEIR** ([arXiv 2104.08663](https://arxiv.org/abs/2104.08663), 18 datasets × 10 sistemas) e **MTEB** ([arXiv 2210.07316](https://arxiv.org/abs/2210.07316), 8 tarefas × 58 datasets × 112 idiomas × 33 modelos) medem o estágio isolado. Os dois entregam um achado que é regra de projeto: *"BM25 is a robust baseline"* e *"no particular text embedding method dominates across all tasks"*. Ou seja: **compare sempre contra o BM25, e desconfie de "o melhor embedder"**. ✓
 - **Avaliação ponta a ponta** — não há benchmark único de RAG; a prática recomendada é combinar dois ou três, cobrindo estágios distintos: recuperação pura (BEIR), fidelidade da geração, e conjuntos próprios do domínio. `[a validar]`
 - **Avaliação sob contexto longo** — *U-NIAH* ([arXiv 2503.00353](https://arxiv.org/abs/2503.00353)) unifica a avaliação de RAG e de contexto longo no mesmo protocolo, permitindo comparar os dois regimes em vez de discuti-los por anedota (cap. 20). `[a validar]`
-- **Benchmarks de domínio** — há uma tendência de frameworks de benchmarking adaptativo por setor (por exemplo, [FAB-Bench](https://arxiv.org/abs/2605.26476), para manufatura de semicondutores), que é sintoma de um fato inconveniente: **resultado em benchmark geral não transfere para domínio específico**. `[a validar]`
+- **Benchmarks de domínio** — há uma tendência de frameworks de benchmarking adaptativo por setor (por exemplo, [FAB-Bench](https://arxiv.org/abs/2605.26476), **para manufatura de semicondutores** — o domínio faz parte da citação), sintoma de um fato inconveniente: **resultado em benchmark geral não transfere para domínio específico**. `[a validar]`
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 
 ## Fontes da indústria
 
-- **RAGAS** — estabeleceu o vocabulário de fato da área com quatro métricas por LLM-as-judge: *faithfulness*, *answer relevance*, *context precision* e *context recall*; e suporta geração de conjunto de teste a partir do próprio corpus.
+- **RAGAS** — estabeleceu o vocabulário de fato da área, e a atribuição precisa importa: o **paper** ([arXiv 2309.15217](https://arxiv.org/abs/2309.15217), EACL 2024) propõe **três** aspectos — *faithfulness*, *answer relevance* e ***context relevance*** ("the retrieved context should be focused, containing as little irrelevant information as possible"), todos **reference-free**, sem anotação humana. O par *context precision* / *context recall* que a área usa hoje é da **biblioteca**, não do paper: ela desdobrou *context relevance* em duas, porque as duas metades diagnosticam falhas diferentes — e é esse desdobramento que torna a tabela da próxima seção possível. ✓ (lido no original)
 - **DeepEval** — as mesmas ideias com foco em integração de CI/CD. A leitura de 2026 é complementar, não concorrente: **RAGAS fornece o arcabouço conceitual; DeepEval, a execução em pipeline**.
 - **TruLens** e a família de observabilidade — instrumentação de execução, útil para o que este livro chama de trajetória (cap. 18).
 - **A prática que separa** — os times que conseguem melhorar RAG são os que têm um conjunto de avaliação **do próprio domínio**, com respostas verificadas por gente. Todo o resto é diagnóstico assistido.

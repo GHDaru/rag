@@ -2,151 +2,206 @@
 
 > Fontes científicas e da indústria, por capítulo, com **status de validação**.
 >
-> Edição 0.2 · captura em 2026-08.
+> Edição 0.3 · captura em 2026-08 · **rodada 2 (evidência) — primeira leva**.
 
 ## Como ler o status (Princípio I da constituição)
 
 | Status | Significa |
 |---|---|
 | ✓ | **Validada** — a referência foi localizada, lida no essencial, e a afirmação que o livro faz sobre ela foi conferida contra o texto original. Pode ser citada no corpo de um capítulo. |
-| ⏳ | **A validar** — a referência foi localizada em levantamento (ver [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md)), mas **não** foi lida na íntegra. Aparece nos capítulos marcada como `[a validar]`. |
-| ✗ | **Rejeitada** — não sustenta a afirmação, ou a fonte não resistiu à conferência. Fica registrada com o motivo, porque saber o que **não** vale é resultado. |
+| ⏳ | **A validar** — ID e título **conferidos contra o arXiv**, mas o texto não foi lido e a afirmação do livro não foi checada. Aparece nos capítulos marcada como `[a validar]`. |
+| ✗ | **Rejeitada** — não sustenta a afirmação que o livro fazia. Fica registrada com o motivo, porque saber o que **não** vale é resultado. |
 
-> **Correção registrada (edição 0.2).** A survey **S0** (Gao et al., 2312.10997) é a referência mais citada de RAG e **não constava** do levantamento inicial — falha do panorama da edição 0.1, que trouxe a revisão sistemática e a de RAG agêntico e passou batido pela fundacional. Ela é agora a âncora dos caps. 01–03. Registrar a omissão é mais útil que corrigi-la em silêncio.
+### O que a rodada 2 fez, e o que ainda não fez
 
-**Estado da edição 0.2: nenhuma referência tem status ✓.** Isto é deliberado e é a consequência honesta do escopo desta versão: o levantamento localizou as fontes e desenhou o mapa; a **validação é a rodada 2** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md), conduzida pela skill `academic-research` (localizar → validar → registrar → integrar).
+**Feito:**
 
-Enquanto isso, **nenhuma afirmação numérica de fonte ⏳ aparece no corpo dos capítulos sem a marcação e sem a condição experimental ao lado.**
+1. **Todos os 49 identificadores arXiv do repositório foram resolvidos contra o arXiv real**, com um ID falso como controle (que devolve *"Article identifier not recognized"*, provando que o teste discrimina). **Nenhum ID inventado, nenhum título divergente.** A classe de erro mais corrosiva para um livro — a citação alucinada — está descartada.
+2. **26 referências passaram à validação plena (✓)**: o texto foi lido e a afirmação que o livro faz sobre elas, conferida.
+3. **~20 técnicas nomeadas que estavam sem URL ganharam fonte primária.** Elas tinham entrado pela porta dos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposition, GraphRAG…) e agora apontam para o paper que as propôs.
+4. **Três afirmações do livro foram corrigidas** contra a fonte — ver *Correções* abaixo.
+
+**Não feito:** as referências ⏳ restantes (surveys de apoio, segurança, memória, e os papers de 2026) seguem com ID conferido e texto não lido. São a segunda leva da rodada 2.
 
 ---
 
-## Surveys estruturantes
+## Correções que esta rodada produziu
 
-| Ref. | Fonte | Usada em | Status |
+> Registradas por inteiro porque, pelo Princípio I, **o que a evidência derruba vale tanto quanto o que ela sustenta**.
+
+### ✗ C1 — *Lost in the Middle* não sustentava a afirmação do cap. 20
+
+A edição 0.2 afirmava que a degradação em contexto longo **"não é linear com o comprimento: é dirigida pela similaridade entre alvo e distratores"**, ancorada em [arXiv 2307.03172](https://arxiv.org/abs/2307.03172). Lido o original: o paper estabelece degradação **posicional** — *"performance is often highest when relevant information occurs at the beginning or end of the input context, and significantly degrades when models must access relevant information in the middle"* — e **não trata de distratores nem de similaridade semântica**.
+
+A fonte correta é o relatório *Context Rot* da Chroma (abaixo) — que, lido, **contradiz a outra metade da afirmação**: isolando a variável, o comprimento degrada **sozinho**, mesmo em tarefas triviais. O livro dizia "não é o comprimento"; o certo é **"é o comprimento, e distratores próximos tornam a queda mais íngreme"**. Corrigido no cap. 20 e no glossário.
+
+### ✗ C2 — as quatro métricas não são todas do paper do RAGAS
+
+O livro atribuía ao paper do RAGAS o quarteto *faithfulness · answer relevance · context precision · context recall*. Lido o original ([arXiv 2309.15217](https://arxiv.org/abs/2309.15217), EACL 2024): *"We focus in particular three quality aspects… First, **Faithfulness**… Second, **Answer Relevance**… Finally, **Context Relevance**"*. O par *context precision / context recall* é da **biblioteca**, que desdobrou *context relevance* em duas. Corrigido no cap. 21, no glossário e no apêndice do ecossistema.
+
+> Nota de método: a primeira consulta automática a este PDF devolveu uma citação inventada afirmando *"We propose four metrics"*. O erro só apareceu porque o texto foi extraído e lido diretamente. **Resumo automático de fonte não é validação** — é exatamente o que o status ✓ existe para impedir.
+
+### ⚠ C3 — o `67%` do *contextual retrieval*, com a condição ao lado
+
+O caso de deriva que o [panorama §6.2](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md) documentava agora tem os números da fonte primária. Todos sobre a **taxa de falha de recuperação no top-20**, partindo de **5,7%**:
+
+| Configuração | Taxa de falha | Redução |
+|---|:---:|:---:|
+| linha de base | 5,7% | — |
+| *Contextual Embeddings* | 3,7% | **35%** |
+| + *Contextual BM25* | 2,9% | **49%** |
+| + reranking | 1,9% | **67%** |
+
+O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundárias como mérito da técnica sozinha. Custo declarado: contexto de 50–100 tokens por chunk, gerado por um modelo pequeno, a **US$ 1,02 por milhão de tokens de documento** com cache de prompt.
+
+---
+
+## Fundacionais e surveys estruturantes
+
+| Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| **S0** | **Retrieval-Augmented Generation for Large Language Models: A Survey** — [arXiv 2312.10997](https://arxiv.org/abs/2312.10997) (Gao et al.) | **caps. 01, 02, 03** e todo o livro | ⏳ |
-| S1 | *The Prompt Report: A Systematic Survey of Prompting Techniques* — [arXiv 2406.06608](https://arxiv.org/abs/2406.06608) | caps. 01, 02, 03 | ⏳ |
-| S2 | *A Survey of Context Engineering for Large Language Models* — [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) | caps. 01, 04, 05, 08, 09, 12, 13, 14 | ⏳ |
-| S3 | *Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG* — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | cap. 18 | ⏳ |
-| S4 | *Exploring Prompt Engineering: A Systematic Review with SWOT Analysis* — [arXiv 2410.12843](https://arxiv.org/abs/2410.12843) | cap. 12 | ⏳ |
+| **F0** | **Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks** — [arXiv 2005.11401](https://arxiv.org/abs/2005.11401) (Lewis et al., 2020) | o paper que cunha o termo: combinar memória **paramétrica** e **não-paramétrica**; e já levanta *"providing provenance for their decisions"* como problema — a procedência do cap. 02 nasce aqui | ✓ |
+| **S0** ⭐ | **Retrieval-Augmented Generation for LLMs: A Survey** — [arXiv 2312.10997](https://arxiv.org/abs/2312.10997) (Gao et al.) | a taxonomia **Naive → Advanced → Modular** (caps. 01, 03) e a base tripartite **retrieval · generation · augmentation** (cap. 02), ambas verbatim no abstract | ✓ |
+| **S5b** ⭐ | **Modular RAG: LEGO-like Reconfigurable Frameworks** — [arXiv 2407.21059](https://arxiv.org/abs/2407.21059) | *"decomposing complex RAG systems into independent modules and specialized operators"*, e que o modular **"transcends the traditional linear architecture"** — o teste de modularidade do cap. 03 | ✓ |
+| S1 | *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques* — [arXiv 2406.06608](https://arxiv.org/abs/2406.06608) | a taxonomia de prompting (caps. 11, 12) | ⏳ |
+| S2 | *A Survey of Context Engineering for LLMs* — [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) | fronteira com o livro irmão | ⏳ |
+| S3 | *Agentic RAG: A Survey* — [arXiv 2501.09136](https://arxiv.org/abs/2501.09136) | os padrões do cap. 18 | ⏳ |
+| S4 | *Exploring Prompt Engineering: A Systematic Review with SWOT* — [arXiv 2410.12843](https://arxiv.org/abs/2410.12843) | cap. 12 | ⏳ |
 | S5 | *A Systematic Review of Key RAG Systems* — [arXiv 2507.18910](https://arxiv.org/abs/2507.18910) | caps. 06, 09 | ⏳ |
-| S5b | *Modular RAG: Transforming RAG Systems into LEGO-like Reconfigurable Frameworks* — [arXiv 2407.21059](https://arxiv.org/html/2407.21059v1) | caps. 02, 03 | ⏳ |
-| S5c | *Reasoning RAG via System 1 or System 2* — [arXiv 2506.10408](https://arxiv.org/abs/2506.10408) | caps. 02, 03, 18 | ⏳ |
-| S6 | *Context Engineering 2.0: The Context of Context Engineering* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | cap. 24 | ⏳ |
+| S5c | *Reasoning RAG via System 1 or System 2* — [arXiv 2506.10408](https://arxiv.org/abs/2506.10408) | caps. 03, 18 | ⏳ |
+| S6 | *Context Engineering 2.0* — [arXiv 2510.26493](https://arxiv.org/abs/2510.26493) | cap. 24 | ⏳ |
 
-## Por capítulo
-
-### 01 — Fundamentos · 08 — A Janela como Orçamento
+## 01 — Fundamentos · 20 — A Janela como Orçamento
 
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| F1 | *Lost in the Middle: How Language Models Use Long Contexts* — [arXiv 2307.03172](https://arxiv.org/abs/2307.03172) | degradação posicional; "o que importa vai para as pontas" | ⏳ |
-| F2 | *U-NIAH: Unified RAG and LLM Evaluation for Long Context Needle-In-A-Haystack* — [arXiv 2503.00353](https://arxiv.org/abs/2503.00353) | comparação dos dois regimes no mesmo protocolo | ⏳ |
+| J1 | **Lost in the Middle** — [arXiv 2307.03172](https://arxiv.org/abs/2307.03172) | degradação **posicional**: melhor nas pontas, pior no meio, *"even for explicitly long-context models"*. **Só isso** — ver correção C1 | ✓ |
+| J2 ⭐ | **Context Rot: How Increasing Input Tokens Impacts LLM Performance** — [Chroma](https://www.trychroma.com/research/context-rot) (Hong, Troynikov, Huber · 2025-07-14 · **18 modelos**, quatro fornecedores) | (a) isolando a variável, **o comprimento degrada sozinho**, mesmo em tarefas triviais; (b) a queda é mais íngreme quando a similaridade pergunta–alvo é baixa; (c) **um único distrator já reduz o desempenho**, e distratores **não têm impacto uniforme** | ✓ |
+| J3 | *U-NIAH: Unified RAG and LLM Evaluation for Long Context NIAH* — [arXiv 2503.00353](https://arxiv.org/abs/2503.00353) | os dois regimes no mesmo protocolo | ⏳ |
 
-> **Lacuna conhecida**: a afirmação do cap. 20 de que a degradação é dirigida pela **similaridade entre alvo e distratores** (e não pelo comprimento) é hoje a mais frágil do livro em termos de citação. É prioridade 1 da rodada 2.
+> **Fonte da indústria, não revisada por pares.** J2 é relatório técnico de uma empresa de banco vetorial — parte interessada no argumento "curadoria supera janela cheia". O livro adota o que o relatório **mede** (protocolo descrito, 18 modelos) e marca a origem. É a mesma régua aplicada aos guias de praticante.
 
-### 03 — Técnicas de Raciocínio
-
-| Ref. | Fonte | Sustenta | Status |
-|---|---|---|:---:|
-| R1 | Chain-of-Thought (proposta original) | família *thought generation* | ⏳ |
-| R2 | Self-Consistency | família *ensembling* | ⏳ |
-| R3 | ReAct | a ponte prompt → RAG agêntico (caps. 12, 09, 14) | ⏳ |
-| R4 | *A comparative evaluation of CoT-based prompt engineering techniques for medical QA* — [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0010482525009655) | o ranking de técnicas muda com domínio e modelo | ⏳ |
-
-### 06 — Otimização Automática de Prompts
+## 04 — Corpus · 05 — Chunking e Representação
 
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| O1 | GEPA — otimizador reflexivo genético-Pareto · [gepa-ai/gepa](https://github.com/gepa-ai/gepa) | família "reflexão sobre traços" | ⏳ |
-| O2 | MIPROv2 | família "busca por instrução" | ⏳ |
-| O3 | TextGrad | prompt como variável otimizável | ⏳ |
-| O4 | *Promptomatix* — [arXiv 2507.14241](https://arxiv.org/abs/2507.14241) | redução do setup manual | ⏳ |
-| O5 | *Automatic Prompt Optimization for KG Construction* — [arXiv 2506.19773](https://arxiv.org/abs/2506.19773) | ganho dependente de tarefa | ⏳ |
+| K1 ⭐ | **Dense X Retrieval: What Retrieval Granularity Should We Use?** — [arXiv 2312.06648](https://arxiv.org/abs/2312.06648) | a **proposição** como unidade: *"atomic expressions… each encapsulating a distinct factoid… concise, self-contained"*; e que a granularidade fina **supera passagem** na recuperação — com ganho a jusante **"given a specific computation budget"** | ✓ |
+| K2 | *Reconstructing Context: Evaluating Advanced Chunking Strategies for RAG* — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) | estratégias de corte avaliadas, não assumidas | ⏳ |
+| K3 | *Adaptive Chunking: Optimizing Chunking-Method Selection for RAG* — [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) | seleção por documento | ⏳ |
+| K4 | *Cross-Document Topic-Aligned Chunking for RAG* — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) | tópicos que atravessam documentos | ⏳ |
+| K5 | *MemGuard: Preventing Memory Contamination* — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | o caminho de escrita como superfície (caps. 04, 22) | ⏳ |
 
-> **Alerta do Princípio I**: todos os números comparativos desta seção vêm de avaliações dos próprios proponentes. A rodada 2 deve registrar, para cada um, **quais modelos e qual orçamento** foram usados — sem isso o número não entra no corpo.
+> **Lacuna mantida (prioridade da segunda leva).** Segue sem trabalho localizado que meça o impacto **isolado** de frescor, deduplicação e procedência sobre métricas de RAG. Se não existir, vira experimento próprio na rodada 4.
 
-### 09 — Recuperação · 10 — RAG Avançado
-
-| Ref. | Fonte | Sustenta | Status |
-|---|---|---|:---:|
-| C1 | *Reconstructing Context: Evaluating Advanced Chunking Strategies for RAG* — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) | estratégias de chunking avaliadas | ⏳ |
-| C2 | *Adaptive Chunking: Optimizing Chunking-Method Selection for RAG* — [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) | seleção por documento, não fixa | ⏳ |
-| C3 | *Cross-Document Topic-Aligned Chunking for RAG* — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) | tópicos que atravessam documentos | ⏳ |
-| C4 | Contextual Retrieval (Anthropic) | prefixar contexto antes de embeddar | ⏳ |
-| C5 | Late Chunking (Jina AI) | cortar depois do transformer | ⏳ |
-| C6 | *Hybrid Retrieval and Query Rewriting for Multi-Turn RAG* — [arXiv 2606.28352](https://arxiv.org/abs/2606.28352) | reescrita de consulta em conversa | ⏳ |
-| C7 | Surveys de GraphRAG e RAG baseado em grafo | quando grafo paga | ⏳ |
-| C8 | **RAPTOR** — árvore de resumos recursivos por agrupamento | sumarização hierárquica; pergunta global | ⏳ |
-| C9 | **HyDE** — documento hipotético como consulta | lado da pergunta | ⏳ |
-| C10 | **Step-back prompting** — generalizar antes de recuperar | lado da pergunta | ⏳ |
-
-### 11 — RAG Agêntico
+## 06 — Busca · 07 — Reranking
 
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| A1 | S3 (survey de RAG agêntico) | os quatro padrões; o espectro | ⏳ |
-| A2 | *GraphSearch: An Agentic Deep Searching Workflow for Graph RAG* — [arXiv 2509.22009](https://arxiv.org/abs/2509.22009) | convergência grafo + agente | ⏳ |
-| A3 | **Self-RAG** — reflexão treinada no modelo (marcadores de recuperação e sustentação) | as materializações nomeadas | ⏳ |
-| A4 | **CRAG** (*Corrective RAG*) — avaliador leve + ação corretiva | idem | ⏳ |
-| A5 | **FLARE** — recuperação disparada por incerteza durante a geração | idem | ⏳ |
-| A6 | **Adaptive RAG** — roteamento por complexidade da pergunta | idem | ⏳ |
+| B1 ⭐ | **BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of IR Models** — [arXiv 2104.08663](https://arxiv.org/abs/2104.08663) | 18 datasets, 10 sistemas. E as duas afirmações centrais dos caps. 06–07, verbatim: ***"BM25 is a robust baseline"*** e *"re-ranking and late-interaction-based models on average achieve the best zero-shot performances, **however, at high computational costs**"* | ✓ |
+| B2 ⭐ | **MTEB: Massive Text Embedding Benchmark** — [arXiv 2210.07316](https://arxiv.org/abs/2210.07316) | 8 tarefas, 58 datasets, 112 idiomas, 33 modelos — e o achado que sustenta a neutralidade do cap. 05: ***"no particular text embedding method dominates across all tasks"*** | ✓ |
 
-### 12 — Memória e Estado
+## 08 — Entendimento da Consulta
 
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| M1 | MemGPT / Letta | paginação autogerida | ⏳ |
-| M2 | *ES-Mem: Event Segmentation-Based Memory for Long-Term Dialogue Agents* — [arXiv 2601.07582](https://arxiv.org/abs/2601.07582) | segmentar por evento (caps. 19, 14) | ⏳ |
+| Q1 ⭐ | **HyDE** — *Precise Zero-Shot Dense Retrieval without Relevance Labels* — [arXiv 2212.10496](https://arxiv.org/abs/2212.10496) | gerar um documento hipotético e buscar por ele; o encoder *"filtering out the incorrect details"*. **Condição experimental:** proposto para o cenário **zero-shot, sem rótulo de relevância**, comparado a um retriever denso **não supervisionado** — o caso a favor enfraquece quando já existe híbrido bom | ✓ |
+| Q2 | **Step-Back Prompting** — *Take a Step Back* — [arXiv 2310.06117](https://arxiv.org/abs/2310.06117) | abstrair para o princípio antes de raciocinar. **Ressalva registrada:** o paper propõe uma técnica de **raciocínio**, avaliada em STEM/QA/multi-hop (PaLM-2L: MMLU Física +7%, Química +11%, TimeQA +27%, MuSiQue +7%) — o uso **como etapa de recuperação** é leitura derivada, do livro e da prática, não do paper | ✓ |
+| Q3 | *Sifei at SemEval-2026 Task 8: Hybrid Retrieval and Query Rewriting for Multi-Turn RAG* — [arXiv 2606.28352](https://arxiv.org/abs/2606.28352) | reescrita em conversa. **É um paper de sistema de competição** (SemEval), não um método geral — peso editorial reduzido | ⏳ |
+
+## 09 — Recuperação Avançada
+
+| Ref. | Fonte | Sustenta | Status |
+|---|---|---|:---:|
+| V1 ⭐ | **Contextual Retrieval** — [Anthropic](https://www.anthropic.com/engineering/contextual-retrieval) (2024) | prefixar cada chunk com 50–100 tokens de contexto antes de embeddar e de indexar no BM25. **Números e custo na correção C3** — o `67%` é a pilha com reranker | ✓ |
+| V2 ⭐ | **Late Chunking: Contextual Chunk Embeddings Using Long-Context Embedding Models** — [arXiv 2409.04701](https://arxiv.org/abs/2409.04701) | *"first embed all tokens of the long text, with chunking applied **after the transformer model and just before mean pooling**"*, e — o ponto econômico do capítulo — ***"works without additional training"***: nenhuma chamada de LLM | ✓ |
+
+## 10 — Recuperação Estruturada
+
+| Ref. | Fonte | Sustenta | Status |
+|---|---|---|:---:|
+| G1 ⭐ | **RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval** — [arXiv 2401.18059](https://arxiv.org/abs/2401.18059) | *"recursively embedding, clustering, and summarizing chunks… constructing a tree"*, com recuperação *"at different levels of abstraction"*. **Número com condição:** QuALITY **+20% de acurácia absoluta** sobre o melhor anterior, **acoplado ao GPT-4** | ✓ |
+| G2 ⭐ | **GraphRAG** — *From Local to Global: A Graph RAG Approach to Query-Focused Summarization* — [arXiv 2404.16130](https://arxiv.org/abs/2404.16130) | a falha, verbatim: *"RAG fails on global questions directed at an entire text corpus, such as **'What are the main themes in the dataset?'**"* — e o mecanismo em duas etapas: grafo de entidades, depois **resumos de comunidade** pré-gerados. Confirma também a conta do cap. 10: a extração de entidades é etapa extra que o RAPTOR não tem | ✓ |
+| G3 | *GraphSearch: An Agentic Deep Searching Workflow for Graph RAG* — [arXiv 2509.22009](https://arxiv.org/abs/2509.22009) | grafo + agente | ⏳ |
+
+## 11–14 · 16–17 — Prompt, raciocínio e otimização
+
+| Ref. | Fonte | Sustenta | Status |
+|---|---|---|:---:|
+| P1 ⭐ | **Chain-of-Thought Prompting Elicits Reasoning in LLMs** — [arXiv 2201.11903](https://arxiv.org/abs/2201.11903) | a família *thought generation*. **Condição:** o efeito *"emerge naturally in **sufficiently large** language models"* — 540B, **oito** exemplares, GSM8K. Em modelo pequeno, não se reproduz | ✓ |
+| P2 ⭐ | **Self-Consistency Improves Chain of Thought Reasoning** — [arXiv 2203.11171](https://arxiv.org/abs/2203.11171) | amostrar caminhos diversos e *"marginalizing out"* — a família *ensembling*. Ganhos: GSM8K **+17,9%**, SVAMP **+11,0%**, AQuA **+12,2%** | ✓ |
+| P3 ⭐ | **ReAct: Synergizing Reasoning and Acting** — [arXiv 2210.03629](https://arxiv.org/abs/2210.03629) | raciocínio e ação *"in an interleaved manner"*, com as ações servindo para *"interface with external sources, such as knowledge bases"* — a ponte cap. 12 → cap. 18 | ✓ |
+| P4 ⭐ | **DSPy: Compiling Declarative LM Calls into Self-Improving Pipelines** — [arXiv 2310.03714](https://arxiv.org/abs/2310.03714) | prompt como artefato **compilado**: *"a compiler that will optimize any DSPy pipeline to maximize a given metric"*, contra os *"hard-coded prompt templates… discovered via trial and error"* | ✓ |
+| P5 | **MIPROv2** — *Optimizing Instructions and Demonstrations for Multi-Stage LM Programs* — [arXiv 2406.11695](https://arxiv.org/abs/2406.11695) | instruções **e** exemplos conjuntamente, *"without access to module-level labels or gradients"*, com modelo surrogate sobre mini-lotes | ✓ |
+| P6 | **GEPA: Reflective Prompt Evolution Can Outperform RL** — [arXiv 2507.19457](https://arxiv.org/abs/2507.19457) | reflexão em linguagem natural sobre **trajetórias** (*"reasoning, tool calls, and tool outputs"*) e combinação pela **fronteira de Pareto** | ✓ |
+| P7 | *TextGrad: Automatic "Differentiation" via Text* — [arXiv 2406.07496](https://arxiv.org/abs/2406.07496) | prompt como variável otimizável | ⏳ |
+| P8 | *Promptomatix* — [arXiv 2507.14241](https://arxiv.org/abs/2507.14241) | redução do setup manual | ⏳ |
+| P9 | *Automatic Prompt Optimization for KG Construction* — [arXiv 2506.19773](https://arxiv.org/abs/2506.19773) | ganho dependente de tarefa | ⏳ |
+| P10 | *A comparative evaluation of CoT-based prompt engineering for medical QA* — [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0010482525009655) | o ranking muda com domínio e modelo | ⏳ |
+
+> **Alerta do Princípio I, mantido:** os números comparativos entre otimizadores vêm de avaliações dos próprios proponentes. Nenhum entra no corpo sem modelo e orçamento declarados ao lado.
+
+## 18 — RAG Agêntico
+
+| Ref. | Fonte | Sustenta | Status |
+|---|---|---|:---:|
+| A1 ⭐ | **Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection** — [arXiv 2310.11511](https://arxiv.org/abs/2310.11511) | *"trains a single arbitrary LM that adaptively retrieves passages on-demand"* usando **reflection tokens**. Confirma a tese do capítulo: o julgamento fica **dentro** do modelo — e por isso exige **treino**, não só prompt | ✓ |
+| A2 ⭐ | **CRAG: Corrective Retrieval Augmented Generation** — [arXiv 2401.15884](https://arxiv.org/abs/2401.15884) | *"a **lightweight retrieval evaluator**… returning a **confidence degree** based on which different knowledge retrieval actions can be triggered"*, com busca web como extensão. Julgamento **fora** do modelo — auditável, e *"plug-and-play"* | ✓ |
+| A3 ⭐ | **FLARE** — *Active Retrieval Augmented Generation* — [arXiv 2305.06983](https://arxiv.org/abs/2305.06983) | recupera **durante** a geração: *"iteratively uses a prediction of the upcoming sentence… to retrieve relevant documents to regenerate the sentence **if it contains low-confidence tokens**"* | ✓ |
+| A4 ⭐ | **Adaptive-RAG** — [arXiv 2403.14403](https://arxiv.org/abs/2403.14403) | classificador (um LM menor) prevê a complexidade e roteia entre *"the iterative and single-step retrieval-augmented LLMs, **as well as the no-retrieval methods**"* — os três graus do capítulo, verbatim | ✓ |
+
+## 19 — RAG Conversacional
+
+| Ref. | Fonte | Sustenta | Status |
+|---|---|---|:---:|
+| M1 | **MemGPT: Towards LLMs as Operating Systems** — [arXiv 2310.08560](https://arxiv.org/abs/2310.08560) | *"virtual context management"* inspirado em **hierarquia de memória de sistema operacional**, com movimentação entre níveis e interrupções | ✓ |
+| M2 | *ES-Mem: Event Segmentation-Based Memory* — [arXiv 2601.07582](https://arxiv.org/abs/2601.07582) | segmentar por evento | ⏳ |
 | M3 | *MemR³: Memory Retrieval via Reflective Reasoning* — [arXiv 2512.20237](https://arxiv.org/abs/2512.20237) | recuperação reflexiva de memória | ⏳ |
-| M4 | *MemGuard: Preventing Memory Contamination* — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) | contaminação (caps. 19, 22) | ⏳ |
-| M5 | *MemSyco-Bench: Benchmarking Sycophancy in Agent Memory* — [arXiv 2607.01071](https://arxiv.org/abs/2607.01071) | bajulação acumulada | ⏳ |
-| M6 | *Nautilus Compass: Black-box Persona Drift Detection* — [arXiv 2605.09863](https://arxiv.org/abs/2605.09863) | deriva de persona (caps. 14, 18) | ⏳ |
+| M4 | *MemSyco-Bench: Benchmarking Sycophancy in Agent Memory* — [arXiv 2607.01071](https://arxiv.org/abs/2607.01071) | bajulação acumulada | ⏳ |
+| M5 | *Nautilus Compass: Black-box Persona Drift Detection* — [arXiv 2605.09863](https://arxiv.org/abs/2605.09863) | deriva de persona (caps. 14, 19) | ⏳ |
 
-### 15 — Avaliação de Sistemas
-
-| Ref. | Fonte | Sustenta | Status |
-|---|---|---|:---:|
-| E1 | BEIR | recuperação zero-shot | ⏳ |
-| E2 | MTEB | modelos de embedding | ⏳ |
-| E3 | RAGAS | as quatro métricas | ⏳ |
-| E4 | *FAB-Bench: Adaptive RAG Benchmarking* — [arXiv 2605.26476](https://arxiv.org/abs/2605.26476) | benchmark geral não transfere para domínio | ⏳ |
-
-### 16 — Segurança do Contexto
+## 21 — Avaliação e Observabilidade
 
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| G1 | [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | LLM01; defesa em profundidade | ⏳ |
-| G2 | *Are AI-assisted Development Tools Immune to Prompt Injection?* — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) | injeção via ferramenta (caps. 15, 17) | ⏳ |
-| G3 | *Multimodal Prompt Injection Attacks* — [arXiv 2509.05883](https://arxiv.org/abs/2509.05883) | filtrar texto não basta | ⏳ |
-| G4 | *Know Thy Enemy: Securing LLMs Against Prompt Injection…* — [arXiv 2601.04666](https://arxiv.org/abs/2601.04666) | defesas por treinamento | ⏳ |
+| E1 ⭐ | **Ragas: Automated Evaluation of RAG** — [arXiv 2309.15217](https://arxiv.org/abs/2309.15217) · EACL 2024 | avaliação **reference-free**, *"without having to rely on ground truth human annotations"*, sobre **três** aspectos: *faithfulness*, *answer relevance*, *context relevance*. **Ver correção C2** — o par precision/recall é da biblioteca | ✓ |
+| E2 | BEIR e MTEB | ver B1 e B2 | ✓ |
+| E3 | *FAB-Bench: A Framework for Adaptive RAG Benchmarking **in Semiconductor Manufacturing*** — [arXiv 2605.26476](https://arxiv.org/abs/2605.26476) | benchmark geral não transfere para domínio. **O domínio faz parte da citação** — é um benchmark de um setor, não geral | ⏳ |
 
-### 17 — Custo, Latência e Cache
+## 22 — Segurança do Corpus e da Recuperação
 
 | Ref. | Fonte | Sustenta | Status |
 |---|---|---|:---:|
-| P1 | *SmoothAgent: Efficient Long-Horizon LLM-Based Agent Serving* — [arXiv 2607.00151](https://arxiv.org/abs/2607.00151) | eficiência de agentes de horizonte longo | ⏳ |
-| P2 | Documentação de *prompt caching* dos provedores | cache por prefixo; invalidadores | ⏳ |
+| X1 | [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | LLM01; defesa em profundidade | ⏳ |
+| X2 | *Are AI-assisted Development Tools Immune to Prompt Injection?* — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) | injeção via ferramenta | ⏳ |
+| X3 | *Multimodal Prompt Injection Attacks* — [arXiv 2509.05883](https://arxiv.org/abs/2509.05883) | filtrar texto não basta | ⏳ |
+| X4 | *Know Thy Enemy: Securing LLMs Against Prompt Injection* — [arXiv 2601.04666](https://arxiv.org/abs/2601.04666) | defesas por treinamento | ⏳ |
+
+## 23 — Custo, Latência e Cache
+
+| Ref. | Fonte | Sustenta | Status |
+|---|---|---|:---:|
+| Z1 | *SmoothAgent: Efficient Long-Horizon LLM-Based Agent Serving* — [arXiv 2607.00151](https://arxiv.org/abs/2607.00151) | eficiência em horizonte longo | ⏳ |
+| Z2 | Documentação de *prompt caching* dos provedores | cache por prefixo; invalidadores | ⏳ |
 
 ---
 
 ## Fontes da indústria (coleções e guias)
 
-Não recebem status ✓/⏳ — são recursos consultáveis, verificados apenas quanto à existência e ao que descrevem:
+Não recebem ✓/⏳ — são recursos consultáveis, verificados apenas quanto à existência e ao que descrevem:
 
-- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/prompt-engineering-guide) — guia de referência da comunidade (prompt + contexto + RAG + agentes)
+- [dair-ai/Prompt-Engineering-Guide](https://github.com/dair-ai/prompt-engineering-guide) — guia de referência da comunidade
 - [Meirtz/Awesome-Context-Engineering](https://github.com/Meirtz/Awesome-Context-Engineering) — coleção associada ao survey S2
 - [asinghcsu/AgenticRAG-Survey](https://github.com/asinghcsu/AgenticRAG-Survey) — companion do survey S3
-- [promptslab/Awesome-Prompt-Engineering](https://github.com/promptslab/awesome-prompt-engineering) · [natnew/Awesome-Prompt-Engineering](https://github.com/natnew/Awesome-Prompt-Engineering)
+- [gepa-ai/gepa](https://github.com/gepa-ai/gepa) — implementação de referência do P6
 - [promptfoo — OWASP LLM Top 10](https://www.promptfoo.dev/docs/red-team/owasp-llm-top-10/) — red teaming mapeado à classificação
 - Tópico [`context-engineering`](https://github.com/topics/context-engineering) no GitHub
 
-**Guias de praticante sobre RAG em produção** (consultados em 2026-08-04; ver a [análise crítica no panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)):
+**Guias de praticante sobre RAG em produção** (consultados em 2026-08-04; [análise crítica no panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)):
 
-- [RAG Architecture in 2026](https://futureagi.com/blog/rag-architecture-llm-2025/) (Future AGI) — arquitetura em seis camadas e três padrões de orquestração
-- [Building Production RAG](https://www.premai.io/blog/building-production-rag-architecture-chunking-evaluation-monitoring-2026-guide/) (Prem AI) — chunking, avaliação e **observabilidade com limiares por camada**
-- [12 Advanced RAG Techniques](https://atlan.com/know/advanced-rag-techniques/) (Atlan) — as técnicas por estágio do pipeline, e o argumento de **governança do corpus**
+- [RAG Architecture in 2026](https://futureagi.com/blog/rag-architecture-llm-2025/) (Future AGI)
+- [Building Production RAG](https://www.premai.io/blog/building-production-rag-architecture-chunking-evaluation-monitoring-2026-guide/) (Prem AI)
+- [12 Advanced RAG Techniques](https://atlan.com/know/advanced-rag-techniques/) (Atlan)
 
-> **Estes três são fonte secundária** (praticante, não proponente) e **nenhum número deles entra no corpo do livro**. Servem para localizar técnicas nomeadas — foi assim que RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG e step-back entraram na fila de validação. O caso de deriva numérica documentado no panorama (§6) explica por quê.
+> **Estes três são fonte secundária** e **nenhum número deles entra no corpo do livro**. O papel deles foi localizar técnicas nomeadas — e a rodada 2 mostra que o papel foi cumprido: **as dez técnicas que entraram por essa porta chegaram todas ao paper original, e nenhuma se revelou inexistente.** O que se revelou distorcido foi um **número** (a correção C3), não uma técnica. É a distinção que o Princípio I faz.
 
 O mapeamento completo do ecossistema por problema está no [Apêndice — O ecossistema](apendice-ecossistema.md).

@@ -2,7 +2,7 @@
 
 > Frameworks, bibliotecas e coleções **organizados pelo problema que resolvem** — não por popularidade, e nunca como recomendação (Princípio VI: nenhum framework é "o jeito certo").
 >
-> Edição 0.2 · captura em 2026-08. Origem: [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md).
+> Edição 0.3 · captura em 2026-08. Origem: [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md).
 >
 > **Como ler:** esta página é *reference* (Diátaxis) — consulta, não leitura linear. A avaliação comparada por dimensão, com evidência, é a **rodada 4** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md); até lá, o que está aqui é mapa, não veredito.
 
@@ -52,7 +52,7 @@
 
 | Ferramenta | Papel |
 |---|---|
-| **RAGAS** | fixou o vocabulário de fato: *faithfulness*, *answer relevance*, *context precision*, *context recall*; gera conjunto de teste a partir do corpus |
+| **RAGAS** | fixou o vocabulário de fato. Paper (EACL 2024): *faithfulness*, *answer relevance*, *context relevance* — reference-free. Biblioteca: desdobra o terceiro em *context precision* / *context recall*; gera conjunto de teste a partir do corpus |
 | **DeepEval** | as mesmas ideias com foco em execução em CI/CD |
 | **TruLens** | instrumentação e observabilidade de execução |
 | **BEIR** | recuperação zero-shot em domínios variados (mede só o estágio de recuperação) |

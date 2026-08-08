@@ -1,6 +1,6 @@
 # 20 — A Janela como Orçamento
 
-> **Estado da arte capturado em 2026-08** · edição 0.2 (esqueleto) · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **aumento** — o que dos candidatos vira contexto (cap. 02). A tese do orçamento e a leitura híbrida estão fechadas; as medições por regime são a rodada 2 do ROADMAP.
 
@@ -9,7 +9,7 @@
 Ao final deste capítulo, você deve ser capaz de:
 
 1. **Explicar** por que "mandar tudo" é anti-padrão com base empírica, e não por economia;
-2. **Descrever** *context rot* e por que a degradação não é linear com o comprimento;
+2. **Descrever** *context rot* — a degradação vem do comprimento **e** piora com distratores semanticamente próximos do alvo;
 3. **Decidir** entre contexto longo e recuperação para um caso concreto, com critérios;
 4. **Declarar** um orçamento de contexto explícito para um sistema real — quem recebe quantos tokens, e quem cede quando falta.
 
@@ -25,10 +25,12 @@ Este capítulo é o que transforma "colocar informação no prompt" em **decisã
 
 ## Fundamentos científicos
 
-- **Degradação posicional** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)): a informação no meio de contextos longos é sistematicamente pior aproveitada que a das bordas. É a base empírica da regra "o que importa vai para as pontas". `[a validar]`
+- **Degradação posicional** — *Lost in the Middle* ([arXiv 2307.03172](https://arxiv.org/abs/2307.03172)): *"performance is often highest when relevant information occurs at the **beginning or end** of the input context, and significantly degrades when models must access relevant information in the **middle** of long contexts, **even for explicitly long-context models**"*. É a base empírica — e o limite exato — da regra "o que importa vai para as pontas". ✓
 - **Avaliação unificada dos dois regimes** — *U-NIAH: Unified RAG and LLM Evaluation for Long Context Needle-In-A-Haystack* ([arXiv 2503.00353](https://arxiv.org/abs/2503.00353)) coloca contexto longo e RAG no mesmo teste, em vez de compará-los por anedota. O achado que interessa: RAG com top-k supera o modelo sozinho em cenários de contexto longo. `[a validar]`
 - **Gestão de contexto como componente formal** — o survey [arXiv 2507.13334](https://arxiv.org/abs/2507.13334) trata compressão, hierarquia de memória e otimização de contexto como um dos três componentes da disciplina — o que dá nome acadêmico ao que este capítulo chama de orçamento. `[a validar]`
-- **A natureza da degradação** — a leitura consolidada de 2026 é que a queda **não é linear com o comprimento**: ela é dirigida pela **similaridade semântica entre o alvo e os distratores**. Alvo semanticamente distinto do ruído é encontrado mesmo em contexto muito longo; distratores parecidos derrubam a acurácia, e o efeito piora com o comprimento. `[a validar — esta é a afirmação do capítulo que mais precisa de citação primária]`
+- **A natureza da degradação** — o relatório *Context Rot* ([Chroma](https://www.trychroma.com/research/context-rot), Hong, Troynikov e Huber, 2025-07-14, **18 modelos** de quatro fornecedores) mede duas coisas que o livro tratava como uma só. Primeira: **o comprimento sozinho degrada** — isolando a variável (mesmo par pergunta/alvo, variando só a quantidade de conteúdo irrelevante), o desempenho cai com o tamanho da entrada **mesmo em tarefas deliberadamente triviais**. Segunda: a queda **fica mais íngreme** quando a similaridade entre a pergunta e o alvo é baixa, e quando há distratores — **um único distrator já reduz o desempenho**, e os distratores **não têm impacto uniforme** entre si. ✓ (lido no original)
+
+  **Correção registrada (rodada 2).** A edição 0.2 afirmava que a degradação "não é linear com o comprimento, é dirigida pela similaridade entre alvo e distratores", e atribuía isso a *Lost in the Middle*. As duas metades estavam erradas: *Lost in the Middle* estabelece degradação **posicional** (pontas melhor que meio) e não trata de distratores; e o relatório que trata de distratores diz que o comprimento **também** degrada por si só. O comprimento não é inocente — ele é a base, e os distratores são o multiplicador.
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 
@@ -78,7 +80,7 @@ Orçamento sem instrumentação é intenção. Quatro números que um sistema ma
 
 ### Leitura executiva
 
-Janela maior não resolveu nada: a degradação **não é linear com o comprimento** — ela é dirigida pela similaridade entre o alvo e os distratores, e por isso encher a janela pode piorar a resposta **e** a fatura. **O que roubar:** escreva a alocação do seu contexto em **uma linha** (`sistema 2k | memória 1k | recuperado 8k | ferramenta ≤4k | histórico o resto`) e defina quem cede quando aperta — sistemas sem essa linha degradam de um jeito que ninguém consegue explicar depois. **O concorrente esquecido:** resultado de ferramenta é a única fonte cujo tamanho você não controla ao pedir; sem teto por ferramenta, você descobre em produção. **Contexto longo × RAG:** decida por corpus, frescor, forma do raciocínio e aritmética de custo — e prefira o híbrido (recupere para reduzir, raciocine sobre o que sobrou). **Meça:** composição por fonte, taxa de estouro, utilidade do recuperado, e qualidade × comprimento no **seu** dado.
+Janela maior não resolveu nada: o comprimento degrada **sozinho** — medido isolando a variável, em 18 modelos, mesmo em tarefas triviais — e a queda fica **mais íngreme** com distratores semanticamente próximos, onde **um único já basta** para reduzir o desempenho. Encher a janela piora a resposta **e** a fatura. **O que roubar:** escreva a alocação do seu contexto em **uma linha** (`sistema 2k | memória 1k | recuperado 8k | ferramenta ≤4k | histórico o resto`) e defina quem cede quando aperta — sistemas sem essa linha degradam de um jeito que ninguém consegue explicar depois. **O concorrente esquecido:** resultado de ferramenta é a única fonte cujo tamanho você não controla ao pedir; sem teto por ferramenta, você descobre em produção. **Contexto longo × RAG:** decida por corpus, frescor, forma do raciocínio e aritmética de custo — e prefira o híbrido (recupere para reduzir, raciocine sobre o que sobrou). **Meça:** composição por fonte, taxa de estouro, utilidade do recuperado, e qualidade × comprimento no **seu** dado.
 
 ## Mão na massa — rag-zero, etapa 13
 

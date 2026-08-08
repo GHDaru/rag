@@ -2,11 +2,11 @@
 
 > As rodadas planejadas do livro vivo. Cada rodada é um lote de trabalho que vira **uma ou mais specs** (`specs/NNN-nome/`), cada uma em sua branch, conforme o Princípio VII da [constituição](.specify/memory/constitution.md).
 >
-> Última atualização: **2026-08-04** · edição vigente: **0.2** (ver [Histórico](livro/HISTORICO.md))
+> Última atualização: **2026-08-04** · edição vigente: **0.3** (ver [Histórico](livro/HISTORICO.md))
 
 ## Onde estamos
 
-**Edição 0.2 (+ adendo 0.2.1) — o esqueleto do sistema.** O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
+**Edição 0.3 — o esqueleto do sistema, com a primeira leva de evidência.** O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
 
 O que a 0.2 fez além de renomear: os três capítulos que fechavam a lacuna real (**02** anatomia, **03** arquiteturas de referência, **15** geração fundamentada), a Parte III desdobrada em cinco, e a fronteira com o livro irmão tornada explícita na constituição.
 
@@ -14,7 +14,7 @@ O que **ainda não** existe, e é deliberado:
 
 | Ausente | Por quê | Volta em |
 |---|---|:---:|
-| Referências validadas (status ✓) | **0 de 55** — o levantamento localizou; validar exige ler | rodada 2 |
+| Referências validadas (status ✓) | **26 de ~56** — primeira leva feita; o restante é a segunda | rodada 2 |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 2–3 |
 | Trilha prática `rag-zero` | descrita nos capítulos, não implementada | rodada 3 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
@@ -36,55 +36,62 @@ O que **ainda não** existe, e é deliberado:
 
 ---
 
-## Rodada 2 — Evidência (a que tira os ⏳)
+## Rodada 2 — Evidência (a que tira os ⏳) · **primeira leva ✅**
 
 **Objetivo:** transformar o mapa em livro citável. Nenhuma outra rodada deveria vir antes desta — a credibilidade do projeto depende dela.
 
-**Escopo:**
-1. **Validar os surveys estruturantes** (S1, S2, S3 da [bibliografia](livro/bibliografia.md)) pela skill `academic-research`: ler, conferir o que o livro afirma sobre eles, registrar ✓.
-2. **Validar a lacuna prioritária**: a afirmação do cap. 20 de que a degradação em contexto longo é dirigida pela **similaridade entre alvo e distratores** (hoje a citação mais frágil do livro).
-3. **Registrar condição experimental** de todo número citado — em especial os de otimização de prompt (cap. 16), *contextual retrieval* (cap. 09) e memória (cap. 19), todos auto-reportados pelos proponentes.
-4. **Preencher os Apêndices A** dos capítulos com o tratamento por implementação.
+### Primeira leva — concluída em 2026-08-04 (edição 0.3)
+
+1. ✅ **Todos os 49 identificadores arXiv resolvidos** contra o arXiv real, com ID falso de controle. **Nenhum inventado, nenhum título divergente** — a classe de erro mais corrosiva está descartada.
+2. ✅ **26 referências em ✓** — texto lido, afirmação do livro conferida contra o original.
+3. ✅ **As ~20 técnicas nomeadas ganharam fonte primária.** Elas tinham entrado pelos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição, GraphRAG) e agora apontam para o paper que as propôs — **e nenhuma se revelou inexistente**.
+4. ✅ **Três afirmações corrigidas** (detalhe em [bibliografia.md](livro/bibliografia.md#correções-que-esta-rodada-produziu)):
+   - *Lost in the Middle* **não sustentava** a afirmação do cap. 20 sobre distratores — e a fonte que sustenta contradiz a outra metade dela;
+   - as quatro métricas do RAGAS **não são todas do paper** (ele propõe três; o par precision/recall é da biblioteca);
+   - o `67%` do *contextual retrieval* agora aparece com a curva inteira e o custo em dólar por milhão de tokens.
+5. ✅ **Condição experimental ao lado de todo número validado** — o 540B do CoT, o GPT-4 do RAPTOR, o cenário zero-shot do HyDE, o custo do contextual retrieval.
+
+### Segunda leva — pendente
+
+1. **Surveys de apoio** (S1–S6, exceto S0 e S5b, já ✓).
+2. **Segurança** (X1–X4), **memória** (M2–M5) e os papers de 2026, todos hoje com ID conferido e texto não lido.
+3. **Preencher os Apêndices A** dos capítulos com o tratamento por implementação.
+4. **Dar base de evidência ao cap. 04.** Segue o capítulo mais fraco em citação, e a pergunta em aberto continua sem resposta: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
 5. **Aprofundar o corpo** dos capítulos onde a validação trouxer material novo.
-6. **Validar as seis técnicas nomeadas** que entraram no adendo 0.1.1 (RAPTOR · Self-RAG · CRAG · FLARE · Adaptive RAG · step-back), cada uma com fonte primária e condição experimental.
-7. **Dar base de evidência ao cap. 04** (Ingestão e Governança do Corpus, criado no adendo 0.1.2). É hoje o capítulo mais fraco do livro em citação: a área trata ingestão como pré-processamento e raramente a estuda. Pergunta a responder: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
 
-**Critério de conclusão:** ao menos 60% das referências com status ✓; nenhum número no corpo sem condição experimental; nenhum capítulo com Apêndice A vazio.
-
-**Sugestão de fatiamento em specs:** `002-evidencia-parte-i` (caps. 11–17) · `003-evidencia-parte-ii` (caps. 20–14) · `004-evidencia-parte-iii` (caps. 21–24).
+**Critério de conclusão da rodada:** ao menos 60% das referências com status ✓ (hoje: **~46%**); nenhum número no corpo sem condição experimental (**feito** para os validados); nenhum capítulo com Apêndice A vazio (**pendente**).
 
 ---
 
 ## Rodada 3 — `rag-zero` (a trilha prática)
 
-**Objetivo:** o livro executável. 18 etapas, uma por capítulo, Python + FastAPI, custo zero e sem GPU.
+**Objetivo:** o livro executável. **17 etapas** (0–16), Python + FastAPI, custo zero e sem GPU. A Parte IV inteira converge para a etapa 10, porque é um gerador só — construído em camadas.
 
 **Escopo:**
 
 | Etapa | Capítulo | Entrega |
 |:---:|:---:|---|
 | 0 | 01 | chat mínimo + `LLMPort` + **contador de tokens por bloco** (o instrumento do livro) |
-| 1 | 02 | prompt em blocos nomeados + teste de separação instrução×dado |
-| 2 | 03 | duas famílias de raciocínio, comparadas com números |
-| 3 | 04 | schema + validação + ciclo de reparo com teto |
-| 4 | 05 | cinco camadas + cascata + **teste de estabilidade de prefixo** |
-| 5 | 06 | otimizador mínimo na mão (60 linhas), depois com framework |
-| 6 | 07 | conjunto de eval + **calibração do juiz** |
-| 7 | 08 | orçamento com política de corte declarada |
-| 8 | 09 | **ingestão**: extração, dedup, metadado com status, política de saída |
-| 9 | 10 | BM25 na mão (~40 linhas) + chunking estrutural |
-| 10 | 10–11 | embeddings + fusão + reranking + contextual retrieval, com medição por estágio |
-| 11 | 12 | recuperação como ferramenta + reflexão + teto |
-| 12 | 13 | memória com procedência, data e exclusão real |
-| 13 | 14 | compactação + estado estruturado que nunca compacta |
-| 14 | 15 | ferramentas com teto no adaptador e procedência marcada |
-| 15 | 16 | as quatro métricas + tabela de diagnóstico |
-| 16 | 17 | **atacar o próprio sistema** e medir o que cada camada bloqueia |
-| 17 | 18 | painel: custo por parcela + cache + latência + qualidade |
+| 1 | 02 | os dois caminhos separados no código, com os quatro contratos explícitos |
+| 2 | 03 | o Naive RAG inteiro, ponta a ponta — a linha de base honesta |
+| 3 | 04 | **ingestão**: extração, dedup, metadado com status, geração de metadado, política de saída |
+| 4 | 05 | chunking estrutural + embeddings, com a unidade de busca desacoplada da de entrega |
+| 5 | 06 | BM25 na mão (~40 linhas), depois denso, depois a fusão por posição — os três medidos |
+| 6 | 07 | reranking com nota usada como limiar, e a curva de N |
+| 7 | 08 | reescrita, HyDE e roteamento, cada um medido contra a linha de base |
+| 8 | 09 | contextual retrieval × late chunking, com as duas contas lado a lado |
+| 9 | 10 | RAPTOR reduzido (~80 linhas) + roteador por nível. Grafo fica de fora, e a etapa explica por quê |
+| 10 | 11–17 | **o gerador**: prompt em blocos, schema, camadas por volatilidade, fundamentação com citação e abstenção, eval de prompt |
+| 11 | 18 | recuperação como ferramenta + reflexão + teto de iterações |
+| 12 | 19 | resolução de referência entre turnos + memória com procedência e exclusão real |
+| 13 | 20 | orçamento com política de corte declarada |
+| 14 | 21 | as quatro métricas + tabela de diagnóstico |
+| 15 | 22 | **atacar o próprio sistema** e medir o que cada camada bloqueia |
+| 16 | 23 | painel: custo por parcela + cache + latência + qualidade |
 
 **Também nesta rodada:** ligar o **chat companion** em produção (o companion *é* o `rag-zero` rodando, e vira o exemplo real que o livro disseca), com gating de capacidades por capítulo.
 
-**Critério de conclusão:** as 18 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
+**Critério de conclusão:** as 17 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
 
 ---
 
