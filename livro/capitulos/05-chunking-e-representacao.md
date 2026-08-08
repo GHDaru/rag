@@ -23,9 +23,9 @@ O que torna este capítulo caro de errar é que **as duas decisões são anterio
 
 ## Fundamentos científicos
 
-- **Chunking avaliado, não assumido** — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) compara estratégias avançadas de reconstrução de contexto em vez de presumir que as mais elaboradas vencem. `[a validar]`
-- **Seleção adaptativa** — [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) propõe escolher o método de corte **por documento**, reconhecendo formalmente que "um tamanho serve para tudo" é a hipótese errada. `[a validar]`
-- **Tópicos que atravessam documentos** — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) trata o corte considerando o corpus como conjunto, e não o documento isolado. `[a validar]`
+- **Chunking avaliado, não assumido** — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) compara *late chunking* e *contextual retrieval* em vez de presumir que a mais elaborada vence, e acha uma troca real: mais coerência custa mais computação; mais eficiência custa relevância e completude (cap. 09). ✓
+- **Seleção adaptativa, e a lacuna que ela nomeia** — [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) escolhe o método de corte **por documento** e, no caminho, registra o buraco metodológico da área: *"chunking **lacks a dedicated evaluation framework**, making it difficult to assess and compare strategies **independently of downstream performance**"*. A proposta são cinco métricas **intrínsecas** ao chunk — completude de referências, coesão interna, coerência contextual com o documento, integridade de bloco e conformidade de tamanho. Isso muda o que é possível fazer nesta etapa: dá para avaliar o corte **antes** de ter um pipeline inteiro para medir. ✓
+- **Tópicos que atravessam documentos** — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) nomeia o problema que o corte por documento cria — *"the knowledge fragmentation problem"* — e corta no nível do **corpus**: identifica tópicos entre documentos e sintetiza chunks unificados. Números no cap. 09. ✓
 - **Avaliação de representação** — **MTEB** ([arXiv 2210.07316](https://arxiv.org/abs/2210.07316)) mede embeddings em 8 tarefas, 58 datasets e 112 idiomas, sobre 33 modelos. O achado que importa aqui não é o ranking, é a conclusão: *"**no particular text embedding method dominates across all tasks**"* — ou seja, não existe "o melhor embedder", existe o melhor para a sua tarefa. E posição em benchmark geral não transfere para domínio específico (cap. 21). ✓
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)

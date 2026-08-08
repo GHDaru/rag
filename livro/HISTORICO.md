@@ -6,18 +6,18 @@
 
 ## Histórico de edições
 
-### Edição 0.3 — 2026-08-04 · Rodada 2, primeira leva: o livro passa a ser citável
+### Edição 0.3 — 2026-08-04 · Rodada 2: o livro passa a ser citável
 
-**O que é.** A primeira rodada de **evidência**. Até aqui o livro tinha um mapa de fontes e nenhuma delas conferida — 55 referências ⏳, zero ✓. Esta edição fecha a parte que sustenta mais peso.
+**O que é.** A rodada de **evidência**. Até aqui o livro tinha um mapa de fontes e nenhuma delas conferida — 55 referências ⏳, zero ✓. Esta edição leva **42 delas (76%) a ✓**, acima do critério de 60% da rodada.
 
 **O que foi feito:**
 
 - **Os 49 identificadores arXiv do repositório foram resolvidos contra o arXiv real**, com um ID falso de controle para provar que o teste discrimina. **Nenhum inventado, nenhum título divergente.** A citação alucinada — a falha mais corrosiva possível num livro assim — está descartada como classe.
-- **26 referências passaram a ✓**: texto lido, afirmação do livro conferida contra o original.
+- **42 referências passaram a ✓**: texto lido, afirmação do livro conferida contra o original.
 - **As ~20 técnicas nomeadas que estavam sem URL ganharam fonte primária.** RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição e GraphRAG entraram no livro pela porta dos guias de praticante, e a rodada 2 confirmou que **todas chegam ao paper que as propôs**. O que se revelou distorcido foi um número, não uma técnica.
 - **Condição experimental ao lado de cada número validado** — o modelo de 540B do Chain-of-Thought, o GPT-4 acoplado ao RAPTOR, o cenário zero-shot sem rótulo do HyDE, o custo por milhão de tokens do *contextual retrieval*.
 
-**As três correções — o resultado mais valioso da rodada:**
+**As quatro correções — o resultado mais valioso da rodada:**
 
 1. **✗ *Lost in the Middle* não sustentava a afirmação do cap. 20.** O livro dizia que a degradação em contexto longo "não é linear com o comprimento, é dirigida pela similaridade entre alvo e distratores", e citava aquele paper. Ele estabelece degradação **posicional** e não trata de distratores. Pior: a fonte que **de fato** mede distratores (relatório *Context Rot*, 18 modelos) contradiz a outra metade — isolando a variável, **o comprimento degrada sozinho**, mesmo em tarefa trivial. O certo é "é o comprimento, e distratores próximos tornam a queda mais íngreme". Era a afirmação que o próprio livro marcava como a mais frágil; estava frágil pelos dois lados.
 2. **✗ As quatro métricas não são todas do paper do RAGAS.** O original propõe **três** — *faithfulness*, *answer relevance*, *context relevance*. O par *context precision* / *context recall* é da **biblioteca**, que desdobrou o terceiro. O livro construiu um capítulo inteiro sobre o quarteto atribuindo-o à fonte errada.
@@ -25,7 +25,9 @@
 
 **Nota de método que vale registrar.** A primeira consulta automática ao PDF do RAGAS devolveu uma citação **inventada** — "We propose four metrics" — que teria confirmado o erro do livro em vez de revelá-lo. Só apareceu porque o texto foi extraído e lido diretamente. **Resumo automático de fonte não é validação.** É exatamente para isso que o status ✓ existe.
 
-**Estado da evidência:** **26 ✓ · ~30 ⏳ · 2 ✗**. A segunda leva (surveys de apoio, segurança, memória) segue pendente.
+**O que a validação também **acrescentou** ao livro, além de corrigir:** cinco **métricas intrínsecas de chunking** que permitem avaliar o corte sem pipeline inteiro (cap. 05); a *heterogeneous memory contamination* e a cura por papel funcional na escrita (caps. 19, 22); o corpus sintético ficcional do U-NIAH como método para separar recuperação de memorização (cap. 20); e a precisão de que *zero-shot* e *few-shot* são irmãos sob **In-Context Learning**, não pares dos outros quatro ramos (cap. 12).
+
+**Estado da evidência:** **42 ✓ · 13 ⏳ · 3 ✗**. As 13 restantes são de menor peso estrutural — nenhuma sustenta sozinha uma tese de capítulo. **Fica aberto** o preenchimento dos Apêndices A, que é o item restante do critério de conclusão da rodada.
 
 **Atribuição:** direção editorial — Gilsiley Henrique Darú. Validação, correções e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-04.
 
