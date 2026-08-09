@@ -1,6 +1,6 @@
 # 03 — Arquiteturas de Referência
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Os quatro paradigmas e os padrões de fluxo estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -110,10 +110,15 @@ Na etapa 2 você monta o `rag-zero` **ingênuo e inteiro**: corte fixo, embeddin
 
 ---
 
-## Apêndice A — Como cada arquitetura de referência se organiza
+## Apêndice A — Como cada framework materializa os paradigmas
 
-> Tratamento por arquitetura publicada, com fonte — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.2)**: os quatro paradigmas e os padrões de fluxo estão descritos a partir da survey de Gao e do Modular RAG. O tratamento comparado — arquiteturas de referência publicadas, o que cada uma modulariza de fato, e onde as fronteiras entre paradigmas são borradas na prática — é o trabalho da **rodada 2** do ROADMAP.
+| Paradigma | Como aparece na prática | O que reter |
+|---|---|---|
+| **Naive** | o *quickstart* de qualquer framework | é literalmente o tutorial de primeira página dos três. **Pegadinha:** a maioria dos sistemas que se dizem avançados parou aqui e acrescentou um reranker. |
+| **Advanced** | pré e pós-recuperação plugados no mesmo pipeline linear | continua linear. Acrescentar reescrita e reranking **não** torna o sistema modular. |
+| **Modular** | grafos de fluxo com nós e arestas (LangGraph, *workflows* do LlamaIndex, *pipelines* do Haystack) | é aqui que roteamento e ramificação viram primeira classe. **O teste do capítulo:** trocar um módulo sem tocar nos vizinhos. Se o roteador conhece o formato interno do retriever, não é modular — é um `if`. |
+| **Agêntico** | recuperação exposta como **ferramenta** ao modelo | ver o [cap. 18](18-rag-agentico.md). **Pegadinha:** o framework dá o laço; o **teto** do laço é sempre seu. |
 
-Enfileirado: Naive/Advanced/Modular na formulação original (2312.10997) · módulos, operadores e padrões de fluxo (2407.21059) · o degrau agêntico (2501.09136) e o debate raciocínio raso × deliberado (2506.10408) · arquiteturas de referência de fornecedores, lidas contra o teste de modularidade.
+**A leitura de Gao que fecha o apêndice:** o Advanced RAG é descrito como quem *"employs **pre-retrieval and post-retrieval** strategies"* — as duas continuam presas a uma sequência. É *Modular RAG* que *"**transcends the traditional linear architecture**"*. A fronteira entre o segundo e o terceiro degrau não é quantidade de técnica; é **topologia**.

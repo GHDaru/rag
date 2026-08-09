@@ -1,6 +1,6 @@
 # 09 — Recuperação Avançada
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **chunking** e **embedding**, do lado da indexação (cap. 02).
 
@@ -105,6 +105,13 @@ Na etapa 8 você aplica *contextual retrieval* a um subconjunto do corpus do `ra
 
 ## Apêndice A — Como cada técnica avançada é implementada
 
-**Rodada 1 (edição 0.2)**: as duas curas e a economia comparada estão descritas. O tratamento por técnica — com a condição experimental de cada número publicado, que é onde o Princípio I mais aperta neste capítulo — é o trabalho da **rodada 2** do ROADMAP.
+> Tratamento por implementação, com URL e com a conta.
 
-Enfileirado: Contextual Retrieval (o corpus em que foi medido) · Late Chunking e o limite do embedder · chunking avaliado (2504.19754) · corte alinhado entre documentos (2601.05265) · indexação refinada no Advanced RAG (2312.10997).
+| Técnica | Implementação de referência | O que reter |
+|---|---|---|
+| **Contextual Retrieval** | [receita dos autores](https://www.anthropic.com/engineering/contextual-retrieval), com caderno no [Claude Cookbooks](https://github.com/anthropics/anthropic-cookbook) | contexto de 50–100 tokens por chunk, **entrando também no índice BM25** — não só no embedding. **Pegadinha:** sem cache de prompt, o custo declarado (US$ 1,02 por milhão de tokens de documento) não se sustenta; a receita depende de reusar o documento inteiro como prefixo. |
+| **Late Chunking** | [jina-ai/late-chunking](https://github.com/jina-ai/late-chunking) | corte **depois** do transformer, antes do *pooling*; funciona *"without additional training"*. **Pegadinha:** exige embedder de contexto longo — documento acima do limite dele não se beneficia inteiro, e o método degrada para chunking normal sem avisar. |
+| **A comparação** | [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) | a única medição pública lado a lado que localizamos. É o que sustenta a correção deste capítulo: **não é só preço, é qualidade**. |
+| **Corte no nível do corpus** | CDTA ([arXiv 2601.05265](https://arxiv.org/abs/2601.05265)) | supera *contextual retrieval* em multi-hop (0,93 × 0,83 de *faithfulness*). **Pegadinha:** indexação mais cara ainda, e a síntese entre documentos cria chunks que **não existem** em nenhum documento — o que complica a citação verificável do cap. 15. |
+
+**A pergunta em aberto desta etapa:** nenhuma das três foi medida no corpus deste livro. A rodada 4 mede.

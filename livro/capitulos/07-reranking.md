@@ -1,6 +1,6 @@
 # 07 — Reranking
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **reranker** (cap. 02).
 
@@ -87,8 +87,15 @@ Na etapa 6 você acrescenta o reranker ao `rag-zero` e mede três coisas: o ganh
 
 ---
 
-## Apêndice A — Como cada reranker funciona
+## Apêndice A — Como cada abordagem reordena
 
-**Rodada 1 (edição 0.2)**: a economia do estágio e o uso da nota estão descritos. O tratamento por implementação — arquiteturas de reranker, latência por documento, e as condições experimentais dos ganhos publicados — é a **rodada 2** do ROADMAP.
+> Tratamento por implementação, com URL.
 
-Enfileirado: cross-encoders e alternativas de última geração · reordenação em estágios na tradição de IR · calibração de nota para limiar · o lugar do reranking no Advanced RAG (2312.10997).
+| O quê | Implementação de referência | O que reter |
+|---|---|---|
+| **Cross-encoder aberto** | `CrossEncoder` do [sentence-transformers](https://github.com/UKPLab/sentence-transformers) | a rota de custo zero e sem GPU para N pequeno; é a que o `rag-zero` usa. **Pegadinha:** o custo é **linear em N**, e a latência de um lote de 100 num CPU comum surpreende quem só testou com 10. |
+| **Reranking como serviço** | APIs de reranking dos provedores | tiram o modelo da sua infraestrutura e devolvem nota normalizada. **Pegadinha:** a nota é comparável **dentro** de uma consulta, não entre consultas nem entre versões do modelo — um limiar fixo calibrado hoje expira na próxima versão. |
+| **Reranking por LLM** | *listwise*, pedindo ao modelo que ordene os candidatos | dispensa modelo dedicado. **Pegadinha:** não devolve nota utilizável como limiar (§ sobre usar a nota), e o resultado depende da ordem de entrada — o que é viés de posição, o mesmo do cap. 20. |
+| **Onde ele encaixa** | `ContextualCompressionRetriever` (LangChain), *node postprocessors* (LlamaIndex), `Ranker` (Haystack) | os três tratam reranking como **pós-processador do retriever**, que é o desenho correto: o retriever não sabe que existe reranker. |
+
+**A ligação que a survey de Gao acrescenta:** reranking é pós-recuperação e serve também para *"relocate the most relevant content to the **edges of the prompt**"*. Se a sua implementação reordena e depois concatena na ordem, ela está usando metade da técnica.

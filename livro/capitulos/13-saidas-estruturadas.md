@@ -1,6 +1,6 @@
 # 13 — Saídas Estruturadas
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento está fechado; o comparativo entre modos de garantia (schema nativo × gramática × validação externa) é a rodada 2 do ROADMAP.
 
@@ -85,10 +85,15 @@ Na etapa 10 você troca a resposta em texto livre do `rag-zero` por um contrato:
 
 ---
 
-## Apêndice A — Como cada fonte trata a saída estruturada
+## Apêndice A — Como cada abordagem garante a forma
 
-> Tratamento por mecanismo e por implementação, com URL — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.1)**: os três níveis de garantia estão mapeados e os mecanismos identificados. O tratamento comparado — o que cada provedor garante exatamente, o que a decodificação restrita custa em latência, e como as bibliotecas de validação se encaixam — é o trabalho da **rodada 2** do ROADMAP.
+| Abordagem | Implementação de referência | O que reter |
+|---|---|---|
+| **Schema nativo do provedor** | modos de saída estruturada das APIs | a rota padrão quando disponível. **Pegadinha:** garante que o JSON **valida**, não que os valores estejam certos — e schema muito aninhado degrada a qualidade do conteúdo. |
+| **Decodificação restrita** | [outlines](https://github.com/dottxt-ai/outlines), [guidance](https://github.com/guidance-ai/guidance) | a rota para modelo local, restringindo a amostragem por gramática. **Pegadinha:** custa latência, e a gramática pode **forçar** uma saída sintaticamente válida a partir de um raciocínio errado. |
+| **Validar + reparar** | [pydantic](https://github.com/pydantic/pydantic) e congêneres, com re-solicitação | **é obrigatório mesmo com schema nativo**, porque a validação semântica nunca vem de graça. O teto de tentativas é seu. |
+| **Campo de raciocínio** | um campo textual **antes** dos campos de decisão | os campos são gerados na ordem em que aparecem; a ordem do schema é decisão de qualidade, não de estética. |
 
-Enfileirado: modos de saída estruturada dos três grandes provedores (o que é garantia e o que é *best effort*) · bibliotecas de *constrained decoding* para modelos locais · frameworks de validação e reparo · a equivalência entre schema de ferramenta e schema de resposta.
+**A ligação com o cap. 15:** o campo explícito de incerteza (*"não encontrei"*) é o que transforma a regra de ausência em **estrutura verificável por código**, em vez de instrução que o modelo pode ignorar.

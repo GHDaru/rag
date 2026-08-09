@@ -1,6 +1,6 @@
 # 17 — Avaliação de Prompts
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento e a escada de métodos estão fechados; o tratamento por ferramenta é a rodada 2 do ROADMAP.
 
@@ -102,10 +102,16 @@ Na etapa 10 você monta o conjunto de avaliação do `rag-zero` com 20 casos vin
 
 ---
 
-## Apêndice A — Como cada ferramenta trata a avaliação de prompt
+## Apêndice A — Como cada ferramenta avalia prompt
 
-> Tratamento por ferramenta, com URL e método — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL. Converge com o Apêndice A do [cap. 21](21-avaliacao-e-observabilidade.md).
 
-**Rodada 1 (edição 0.1)**: a escada de métodos e os vieses do juiz estão descritos. O tratamento por ferramenta — o que cada uma mede, como executa em CI, e como lida com calibração — é o trabalho da **rodada 2**, e converge com o Apêndice A do cap. 21 (as ferramentas são, em grande parte, as mesmas).
+| O quê | Implementação de referência | O que reter |
+|---|---|---|
+| **Asserção determinística** | qualquer framework de teste da sua linguagem | **é o primeiro degrau, e o mais subestimado.** Todo critério que puder virar `assert` deve virar `assert` — o juiz é para o que sobrar. |
+| **Eval declarativo** | [promptfoo](https://github.com/promptfoo/promptfoo) | casos em arquivo, execução em CI, e **red teaming no mesmo lugar** — o que materializa a tese de que teste adversarial é eval. |
+| **Eval em pipeline** | [DeepEval](https://github.com/confident-ai/deepeval) | as métricas de RAG com foco em CI/CD. |
+| **Observabilidade de execução** | [TruLens](https://github.com/truera/trulens) | instrumenta a execução, não só o resultado — é a ponte para o cap. 21. |
+| **Calibração do juiz** | uma amostra revisada por gente, comparada com o juiz | **Pegadinha:** nenhuma ferramenta faz isso por você, e sem isso o número do juiz é invenção com aparência de rigor. |
 
-Enfileirado: frameworks de eval com integração de CI · ferramentas de red teaming mapeadas ao OWASP LLM Top 10 · práticas de calibração de juiz · estratégias de amostragem para controlar custo.
+**A lacuna que nenhuma ferramenta cobre:** quase toda métrica mede **um turno**. Sistemas reais falham ao longo da conversa (cap. 19), e a instrumentação de conversa inteira ainda não existe de prateleira.

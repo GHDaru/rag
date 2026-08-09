@@ -1,6 +1,6 @@
 # 04 — Ingestão e Governança do Corpus
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço novo.** Componentes que aprofunda: **aquisição, extração e enriquecimento** (cap. 02). É o capítulo **menos apoiado em evidência** do livro — a área trata ingestão como pré-processamento e raramente a estuda. A bibliografia própria dele é prioridade da rodada 2.
 
@@ -162,8 +162,14 @@ Na etapa 3 você constrói o ingestor do `rag-zero` antes de qualquer busca: var
 
 ## Apêndice A — Como cada abordagem trata a ingestão
 
-> Tratamento por ferramenta e prática, com URL — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL. **Este é o apêndice mais magro do livro, e a razão é honesta:** a área trata ingestão como encanamento e publica pouco sobre ela.
 
-**Rodada 1 (edição 0.1)**: o capítulo nasce no adendo 0.1.1 com o argumento fechado e a base de evidência **declaradamente fraca** — a área trata ingestão como pré-processamento e raramente a estuda. O tratamento por implementação é trabalho da **rodada 2**, e aqui ele começa quase do zero.
+| Etapa | Implementação de referência | O que reter |
+|---|---|---|
+| **Extração** | bibliotecas de parsing de documento (por formato), com ou sem modelo de layout | **Pegadinha, e é a do capítulo:** nenhuma delas falha ruidosamente. PDF mal extraído produz texto plausível e embaralhado, e o pipeline segue. **Leia uma amostra com olhos humanos.** |
+| **Geração de metadado** | uma chamada de LLM por documento, com schema (cap. 13) | resumo contextual, perguntas hipotéticas, vigência, classificação. **Pegadinha:** guarde a **confiança** junto do valor, e nunca filtre de forma dura com o gerado. |
+| **Resumo contextual** | é o *contextual retrieval* do [cap. 09](09-recuperacao-avancada.md) visto daqui | a survey de Gao lista *"incorporation of metadata"* entre os refinamentos de indexação do Advanced RAG — o argumento deste capítulo tem âncora na survey de referência. |
+| **Deduplicação** | hash exato para idênticos; similaridade para quase-idênticos | **Pegadinha:** o quase-idêntico costuma ser **versão diferente**, não duplicata. Deduplicar sem olhar `versao`/`status` apaga a atualização e mantém a revogada. |
+| **Papel funcional na escrita** | a lição do [MemGuard](https://arxiv.org/abs/2605.28009), trazida da memória | atribuir a cada item um papel explícito **no momento em que entra** impede que coisas de naturezas diferentes sejam usadas como evidência intercambiável. Vale para memória e vale para corpus. |
 
-Enfileirado: técnicas de geração de metadado (doc2query e perguntas hipotéticas, classificação, extração de vigência) · bibliotecas de extração de documento (e o que cada uma faz com tabela e layout) · estratégias de reindexação incremental · modelos de metadado e catálogos de dados · deduplicação por similaridade · a literatura de envenenamento de corpus (ponte com o cap. 22) · e a pergunta em aberto: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
+**A lacuna declarada, que a rodada 2 confirmou existir:** não localizamos trabalho publicado que meça o impacto **isolado** de frescor, deduplicação e procedência sobre métricas de RAG. Duas buscas independentes, nada. Se não existir, é lacuna real da área — e vira **experimento próprio na rodada 4**.

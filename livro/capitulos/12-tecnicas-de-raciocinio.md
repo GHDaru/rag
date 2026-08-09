@@ -1,6 +1,6 @@
 # 12 — Técnicas de Raciocínio
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** As seis famílias e o critério de escolha estão fechados; a ficha por técnica e as medições comparadas são a rodada 2 do ROADMAP.
 
@@ -81,10 +81,16 @@ Na etapa 10 você implementa duas famílias no `rag-zero` e as compara com núme
 
 ---
 
-## Apêndice A — Como cada fonte trata as técnicas de raciocínio
+## Apêndice A — Cada técnica com sua fonte e sua condição
 
-> Tratamento por técnica, com fonte primária e implementação — complementação online, expandida a cada rodada.
+> Ficha por técnica: proposta original, **condição experimental da medição publicada**, e o que reter. Alimenta o [Catálogo de técnicas](../apendice-tecnicas.md).
 
-**Rodada 1 (edição 0.1)**: a taxonomia está adotada e as fontes primárias identificadas. O tratamento por técnica — ficha com proposta original, condição experimental da medição publicada, e implementação pública consultável — é o trabalho da **rodada 2**, e alimenta o [Catálogo de técnicas](../apendice-tecnicas.md).
+| Técnica | Fonte primária | Condição da medição — e o que reter |
+|---|---|---|
+| **Chain-of-Thought** | [arXiv 2201.11903](https://arxiv.org/abs/2201.11903) | **540B, oito exemplares, GSM8K.** O paper é explícito: o efeito *"emerge naturally in **sufficiently large** language models"*. **Em modelo pequeno, não reproduz** — e essa é a linha mais omitida da área. |
+| **Self-Consistency** | [arXiv 2203.11171](https://arxiv.org/abs/2203.11171) | GSM8K +17,9%, SVAMP +11,0%, AQuA +12,2%. **Custa N×** — é decisão financeira antes de ser técnica. |
+| **ReAct** | [arXiv 2210.03629](https://arxiv.org/abs/2210.03629) | intercala raciocínio e ação, com a ação servindo para *"interface with external sources, **such as knowledge bases**"*. O paper já previa o destino que o [cap. 18](18-rag-agentico.md) explora. |
+| **Step-back** | [arXiv 2310.06117](https://arxiv.org/abs/2310.06117) | PaLM-2L: MMLU Física +7%, Química +11%, TimeQA +27%, MuSiQue +7%. Classificada sob *thought generation*, **não** sob recuperação (ver [cap. 08](08-entendimento-da-consulta.md)). |
+| **Zero-shot / few-shot** | ambas sob *In-Context Learning* no *Prompt Report* | são **irmãs** entre si, não pares das outras quatro famílias: diferem em ter ou não exemplo, enquanto as demais diferem no que se faz com a computação. |
 
-Enfileirado para o tratamento: Chain-of-Thought e variantes (zero-shot CoT, least-to-most) · Self-Consistency · ReAct · Tree-of-Thought · Reflexion e a família de auto-crítica · Plan-and-Solve.
+**A ressalva que vale para a tabela inteira:** há evidência sistemática ([QA médico](https://www.sciencedirect.com/science/article/pii/S0010482525009655)) de que o **ranking entre técnicas muda com domínio e modelo**. Nenhum número acima transfere para o seu caso sem medição — e é por isso que o [cap. 17](17-avaliacao-de-prompts.md) vem antes do [cap. 16](16-otimizacao-de-prompts.md).

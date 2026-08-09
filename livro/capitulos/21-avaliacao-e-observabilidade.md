@@ -1,6 +1,6 @@
 # 21 — Avaliação e Observabilidade
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **avaliador** e **observabilidade** (cap. 02). As quatro métricas e a tabela de diagnóstico estão fechadas; o tratamento por ferramenta e benchmark é a rodada 2 do ROADMAP.
 
@@ -121,8 +121,15 @@ Na etapa 14 você monta o eval do `rag-zero`: 30 perguntas sobre o texto deste l
 
 ## Apêndice A — Como cada ferramenta e benchmark avalia
 
-> Tratamento por ferramenta e benchmark, com o que mede e o que não mede — complementação online, expandida a cada rodada.
+> Tratamento por ferramenta, com o que mede **e o que não mede**.
 
-**Rodada 1 (edição 0.1)**: as quatro métricas e a tabela de diagnóstico estão descritas. O tratamento por ferramenta — a definição operacional exata de cada métrica em cada implementação (elas divergem), o custo de rodar, e a integração em CI — é o trabalho da **rodada 2** do ROADMAP, e converge com o Apêndice A do cap. 17.
+| Ferramenta | Implementação | O que mede — e o que não |
+|---|---|---|
+| **RAGAS** | [explodinggradients/ragas](https://github.com/explodinggradients/ragas) | as quatro métricas operacionais, **reference-free**, e gera conjunto de teste a partir do corpus. **Atenção à atribuição:** o paper propõe três aspectos (*faithfulness*, *answer relevance*, *context relevance*); o par *precision*/*recall* é da biblioteca. |
+| **DeepEval** | [confident-ai/deepeval](https://github.com/confident-ai/deepeval) | as mesmas ideias com foco em **execução em CI**. A leitura de 2026: RAGAS dá o arcabouço conceitual, DeepEval a execução em pipeline. |
+| **promptfoo** | [promptfoo/promptfoo](https://github.com/promptfoo/promptfoo) | avaliação **e** red teaming no mesmo lugar, com casos mapeados ao OWASP LLM Top 10 — o que materializa a tese do cap. 22 de que teste adversarial **é** eval. |
+| **BEIR** | [beir-cellar/beir](https://github.com/beir-cellar/beir) | recuperação zero-shot em 18 datasets. **Não mede** geração, nem o seu domínio. |
+| **MTEB** | [embeddings-benchmark/mteb](https://github.com/embeddings-benchmark/mteb) | embeddings em 8 tarefas e 112 idiomas. **Não diz** qual serve para você — o próprio paper conclui que nenhum domina em todas as tarefas. |
+| **Chunking, isolado** | as cinco métricas intrínsecas de [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) | permitem avaliar o **corte** sem pipeline inteiro — a lacuna que a área tinha e que o cap. 05 registra. |
 
-Enfileirado: RAGAS (definição de cada métrica) · DeepEval e execução em CI · TruLens e observabilidade · BEIR e MTEB (o que medem do estágio de recuperação) · U-NIAH (avaliação unificada dos dois regimes) · benchmarks de domínio e o que a proliferação deles revela.
+**O que nenhuma delas mede, e é a lacuna aberta do capítulo:** **trajetória**. Duas execuções agênticas com a mesma resposta e custos muito diferentes pontuam igual em todas as ferramentas acima.

@@ -1,6 +1,6 @@
 # 11 — Anatomia de um Prompt
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento do capítulo está fechado; a evidência por técnica e o Apêndice A completo são a rodada 2 do ROADMAP.
 
@@ -89,8 +89,14 @@ Na etapa 10 você monta o prompt do `rag-zero` em blocos nomeados, com uma funç
 
 ## Apêndice A — Como cada fonte trata a anatomia do prompt
 
-> Tratamento por guia e por implementação, com URL — complementação online, expandida a cada rodada.
+> Tratamento por fonte, com URL. O valor deste apêndice é mostrar **onde as fontes concordam** — porque a convergência é o que vale copiar.
 
-**Rodada 1 (edição 0.1)**: as fontes estão identificadas e mapeadas na [nota de panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md); o tratamento comparado (o que cada guia recomenda, onde discordam, e o que a diferença revela) é o trabalho da **rodada 2** do ROADMAP.
+| Fonte | O que ela estabelece | O que reter |
+|---|---|---|
+| **[The Prompt Report](https://arxiv.org/abs/2406.06608)** | 33 termos de vocabulário e 58 técnicas, por revisão PRISMA | é o dicionário. **Pegadinha:** a área tem *"conflicting terminology"* — o próprio paper diz isso como motivação. Fixar vocabulário é metade do trabalho. |
+| **Guias oficiais dos provedores** | recomendação estrutural (papéis, delimitadores, ordem) | convergem em delimitar material externo e pôr a tarefa concreta perto do fim. **Pegadinha:** cada um usa uma convenção de delimitador, e nenhuma é garantia — são convenções no texto, não canais separados. |
+| **[DAIR.AI Prompt Engineering Guide](https://github.com/dair-ai/prompt-engineering-guide)** | elementos do prompt com exemplos executáveis | a rota didática mais barata. |
+| **[OWASP LLM01](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** | a razão **de segurança** da separação instrução × dado | é o que transforma "boa prática de escrita" em requisito. Ver o [cap. 22](22-seguranca-do-corpus.md). |
+| **[Lost in the Middle](https://arxiv.org/abs/2307.03172)** | a razão **empírica** da ordem | melhor nas pontas, pior no meio — *"even for explicitly long-context models"*. Instrução no início, tarefa no fim, material longo no meio. |
 
-Fontes já enfileiradas para o tratamento: *The Prompt Report* (taxonomia e vocabulário) · guias oficiais de Anthropic, OpenAI e Google (recomendação estrutural) · DAIR.AI Prompt Engineering Guide (elementos e exemplos) · OWASP LLM01 (a razão de segurança da separação).
+**A convergência que atravessa as cinco:** nenhuma promete que a separação entre ordem e material seja garantida pelo modelo. Todas a tratam como **convenção que você impõe** — e é por isso que a defesa real está no privilégio das ferramentas (cap. 22), não no prompt.

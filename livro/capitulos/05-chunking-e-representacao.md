@@ -1,6 +1,6 @@
 # 05 — Chunking e Representação
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **chunking** e **embedding** (cap. 02).
 
@@ -94,6 +94,14 @@ Na etapa 4 você implementa três estratégias de corte sobre o texto deste livr
 
 ## Apêndice A — Como cada abordagem trata corte e representação
 
-**Rodada 1 (edição 0.2)**: as estratégias e o padrão de desacoplamento estão descritos. O tratamento por implementação — bibliotecas de chunking, famílias de modelo de embedding e o que MTEB mede exatamente — é a **rodada 2** do ROADMAP.
+> Tratamento por implementação, com URL.
 
-Enfileirado: chunking avaliado (2504.19754) · seleção adaptativa (2603.25333) · corte alinhado entre documentos (2601.05265) · MTEB e os limites da transferência de benchmark.
+| O quê | Implementação de referência | O que reter |
+|---|---|---|
+| **Cortes básicos** | *text splitters* do [LangChain](https://github.com/langchain-ai/langchain); *node parsers* do [LlamaIndex](https://github.com/run-llama/llama_index) | recursivo é o padrão razoável; fixo é a linha de base. **Pegadinha:** o tamanho é contado em **tokens do tokenizador que você passar** — trocar de modelo muda o corte sem ninguém perceber. |
+| **Desacoplar busca de entrega** | `SentenceWindowNodeParser` e `AutoMergingRetriever` (LlamaIndex) | são as duas materializações do padrão central deste capítulo. **Pegadinha:** o que vai para o gerador deixa de ser o que foi pontuado — a métrica de *context precision* (cap. 21) passa a medir outra coisa. |
+| **Proposição** | *Dense X Retrieval* ([arXiv 2312.06648](https://arxiv.org/abs/2312.06648)) | precisão alta para pergunta factual. **Pegadinha:** exige uma passada de LLM na indexação e **perde o encadeamento** — proposições isoladas não contam uma história. |
+| **Avaliar o corte** | as cinco métricas intrínsecas de [arXiv 2603.25333](https://arxiv.org/abs/2603.25333) | completude de referências, coesão interna, coerência com o documento, integridade de bloco, conformidade de tamanho. É o que permite comparar estratégias **antes** de ter pipeline. |
+| **Escolher o embedder** | [MTEB](https://github.com/embeddings-benchmark/mteb) | **Pegadinha, e o próprio paper a diz:** *"no particular text embedding method dominates across all tasks"*. Posição no ranking geral não transfere para o seu domínio. |
+
+**A decisão que este apêndice não toma por você:** trocar de modelo de embedding obriga a reindexar o corpus inteiro. É a decisão mais cara de reverter do livro, e nenhuma ferramenta a torna barata.
