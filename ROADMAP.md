@@ -2,7 +2,7 @@
 
 > As rodadas planejadas do livro vivo. Cada rodada é um lote de trabalho que vira **uma ou mais specs** (`specs/NNN-nome/`), cada uma em sua branch, conforme o Princípio VII da [constituição](.specify/memory/constitution.md).
 >
-> Última atualização: **2026-08-09** · edição vigente: **0.4** (ver [Histórico](livro/HISTORICO.md))
+> Última atualização: **2026-08-09** · edição vigente: **0.5** (ver [Histórico](livro/HISTORICO.md))
 
 ## Onde estamos
 
@@ -64,7 +64,7 @@ O que **ainda não** existe, e é deliberado:
 
 ---
 
-## Rodada 3 — `rag-zero` (a trilha prática)
+## Rodada 3 — `rag-zero` (a trilha prática) · **em andamento**
 
 **Objetivo:** o livro executável. **17 etapas** (0–16), Python + FastAPI, custo zero e sem GPU. A Parte IV inteira converge para a etapa 10, porque é um gerador só — construído em camadas.
 
@@ -91,6 +91,19 @@ O que **ainda não** existe, e é deliberado:
 | 16 | 23 | painel: custo por parcela + cache + latência + qualidade |
 
 **Também nesta rodada:** ligar o **chat companion** em produção (o companion *é* o `rag-zero` rodando, e vira o exemplo real que o livro disseca), com gating de capacidades por capítulo.
+
+### Feito (edição 0.5, 2026-08-09)
+
+- ✅ **Etapas 0 e 3–6 construídas, executáveis e testadas** — 29 testes, sem rede, sem GPU, sem credencial, **sem uma única dependência externa**.
+- ✅ **BM25 Okapi de verdade** em ~40 linhas (IDF + saturação + normalização por comprimento), com índice invertido.
+- ✅ **As três portas** (`LLMPort`, `EmbedderPort`, `RerankerPort`) com adaptadores que não custam nada.
+- ✅ **O erro didático deliberado declarado e fixado em teste**: o embedder de *hashing* não tem semântica, e a etapa 5 mede o que isso custa.
+- ✅ **O companion passou a usar BM25 de verdade.** Até a 0.4 ele pontuava por sobreposição crua de termos **enquanto se descrevia como o BM25 do rag-zero**. Agora a afirmação do livro é verdadeira.
+
+### Aberto
+
+- Etapas 1, 2 e 7–16 (consulta, indexação avançada, estruturada, gerador, agêntico, memória, orçamento, segurança, custo).
+- Ligar o **companion em produção** com gating de capacidades por capítulo.
 
 **Critério de conclusão:** as 17 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
 

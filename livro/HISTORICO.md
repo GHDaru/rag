@@ -6,6 +6,27 @@
 
 ## Histórico de edições
 
+### Edição 0.5 — 2026-08-09 · O livro começa a executar
+
+**O que é.** A rodada 3 começa: o `rag-zero` sai do papel. As **etapas 0 e 3–6** estão construídas, executáveis e testadas — **29 testes, sem rede, sem GPU, sem credencial e sem uma única dependência externa**. O corpus é o texto deste livro.
+
+**O que roda hoje:**
+
+- **Etapa 0** — o contador de tokens por bloco, que é o instrumento do livro. Imprime a composição do contexto e delimita o bloco externo como dado, nunca instrução.
+- **Etapa 3** — a ingestão, com o teste que dá nome ao cap. 04: um documento `revogado` **não** é recuperado, mesmo ranqueando melhor que o vigente. E o teste da outra metade: um extrator que **erra** não custa nada, porque metadado gerado não filtra de forma dura.
+- **Etapa 5** — BM25 Okapi em ~40 linhas (IDF, saturação, normalização por comprimento), busca densa, fusão por posição, e a tabela de ganho por estágio.
+- **Etapa 6** — reranking usando a **nota** como limiar, e o caminho de abstenção: a pergunta fora do corpus abstém, e a taxa de resultado zero deixa de ser zero.
+
+**O achado desconfortável que a etapa 5 imprime — e que fica.** No corpus deste livro, **fundir BM25 com o embedder de *hashing* piora a precisão** (0,525 → 0,425). É exatamente o que o cap. 06 prevê quando o embedder não carrega semântica, e a trilha o mantém visível em vez de esconder: o adaptador barato tem o ponto cego da busca esparsa **com o custo da densa**. Trocar por um modelo real é uma linha, porque ele está atrás de uma porta — e há um teste que fixa o defeito como contrato, para quebrar quando alguém fizer a troca.
+
+**A correção que a construção revelou.** Escrever o BM25 de verdade expôs que o **chat companion** vinha pontuando por **sobreposição crua de termos** — sem IDF, sem normalização por comprimento — **enquanto seu próprio docstring o descrevia como "o BM25 da etapa 8 do rag-zero"**. Não era. O livro afirma que o companion *é* o `rag-zero` rodando; a afirmação só passou a ser verdadeira agora. O ranking melhorou de forma visível: consultas que antes caíam em blocos longos e genéricos agora caem no capítulo certo.
+
+**Uma armadilha de medição, corrigida e transformada em lição.** A primeira versão da tabela da etapa 5 reportava `context_recall` contra um gabarito que marcava **todos** os blocos do capítulo-alvo como relevantes. Com `k=5` e dezenas de relevantes, o teto matemático é ~0,12 — o número parecia péssimo **por construção**, não por defeito da busca. A métrica certa para a pergunta ("o pipeline acha o lugar certo do livro?") é **taxa de acerto**. O erro virou uma função documentada e um teste (`test_recall_tem_teto_quando_o_gabarito_e_grande`), porque é o tipo de engano fácil de cometer e difícil de perceber.
+
+**Estado:** etapas 0 e 3–6 ✅ · 14 parcial 🟡 · demais especificadas. O companion em produção segue pendente.
+
+**Atribuição:** direção editorial — Gilsiley Henrique Darú. Construção e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-09.
+
 ### Edição 0.4 — 2026-08-09 · Os 22 Apêndices A, e a rodada 2 fechada
 
 **O que é.** O item que faltava para concluir a rodada 2: o **tratamento por implementação**. O Princípio II exige que a fonte-base seja a técnica reprodutível — *paper* **mais** implementação pública — e o corpo dos capítulos recebia só a primeira metade. Os apêndices eram um "enfileirado: X · Y · Z".

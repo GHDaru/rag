@@ -1,19 +1,28 @@
-"""Índice leve de busca no texto do livro — sem dependências, sem rede.
+"""Índice de busca no texto do livro — sem dependências, sem rede.
 
 O tutor responde do livro (Princípio I: evidência). Este módulo carrega os
-Markdown de `livro/`, quebra em blocos por
-cabeçalho/parágrafo e pontua por sobreposição de termos. Não é um vetor de
-embeddings — é o BM25 da etapa 8 do rag-zero, honesto e suficiente para
-ancorar respostas e citar de onde vieram. A etapa 9 (embeddings + fusão +
-reranking) entra aqui na rodada 3 do ROADMAP: o companion é o próprio livro
-rodando, e evolui capítulo a capítulo.
+Markdown de `livro/`, quebra em blocos por cabeçalho/parágrafo e ranqueia com
+**BM25 Okapi** — o mesmo da etapa 5 do `rag-zero`, reimplementado aqui porque o
+companion precisa ser deployável sozinho, sem o repositório completo.
+
+**Correção registrada (rodada 3).** Até a edição 0.4 este módulo pontuava por
+**sobreposição crua de termos** e se descrevia como "o BM25 do rag-zero". Não
+era: faltavam as três correções que fazem BM25 funcionar — IDF (termo raro vale
+mais), saturação de frequência e normalização por comprimento. Sem elas, o
+ranking favorecia bloco longo e tratava "sistema" como igual a "RAPTOR". O livro
+afirma que o companion **é** o rag-zero rodando; agora é verdade.
+
+A versão canônica, comentada etapa a etapa, está em `rag-zero/rag_zero/bm25.py`.
+Fusão com busca densa e reranking entram nas etapas 5–6 desta mesma rodada.
 """
 
 from __future__ import annotations
 
 import json
+import math
 import re
 import unicodedata
+from collections import Counter
 from pathlib import Path
 from typing import Optional
 
@@ -28,6 +37,9 @@ def _norm(txt: str) -> list[str]:
 
 
 class BookIndex:
+    K1 = 1.5
+    B = 0.75
+
     def __init__(self, repo_root: Path, corpus_path: Optional[Path] = None) -> None:
         """Carrega do `corpus.json` empacotado se existir (caso do container
         isolado); senão varre `livro/` ao vivo (dev / repo completo)."""
@@ -36,6 +48,23 @@ class BookIndex:
             self._carregar_corpus(Path(corpus_path))
         elif (Path(repo_root) / "livro").is_dir():
             self._carregar(repo_root)
+        self._indexar()
+
+    def _indexar(self) -> None:
+        """Índice invertido + IDF pré-computado. Etapa 5 do rag-zero."""
+        self.invertido: dict[str, dict[int, int]] = {}
+        self.tamanhos: list[int] = []
+        for i, b in enumerate(self.blocos):
+            termos = b["termos"]
+            self.tamanhos.append(len(termos))
+            for termo, freq in Counter(termos).items():
+                self.invertido.setdefault(termo, {})[i] = freq
+        n = len(self.blocos)
+        self.tamanho_medio = (sum(self.tamanhos) / n) if n else 0.0
+        self.idf = {
+            termo: math.log(1 + (n - len(post) + 0.5) / (len(post) + 0.5))
+            for termo, post in self.invertido.items()
+        }
 
     def _carregar_corpus(self, path: Path) -> None:
         try:
@@ -89,14 +118,20 @@ class BookIndex:
             flush()
 
     def buscar(self, query: str, k: int = 4) -> list[dict]:
-        termos = set(_norm(query))
-        if not termos:
-            return []
-        pontuados = []
-        for b in self.blocos:
-            score = sum(1 for t in b["termos"] if t in termos)
-            if score:
-                pontuados.append((score, b))
-        pontuados.sort(key=lambda x: x[0], reverse=True)
-        return [{"fonte": b["fonte"], "titulo": b["titulo"],
-                 "trecho": b["texto"][:600]} for _, b in pontuados[:k]]
+        """BM25 Okapi. Devolve os k melhores blocos, com fonte para citação."""
+        notas: dict[int, float] = {}
+        for termo in _norm(query):
+            postings = self.invertido.get(termo)
+            if not postings:
+                continue
+            idf = self.idf[termo]
+            for i, freq in postings.items():
+                norma = 1 - self.B + self.B * (
+                    self.tamanhos[i] / (self.tamanho_medio or 1))
+                notas[i] = notas.get(i, 0.0) + idf * (freq * (self.K1 + 1)) / (
+                    freq + self.K1 * norma)
+        ordenados = sorted(notas.items(), key=lambda kv: (-kv[1], kv[0]))
+        return [{"fonte": self.blocos[i]["fonte"],
+                 "titulo": self.blocos[i]["titulo"],
+                 "trecho": self.blocos[i]["texto"][:600]}
+                for i, _ in ordenados[:k]]

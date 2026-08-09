@@ -1,58 +1,130 @@
 # rag-zero — a trilha prática
 
-> O livro executável: um sistema de prompt + contexto construído do zero, **uma etapa por capítulo**.
+> O livro executável: um sistema de RAG construído do zero, **uma etapa por capítulo**.
 >
-> Edição 0.1 · **status: planejado.** As etapas estão especificadas abaixo e descritas na seção "Mão na massa" de cada capítulo. A implementação é a [rodada 3](../ROADMAP.md#rodada-3--rag-zero-a-trilha-prática) do ROADMAP.
+> Edição 0.5 · **status: etapas 0 e 3–6 construídas e testadas; 7–16 especificadas.**
+> A implementação é a [rodada 3](../ROADMAP.md) do ROADMAP, e está em andamento.
+
+## Rodar agora
+
+Não precisa instalar nada. **Sem dependências, sem GPU, sem rede, sem credencial** —
+só a biblioteca padrão do Python 3.11+.
+
+```bash
+cd rag-zero
+
+python3 etapas/etapa00_contador.py     # o instrumento: composição do contexto
+python3 etapas/etapa03_ingestao.py     # o revogado não é recuperado
+python3 etapas/etapa05_busca.py        # esparso × denso × fusão, medidos
+python3 etapas/etapa06_reranking.py    # a nota como limiar, e a abstenção
+
+python3 -m pytest tests/ -q            # 29 testes
+```
+
+O corpus é **o texto deste livro**. Nenhuma etapa baixa nada.
 
 ## O que é
 
-A espinha 4C/ID do livro (Princípio III): cada etapa é uma *learning task* inteira — não um fragmento — e o capítulo correspondente é a *supportive information* que a sustenta.
+A espinha 4C/ID do livro (Princípio III): cada etapa é uma *learning task* inteira —
+não um fragmento — e o capítulo correspondente é a *supportive information* que a
+sustenta.
 
-**Stack:** Python + FastAPI + um chat mínimo em HTML/JS. **Custo zero e sem GPU** (Princípio VI).
+**Stack:** Python puro no núcleo; FastAPI quando chegar o companion.
+**Custo zero e sem GPU** (Princípio VI).
 
 ## As quatro regras da construção
 
 Da seção "Restrições" da [constituição](../.specify/memory/constitution.md):
 
-1. **Do zero antes da biblioteca.** BM25 em ~40 linhas antes de qualquer vector store; um otimizador de prompt em ~60 linhas antes do DSPy. A biblioteca entra depois, nomeada como **escolha** — não como pré-requisito. O objetivo é que você veja o mecanismo funcionar antes de delegá-lo.
-2. **Arquitetura hexagonal por refatoração.** Cada porta nasce da dor do capítulo: `LLMPort` na etapa 0, `IngestorPort` na 8, `RetrieverPort` na 9, `MemoryPort` na 12, `EvalPort` na 15. Nunca estrutura antecipada.
-3. **Completion problem, não folha em branco** (Carga Cognitiva). Cada etapa entrega o esqueleto e deixa para você a parte que **carrega a decisão** — a política de corte, o critério de saliência, o peso da fusão. É onde mora o aprendizado.
-4. **Anti-apodrecimento.** Modelo atrás de porta; etapas autocontidas e executáveis; erro didático deliberado é comentado como tal.
+1. **Do zero antes da biblioteca.** O [`bm25.py`](rag_zero/bm25.py) tem ~40 linhas e
+   implementa IDF, saturação e normalização por comprimento — as três correções que
+   separam BM25 de contagem de termos. A biblioteca entra depois, nomeada como
+   **escolha**, não como pré-requisito.
+2. **Arquitetura hexagonal por refatoração.** Cada porta nasce da dor de um capítulo:
+   `LLMPort` na etapa 0, `EmbedderPort` na 4, `RerankerPort` na 6. Nunca antecipada.
+3. **Completion problem, não folha em branco** (Carga Cognitiva). O esqueleto vem
+   pronto; o que carrega a **decisão** fica com você — o `k_rrf` da fusão, o limiar de
+   abstenção, a política de expiração.
+4. **Anti-apodrecimento.** Modelo atrás de porta; etapas autocontidas; e **erro
+   didático deliberado comentado como tal**.
 
-## As 18 etapas
+### O erro didático deliberado, declarado de frente
 
-| Etapa | Cap. | Constrói | Prova (o teste que fecha) |
-|:---:|:---:|---|---|
-| 0 | 01 | chat + `LLMPort` + **contador de tokens por bloco** | o contador imprime a composição do contexto |
-| 1 | 02 | prompt em blocos nomeados | material com instrução hostil embutida não muda o comportamento |
-| 2 | 03 | duas famílias de raciocínio comparadas | tabela custo × acerto sobre 20 perguntas |
-| 3 | 04 | schema + validação + reparo com teto | schema impossível falha explicitamente, sem laço |
-| 4 | 05 | cinco camadas + cascata de regras | **estabilidade de prefixo**: mesmos bytes entre dois turnos |
-| 5 | 06 | otimizador mínimo (~60 linhas) | o overfitting aparece: treino sobe, validação não |
-| 6 | 07 | conjunto de eval + **calibração do juiz** | concordância juiz × humano reportada antes de usar o número |
-| 7 | 08 | orçamento com política de corte | resultado gigante estoura e o corte segue a política escrita |
-| 8 | 09 | **ingestão**: extração, dedup, metadado, status | documento `revogado` **não** aparece, mesmo sendo o mais similar |
-| 9 | 10 | **BM25 na mão** (~40 linhas) + chunking estrutural | ranking sobre o texto do livro, sem biblioteca |
-| 10 | 10–11 | embeddings + fusão + reranking + contextual retrieval | medição por estágio: o ganho de cada um, isolado |
-| 11 | 12 | recuperação como ferramenta + reflexão + teto | custo médio por pergunta, antes e depois da autonomia |
-| 12 | 13 | memória com procedência, data e exclusão | fato de fonte externa **não** vira fato do usuário; exclusão apaga |
-| 13 | 14 | compactação + estado estruturado | restrição do turno 2 sobrevive ao turno 40, após 2 compactações |
-| 14 | 15 | ferramentas com teto no adaptador | ferramenta de 50k tokens não quebra o orçamento da etapa 7 |
-| 15 | 16 | as quatro métricas + tabela de diagnóstico | eval da etapa 9 × etapa 10: o ganho esperado aparece? |
-| 16 | 17 | **atacar o próprio sistema** | quanto cada camada de defesa bloqueia — e o que continua passando |
-| 17 | 18 | painel custo + cache + latência + qualidade | a taxa de acerto de cache antes e depois de reordenar as camadas |
+O `EmbedderHashing` projeta termos em posições por hash. Ele reproduz fielmente a
+**mecânica** da busca densa — vetor, cosseno, vizinhança — e **não tem semântica
+nenhuma**: não sabe que "carro" e "veículo" são parecidos.
+
+Ou seja: ele tem o ponto cego da busca esparsa com o custo da densa. **O pior dos
+dois mundos, de propósito.** A etapa 5 mede isso e mostra o resultado desconfortável:
+no corpus deste livro, **fundir BM25 com um embedder ruim piora a precisão** (0,525 →
+0,425). Que é exatamente o que o cap. 06 prevê — e a lição é que trocar o adaptador
+por um modelo real é uma linha, porque ele está atrás de uma porta.
+
+Há um teste (`test_embedder_hashing_nao_capta_parafrase`) que **fixa esse defeito como
+contrato**. Quando alguém plugar um embedder de verdade, ele quebra — e essa quebra é
+a lição.
+
+## As 17 etapas
+
+| Etapa | Cap. | Constrói | Prova (o teste que fecha) | Estado |
+|:---:|:---:|---|---|:---:|
+| 0 | 01 | `LLMPort` + **contador de tokens por bloco** | a composição do contexto sai impressa; bloco externo é delimitado | ✅ |
+| 1 | 02 | os dois caminhos + os quatro contratos | procedência chega do documento à citação | 🔜 |
+| 2 | 03 | o Naive RAG inteiro, ponta a ponta | a linha de base honesta, medida | 🔜 |
+| 3 | 04 | **ingestão**: extração, dedup, metadado, status | **documento `revogado` não é recuperado, mesmo sendo o mais similar** | ✅ |
+| 4 | 05 | chunking estrutural + *sentence-window* | a unidade de busca difere da de entrega | ✅ |
+| 5 | 06 | **BM25 na mão** + denso + fusão por posição | tabela de ganho por estágio, mesmas perguntas | ✅ |
+| 6 | 07 | reranking com a **nota** como limiar | pergunta fora do corpus **abstém**; taxa de zero deixa de ser zero | ✅ |
+| 7 | 08 | reescrita, HyDE e roteamento | cada um medido contra a linha de base | 🔜 |
+| 8 | 09 | contextual retrieval × late chunking | as duas contas lado a lado, no mesmo corpus | 🔜 |
+| 9 | 10 | RAPTOR reduzido (~80 linhas) + roteador por nível | pergunta global responde melhor pelos nós altos | 🔜 |
+| 10 | 11–17 | **o gerador**: blocos, schema, camadas, fundamentação, eval | resposta sem sustentação no contexto é recusada | 🔜 |
+| 11 | 18 | recuperação como ferramenta + reflexão + teto | custo médio por pergunta, antes e depois da autonomia | 🔜 |
+| 12 | 19 | referência entre turnos + memória com procedência | fato externo não vira fato do usuário; exclusão apaga | 🔜 |
+| 13 | 20 | orçamento com política de corte declarada | resultado gigante estoura e o corte segue a política escrita | 🔜 |
+| 14 | 21 | as quatro métricas + tabela de diagnóstico | eval da etapa 5 × etapa 8: o ganho esperado aparece? | 🟡 parcial |
+| 15 | 22 | **atacar o próprio sistema** | quanto cada camada bloqueia — e o que continua passando | 🔜 |
+| 16 | 23 | painel custo + cache + latência + qualidade | acerto de cache antes e depois de reordenar as camadas | 🔜 |
+
+A etapa 14 está **parcial** por decisão: as métricas de recuperação
+([`avaliacao.py`](rag_zero/avaliacao.py)) foram antecipadas porque o cap. 09 exige
+medir antes de otimizar, e não dava para escrever a etapa 5 sem elas. *Faithfulness* e
+*answer relevance* exigem LLM-as-judge e ficam para a etapa completa.
+
+## O mapa dos módulos
+
+| Módulo | Cap. | O que resolve |
+|---|:---:|---|
+| [`portas.py`](rag_zero/portas.py) | 01, 05, 07 | as três portas e os adaptadores que não custam nada |
+| [`contexto.py`](rag_zero/contexto.py) | 01, 20 | o contador por bloco, a montagem determinística, o orçamento |
+| [`ingestao.py`](rag_zero/ingestao.py) | 04 | pipeline de ingestão, metadado com procedência, o filtro duro |
+| [`chunking.py`](rag_zero/chunking.py) | 05 | desacoplar a unidade de busca da unidade de entrega |
+| [`bm25.py`](rag_zero/bm25.py) | 06 | BM25 Okapi em ~40 linhas, com índice invertido |
+| [`recuperacao.py`](rag_zero/recuperacao.py) | 06, 07 | denso, fusão RRF, reranking e **abstenção** |
+| [`avaliacao.py`](rag_zero/avaliacao.py) | 21 | recall, precisão, taxa de resultado zero, taxa de acerto |
 
 ## A tese pedagógica das etapas
 
 Quatro delas carregam o argumento do livro inteiro, e valem mesmo isoladas:
 
-- **Etapa 0 — o contador.** O instrumento que você vai olhar em todas as outras. A maior parte dos sistemas em produção não tem nada equivalente, e é por isso que degradam de forma inexplicável (cap. 20).
-- **Etapa 8 — a ingestão antes da busca.** Provar que um documento revogado não é recuperado, mesmo sendo o mais similar, é o que separa um índice de uma pilha de texto (cap. 04).
-- **Etapa 15 — o eval desconfortável.** Rodar a avaliação sobre a etapa 9 (só BM25) e sobre a etapa 10 (pipeline completo) e verificar se o ganho **que você esperava** aparece. Às vezes não aparece. Esse é o conteúdo.
-- **Etapa 16 — atacar o próprio sistema.** A única forma de aprender o cap. 22 é ver a defesa textual falhar e a defesa de privilégio segurar.
+- **Etapa 0 — o contador.** O instrumento que você olha em todas as outras. A maior
+  parte dos sistemas em produção não tem nada equivalente, e é por isso que degradam de
+  forma inexplicável (cap. 20).
+- **Etapa 3 — a ingestão antes da busca.** Provar que um documento revogado não é
+  recuperado, mesmo sendo o mais similar, é o que separa um índice de uma pilha de
+  texto (cap. 04). E o teste `test_metadado_gerado_nao_filtra_de_forma_dura` prova a
+  outra metade: um extrator que **erra** não custa nada, porque o gerado não filtra.
+- **Etapa 5 — o ganho por estágio.** Não se adota híbrido porque está na moda: adota-se
+  porque a tabela mostra o ganho no **seu** corpus. Aqui ela mostra que, com embedder
+  ruim, não há ganho — e isso é informação.
+- **Etapa 6 — a abstenção.** A pergunta fora do corpus é a única que revela se o
+  sistema sabe dizer "não encontrei" (caps. 06, 15).
 
-## Relação com o chat companion
+## Uma nota de honestidade sobre os números
 
-O [`chat-companion/`](../chat-companion/) **é o rag-zero rodando em produção**: mesmo `LLMPort`, mesmo índice BM25 (a etapa 9), mesmo gating de capacidades por capítulo. Isso é deliberado — o exemplo real que o livro disseca é o próprio livro respondendo ao leitor.
+Os números que a etapa 5 imprime vêm de um conjunto **sintético derivado do próprio
+corpus** — perguntas escritas a partir dos documentos que as respondem. Isso
+**superestima o recall** (cap. 21) e serve para comparar estágios entre si, que é o uso
+aqui. Não serve para reportar qualidade absoluta, e o livro não o faz.
 
-Conforme as etapas avançarem, o companion avança junto: a etapa 10 (embeddings + fusão + reranking) substitui o índice atual, a etapa 12 liga a memória, a etapa 17 acende o painel.
+A medição com condição experimental publicada é a **rodada 4** do ROADMAP.
