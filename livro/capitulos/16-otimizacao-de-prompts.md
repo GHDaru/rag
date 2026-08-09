@@ -1,6 +1,6 @@
 # 16 — Otimização Automática de Prompts
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento e as três famílias de otimizador estão fechados; as medições comparadas e o Apêndice A são a rodada 2 do ROADMAP.
 
@@ -91,10 +91,17 @@ Na etapa 10 você constrói um otimizador mínimo, na mão, antes de qualquer fr
 
 ---
 
-## Apêndice A — Como cada otimizador ataca o problema
+## Apêndice A — Como cada otimizador funciona
 
-> Tratamento por otimizador, com fonte primária, condição experimental e implementação — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.1)**: as três famílias estão delimitadas e os representantes identificados. O tratamento por otimizador — o que exatamente cada um busca, sob que orçamento, com que modelos foi medido e o que a medição **não** cobre — é o trabalho da **rodada 2** do ROADMAP, e é onde o Princípio I mais aperta: todo número aqui vem de comparação do próprio proponente.
+| Família | Implementação de referência | O que reter |
+|---|---|---|
+| **Busca por exemplos** | `BootstrapFewShot` do [DSPy](https://github.com/stanfordnlp/dspy) | o mais barato e o primeiro recurso. **Pegadinha:** o ganho vem dos exemplos, então ele evapora se a distribuição de produção diverge do conjunto. |
+| **Busca por instrução** | `MIPROv2` ([arXiv 2406.11695](https://arxiv.org/abs/2406.11695)), no DSPy | otimiza instruções **e** exemplos sem rótulo por módulo, com surrogate sobre mini-lotes. O problema que ele nomeia — **atribuição de crédito entre módulos** — é o que torna sistema composto difícil. |
+| **Reflexão sobre traços** | [gepa-ai/gepa](https://github.com/gepa-ai/gepa) | reflete em linguagem natural sobre trajetórias e combina lições pela fronteira de Pareto. **Devolve explicação legível** junto do artefato, o que os outros não fazem. |
+| **Gradiente textual** | [zou-group/textgrad](https://github.com/zou-group/textgrad) | mais simples de montar. Funciona melhor quando a dificuldade das amostras é uniforme. |
 
-Enfileirado: BootstrapFewShot · COPRO · MIPROv2 · GEPA · TextGrad · Promptomatix · e a comparação honesta entre otimizar prompt e ajustar o modelo (quando cada um domina).
+**O alerta do Princípio I, que este apêndice não resolve:** todos os números comparativos entre otimizadores vêm de avaliações dos **próprios proponentes**. Nenhum entra no corpo do livro sem modelo e orçamento declarados — e a medição independente é a rodada 4.
+
+**E a dependência que decide tudo:** otimizador precisa de **métrica**. Sem o cap. 17 de pé, otimizar prompt é acelerar na direção errada.

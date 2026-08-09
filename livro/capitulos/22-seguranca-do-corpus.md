@@ -1,6 +1,6 @@
 # 22 — Segurança do Corpus e da Recuperação
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **guardrails** (cap. 02). O foco é a superfície que o RAG cria — corpus envenenado, conteúdo recuperado como instrução, vazamento por permissão. O modelo de ameaça geral de agentes é do [livro irmão](https://github.com/GHDaru/harness_engineering).
 
@@ -104,10 +104,17 @@ Na etapa 15 você ataca o próprio `rag-zero`: planta no corpus indexado um docu
 
 ---
 
-## Apêndice A — Como cada ataque e cada defesa funciona
+## Apêndice A — Como cada camada de defesa é implementada
 
-> Tratamento por técnica de ataque e por defesa, com fonte — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.1)**: o modelo de ameaça e as seis camadas estão descritos, ancorados no OWASP LLM Top 10. O tratamento por técnica — o que cada defesa proposta na literatura garante exatamente, sob que suposições, e quais ataques publicados a contornam — é o trabalho da **rodada 2** do ROADMAP.
+| Camada | Implementação de referência | O que reter |
+|---|---|---|
+| **A classificação** | [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | *prompt injection* é **LLM01**. É o vocabulário comum para conversar com segurança da informação. |
+| **Teste adversarial** | red teaming do [promptfoo](https://github.com/promptfoo/promptfoo), com casos mapeados ao OWASP | materializa a tese do capítulo: **teste adversarial é eval**, e roda no mesmo lugar (cap. 17). |
+| **Marcação de procedência** | delimitar e rotular o conteúdo externo no prompt (cap. 11) | **Pegadinha:** aumenta o custo do ataque, **não garante nada** — [arXiv 2601.04666](https://arxiv.org/abs/2601.04666) mostra por quê: instruções injetadas *"lack clear semantic boundaries from the surrounding context"*. |
+| **Privilégio mínimo** | escopo e permissão no adaptador de ferramenta, não no prompt | **é a única camada cuja eficácia não depende de o modelo resistir.** É a que separa sistema seguro de sistema com boas intenções. |
+| **Filtro na consulta** | permissão como campo do índice, aplicada **antes** de buscar (cap. 06) | filtrar depois de recuperar vaza por log, cache e telemetria. |
+| **Aprovação para fonte nova** | um portão humano na entrada do índice de produção | barato, e elimina a classe inteira de ingestão automática hostil. |
 
-Enfileirado: OWASP LLM01 e as recomendações por edição · hierarquia de instruções (o que o treinamento garante) · defesas por assinatura de instrução · injeção multimodal · contaminação de memória · ferramentas de red teaming e cobertura de casos.
+**A linha de base medida, e é desconfortável:** [arXiv 2509.05883](https://arxiv.org/abs/2509.05883) testou **oito modelos comerciais** *"relying solely on its built-in safeguards"* e achou fraquezas exploráveis em todos. A salvaguarda do provedor é piso, não teto.

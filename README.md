@@ -82,7 +82,7 @@ Não pelo sumário — pela **tabela de sintomas** do [cap. 01](livro/01-fundame
 ## Estado desta edição (honestidade obrigatória)
 
 - **42 das 55 referências com status ✓ (76%)** na [bibliografia](livro/bibliografia.md). A [rodada 2](ROADMAP.md) conferiu **todos os 49 identificadores arXiv** contra o arXiv real (nenhum inventado), leu as fontes, e **corrigiu quatro afirmações do livro** — duas delas na espinha de um capítulo. As 13 restantes são de menor peso estrutural e seguem `[a validar]`.
-- **Falta preencher os Apêndices A** dos capítulos (tratamento por implementação). É o item aberto do critério de conclusão da rodada 2.
+- **Os 22 Apêndices A estão preenchidos** — o tratamento por implementação de cada técnica, com URL conferida contra o repositório real, e a *pegadinha* que a documentação não conta.
 - **Os Apêndices A** (tratamento por implementação) estão enfileirados, não escritos.
 - **Nenhum número de terceiro** entra no corpo sem a condição experimental ao lado.
 - **A trilha prática `rag-zero`** está descrita capítulo a capítulo, e é construída na rodada 3.

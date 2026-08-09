@@ -1,6 +1,6 @@
 # 20 — A Janela como Orçamento
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **aumento** — o que dos candidatos vira contexto (cap. 02). A tese do orçamento e a leitura híbrida estão fechadas; as medições por regime são a rodada 2 do ROADMAP.
 
@@ -94,10 +94,15 @@ Na etapa 13 você transforma o contador de tokens da etapa 0 em **orçamento com
 
 ---
 
-## Apêndice A — Como cada fonte trata o orçamento de contexto
+## Apêndice A — Como medir e impor o orçamento
 
-> Tratamento por sistema e por medição, com URL — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.1)**: a tese do orçamento e a leitura híbrida estão descritas. O tratamento por medição — os regimes onde cada abordagem domina, com o benchmark e os modelos usados em cada afirmação — é o trabalho da **rodada 2**, e é o capítulo onde este livro mais precisa desconfiar de números de terceiros.
+| O quê | Implementação de referência | O que reter |
+|---|---|---|
+| **Contar por bloco** | [tiktoken](https://github.com/openai/tiktoken) e equivalentes por família | é o instrumento do livro. **Pegadinha:** cada família tokeniza diferente — o mesmo texto tem contagens distintas, e um orçamento calibrado num modelo não transfere. |
+| **Medir a degradação no seu dado** | o protocolo do [U-NIAH](https://arxiv.org/abs/2503.00353) | *multi-needle*, *long-needle*, *needle-in-needle*. **O detalhe de método que vale copiar:** corpus **sintético e ficcional**, para separar recuperação de memorização. |
+| **A régua da degradação** | [*Context Rot*](https://www.trychroma.com/research/context-rot) | 18 modelos. Comprimento degrada sozinho; distratores próximos tornam a queda mais íngreme. |
+| **Impor o teto** | um limite por fonte, no adaptador, antes de montar | **Pegadinha:** resultado de ferramenta é a única fonte cujo tamanho você não controla ao pedir. Sem teto no adaptador, você descobre em produção. |
 
-Enfileirado: U-NIAH e a avaliação unificada dos dois regimes · estudos de *needle-in-a-haystack* com distratores semânticos · práticas publicadas de orçamento explícito em agentes de produção · a economia comparada (indexar uma vez × encher a janela sempre).
+**A lacuna que este capítulo declara:** não existe ferramenta de prateleira que mostre **a composição do contexto por fonte** em cada chamada. É código seu — e é o painel de maior retorno do livro, porque explica degradações que nenhum outro número explica.

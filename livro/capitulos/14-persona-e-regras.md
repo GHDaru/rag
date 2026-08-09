@@ -1,6 +1,6 @@
 # 14 — Prompt de Sistema, Persona e Regras
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A arquitetura em camadas e a separação voz × política estão fechadas; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -99,10 +99,14 @@ Na etapa 10 você separa o prompt do `rag-zero` em cinco camadas ordenadas, com 
 
 ---
 
-## Apêndice A — Como cada fonte trata a camada de sistema
+## Apêndice A — Como cada abordagem organiza as camadas
 
-> Tratamento por implementação e por formato, com URL — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.1)**: a arquitetura em camadas e a cascata estão descritas a partir da prática convergente. O tratamento por implementação — como cada sistema real ordena as camadas, onde coloca a fronteira de cache, e como resolve precedência — é o trabalho da **rodada 2** do ROADMAP.
+| O quê | Implementação de referência | O que reter |
+|---|---|---|
+| **Camadas por volatilidade** | ordenação manual do prompt, do estável ao volátil | **Pegadinha:** o ganho é medido no **cache**, não na qualidade — ver o cap. 23. Qualquer conteúdo volátil acima invalida tudo abaixo. |
+| **Cascata de regras** | arquivos de instrução em níveis (global → projeto → pasta), como os harnesses de agente fazem | o mais próximo vence. **Pegadinha:** sem um lugar que mostre o prompt **final montado**, ninguém consegue depurar de onde veio a regra. |
+| **Contagem por bloco** | [tiktoken](https://github.com/openai/tiktoken) e equivalentes | é o instrumento que torna a camada visível. Sem ele, "o prompt de sistema cresceu" é opinião. |
 
-Enfileirado: o formato AGENTS.md e a governança do padrão · documentação de cache por prefixo dos provedores · a separação persona × regras em agentes pessoais de código aberto · estratégias de atualização de estado mid-conversation.
+**O argumento de segurança que o apêndice reforça:** política que não é verificável não é política (cap. 22). Se a regra existe só como frase no prompt e não tem contraparte no que as ferramentas **permitem**, ela é uma preferência — e nenhuma organização de camadas conserta isso.

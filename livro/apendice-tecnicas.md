@@ -2,13 +2,13 @@
 
 > Uma ficha por técnica: **o que é · quando usa · o que custa · onde está no livro**.
 >
-> Edição 0.3 · captura em 2026-08.
+> Edição 0.4 · captura em 2026-08.
 >
 > **Como ler:** esta página é *reference* (Diátaxis) — feita para consulta rápida, não para leitura linear. A explicação de *por que* cada técnica funciona está no capítulo indicado; aqui está só o suficiente para decidir se vale abrir o capítulo.
 >
 > **Como está organizado:** na ordem das partes do livro — o corpus, a recuperação, a geração, o sistema em produção. Uma técnica que aparece em duas partes traz os dois capítulos.
 >
-> **Estado:** o catálogo cobre as técnicas que os capítulos mencionam, e desde a edição 0.3 cada uma delas tem **fonte primária conferida** na [bibliografia](bibliografia.md). A expansão — cada ficha com fonte primária e condição experimental, e as 58 técnicas de prompting da taxonomia de referência (*The Prompt Report*) na Parte IV — é a **rodada 5** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+> **Estado:** o catálogo cobre as técnicas que os capítulos mencionam, e desde a edição 0.4 cada uma delas tem **fonte primária conferida** na [bibliografia](bibliografia.md). A expansão — cada ficha com fonte primária e condição experimental, e as 58 técnicas de prompting da taxonomia de referência (*The Prompt Report*) na Parte IV — é a **rodada 5** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
 
 ## Parte II — O corpus
 

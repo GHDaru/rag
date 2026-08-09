@@ -6,6 +6,24 @@
 
 ## Histórico de edições
 
+### Edição 0.4 — 2026-08-09 · Os 22 Apêndices A, e a rodada 2 fechada
+
+**O que é.** O item que faltava para concluir a rodada 2: o **tratamento por implementação**. O Princípio II exige que a fonte-base seja a técnica reprodutível — *paper* **mais** implementação pública — e o corpo dos capítulos recebia só a primeira metade. Os apêndices eram um "enfileirado: X · Y · Z".
+
+**O que mudou:** os **22 Apêndices A** passaram de fila a conteúdo. Cada um é uma tabela com a implementação de referência, URL, e — a parte que dá valor — **a pegadinha**: o que a documentação não diz e o livro aprendeu a perguntar. Alguns exemplos do que só aparece aí:
+
+- **Self-RAG exige treino.** O método treina o modelo a emitir *reflection tokens*; se você não vai treinar nem usar um modelo já treinado assim, o padrão simplesmente não está disponível — enquanto o CRAG é *"plug-and-play"*. É a diferença que decide qual dos dois você consegue adotar, e ela não está no corpo do capítulo.
+- **O cache semântico precisa da permissão na chave.** Sem isso ele serve a resposta de um usuário a outro — o incidente do cap. 04 entrando por outra porta.
+- **O índice vetorial aproximado troca recall por latência.** Recall que cai sem explicação costuma ser parâmetro de busca do índice, não o modelo de embedding.
+- **O *late chunking* degrada em silêncio** quando o documento excede o embedder de contexto longo.
+- **Um dicionário de três colunas** (cap. 02) mostrando que LangChain, LlamaIndex e Haystack convergem na mesma anatomia e divergem só no vocabulário — o argumento de aprender componentes em vez de framework, demonstrado em tabela.
+
+**Verificação dos links.** Os 32 repositórios citados foram conferidos **um a um** contra o repositório real, com o README lido para confirmar que é o projeto certo. O acesso direto ao GitHub está bloqueado nesta sessão para repositórios fora do escopo; a conferência foi feita por `raw.githubusercontent`, que resolve. Uma correção veio daí: `anthropics/anthropic-cookbook` foi renomeado para *Claude Cookbooks*.
+
+**Rodada 2 concluída.** Os três critérios: ≥60% em ✓ (**76%**), nenhum número sem condição experimental, e **22 de 22 Apêndices A preenchidos**. O que sobrou — 13 referências de menor peso e a evidência do cap. 04 — migra para a rodada 4, onde vira **medição própria** em vez de busca bibliográfica.
+
+**Atribuição:** direção editorial — Gilsiley Henrique Darú. Redação e verificação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-09.
+
 ### Edição 0.3 — 2026-08-04 · Rodada 2: o livro passa a ser citável
 
 **O que é.** A rodada de **evidência**. Até aqui o livro tinha um mapa de fontes e nenhuma delas conferida — 55 referências ⏳, zero ✓. Esta edição leva **42 delas (76%) a ✓**, acima do critério de 60% da rodada.

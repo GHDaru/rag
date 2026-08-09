@@ -1,6 +1,6 @@
 # 18 — RAG Agêntico
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **orquestrador** (cap. 02). A distinção pipeline × agente e os padrões estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -107,8 +107,14 @@ Na etapa 11 a recuperação do `rag-zero` vira ferramenta: o modelo passa a deci
 
 ## Apêndice A — Como cada implementação trata o RAG agêntico
 
-> Tratamento por implementação e padrão, com URL — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL. Todos os quatro papers da §2 têm código publicado pelos autores — o que é incomum, e vale registrar.
 
-**Rodada 1 (edição 0.1)**: o espectro e os quatro padrões estão descritos a partir do survey. O tratamento por implementação — como cada framework expõe recuperação como ferramenta, onde coloca os tetos, e como instrumenta a trajetória — é o trabalho da **rodada 2** do ROADMAP.
+| Padrão | Implementação de referência | O que reter |
+|---|---|---|
+| **Self-RAG** | [AkariAsai/self-rag](https://github.com/AkariAsai/self-rag) | **Pegadinha decisiva:** o método **treina** o modelo a emitir *reflection tokens*. Não é prompt — se você não vai treinar nem usar um modelo já treinado assim, o padrão não está disponível para você. |
+| **CRAG** | [HuskyInSalt/CRAG](https://github.com/HuskyInSalt/CRAG) | avaliador leve **fora** do modelo, devolvendo grau de confiança. É *"plug-and-play"* — acopla a um pipeline existente, o que o torna a escolha pragmática quando não se pode treinar. |
+| **FLARE** | [jzbjyb/FLARE](https://github.com/jzbjyb/FLARE) | recupera durante a geração, disparado por tokens de baixa confiança. **Pegadinha:** o número de recuperações por resposta é **imprevisível**, o que quebra orçamento (cap. 20) e latência p99. |
+| **Adaptive RAG** | [starsuzi/Adaptive-RAG](https://github.com/starsuzi/Adaptive-RAG) | classificador pequeno decide o grau. **Pegadinha:** o classificador é treinado com rótulos derivados dos resultados dos próprios modelos — trocar o gerador desalinha o roteador. |
+| **ReAct como base** | o padrão está em todos os frameworks de agente | é o RAG agêntico mínimo, e o único que não exige nada além de prompt e uma ferramenta de busca. |
 
-Enfileirado: o survey de RAG agêntico e sua taxonomia de padrões · ReAct como implementação mínima · workflows de busca profunda sobre grafo · recuperação just-in-time em agentes de código · instrumentação de trajetória.
+**O que nenhuma delas entrega, e você precisa colocar:** teto de iterações, orçamento de tokens por laço, e instrumentação de **trajetória** (cap. 21). Sem os três, o laço é um incidente esperando data.

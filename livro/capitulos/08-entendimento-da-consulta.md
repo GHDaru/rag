@@ -1,6 +1,6 @@
 # 08 — Entendimento da Consulta
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **entendimento da consulta** (cap. 02).
 
@@ -95,8 +95,16 @@ Na etapa 7 você acrescenta ao `rag-zero` a reescrita de consulta com resoluçã
 
 ---
 
-## Apêndice A — Como cada técnica de consulta é implementada
+## Apêndice A — Como cada abordagem trata a consulta
 
-**Rodada 1 (edição 0.2)**: as cinco técnicas e a resolução de referência estão descritas. O tratamento por implementação — prompts de reescrita, variantes de HyDE, e a medição do ganho separada por tipo de pergunta — é a **rodada 2** do ROADMAP.
+> Tratamento por implementação, com URL.
 
-Enfileirado: HyDE · step-back prompting · reescrita multi-turno (2606.28352) · pré-recuperação no Advanced RAG (2312.10997) · roteamento por complexidade.
+| Técnica | Implementação de referência | O que reter |
+|---|---|---|
+| **HyDE** | [texttron/hyde](https://github.com/texttron/hyde) (dos autores); `HyDEQueryTransform` no LlamaIndex | **Pegadinha:** o paper mede contra retriever **não supervisionado**, em cenário sem rótulo de relevância. Contra um híbrido bem ajustado, o ganho encolhe — e você paga uma chamada de LLM por pergunta, para sempre. |
+| **Múltiplas consultas** | `MultiQueryRetriever` (LangChain), `SubQuestionQueryEngine` (LlamaIndex) | **Pegadinha:** N consultas geram N listas, e sem fusão por posição (cap. 06) você só multiplicou o custo. |
+| **Reescrita / resolução de referência** | reescrita condicionada ao histórico, antes do retriever | é o caso de maior retorno em RAG conversacional (cap. 19). **Pegadinha:** reescrever cedo demais destrói a pergunta original — guarde as duas e busque com ambas quando houver dúvida. |
+| **Step-back** | prompt, sem biblioteca dedicada | **Pegadinha de procedência:** é técnica de *thought generation* (assim classificada em *The Prompt Report*), não de recuperação. Usá-la aqui é adaptação; meça antes de adotar. |
+| **Roteamento** | `RouterQueryEngine` (LlamaIndex), roteadores semânticos e por metadado | a survey de Gao descreve as duas famílias — por **metadado** (estreita o escopo) e **semântica** — e nota que o **híbrido das duas** é possível. É o que a prática de empresa faz. |
+
+**A regra que atravessa a tabela:** tudo aqui é custo de **consulta**, pago para sempre. O cap. 09 mostra a alternativa — empurrar para a indexação, onde se paga uma vez.

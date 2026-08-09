@@ -1,6 +1,6 @@
 # 06 — Busca: Esparsa, Densa e Híbrida
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **índice** e **retriever** (cap. 02).
 
@@ -100,6 +100,14 @@ Na etapa 5 você constrói a busca do `rag-zero` **na mão, antes de qualquer bi
 
 ## Apêndice A — Como cada abordagem busca
 
-**Rodada 1 (edição 0.2)**: os modos de falha complementares e a fusão estão descritos. O tratamento por implementação — variantes de BM25, algoritmos de fusão de ranking, estruturas de índice vetorial e o que BEIR mede — é a **rodada 2** do ROADMAP.
+> Tratamento por implementação, com URL. Cada linha traz **a pegadinha** — o que a documentação não diz e o livro aprendeu a perguntar.
 
-Enfileirado: BM25 e variantes · fusão recíproca de ranking e alternativas · índices vetoriais aproximados e o custo do recall · BEIR · híbrido no Advanced RAG (2312.10997).
+| O quê | Implementação de referência | O que reter |
+|---|---|---|
+| **BM25 puro, sem serviço** | [`rank_bm25`](https://github.com/dorianbrown/rank_bm25) | "A two line search engine". É a linha de base honesta em ~40 linhas, e é o que o `rag-zero` usa. **Pegadinha:** não tem índice invertido persistido — memória e reindexação são por sua conta acima de alguns milhares de documentos. |
+| **BM25 em produção** | motores de busca (Elasticsearch, OpenSearch, Vespa, Tantivy) | trazem índice invertido, filtro por campo **na consulta** (§3) e análise linguística. **Pegadinha:** o analisador (stemming, stopwords, tokenização) muda o resultado tanto quanto o `k1`/`b` — e quase ninguém o audita. |
+| **Fusão por posição** | `EnsembleRetriever` do [LangChain](https://github.com/langchain-ai/langchain); `QueryFusionRetriever` do [LlamaIndex](https://github.com/run-llama/llama_index); `JoinDocuments` do [Haystack](https://github.com/deepset-ai/haystack) | é a fusão recíproca de ranking, a implementação dominante do que a §2 descreve. **Pegadinha:** o parâmetro de amortecimento (o `k` da RRF, tipicamente 60) decide quanto peso a cauda recebe, e o padrão raramente é discutido. |
+| **Índice denso** | bancos vetoriais ([Chroma](https://github.com/chroma-core/chroma) e congêneres); `faiss` para o caso embutido | **Pegadinha, e é a que mais dói:** o índice aproximado troca **recall** por latência. Um recall@k que cai sem explicação costuma ser o parâmetro de busca do índice, não o modelo de embedding. |
+| **A régua** | [BEIR](https://github.com/beir-cellar/beir) | 18 datasets, protocolo zero-shot. Serve para **comparar contra BM25**, que é o que o paper mostra ser difícil de bater. |
+
+**O que fica para a rodada 4:** medir a fusão no corpus deste livro — hoje o livro afirma que híbrido vence com base em Gao (complementaridade dos sinais) e no consenso publicado, mas **sem número próprio**.

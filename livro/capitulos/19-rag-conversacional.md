@@ -1,6 +1,6 @@
 # 19 — RAG Conversacional
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço, reescopado na edição 0.2.** Componente que aprofunda: **entendimento da consulta** e o estado que o alimenta (cap. 02). O que é gestão de contexto de agente — compactação, isolamento — é do [livro irmão sobre harness](https://github.com/GHDaru/harness_engineering); aqui fica só o que decide a **recuperação** na conversa.
 
@@ -101,10 +101,17 @@ Na etapa 12 o `rag-zero` passa a lidar com conversa: estado de sessão com tópi
 
 ---
 
-## Apêndice A — Como cada sistema trata a memória
+## Apêndice A — Como cada sistema de memória funciona
 
-> Tratamento por sistema, com arquitetura e evidência — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.1)**: as três arquiteturas estão descritas e os sistemas de referência identificados. O tratamento comparado — o que cada um extrai, como recupera, o que descarta, e sob que benchmark os números publicados foram obtidos — é o trabalho da **rodada 2** do ROADMAP, com atenção especial ao Princípio I: os números desta área são majoritariamente auto-reportados.
+| Sistema | Implementação | Arquitetura, e o que reter |
+|---|---|---|
+| **Mem0** | [mem0ai/mem0](https://github.com/mem0ai/mem0) | extrai fatos salientes e guarda como memórias compactas. **Pegadinha:** a extração é uma chamada de LLM por turno — o custo é recorrente, não de setup. |
+| **Zep** | [getzep/zep](https://github.com/getzep/zep) | grafo de conhecimento **temporal** sobre recuperação densa. É a escolha quando os fatos **mudam de valor de verdade** — que é a definição de memória deste capítulo. |
+| **Letta (ex-MemGPT)** | [letta-ai/letta](https://github.com/letta-ai/letta) · [arXiv 2310.08560](https://arxiv.org/abs/2310.08560) | o modelo pagina a própria memória entre níveis, com interrupções. **Pegadinha registrada pelos praticantes:** a paginação autogerida adiciona complexidade e latência que nem sempre se pagam. |
+| **Resolução de referência** | reescrita antes do retriever (cap. 08) | **o maior retorno deste capítulo, e o mais barato.** Vem antes de qualquer sistema de memória. |
 
-Enfileirado: Mem0 (extração de fatos) · Zep (grafo temporal) · Letta/MemGPT (paginação autogerida) · LoCoMo e LongMemEval (o que medem e o que não medem) · a literatura de contaminação e bajulação de memória.
+**O modo de falha que a rodada 2 trouxe, e que nenhum dos três resolve por padrão:** a *heterogeneous memory contamination* ([MemGuard](https://arxiv.org/abs/2605.28009)) — fatos estáveis, eventos e regras no mesmo espaço, recuperados como evidência intercambiável. A cura é **papel funcional explícito na escrita**, e é você quem precisa impor.
+
+**A ressalva do Princípio I sobre os números:** LoCoMo e LongMemEval são as referências citadas pelos fornecedores, e são majoritariamente **auto-reportadas**. Leia com ceticismo.

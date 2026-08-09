@@ -1,6 +1,6 @@
 # 15 — Geração Fundamentada
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço novo.** Capítulo criado na edição 0.2 para fechar o elo que faltava entre recuperar e responder. Componente que aprofunda: **gerador** (cap. 02).
 
@@ -105,8 +105,14 @@ Na etapa 10 o `rag-zero` passa a responder com contrato: saída estruturada com 
 
 ## Apêndice A — Como cada abordagem trata a fundamentação
 
-> Tratamento por técnica e implementação, com URL — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.2)**: as três exigências, os níveis de citação e os gatilhos de abstenção estão descritos. O tratamento por implementação — o que os modos de *grounding* dos provedores garantem exatamente, como as trilhas de avaliação medem atribuição, e quais formatos de citação sobrevivem à validação automática — é o trabalho da **rodada 2** do ROADMAP.
+| O quê | Implementação de referência | O que reter |
+|---|---|---|
+| **Medir fidelidade** | *faithfulness* do [RAGAS](https://github.com/explodinggradients/ragas) | decompõe a resposta em afirmações e verifica quantas são inferíveis do contexto — que é a definição operacional deste capítulo. **Pegadinha:** é **reference-free** (não precisa de gabarito), mas usa LLM como juiz e herda o custo e o viés dele (cap. 17). |
+| **A régua barata** | taxa de citação, contada no seu código | quantas respostas referenciam um identificador que existe no contexto. **Pegadinha:** mede se **citou**, não se a citação **sustenta** — é sinal operacional, não substituto do juiz. |
+| **Saída com citação** | schema com campo de fonte por afirmação (cap. 13) | é o que torna a atribuição por afirmação verificável **por código**, e não por leitura. |
+| **Grounding do provedor** | modos de fundamentação com atribuição das APIs | **Pegadinha:** garantem **formato** de citação, não que a citação sustente a frase. A validação semântica continua sua — é a mesma regra do cap. 13. |
+| **Testar a abstenção** | perguntas cuja resposta **não está** no corpus, no conjunto de eval | é o teste que quase ninguém escreve, e o único que prova que a regra de ausência funciona. |
 
-Enfileirado: modos de grounding com atribuição dos provedores · atribuição e completude como dimensões separadas nas trilhas de avaliação de RAG · formatos de saída com citação por afirmação · políticas de abstenção em domínios regulados.
+**A ligação com o cap. 09 que vale registrar:** o corte no nível do corpus (CDTA) sintetiza chunks que não existem em nenhum documento — o que melhora recuperação e **complica** a citação verificável. Ganhar de um lado custa do outro.

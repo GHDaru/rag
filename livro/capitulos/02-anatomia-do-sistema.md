@@ -1,6 +1,6 @@
 # 02 — Anatomia de um Sistema de RAG
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O inventário de componentes e os contratos entre eles estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -123,10 +123,19 @@ Na etapa 1 você não escreve técnica nenhuma: desenha o esqueleto do `rag-zero
 
 ---
 
-## Apêndice A — Como cada arquitetura publicada nomeia estes componentes
+## Apêndice A — Como cada framework nomeia os componentes
 
-> Tratamento por implementação, com URL — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL. O valor deste apêndice é o **dicionário**: o mesmo componente tem três nomes.
 
-**Rodada 1 (edição 0.2)**: o inventário e os contratos estão descritos a partir da base tripartite da survey de Gao e da decomposição em módulos do Modular RAG. O tratamento comparado — como cada framework e cada arquitetura de referência publicada nomeia e agrupa estes componentes, e o que a divergência de nomes revela — é o trabalho da **rodada 2** do ROADMAP.
+| Componente (cap. 02) | [LangChain](https://github.com/langchain-ai/langchain) | [LlamaIndex](https://github.com/run-llama/llama_index) | [Haystack](https://github.com/deepset-ai/haystack) |
+|---|---|---|---|
+| corte | *text splitter* | *node parser* | *splitter* |
+| unidade indexada | *document* | *node* | *document* |
+| busca | *retriever* | *retriever* | *retriever* |
+| pós-recuperação | *document compressor* | *node postprocessor* | *ranker* / *joiner* |
+| montagem do contexto | *prompt template* | *response synthesizer* | *prompt builder* |
+| fluxo | *chain* / *graph* | *query engine* / *workflow* | *pipeline* |
 
-Enfileirado: a base recuperação/aumento/geração (2312.10997) · módulos e operadores do Modular RAG (2407.21059) · arquiteturas de referência publicadas por fornecedores · a camada de orquestração nos surveys de RAG agêntico.
+**O que a tabela revela, e é o ponto do capítulo:** os três convergem na mesma anatomia. As divergências são de vocabulário, não de desenho — e é por isso que vale aprender os **componentes**, não um framework.
+
+**A pegadinha comum aos três:** nenhum deles carrega procedência de ponta a ponta por padrão. O identificador que chega ao gerador costuma ser o que **você** colocou no metadado (cap. 04) — se não colocou, a citação do cap. 15 não tem em que se apoiar.

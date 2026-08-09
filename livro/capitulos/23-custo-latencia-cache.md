@@ -1,6 +1,6 @@
 # 23 — Custo, Latência e Cache
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A economia do contexto e as alavancas estão fechadas; os números por provedor e o Apêndice A são a rodada 2 do ROADMAP.
 
@@ -112,10 +112,16 @@ Na etapa 16 você fecha a construção: o contador da etapa 0 vira painel. Custo
 
 ---
 
-## Apêndice A — Como cada provedor e sistema trata o custo do contexto
+## Apêndice A — Como cada mecanismo de custo funciona
 
-> Tratamento por provedor e implementação, com regra de cache e medição — complementação online, expandida a cada rodada.
+> Tratamento por implementação, com URL.
 
-**Rodada 1 (edição 0.1)**: a economia do contexto e as alavancas estão descritas. O tratamento por provedor — regras exatas de cache (mínimo, tempo de vida, marcação), descontos vigentes e como cada um mede — é o trabalho da **rodada 2** do ROADMAP, com a ressalva do Princípio IV: esta é a seção do livro com maior taxa de expiração.
+| Mecanismo | Implementação de referência | O que reter |
+|---|---|---|
+| **Cache por prefixo** | documentação de *prompt caching* dos provedores | **o de melhor relação benefício/esforço do livro: é grátis e não sacrifica nada.** Exige só que nada volátil fique acima de algo estável (cap. 14). |
+| **Serialização determinística** | chaves ordenadas, formatação fixa, sem timestamp no prefixo | **Pegadinha:** um dicionário serializado em ordem diferente quebra o cache sem mudar uma palavra do conteúdo. É a causa nº 1 de cache que "não funciona". |
+| **Cache semântico** | [GPTCache](https://github.com/zilliztech/GPTCache) | responde sem chamar o modelo quando a pergunta se parece com uma anterior. **Pegadinha grave:** a chave **precisa incluir a permissão** do solicitante — senão o cache serve a resposta de um usuário a outro, e vira o incidente do cap. 04 por outra porta. |
+| **Custo de indexação × consulta** | a assimetria do [cap. 09](09-recuperacao-avancada.md) | indexação paga uma vez; consulta paga para sempre. Toda técnica do livro cai de um lado. |
+| **Painel** | custo por parcela **sempre** ao lado da qualidade | **Pegadinha:** reportar economia sem a métrica de qualidade ao lado é como reportar latência sem taxa de erro. |
 
-Enfileirado: regras de cache por prefixo dos provedores · práticas de monitoramento de taxa de acerto · roteamento por modelo e por etapa · a economia comparada entre indexar e encher a janela (cap. 20).
+**O que este apêndice não resolve:** a instrumentação de **trajetória** em RAG agêntico (cap. 18). Duas execuções com a mesma resposta e custos muito diferentes aparecem iguais em qualquer painel de prateleira — é a lacuna que os caps. 18 e 21 também declaram.

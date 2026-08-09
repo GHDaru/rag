@@ -1,6 +1,6 @@
 # 10 — Recuperação Estruturada
 
-> **Estado da arte capturado em 2026-08** · edição 0.3 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **índice** e **retriever**, quando o corpus deixa de ser só texto (cap. 02).
 
@@ -100,6 +100,12 @@ Na etapa 9 você monta a versão mínima honesta das duas curas sobre o texto de
 
 ## Apêndice A — Como cada abordagem estrutura a recuperação
 
-**Rodada 1 (edição 0.2)**: as duas curas e a fronteira texto/estruturado estão descritas. O tratamento por implementação — construção e manutenção de grafo, variantes de RAPTOR, e o problema aberto de avaliar recuperação estruturada — é a **rodada 2** do ROADMAP.
+> Tratamento por implementação, com URL.
 
-Enfileirado: GraphRAG e a família de grafo · RAPTOR · grafo + agente (2509.22009) · roteamento texto/SQL e seus riscos de segurança.
+| Abordagem | Implementação de referência | O que reter |
+|---|---|---|
+| **RAPTOR** | [parthsarthi03/raptor](https://github.com/parthsarthi03/raptor) (dos autores) | agrupar → resumir → repetir. **Pegadinha:** o número de níveis e o critério de agrupamento são hiperparâmetros sem padrão consagrado, e a escolha do nível **por pergunta** segue heurística (§4). |
+| **GraphRAG** | [microsoft/graphrag](https://github.com/microsoft/graphrag) | grafo de entidades + **resumos de comunidade** pré-gerados; resposta parcial por comunidade, depois sintetizada. **Pegadinha:** o custo de indexação é dominado pela extração de entidades sobre o corpus inteiro — e é ele que decide se o projeto cabe no orçamento, não a consulta. |
+| **Texto + estruturado** | mecanismos de *text-to-SQL* dos frameworks, atrás de um roteador (cap. 08) | **Pegadinha, e é de segurança:** consulta gerada por modelo contra banco exige somente-leitura, escopo restrito e teto de resultado (cap. 22). Nenhum framework entrega isso por padrão. |
+
+**O que este livro deliberadamente não faz:** grafo no `rag-zero`. O corpus do livro não tem entidades recorrentes o suficiente para justificá-lo, e fingir que tem seria ensinar o erro que o capítulo denuncia.
