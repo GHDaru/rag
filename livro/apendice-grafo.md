@@ -2,7 +2,7 @@
 
 > O mapa de conexões do livro, extraído **deterministicamente** do próprio texto a cada build — sem LLM, sem curadoria manual. Um nó é um capítulo, uma ferramenta do ecossistema, um conceito do glossário ou uma etapa do `rag-zero`; uma aresta é uma menção real, e o peso é o número de ocorrências.
 >
-> Edição 0.1 · captura em 2026-08.
+> Edição 1.0 · captura em 2026-08.
 
 Como o grafo nasce do texto, ele é sempre honesto: se um capítulo não cita uma técnica, não há aresta. Nós sem nenhuma conexão são podados — o que torna o grafo um instrumento de revisão editorial, e não só uma ilustração. Um conceito que ninguém menciona é um conceito que o livro promete e não entrega.
 
@@ -19,6 +19,6 @@ Arestas mais grossas são menções mais frequentes. Capítulo→capítulo apare
 
 ## O que o grafo revela nesta edição
 
-Na edição 0.1 o grafo é esparso por construção — os capítulos estão no nível de esqueleto, e a densidade de menções cresce com o aprofundamento. Os pisos de qualidade do build (nós e arestas mínimos) foram calibrados para esta edição e **sobem a cada rodada** de aprofundamento, registrado no [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+Na edição 1.0 o grafo é esparso por construção — os capítulos estão no nível de esqueleto, e a densidade de menções cresce com o aprofundamento. Os pisos de qualidade do build (nós e arestas mínimos) foram calibrados para esta edição e **sobem a cada rodada** de aprofundamento, registrado no [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
 
 O uso editorial do grafo, a partir da rodada 2: procurar **nós isolados** (conceito prometido no glossário e não usado em nenhum capítulo) e **pontes ausentes** (capítulos que deveriam conversar e não se citam — por exemplo, 12 e 16, que tratam do mesmo risco por ângulos diferentes).

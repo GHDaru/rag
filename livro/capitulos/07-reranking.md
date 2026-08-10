@@ -1,6 +1,6 @@
 # 07 — Reranking
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **reranker** (cap. 02).
 
@@ -75,10 +75,18 @@ Registrado porque este livro se recusa a vender estágio:
 
 Busca e reordenação são tarefas diferentes o bastante para exigirem **modelos diferentes**: a busca densa compara vetores calculados separadamente (*bi-encoder*) e é cega à interação entre pergunta e documento; o reranker lê os dois **juntos** (*cross-encoder*) e ganha precisão exatamente onde o outro é estruturalmente limitado. **O que roubar:** o arranjo "recuperar barato, reordenar caro" — o modelo caro só vê o que o barato filtrou — e a pergunta de projeto que dele decorre: **quanto recall você compra em N para converter em precisão em K**, respondida por medição, não por escolha. **O que quase ninguém aproveita:** a **nota**, não só a ordem. Ela habilita limiar e abstenção ("não encontrei"), **K variável** (perguntas fáceis gastam menos contexto — orçamento adaptativo de graça) e monitoramento pela distribuição, que denuncia mudança no corpus antes de qualquer métrica de qualidade. **Quando não vale:** corpus pequeno, latência apertada, volume com margem fina — e sobretudo **recall baixo**, porque reordenar não inventa o que não chegou. Adotar reranking para curar falha de recall é o erro mais comum deste capítulo.
 
-## Mão na massa — rag-zero, etapa 6
+## Mão na massa — `rag-zero`, etapa 6
 
 Na etapa 6 você acrescenta o reranker ao `rag-zero` e mede três coisas: o ganho de precisão sobre a etapa 4, o custo por pergunta, e a curva de N (20, 50, 100) até o retorno virar plano. Depois troca `top_k` fixo por K variável com limiar, e compara o gasto médio de contexto. O exercício de completude: o limiar vem esqueletado — você o calibra e descobre que ele é a fronteira entre "não sei" e alucinação.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa06_reranking.py
+```
+
+Código: [`rag_zero/recuperacao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/recuperacao.py). O que você deve ver: a mesma pergunta com e sem limiar, e a taxa de resultado zero deixando de ser zero.
 ## Verificação
 
 1. Seu *context recall* em N=100 é 0,62. Vale adotar reranking? O que fazer antes?

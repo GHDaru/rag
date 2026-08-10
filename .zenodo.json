@@ -11,16 +11,16 @@
       "orcid": "0000-0002-8979-0461"
     }
   ],
-  "description": "<p>Livro vivo, em português, sobre as duas disciplinas que decidem o que um modelo de linguagem vê: a <strong>engenharia de prompt</strong> (o que se escreve &mdash; anatomia do prompt, técnicas de raciocínio, saída estruturada, prompt de sistema e persona, otimização automática e avaliação) e a <strong>engenharia de contexto</strong> (o que se monta em runtime &mdash; a janela como orçamento, recuperação, RAG em três níveis, RAG agêntico, memória, compactação e contexto vindo de ferramentas), mais a camada de sistema que atravessa as duas: avaliação, segurança do contexto e custo.</p><p><strong>Tese central:</strong> RAG não é a moldura, é a técnica central da engenharia de contexto &mdash; a disciplina que decide quais tokens ocupam a janela, em que ordem, e o que sai quando falta espaço. A obra assume sua própria cláusula de expiração: cada capítulo é datado e cada edição registra apostas verificáveis sobre o que vai deixar de valer, com prazo e critério.</p><p><strong>Autoria e método:</strong> a obra é co-produzida por humano e IA, sob responsabilidade e curadoria humanas. O autor (creator) é Gilsiley Henrique Darú; a assistência de IA (pesquisa e geração de texto) é declarada abertamente, seguindo as diretrizes ICMJE/COPE &mdash; a IA não figura como autora. Detalhes no Guia Editorial e no Histórico, que registra o modelo usado em cada edição.</p>",
+  "description": "<p>Livro vivo, em português, sobre <strong>como se constrói um sistema de RAG (Retrieval-Augmented Generation)</strong>: seus componentes, os contratos entre eles e as topologias que eles formam.</p><p>Percorre o caminho inteiro em cinco partes: a <strong>arquitetura</strong> (anatomia do sistema e os paradigmas Naive, Advanced, Modular e agêntico); o <strong>corpus</strong> (ingestão, governança, chunking e representação); a <strong>recuperação</strong> (busca esparsa, densa e híbrida, reranking, entendimento da consulta, indexação refinada e recuperação estruturada); a <strong>geração</strong> (o prompt, o raciocínio, a saída como contrato e a fundamentação com citação verificável); e o <strong>sistema em produção</strong> (RAG agêntico, conversa, orçamento de contexto, avaliação, segurança e custo).</p><p><strong>Tese central:</strong> RAG é um sistema com componentes, contratos e topologias — e a decisão que importa quase nunca é &ldquo;qual técnica&rdquo;, é onde ela encaixa e o que custa. As duas metades da sigla têm peso: um livro de RAG que trata a geração como detalhe trata metade do objeto como detalhe.</p><p><strong>Rastreabilidade:</strong> cada afirmação sobre técnica aponta fonte primária com URL; cada número publicado vem com a condição experimental ao lado; e a bibliografia declara o status de validação de cada referência, incluindo as que <em>não</em> sustentaram a afirmação que o livro fazia. A obra assume sua própria cláusula de expiração: cada capítulo é datado e cada edição registra apostas verificáveis, com prazo e critério.</p><p>Acompanha o <strong>rag-zero</strong>, trilha prática executável em Python puro — sem dependência externa, sem GPU e sem credencial.</p><p><strong>Autoria e método:</strong> obra co-produzida por humano e IA, sob responsabilidade e curadoria humanas. O autor (creator) é Gilsiley Henrique Darú; a assistência de IA (pesquisa e geração de texto) é declarada abertamente, seguindo as diretrizes ICMJE/COPE &mdash; a IA não figura como autora. Detalhes no Guia Editorial e no Histórico, que registra o modelo usado em cada edição.</p>",
   "keywords": [
-    "engenharia de prompt",
-    "prompt engineering",
-    "engenharia de contexto",
-    "context engineering",
     "RAG",
     "retrieval-augmented generation",
-    "LLM",
-    "avaliação de LLM",
+    "recuperação de informação",
+    "information retrieval",
+    "arquitetura de sistemas de RAG",
+    "geração fundamentada",
+    "engenharia de prompt",
+    "avaliação de RAG",
     "prompt injection",
     "livro vivo"
   ],
@@ -35,5 +35,6 @@
       "relation": "isSupplementTo",
       "scheme": "url"
     }
-  ]
+  ],
+  "version": "1.0.0"
 }

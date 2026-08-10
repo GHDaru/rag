@@ -6,6 +6,35 @@
 
 ## Histórico de edições
 
+### Edição 1.0 — 2026-08-09 · A primeira versão
+
+**O que é.** A versão em que o que o livro **afirma** e o que ele **entrega** coincidem — e em que o leitor consegue **construir**, não só decidir.
+
+**Como esta edição foi decidida.** Dois pareceres independentes, em contexto fresco, sem contato entre si. Cada acusação foi **verificada contra o repositório antes de virar plano**. Todas se confirmaram, e os dois chegaram à mesma causa por caminhos diferentes: *o livro não estava bloqueado por falta de conteúdo, e sim por incoerência entre o que afirmava e o que entregava.* As decisões viraram [ADR 0009](https://github.com/GHDaru/rag/blob/main/adr/0009-escopo-da-edicao-1-0.md) (escopo), [0010](https://github.com/GHDaru/rag/blob/main/adr/0010-companion-na-1-0.md) (companion) e [0011](https://github.com/GHDaru/rag/blob/main/adr/0011-politica-de-siglas.md) (siglas).
+
+**O que estava errado, e foi corrigido:**
+
+- **O rastro de processo não existia.** Cinco edições produzidas sem um único `plan.md` — que é **o lugar físico onde o Constitution Check mora**. Sem ele, o ciclo não tinha portão. `specs/` sequer existia, e o contador apontava para uma spec do livro irmão.
+- **O estado se contradizia.** O `README.md` anunciava "Edição 0.2" com a vigente em 0.6, e afirmava, a duas linhas de distância, que os Apêndices A estavam preenchidos **e** enfileirados. 29 cabeçalhos de capítulo com a edição errada.
+- **O metadado de citação citava o livro anterior.** `CITATION.cff` e `.zenodo.json` descreviam o objeto da constituição 2.0.0, revogada.
+- **O livro afirmava algo que não podia demonstrar.** "O companion é o `rag-zero` rodando em produção" era falso em dois sentidos: não estava no ar, e nenhum módulo importava `rag_zero`. **A mesma frase já tinha corrido à frente do código na 0.4** — o que mostrou que o problema não era redação, era **ausência de portão**.
+- **O leitor não conseguia construir.** 20 dos 25 capítulos sem um único bloco de código; o cap. 15 prescrevia o prompt de fundamentação e **nunca o mostrava** — os caps. 06, 11 e 15 passaram a exibir o artefato, e a exigência virou checagem (R7); os 25 "Mão na massa" descreviam a trilha em prosa, sem arquivo, sem comando e sem saída esperada; e o `rag-zero` **não estava no sumário** — para quem lia o site, a espinha 4C/ID não existia.
+- **Siglas órfãs, inclusive a do título.** *Retrieval-Augmented Generation* nunca era expandida no corpo.
+
+**O que a 1.0 acrescenta:**
+
+- **Um verificador como portão** (`specs/001-edicao-1-0/verificar.py`): cada critério de aceite virou um `pass/fail`. Ele reporta **zero** falhas hoje. O número de partida não entra aqui: o instrumento foi reescrito no meio do ciclo (ADR 0011), e comparar contagens de versões diferentes do verificador é maçã com laranja — exatamente o que o Princípio I proíbe quando exige a condição experimental ao lado. *Prove, não afirme* vale para o próprio relatório.
+- **Dois portões permanentes**: `scripts/check-companion.sh`, com invariante **bidirecional** — afirmar sem publicar quebra, e publicar sem atualizar o texto também; e um **teste de paridade** que transforma "o mesmo BM25 da etapa 5" de afirmação em contrato.
+- **A escada de execução visível**: os 22 "Mão na massa" com arquivo, comando e saída esperada; o `rag-zero` no sumário; e as cinco etapas não construídas **declaradas como tal**, nunca descritas no presente.
+- **A trilha em 12 das 17 etapas construídas** — 9 com script próprio para rodar, as outras 3 como módulo coberto por teste — e **48 testes** — incluindo a **linha de base** (etapa 2, o *Naive RAG*), sem a qual nenhuma tabela de ganho do livro comparava com nada.
+- **Política de siglas em quatro classes**, com o motor expandindo a primeira ocorrência de cada página — o que entrega o que a regra editorial queria com **zero palavras a mais no fonte**.
+
+**O que fica fora, por decisão e não por esquecimento:** medição própria de técnicas · catálogo exaustivo · Radar · edição em inglês · DOI e PDF consolidado · instância pública do companion · etapas 11–13, 15 e 16 da trilha. Tudo no ROADMAP como pós-1.0.
+
+**A dívida declarada:** 13 referências seguem ⏳ (nenhuma sustenta sozinha uma tese de capítulo) e o cap. 04 continua sendo o de base mais fraca — a área trata ingestão como pré-processamento e raramente a estuda.
+
+**Atribuição:** direção editorial e decisão de escopo — Gilsiley Henrique Darú. Pareceres, construção e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-09.
+
 ### Edição 0.6 — 2026-08-09 · O "G" construído, e a árvore que não condensava
 
 **O que é.** A rodada 3 avança para as duas etapas que faltavam no miolo: o **gerador fundamentado** (etapa 10) e o **RAPTOR** (etapa 9). São 39 testes agora, ainda sem uma única dependência externa.

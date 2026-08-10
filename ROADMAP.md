@@ -2,11 +2,11 @@
 
 > As rodadas planejadas do livro vivo. Cada rodada é um lote de trabalho que vira **uma ou mais specs** (`specs/NNN-nome/`), cada uma em sua branch, conforme o Princípio VII da [constituição](.specify/memory/constitution.md).
 >
-> Última atualização: **2026-08-09** · edição vigente: **0.6** (ver [Histórico](livro/HISTORICO.md))
+> Última atualização: **2026-08-09** · edição vigente: **1.0** (ver [Histórico](livro/HISTORICO.md))
 
 ## Onde estamos
 
-**Edição 0.6 — o esqueleto do sistema, a evidência conferida, e o livro começando a executar.** O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
+**Edição 1.0 — a primeira versão.** O que o livro afirma e o que entrega coincidem; o leitor consegue construir, não só decidir. Escopo decidido no [ADR 0009](adr/0009-escopo-da-edicao-1-0.md). O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
 
 O que a 0.2 fez além de renomear: os três capítulos que fechavam a lacuna real (**02** anatomia, **03** arquiteturas de referência, **15** geração fundamentada), a Parte III desdobrada em cinco, e a fronteira com o livro irmão tornada explícita na constituição.
 
@@ -16,9 +16,9 @@ O que **ainda não** existe, e é deliberado:
 |---|---|:---:|
 | Referências validadas (status ✓) | **42 de 55 (76%)** — rodada 2 ✅ concluída; as 13 restantes são de menor peso | — |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 3–5 |
-| Trilha prática `rag-zero` | **7 de 17 etapas** executáveis (0, 3–6, 9, 10) | rodada 3 |
+| Trilha prática `rag-zero` | **12 das 17 etapas** construídas (9 com script próprio), 48 testes; as 5 restantes declaradas | pós-1.0 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
-| Chat companion ligado | backend existe, corpus e capacidades adaptados; falta o deploy | rodada 3 |
+| Instância pública do companion | roda localmente com um comando; publicar exige conta, credencial e custo recorrente de terceiro | pós-1.0 |
 | Edição em inglês | fora do escopo da v1, por decisão | rodada 7 |
 | Radar de atualização | fora do escopo da v1, por decisão | rodada 6 |
 
@@ -64,7 +64,7 @@ O que **ainda não** existe, e é deliberado:
 
 ---
 
-## Rodada 3 — `rag-zero` (a trilha prática) · **em andamento**
+## Rodada 3 — `rag-zero` (a trilha prática) · **piso da 1.0 entregue**
 
 **Objetivo:** o livro executável. **17 etapas** (0–16), Python + FastAPI, custo zero e sem GPU. A Parte IV inteira converge para a etapa 10, porque é um gerador só — construído em camadas.
 
@@ -90,7 +90,7 @@ O que **ainda não** existe, e é deliberado:
 | 15 | 22 | **atacar o próprio sistema** e medir o que cada camada bloqueia |
 | 16 | 23 | painel: custo por parcela + cache + latência + qualidade |
 
-**Também nesta rodada:** ligar o **chat companion** em produção (o companion *é* o `rag-zero` rodando, e vira o exemplo real que o livro disseca), com gating de capacidades por capítulo.
+**Também nesta rodada:** o **chat companion** — o desenho do `rag-zero` levado a um serviço FastAPI, com gating de capacidades por capítulo. Ele **roda localmente** (`cd chat-companion/backend && uvicorn app:app`, sem chave e sem banco) e é o exemplo que o livro disseca a partir do código. **O deploy público está fora da 1.0** ([ADR 0009](adr/0009-escopo-da-edicao-1-0.md), [ADR 0010](adr/0010-companion-na-1-0.md)): depende de conta, credencial e custo recorrente de terceiro — e nada na trilha prática pode depender dele (Princípio VI).
 
 ### Feito (edição 0.5, 2026-08-09)
 
@@ -105,9 +105,9 @@ O que **ainda não** existe, e é deliberado:
 ### Aberto
 
 - Etapas 1, 2, 7, 8 e 11–16 (contratos, linha de base, consulta, indexação avançada, agêntico, memória, orçamento, segurança, custo).
-- Ligar o **companion em produção** com gating de capacidades por capítulo.
+- Publicar o companion — **fora da 1.0** ([ADR 0010](adr/0010-companion-na-1-0.md)); a execução local é o produto desta versão.
 
-**Critério de conclusão:** as 17 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
+**Critério de conclusão (revisado pelo [ADR 0010](adr/0010-companion-na-1-0.md)):** as etapas do piso da 1.0 executáveis com testes verdes, as demais **declaradas** como especificadas; e o companion respondendo sobre o livro em **execução local verificável** (`/health` mais um turno em modo eco). O deploy público é pós-1.0.
 
 ---
 

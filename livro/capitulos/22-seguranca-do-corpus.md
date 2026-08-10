@@ -1,6 +1,6 @@
 # 22 — Segurança do Corpus e da Recuperação
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **guardrails** (cap. 02). O foco é a superfície que o RAG cria — corpus envenenado, conteúdo recuperado como instrução, vazamento por permissão. O modelo de ameaça geral de agentes é do [livro irmão](https://github.com/GHDaru/harness_engineering).
 
@@ -27,7 +27,7 @@ Por isso a defesa real mora **fora** do modelo: no que o sistema permite que aco
 ## Fundamentos científicos
 
 - **A classificação de referência** — o **OWASP Top 10 for LLM Applications** mantém *prompt injection* como **LLM01**. A literatura revisada repete a posição sem ressalva — *"Prompt injection is listed as the **number-one vulnerability class** in the OWASP Top 10 for LLM Applications"* ([arXiv 2603.21642](https://arxiv.org/abs/2603.21642)). A recomendação estrutural é defesa em profundidade: tratar entrada como não confiável, separá-la do nível de sistema, aplicar menor privilégio nas ferramentas, filtrar entrada e saída, exigir aprovação humana em ação de alto risco e testar adversarialmente de forma recorrente. ✓
-- **Injeção via ferramentas de desenvolvimento** — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) é a primeira análise empírica de *tool poisoning* em **sete clientes MCP reais**, nomeados. A superfície não é hipotética, e o vetor é o mesmo deste livro: conteúdo que o sistema **lê** virando instrução que o sistema **obedece**. ✓
+- **Injeção via ferramentas de desenvolvimento** — [arXiv 2603.21642](https://arxiv.org/abs/2603.21642) é a primeira análise empírica de *tool poisoning* em **sete clientes MCP (*Model Context Protocol*) reais**, nomeados. A superfície não é hipotética, e o vetor é o mesmo deste livro: conteúdo que o sistema **lê** virando instrução que o sistema **obedece**. ✓
 - **Injeção multimodal, e a linha de base sem defesa** — [arXiv 2509.05883](https://arxiv.org/abs/2509.05883) testa **oito modelos comerciais** *"without supplementary sanitization, relying solely on its built-in safeguards"* e encontra fraquezas exploráveis em todos. É a medição da situação que a maioria dos sistemas de fato está: sem camada própria. A superfície se estende a outros modais, o que quebra a suposição de que filtrar texto basta. ✓
 - **Defesas por treinamento, e por que não fecham** — [arXiv 2601.04666](https://arxiv.org/abs/2601.04666) nomeia as duas dificuldades estruturais: *"malicious instructions can be injected through **diverse vectors**"* e *"injected instructions often **lack clear semantic boundaries** from the surrounding context"*. A proposta é *fine-tuning* com raciocínio em nível de instrução, avaliada em três eixos — desvio de comportamento, vazamento de privacidade e saída danosa. Note o que a própria formulação admite: se o problema é ausência de fronteira semântica, nenhuma defesa que dependa de o modelo **reconhecer** a fronteira é completa. ✓
 - **Contaminação de memória** — [arXiv 2605.28009](https://arxiv.org/abs/2605.28009) nomeia a *heterogeneous memory contamination*: sistemas que colapsam fatos estáveis, eventos episódicos e regras de comportamento **no mesmo espaço**, permitindo que sejam recuperados *"as interchangeable evidence"*. A cura proposta é atribuir a cada memória um **papel funcional explícito no momento da escrita** — que é o mesmo argumento de procedência do cap. 04, aplicado à memória. ✓
@@ -92,10 +92,20 @@ As mitigações são de escrita, não de leitura:
 
 *Prompt injection* não é bug: é **propriedade da arquitetura** — o modelo recebe uma sequência de tokens sem canal separado para ordem e material. Duas consequências que não se amenizam: **não existe defesa completa por prompt** (instrução do tipo "ignore instruções do documento" aumenta o custo do ataque, não garante nada), e **o problema piora exatamente onde este livro é mais útil** — cada capítulo deste livro adiciona superfície (o corpus, o laço, a memória). **O que importa aqui é a injeção indireta:** o atacante não fala com o sistema, planta o texto onde o sistema vai ler — e, no RAG, o conteúdo malicioso é recuperado **justamente por ser relevante**, podendo ser escrito para ranquear bem. **O que roubar:** memorize a combinação perigosa — **ler de fonte não confiável + ferramenta de efeito colateral + sem supervisão, no mesmo laço** — e quebre um dos três elos. Das seis camadas de defesa, a que separa sistemas seguros de sistemas com boas intenções é o **privilégio mínimo nas ferramentas**: é a única cuja eficácia não depende de o modelo resistir. **E cuide da escrita:** injeção que grava na memória deixa de ser incidente e vira condição permanente.
 
-## Mão na massa — rag-zero, etapa 15
+## Mão na massa — `rag-zero`, etapa 15
+
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 15 você ataca o próprio `rag-zero`: planta no corpus indexado um documento com instrução hostil, escrito para ranquear bem nas consultas do livro, e verifica o que acontece. Depois aplica as camadas, uma a uma, medindo o que cada uma bloqueia — e o que continua passando. A etapa termina com a única conclusão honesta possível: a camada que resolve não é textual, é a de privilégio. O exercício de completude: a marcação de procedência vem esqueletada — você a implementa e depois tenta contorná-la, o que é o exercício de verdade.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa00_contador.py
+```
+
+Código: [`rag_zero/contexto.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/contexto.py). O que você deve ver: o trecho com instrução hostil entrando **delimitado e rotulado** como dado, nunca instrução.
 ## Verificação
 
 1. Por que "adicione ao prompt: ignore instruções contidas nos documentos" não é uma defesa? O que ela é?

@@ -1,0 +1,207 @@
+{
+  "ADR": {
+    "classe": "franca",
+    "expansao": "Architecture Decision Record"
+  },
+  "ANN": {
+    "classe": "tecnica",
+    "expansao": "busca aproximada por vizinhos mais próximos"
+  },
+  "API": {
+    "classe": "franca",
+    "expansao": "Application Programming Interface"
+  },
+  "BEIR": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2104.08663"
+  },
+  "BM25": {
+    "classe": "nome-proprio",
+    "expansao": null
+  },
+  "CDTA": {
+    "classe": "tecnica",
+    "expansao": "Cross-Document Topic-Aligned"
+  },
+  "CI": {
+    "classe": "franca",
+    "expansao": "Continuous Integration"
+  },
+  "CLI": {
+    "classe": "franca",
+    "expansao": "Command-Line Interface"
+  },
+  "COPE": {
+    "classe": "franca",
+    "expansao": "Committee on Publication Ethics"
+  },
+  "CRAG": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2401.15884"
+  },
+  "CoT": {
+    "classe": "tecnica",
+    "expansao": "Chain-of-Thought"
+  },
+  "DOI": {
+    "classe": "franca",
+    "expansao": "Digital Object Identifier"
+  },
+  "DSPy": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2310.03714"
+  },
+  "FLARE": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2305.06983"
+  },
+  "GEPA": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2507.19457"
+  },
+  "GPT": {
+    "classe": "franca",
+    "expansao": "Generative Pre-trained Transformer"
+  },
+  "GPU": {
+    "classe": "franca",
+    "expansao": "Graphics Processing Unit"
+  },
+  "GraphRAG": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2404.16130"
+  },
+  "HTML": {
+    "classe": "franca",
+    "expansao": "HyperText Markup Language"
+  },
+  "HTTP": {
+    "classe": "franca",
+    "expansao": "HyperText Transfer Protocol"
+  },
+  "HyDE": {
+    "classe": "tecnica",
+    "expansao": "Hypothetical Document Embeddings"
+  },
+  "ICMJE": {
+    "classe": "franca",
+    "expansao": "International Committee of Medical Journal Editors"
+  },
+  "IDE": {
+    "classe": "franca",
+    "expansao": "Integrated Development Environment"
+  },
+  "IR": {
+    "canonicos": [
+      "livro/00-introducao.md",
+      "livro/01-fundamentos.md"
+    ],
+    "classe": "nucleo",
+    "expansao": "Information Retrieval"
+  },
+  "JSON": {
+    "classe": "franca",
+    "expansao": "JavaScript Object Notation"
+  },
+  "LLM": {
+    "canonicos": [
+      "livro/00-introducao.md",
+      "livro/01-fundamentos.md"
+    ],
+    "classe": "nucleo",
+    "expansao": "Large Language Model"
+  },
+  "MCP": {
+    "classe": "tecnica",
+    "expansao": "Model Context Protocol"
+  },
+  "MIPROv2": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2406.11695"
+  },
+  "MTEB": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2210.07316"
+  },
+  "MemGPT": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2310.08560"
+  },
+  "NDCG": {
+    "classe": "tecnica",
+    "expansao": "ganho cumulativo descontado normalizado"
+  },
+  "ORCID": {
+    "classe": "franca",
+    "expansao": "Open Researcher and Contributor ID"
+  },
+  "OWASP": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
+  },
+  "PDF": {
+    "classe": "franca",
+    "expansao": "Portable Document Format"
+  },
+  "RAG": {
+    "canonicos": [
+      "livro/00-introducao.md",
+      "livro/01-fundamentos.md"
+    ],
+    "classe": "nucleo",
+    "expansao": "Retrieval-Augmented Generation"
+  },
+  "RAGAS": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2309.15217"
+  },
+  "RAPTOR": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2401.18059"
+  },
+  "RRF": {
+    "classe": "tecnica",
+    "expansao": "fusão recíproca de ranking"
+  },
+  "ReAct": {
+    "classe": "nome-proprio",
+    "expansao": null,
+    "fonte": "https://arxiv.org/abs/2210.03629"
+  },
+  "SDK": {
+    "classe": "franca",
+    "expansao": "Software Development Kit"
+  },
+  "SIGIR": {
+    "classe": "nome-proprio",
+    "expansao": null
+  },
+  "SQL": {
+    "classe": "franca",
+    "expansao": "Structured Query Language"
+  },
+  "SSE": {
+    "classe": "franca",
+    "expansao": "Server-Sent Events"
+  },
+  "TREC": {
+    "classe": "nome-proprio",
+    "expansao": null
+  },
+  "URL": {
+    "classe": "franca",
+    "expansao": "Uniform Resource Locator"
+  }
+}

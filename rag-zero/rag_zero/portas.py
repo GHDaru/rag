@@ -180,8 +180,9 @@ class LLMFundamentado:
     def gerar(self, prompt: str, *, max_tokens: int = 512) -> str:
         # Casa cada bloco <trecho>…</trecho> isoladamente. A âncora de abertura
         # é obrigatória: sem ela o `.*?` atravessa blocos e mistura os trechos.
-        trechos = re.findall(r"<trecho[^>]*>\s*\[(T\d+)\]\s*(.*?)\s*</trecho>",
-                             prompt, re.S)
+        trechos = re.findall(
+            r"<trecho[^>]*>\s*\[([A-Za-z0-9][\w.#/-]*)\]\s*(.*?)\s*</trecho>",
+            prompt, re.S)
         if not trechos:
             return "NAO_ENCONTRADO"
         partes = []

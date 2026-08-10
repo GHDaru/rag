@@ -185,3 +185,42 @@ def test_telemetry_publico_agregado():
     assert d["total"] >= 3 and d["paginas_distintas"] >= 2
     assert d["por_pagina"].get("02-anatomia-do-sistema", 0) >= 2
     assert set(d.keys()) == {"total", "paginas_distintas", "por_pagina"}  # nada além do agregado
+
+
+def test_bm25_paridade_com_rag_zero():
+    """O companion reimplementa o BM25 do `rag-zero` — e isso vira contrato.
+
+    O livro afirma que este serviço usa "o mesmo BM25 (*Best Matching 25*) Okapi
+    da etapa 5". Até a edição 0.4 a afirmação era falsa e ninguém percebeu,
+    porque nada a verificava (ADR 0010). Este teste é o portão: se a
+    reimplementação divergir da canônica, ele quebra — e obriga ou a corrigir o
+    código, ou a enfraquecer a frase.
+    """
+    import sys
+    from pathlib import Path
+
+    raiz = Path(__file__).resolve().parents[3]
+    sys.path.insert(0, str(raiz / "rag-zero"))
+    from rag_zero.bm25 import BM25
+    from ragindex import BookIndex, _norm
+
+    corpus = [
+        "O código de erro ERR_4021 indica falha de autenticação no gateway.",
+        "Automóveis elétricos reduzem emissão em áreas urbanas densas.",
+        "O prazo de garantia do produto XR-4400-B é de 24 meses.",
+        "Veículos de passeio movidos a bateria exigem recarga frequente.",
+        "A autenticação do gateway usa token de curta duração.",
+    ]
+
+    indice = BookIndex.__new__(BookIndex)          # sem tocar em disco
+    indice.blocos = [{"fonte": f"f{i}.md", "titulo": "t", "texto": t,
+                      "termos": _norm(t)} for i, t in enumerate(corpus)]
+    indice._indexar()
+
+    canonico = BM25(corpus)
+    for consulta in ("autenticação gateway", "veículos elétricos bateria",
+                     "ERR_4021", "prazo de garantia"):
+        esperado = [r.indice for r in canonico.buscar(consulta, 3)]
+        obtido = [int(r["fonte"][1:-3]) for r in indice.buscar(consulta, 3)]
+        assert obtido == esperado, (
+            f"divergência em '{consulta}': companion={obtido} rag-zero={esperado}")

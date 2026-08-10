@@ -1,6 +1,6 @@
 # 21 — Avaliação e Observabilidade
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **avaliador** e **observabilidade** (cap. 02). As quatro métricas e a tabela de diagnóstico estão fechadas; o tratamento por ferramenta e benchmark é a rodada 2 do ROADMAP.
 
@@ -20,7 +20,7 @@ Ao final deste capítulo, você deve ser capaz de:
 A separação mínima é entre **achar** e **usar**:
 
 - A recuperação trouxe o que precisava? (falha aqui = caps. 05–10)
-- A resposta usou o que foi trazido, sem inventar? (falha aqui = geração, prompt, cap. 11/13)
+- A resposta usou o que foi trazido, sem inventar? (falha aqui = geração, caps. 15 e 13)
 
 Um sistema pode ter recuperação excelente e resposta péssima. E — o caso que mais engana — pode ter recuperação péssima e resposta que **parece** boa, porque o modelo preencheu as lacunas com conhecimento paramétrico plausível. Este segundo caso passa em qualquer avaliação superficial e falha exatamente onde importa: no caso raro, no dado novo, no que a empresa tem de específico.
 
@@ -48,7 +48,7 @@ Um sistema pode ter recuperação excelente e resposta péssima. E — o caso qu
 |---|---|---|---|
 | **Context recall** | os trechos necessários foram recuperados? | recuperação | índice, chunking, busca (caps. 05, 06, 09) |
 | **Context precision** | os trechos recuperados eram relevantes? | recuperação | `top_k` alto, ranking fraco, orçamento desperdiçado (cap. 20) |
-| **Faithfulness** | a resposta é sustentada pelo que foi recuperado? | geração | alucinação; prompt sem regra de fundamentação (cap. 11) |
+| **Faithfulness** | a resposta é sustentada pelo que foi recuperado? | geração | alucinação; prompt sem regra de fundamentação (cap. 15) |
 | **Answer relevance** | a resposta responde à pergunta feita? | geração | o modelo respondeu outra coisa |
 
 *Faithfulness* é a que mais importa e a mais mal compreendida. Ela é calculada decompondo a resposta em afirmações e verificando quantas são **inferíveis do contexto fornecido**. Uma resposta factualmente correta mas não sustentada pelo contexto tem *faithfulness* baixa — e isso é o comportamento desejado, não um defeito da métrica: significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta.
@@ -61,7 +61,7 @@ A combinação das métricas localiza o problema — é o instrumento que o cap.
 |:---:|:---:|:---:|---|---|
 | baixo | — | — | não acha | chunking, busca híbrida, reescrita (caps. 05, 06, 08) |
 | alto | baixo | — | acha e traz lixo junto | reranking, `top_k` menor (cap. 07) |
-| alto | alto | baixo | tem tudo e inventa | prompt de fundamentação, regra de abstenção (cap. 11) |
+| alto | alto | baixo | tem tudo e inventa | prompt de fundamentação, regra de abstenção (cap. 15) |
 | alto | alto | alto | e ainda erra | a pergunta exige raciocínio (cap. 12) ou multi-hop (cap. 10) |
 
 Esta tabela é, sozinha, o motivo de o capítulo existir. Sem ela, "melhorar o RAG" é tentativa e erro caro.
@@ -107,10 +107,20 @@ Dois cuidados que separam painel de enfeite:
 
 "O RAG não está bom" tem pelo menos quatro causas distintas, e a separação mínima é entre **achar** e **usar**. **O que roubar:** a **tabela de diagnóstico** — recall baixo = não acha (chunking/busca); recall alto + precision baixo = traz lixo junto (reranking, `top_k` menor); recall e precision altos + faithfulness baixa = **tem tudo e inventa** (prompt de fundamentação). Sem ela, "melhorar o RAG" é tentativa e erro caro. **A métrica mais mal compreendida:** *faithfulness* baixa numa resposta **factualmente correta** não é defeito da métrica — significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta. Esse é o caso que mais engana, porque parece bom. **Sobre conjuntos:** sintético a partir do corpus é barato e **superestima o recall** (a pergunta gerada de um trecho é respondível por aquele trecho); pergunta real com resposta verificada por gente é insubstituível. **Nunca** gere as perguntas e julgue as respostas com o mesmo modelo que responde — isso mede consistência, não qualidade. **Do eval ao painel:** eval mede um conjunto fixo; produção precisa de sinais contínuos — e o mais barato e informativo é a **taxa de resultado zero**. Se ela sobe, algo mudou no corpus ou nas perguntas; se está em **zero**, provavelmente não há limiar nem caminho de abstenção, e o sistema devolve ruído com cara de resposta. Monitore também **p99** (é onde o laço agêntico do cap. 18 aparece, não na mediana) e a **taxa de citação**, que é *faithfulness* na versão barata, sem juiz. **As lacunas abertas:** trajetória, conversa (não só turno), custo ao lado da qualidade, e deriva.
 
-## Mão na massa — rag-zero, etapa 14
+## Mão na massa — `rag-zero`, etapa 14
+
+> **A etapa 14 está parcial**, por decisão registrada no [ADR 0012](https://github.com/GHDaru/rag/blob/main/adr/0012-etapa-14-parcial.md): as métricas de **recuperação** existem e rodam; *faithfulness* e *answer relevance* exigem juiz calibrado, e um juiz não calibrado é o anti-padrão que o cap. 17 ensina a evitar.
 
 Na etapa 14 você monta o eval do `rag-zero`: 30 perguntas sobre o texto deste livro (metade sintéticas, metade escritas por você), as quatro métricas implementadas com juiz de família diferente, e a tabela de diagnóstico impressa ao final. A etapa termina com um exercício desconfortável e deliberado: rodar o eval sobre a etapa 9 (só BM25) e sobre a etapa 10 (pipeline completo) e verificar se o ganho que você **esperava** aparece. O exercício de completude: o cálculo de *faithfulness* vem esqueletado — você implementa a decomposição em afirmações e descobre onde a métrica é frágil.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa05_busca.py
+```
+
+Código: [`rag_zero/avaliacao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/avaliacao.py). O que você deve ver: as métricas de recuperação por estágio — e a armadilha do `recall@k` com gabarito grande.
 ## Verificação
 
 1. *Context recall* 0,9, *context precision* 0,4, *faithfulness* 0,85. Qual é o problema, e qual o custo escondido dele? (Dica: cap. 20.)

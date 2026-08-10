@@ -283,22 +283,21 @@ function marcarCallouts(html) {
   });
 }
 
-// Siglas "abertas" (spec 023) — fonte única; o glossário mirroreia.
-const SIGLAS = {
-  MCP: "Model Context Protocol", ACP: "Agent Client Protocol", A2A: "Agent-to-Agent",
-  MRTR: "Multi Round-Trip Requests", CIMD: "Client ID Metadata Documents", DCR: "Dynamic Client Registration",
-  LSP: "Language Server Protocol", RPC: "Remote Procedure Call",
-  MAST: "Multi-Agent System Failure Taxonomy", RAG: "Retrieval-Augmented Generation",
-  LLM: "Large Language Model", GPT: "Generative Pre-trained Transformer",
-  API: "Application Programming Interface", SDK: "Software Development Kit",
-  CLI: "Command-Line Interface", TUI: "Text (Terminal) User Interface",
-  IDE: "Integrated Development Environment", HCI: "Human-Computer Interaction",
-  HTTP: "HyperText Transfer Protocol", SSE: "Server-Sent Events", JSON: "JavaScript Object Notation",
-  DDD: "Domain-Driven Design", DOI: "Digital Object Identifier",
-  ORCID: "Open Researcher and Contributor ID", ISBN: "International Standard Book Number",
-  ICMJE: "International Committee of Medical Journal Editors", COPE: "Committee on Publication Ethics",
-  ICLR: "International Conference on Learning Representations", SWE: "Software Engineering",
-};
+// Siglas — fonte ÚNICA, compartilhada com o verificador da spec 001 (ADR 0011).
+// Quatro classes: nucleo (expansão canônica no cap. 00 e 01), franca (nunca no
+// texto), tecnica (expandida na 1ª ocorrência do arquivo) e nome-proprio (glosa
+// funcional + fonte, nunca por letras — "BM25 = Best Matching 25" não ensina nada).
+const SIGLAS_DEF = JSON.parse(readFileSync(resolve(AQUI, "siglas.json"), "utf8"));
+const SIGLAS = Object.fromEntries(
+  Object.entries(SIGLAS_DEF)
+    .filter(([, d]) => d.expansao)
+    .map(([s, d]) => [s, d.expansao]));
+// Só núcleo e técnica ganham expansão VISÍVEL na primeira ocorrência da página.
+// Nome próprio não: renderizaria "BEIR (…)" por letras, que é o que o ADR proíbe.
+const SIGLAS_PRIMEIRA = new Set(
+  Object.entries(SIGLAS_DEF)
+    .filter(([s, d]) => d.expansao && (d.classe === "nucleo" || d.classe === "tecnica"))
+    .map(([s]) => s));
 const RE_SIGLAS = new RegExp("\\b(" + Object.keys(SIGLAS).sort((a, b) => b.length - a.length).join("|") + ")\\b", "g");
 const TAGS_PROT = /^(pre|code|a|abbr|h[1-6]|script|style)$/i;
 function ligarCitacoes(texto) {
@@ -317,7 +316,14 @@ function marcarLeituraExec(html) {
 
 function abrirSiglas(html) {
   const re = /<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/g;
-  const sub = (t) => ligarCitacoes(t).replace(RE_SIGLAS, (s) => `<abbr title="${SIGLAS[s]}">${s}</abbr>`);
+  // `vistas` é POR PÁGINA: é o que entrega o que a regra editorial queria —
+  // expansão uma vez por unidade de leitura — com zero palavras no fonte.
+  const vistas = new Set();
+  const sub = (t) => ligarCitacoes(t).replace(RE_SIGLAS, (s) => {
+    const primeira = SIGLAS_PRIMEIRA.has(s) && !vistas.has(s);
+    vistas.add(s);
+    return `<abbr title="${SIGLAS[s]}"${primeira ? " data-primeira" : ""}>${s}</abbr>`;
+  });
   let out = "", last = 0, m, prot = 0;
   while ((m = re.exec(html))) {
     const txt = html.slice(last, m.index);

@@ -2,7 +2,7 @@
 
 > Frameworks, bibliotecas e coleções **organizados pelo problema que resolvem** — não por popularidade, e nunca como recomendação (Princípio VI: nenhum framework é "o jeito certo").
 >
-> Edição 0.4 · captura em 2026-08. Origem: [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md).
+> Edição 1.0 · captura em 2026-08. Origem: [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md).
 >
 > **Como ler:** esta página é *reference* (Diátaxis) — consulta, não leitura linear. A avaliação comparada por dimensão, com evidência, é a **rodada 4** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md); até lá, o que está aqui é mapa, não veredito.
 
@@ -34,7 +34,7 @@
 |---|---|---|
 | **Contextual Retrieval** (Anthropic) | indexação: 1 chamada de LLM por chunk | chunk sem contexto |
 | **Late Chunking** (Jina AI) | indexação: só o modelo de embedding | chunk sem contexto, muito mais barato |
-| **HyDE** | consulta: 1 chamada por pergunta | pergunta que não se parece com a resposta |
+| **HyDE (*Hypothetical Document Embeddings*)** | consulta: 1 chamada por pergunta | pergunta que não se parece com a resposta |
 | **Reescrita de consulta** | consulta | vocabulário do domínio; referência entre turnos |
 | **GraphRAG** e família | indexação pesada + consulta | multi-hop e perguntas globais |
 

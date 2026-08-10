@@ -1,6 +1,6 @@
 # 04 — Ingestão e Governança do Corpus
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço novo.** Componentes que aprofunda: **aquisição, extração e enriquecimento** (cap. 02). É o capítulo **menos apoiado em evidência** do livro — a área trata ingestão como pré-processamento e raramente a estuda. A bibliografia própria dele é prioridade da rodada 2.
 
@@ -94,7 +94,7 @@ Metadado tem três procedências, e elas não merecem a mesma confiança:
 O que vale gerar, em ordem de retorno observado na prática:
 
 - **Resumo contextual do trecho.** É exatamente o *contextual retrieval* do cap. 09 — e vale registrar a equivalência: **aquela técnica é geração de metadado**, só que o metadado gerado vai para dentro do texto embeddado em vez de para um campo.
-- **Perguntas hipotéticas** que o trecho responde. O chunk passa a carregar as perguntas, não só as respostas — o que casa com a forma como o usuário escreve. É o HyDE (cap. 08) invertido e movido para a indexação: paga-se uma vez em vez de em toda consulta.
+- **Perguntas hipotéticas** que o trecho responde. O chunk passa a carregar as perguntas, não só as respostas — o que casa com a forma como o usuário escreve. É o HyDE (*Hypothetical Document Embeddings*) (cap. 08) invertido e movido para a indexação: paga-se uma vez em vez de em toda consulta.
 - **Vigência e status** extraídos do texto ("esta política substitui a de 2023", "válido até"). É o campo que evita o incidente nº 1 do capítulo, e frequentemente ele só existe na prosa.
 - **Classificação** por área, tipo e sensibilidade. Habilita filtro por permissão (cap. 06) e roteamento (cap. 08).
 - **Entidades e relações.** Caro, e só se justifica se o grafo do cap. 10 estiver no plano — extrair entidades "para o caso de" é a forma mais comum de queimar orçamento de indexação.
@@ -147,10 +147,18 @@ O corpus é a única parte do pipeline que costuma não ter painel algum. Quatro
 
 Os capítulos seguintes ensinam a buscar melhor; este é sobre o **teto** que os precede — você só recupera o que está no índice, do jeito que foi colocado lá. Um documento **revogado embedda exatamente igual ao vigente**: o índice não sabe o que é verdade, sabe o que é parecido. **O que roubar, em ordem:** (1) leia uma amostra do **texto extraído** com olhos humanos — é a verificação de maior retorno do capítulo e leva uma tarde, e nenhuma métrica do cap. 21 a substitui; (2) exija dois campos de metadado que quase ninguém tem — **`versao`/`status`** (para não recuperar o revogado) e **`permissao`** (para filtrar antes de buscar); (3) escreva a política de **saída**, não só a de entrada — times constroem ingestão e esquecem a remoção, e o índice apodrece por acúmulo. **A fronteira de segurança:** quem escreve no índice escreve no contexto do modelo — ingestão automática de fonte aberta é o caminho mais curto para injeção indireta, e o conteúdo hostil pode ser escrito para ranquear bem (cap. 22). **A camada cara e rendosa é o enriquecimento:** metadado tem três procedências — herdado (da fonte), derivado (determinístico) e **gerado por modelo** — e só a terceira pode estar errada. Vale gerar, em ordem: resumo contextual (que é o *contextual retrieval* do cap. 09 sob outro nome), **perguntas hipotéticas** que o trecho responde (HyDE invertido, pago uma vez em vez de em toda consulta), vigência extraída da prosa, e classificação. **A regra que evita o incidente silencioso:** metadado gerado **nunca** filtra de forma dura — ele ordena e impulsiona. Metadado ausente faz recuperar demais, e você percebe; metadado errado faz o documento certo **sumir antes da busca**, e o log mostra uma consulta normal. Guarde a confiança junto do valor, revise uma amostra com gente, e versione o extrator. **Meça o que ninguém mede:** idade mediana do conteúdo, taxa de duplicação, cobertura por fonte, e chunks nunca recuperados.
 
-## Mão na massa — rag-zero, etapa 3
+## Mão na massa — `rag-zero`, etapa 3
 
 Na etapa 3 você constrói o ingestor do `rag-zero` antes de qualquer busca: varre o `livro/`, extrai, normaliza, deduplica por hash e enriquece cada chunk com origem, seção, data e status. O teste que fecha a etapa é o que dá nome ao capítulo: um documento marcado como `revogado` **não** aparece em nenhuma recuperação, mesmo sendo o mais similar à consulta. Depois você acrescenta uma camada de **geração**: um classificador simples de área por capítulo e a extração de perguntas hipotéticas para um subconjunto — guardando a confiança junto do valor, e usando o resultado só para impulsionar, nunca para excluir. O exercício de completude: a política de expiração por tipo vem esqueletada — você define as validades e descobre que essa é uma decisão de produto, não de engenharia.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa03_ingestao.py
+```
+
+Código: [`rag_zero/ingestao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/ingestao.py). O que você deve ver: o documento `revogado` ranqueando **melhor** sem governança, e sumindo com ela.
 ## Verificação
 
 1. Seu RAG cita uma política revogada. Liste os pontos do pipeline onde isso poderia ter sido evitado, do mais barato ao mais caro.

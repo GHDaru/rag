@@ -1,6 +1,6 @@
 # 14 — Prompt de Sistema, Persona e Regras
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A arquitetura em camadas e a separação voz × política estão fechadas; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -87,10 +87,18 @@ O que a prática ensinou sobre autoria, e que vale como regra editorial do próp
 
 O prompt de sistema está em **toda** chamada — é o bloco mais caro do sistema e o que mais apodrece. Monte-o em **camadas por volatilidade** (identidade → capacidades → regras → ambiente → tarefa), porque tudo abaixo do primeiro token que muda deixa de ser cacheável: **nada volátil acima de algo estável**. **O que roubar:** separe **voz** de **política** em blocos e donos distintos — a primeira se testa por julgamento, a segunda por asserção; e adote a cascata com precedência declarada. **A disciplina que salva o arquivo:** a regra entra por **evidência de falha reincidente** e sai quando não se justifica mais — sem processo de remoção, toda cascata vira sedimento. **A regra de segurança:** política sem contraparte no que as ferramentas permitem é preferência, não política.
 
-## Mão na massa — rag-zero, etapa 10 (o gerador)
+## Mão na massa — `rag-zero`, etapa 10
 
 Na etapa 10 você separa o prompt do `rag-zero` em cinco camadas ordenadas, com `SOUL`/persona e `REGRAS`/política em arquivos distintos, e implementa a descoberta em cascata. O teste que fecha a etapa prova **estabilidade de prefixo**: dois turnos consecutivos produzem exatamente os mesmos bytes até a última mensagem. O exercício de completude: a função de precedência vem esqueletada — você decide e implementa quem vence, e escreve a regra por extenso no arquivo.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa00_contador.py
+```
+
+Código: [`rag_zero/contexto.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/contexto.py). O que você deve ver: as camadas na ordem de volatilidade, e o contador mostrando o custo de cada uma.
 ## Verificação
 
 1. Seu prompt de sistema começa com a data de hoje, "para o modelo se situar". Estime o que isso custa e proponha onde a data deveria ficar.

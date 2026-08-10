@@ -1,6 +1,6 @@
 # 18 — RAG Agêntico
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **orquestrador** (cap. 02). A distinção pipeline × agente e os padrões estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 
@@ -93,10 +93,20 @@ Um laço de recuperação em produção precisa, sem exceção, de:
 
 RAG agêntico inverte o controle: o modelo decide **se, o que e onde** buscar, e a recuperação deixa de ser etapa e vira **ferramenta**. Não é dicotomia, é **espectro** — pipeline fixo → roteamento → busca sob demanda → laço com reflexão → multiagente. **O que roubar:** suba **um grau por vez**, e só com evidência de que o anterior falha; e comece pela **reflexão** (criticar o resultado antes de usá-lo), que é o padrão mais barato e de maior retorno. As materializações nomeadas diferem por **onde mora o julgamento** — dentro do modelo (Self-RAG), num avaliador separado (CRAG), no sinal de incerteza da geração (FLARE) ou num classificador de entrada (Adaptive RAG); a última é a mais fácil de operar e depurar. Muito sistema que adotou multiagente por design precisava só de **roteamento** — que é depurável. **O custo que o entusiasmo omite:** latência de cauda larga, custo por pergunta imprevisível, avaliação de **trajetória** (e não de resposta), e superfície de *prompt injection* encadeada. **Inegociável em produção:** teto de iterações, teto de orçamento por requisição, detecção de laço improdutivo e trajetória observável — sem os quatro, o laço é um risco com aparência de recurso.
 
-## Mão na massa — rag-zero, etapa 11
+## Mão na massa — `rag-zero`, etapa 11
+
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 11 a recuperação do `rag-zero` vira ferramenta: o modelo passa a decidir se busca, com reflexão sobre o resultado e um teto de 3 iterações. A etapa entrega dois números lado a lado — o custo médio por pergunta antes e depois — porque o conteúdo pedagógico aqui é justamente que autonomia tem preço. O exercício de completude: a detecção de laço improdutivo vem esqueletada; você define o critério de "não trouxe nada novo" e descobre que ele é mais sutil do que parece.
 
+O que **já roda** da trilha, e que sustenta este capítulo:
+
+```bash
+cd rag-zero
+python3 etapas/etapa02_naive.py   # a linha de base a bater
+```
+
+Código relacionado: [`rag_zero/pipeline.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/pipeline.py).
 ## Verificação
 
 1. Seu sistema tem três fontes (documentação, base de tickets, banco de produtos) e o RAG atual busca nas três sempre. Que grau do espectro resolve, e o que ele custa?

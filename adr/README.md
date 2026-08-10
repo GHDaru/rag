@@ -4,7 +4,7 @@ Registros de decisões arquiteturais e editoriais do projeto. Cada decisão rele
 
 Convenção: arquivos `NNNN-titulo-curto.md`, numerados em sequência. Status: `Proposto` · `Aceito` · `Substituído por NNNN` · `Descontinuado`.
 
-> **Herança (edição 0.1).** Os ADRs 0001–0007 foram **herdados do livro irmão *Engenharia de Harness***, que compartilha com este projeto o método editorial, o motor de publicação e o modelo de governança. Eles são mantidos **como escritos** — reescrever um ADR apaga a decisão que ele registra — e por isso citam exemplos daquele domínio (harnesses, `harness-zero`). A **decisão** que cada um documenta continua valendo aqui; só os exemplos são de outro livro. ADRs a partir do 0009 são deste projeto.
+> **Herança (edição 0.1).** Os ADRs 0001–0007 foram **herdados do livro irmão *Engenharia de Harness***, que compartilha com este projeto o método editorial, o motor de publicação e o modelo de governança. Eles são mantidos **como escritos** — reescrever um ADR apaga a decisão que ele registra — e por isso citam exemplos daquele domínio (harnesses, `harness-zero`). A **decisão** que cada um documenta continua valendo aqui; só os exemplos são de outro livro. ADRs a partir do 0009 são deste projeto — e o 0009 é o primeiro, escrito na abertura do ciclo da edição 1.0.
 >
 > Uma remoção: o **0008** (Radar diário automatizado) saiu do índice — o Radar está fora do escopo da v1 e volta na rodada 6 do ROADMAP, quando ganha ADR próprio.
 
@@ -16,4 +16,8 @@ Convenção: arquivos `NNNN-titulo-curto.md`, numerados em sequência. Status: `
 - [0005 — Template dos capítulos: um spec de motor, verificação por capítulo](0005-template-capitulos-um-spec.md) · Aceito
 - [0006 — Design system: entregáveis como componentes de tela](0006-design-system-componentes.md) · Aceito
 - [0007 — Cadência de revisão do livro vivo](0007-cadencia-livro-vivo.md) · Aceito
+- [0009 — Escopo da edição 1.0](0009-escopo-da-edicao-1-0.md) · Aceito
+- [0010 — O companion na 1.0: serviço local verificável, deploy pós-1.0](0010-companion-na-1-0.md) · Aceito
+- [0011 — Política de siglas: quatro classes, uma regra cada](0011-politica-de-siglas.md) · Aceito
+- [0012 — A etapa 14 entra parcial na 1.0](0012-etapa-14-parcial.md) · Aceito
 - [template](template.md)

@@ -409,3 +409,12 @@ abbr[title] { text-decoration: underline dotted; text-decoration-thickness: 1px;
 .jr-consultas summary { cursor: pointer; color: #4a78c0; }
 .jr-outra { background: rgba(224,162,74,.07); border: 1px solid rgba(224,162,74,.25); }
 .jr-rodape { color: var(--muted); font-size: .85rem; border-top: 3px double var(--borda, #c8c2b4); padding-top: .8rem; }
+
+/* Siglas (ADR 0011): a primeira ocorrência de cada página expande visivelmente.
+   É o que a regra editorial queria — expansão uma vez por unidade de leitura —
+   sem uma palavra a mais no fonte, e valendo também no PDF. */
+abbr[data-primeira]::after {
+  content: " (" attr(title) ")";
+  color: var(--muted);
+  font-size: .92em;
+}

@@ -2,13 +2,13 @@
 
 > Uma ficha por técnica: **o que é · quando usa · o que custa · onde está no livro**.
 >
-> Edição 0.4 · captura em 2026-08.
+> Edição 1.0 · captura em 2026-08.
 >
 > **Como ler:** esta página é *reference* (Diátaxis) — feita para consulta rápida, não para leitura linear. A explicação de *por que* cada técnica funciona está no capítulo indicado; aqui está só o suficiente para decidir se vale abrir o capítulo.
 >
 > **Como está organizado:** na ordem das partes do livro — o corpus, a recuperação, a geração, o sistema em produção. Uma técnica que aparece em duas partes traz os dois capítulos.
 >
-> **Estado:** o catálogo cobre as técnicas que os capítulos mencionam, e desde a edição 0.4 cada uma delas tem **fonte primária conferida** na [bibliografia](bibliografia.md). A expansão — cada ficha com fonte primária e condição experimental, e as 58 técnicas de prompting da taxonomia de referência (*The Prompt Report*) na Parte IV — é a **rodada 5** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+> **Estado:** o catálogo cobre as técnicas que os capítulos mencionam, e desde a edição 1.0 cada uma delas tem **fonte primária conferida** na [bibliografia](bibliografia.md). A expansão — cada ficha com fonte primária e condição experimental, e as 58 técnicas de prompting da taxonomia de referência (*The Prompt Report*) na Parte IV — é a **rodada 5** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
 
 ## Parte II — O corpus
 
@@ -28,7 +28,7 @@
 | Técnica | O que é | Quando usa | Custo | Cap. |
 |---|---|---|---|:---:|
 | **Resumo contextual** | descrever o lugar do trecho no documento | chunk que não se basta — é o *contextual retrieval* visto da ingestão | 1 chamada de LLM por chunk | 04, 09 |
-| **Perguntas hipotéticas** | gerar e indexar as perguntas que o trecho responde | pergunta do usuário distante do vocabulário do texto | indexação; **paga uma vez**, contra HyDE que paga sempre | 04, 08 |
+| **Perguntas hipotéticas** | gerar e indexar as perguntas que o trecho responde | pergunta do usuário distante do vocabulário do texto | indexação; **paga uma vez**, contra HyDE (*Hypothetical Document Embeddings*) que paga sempre | 04, 08 |
 | **Vigência extraída da prosa** | ler "substitui a de 2023", "válido até" e virar campo | quando o status só existe no texto | 1 chamada por documento | 04 |
 | **Classificação por área/tipo** | rotular para habilitar filtro e roteamento | múltiplos domínios ou permissões | 1 chamada por documento | 04, 08 |
 | **Confiança junto do valor** | guardar a certeza do gerador ao lado do campo | **sempre que houver metadado gerado** | ~0 | 04 |

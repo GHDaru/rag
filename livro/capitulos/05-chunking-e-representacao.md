@@ -1,6 +1,6 @@
 # 05 — Chunking e Representação
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **chunking** e **embedding** (cap. 02).
 
@@ -80,10 +80,18 @@ E a consequência que este capítulo empurra para o próximo: **o que o embeddin
 
 Chunking e embedding são as duas decisões **mais caras de reverter** do sistema — mudar qualquer uma significa reindexar tudo. **O que roubar:** o padrão que vale mais que a escolha da estratégia — **desacople a unidade de busca da unidade de entrega**. O que se indexa deve ser pequeno e preciso; o que se envia, grande o bastante para responder. Quem sofre com "veio o trecho certo, sem contexto suficiente" está preso a esse compromisso, e a saída **não** é aumentar o chunk (isso degrada o ranking) — é separar as unidades (sentence-window, hierárquico, proposition). **Sobre tamanho:** o ótimo depende da **pergunta**, não do documento; corpus com perguntas de tipos diferentes pede mais de uma granularidade. **Sobre embedding:** escolha pelo que ele erra no **seu** domínio (vocabulário interno, siglas, idioma, comprimento máximo), não por posição em ranking geral — benchmark geral não transfere. **A ponte para o próximo capítulo:** o que o embedding não representa, a busca densa não acha — e é por isso que a esparsa continua indispensável.
 
-## Mão na massa — rag-zero, etapa 4
+## Mão na massa — `rag-zero`, etapa 4
 
 Na etapa 4 você implementa três estratégias de corte sobre o texto deste livro e as compara com o mesmo conjunto de perguntas: fixa com sobreposição, estrutural por seção, e sentence-window. A etapa entrega a tabela, não o vencedor — e o achado pedagógico é que o vencedor muda com o tipo de pergunta. O exercício de completude: a janela do sentence-window vem esqueletada; você decide o tamanho e descobre que ele é uma decisão de produto disfarçada de parâmetro.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 -m pytest tests/ -q -k chunking
+```
+
+Código: [`rag_zero/chunking.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/chunking.py). O que você deve ver: `sentence_window` indexando a frase e entregando a janela — as duas unidades diferentes.
 ## Verificação
 
 1. Seu sistema recupera o trecho certo, mas a resposta sai incompleta por falta de contexto em volta. Qual é a solução **errada** e qual é a certa?

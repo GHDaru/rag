@@ -1,6 +1,6 @@
 # 01 — Fundamentos
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](HISTORICO.md)
 >
 > **Maturidade: fundação.** O vocabulário e a taxonomia por sintoma estão fechados. A rodada 2 validou a maior parte das referências; o que segue `[a validar]` são as afirmações sobre a herança de *Information Retrieval* (SIGIR, TREC), que precisam de fonte com URL.
 
@@ -37,7 +37,7 @@ Este capítulo fixa os termos, dá a linhagem, e entrega o mapa de entrada por s
 | Termo | O que é neste livro | O que **não** é |
 |---|---|---|
 | **recuperação** (*retrieval*) | selecionar trechos de um corpus por relevância a uma consulta | não é RAG |
-| **RAG** | recuperação **+** geração fundamentada no recuperado | não é "busca com LLM em cima" |
+| **RAG** (*Retrieval-Augmented Generation*) | recuperação **+** geração fundamentada no recuperado | não é "busca com LLM (*Large Language Model*) em cima" |
 | **corpus** | o conjunto de documentos que o sistema pode consultar | não é o índice |
 | **índice** | a estrutura que torna o corpus buscável | não é o corpus |
 | **chunk** | a unidade indexada e recuperada | não é parágrafo, necessariamente |

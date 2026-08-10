@@ -2,8 +2,8 @@
 
 > O livro executável: um sistema de RAG construído do zero, **uma etapa por capítulo**.
 >
-> Edição 0.6 · **status: etapas 0, 3–6, 9 e 10 construídas e testadas; demais especificadas.**
-> A implementação é a [rodada 3](../ROADMAP.md) do ROADMAP, e está em andamento.
+> Edição 1.0 · **status: 12 das 17 etapas construídas (0–10 e 14 parcial), 9 delas com script próprio; as 5 restantes, especificadas e declaradas como tal.**
+> A implementação é a [rodada 3](../ROADMAP.md) do ROADMAP; o piso da 1.0 está entregue e o restante é pós-1.0.
 
 ## Rodar agora
 
@@ -14,9 +14,12 @@ só a biblioteca padrão do Python 3.11+.
 cd rag-zero
 
 python3 etapas/etapa00_contador.py     # o instrumento: composição do contexto
+python3 etapas/etapa02_naive.py        # a LINHA DE BASE: Naive RAG e os 4 contratos
 python3 etapas/etapa03_ingestao.py     # o revogado não é recuperado
 python3 etapas/etapa05_busca.py        # esparso × denso × fusão, medidos
 python3 etapas/etapa06_reranking.py    # a nota como limiar, e a abstenção
+python3 etapas/etapa07_consulta.py     # roteamento, reescrita e a conta de cada estágio
+python3 etapas/etapa08_indexacao.py    # contextual × late chunking, medidos
 python3 etapas/etapa09_raptor.py       # a árvore de resumos recursivos
 python3 etapas/etapa10_geracao.py      # o "G": citação verificável e abstenção
 
@@ -71,14 +74,14 @@ a lição.
 | Etapa | Cap. | Constrói | Prova (o teste que fecha) | Estado |
 |:---:|:---:|---|---|:---:|
 | 0 | 01 | `LLMPort` + **contador de tokens por bloco** | a composição do contexto sai impressa; bloco externo é delimitado | ✅ |
-| 1 | 02 | os dois caminhos + os quatro contratos | procedência chega do documento à citação | 🔜 |
-| 2 | 03 | o Naive RAG inteiro, ponta a ponta | a linha de base honesta, medida | 🔜 |
+| 1 | 02 | os dois caminhos + os quatro contratos | **a procedência atravessa documento → chunk → índice → candidato → citação** | ✅ |
+| 2 | 03 | o Naive RAG inteiro, ponta a ponta | **a linha de base** — sem ela nenhuma tabela de ganho compara com nada | ✅ |
 | 3 | 04 | **ingestão**: extração, dedup, metadado, status | **documento `revogado` não é recuperado, mesmo sendo o mais similar** | ✅ |
 | 4 | 05 | chunking estrutural + *sentence-window* | a unidade de busca difere da de entrega | ✅ |
 | 5 | 06 | **BM25 na mão** + denso + fusão por posição | tabela de ganho por estágio, mesmas perguntas | ✅ |
 | 6 | 07 | reranking com a **nota** como limiar | pergunta fora do corpus **abstém**; taxa de zero deixa de ser zero | ✅ |
-| 7 | 08 | reescrita, HyDE e roteamento | cada um medido contra a linha de base | 🔜 |
-| 8 | 09 | contextual retrieval × late chunking | as duas contas lado a lado, no mesmo corpus | 🔜 |
+| 7 | 08 | reescrita, HyDE e roteamento | o portão de reescrita e a conta: 2 chamadas por pergunta com tudo ligado, 0 com os padrões | ✅ |
+| 8 | 09 | contextual retrieval × late chunking | as três indexações medidas com as mesmas perguntas, e as chamadas de LLM de cada uma | ✅ |
 | 9 | 10 | RAPTOR reduzido (~80 linhas) + busca por nível | a árvore condensa a cada nível (180 → 55 → 24 → 12) | ✅ |
 | 10 | 11–17 | **o gerador**: blocos, fundamentação, citação verificável | **citação para um trecho que não existe é pega por código** | ✅ |
 | 11 | 18 | recuperação como ferramenta + reflexão + teto | custo médio por pergunta, antes e depois da autonomia | 🔜 |
@@ -105,6 +108,9 @@ medir antes de otimizar, e não dava para escrever a etapa 5 sem elas. *Faithful
 | [`recuperacao.py`](rag_zero/recuperacao.py) | 06, 07 | denso, fusão RRF, reranking e **abstenção** |
 | [`raptor.py`](rag_zero/raptor.py) | 10 | a árvore recursiva, com o limiar derivado do corpus |
 | [`geracao.py`](rag_zero/geracao.py) | 11, 15 | fundamentação, citação verificável, abstenção |
+| [`pipeline.py`](rag_zero/pipeline.py) | 02, 03 | os dois caminhos, os quatro contratos, o Naive RAG |
+| [`consulta.py`](rag_zero/consulta.py) | 08 | resolução de referência, HyDE, expansão, roteamento |
+| [`indexacao.py`](rag_zero/indexacao.py) | 09 | contextual retrieval × late chunking, com a conta |
 | [`avaliacao.py`](rag_zero/avaliacao.py) | 21 | recall, precisão, taxa de resultado zero, taxa de acerto |
 
 ## A tese pedagógica das etapas

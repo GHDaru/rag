@@ -1,6 +1,6 @@
 # 10 — Recuperação Estruturada
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **índice** e **retriever**, quando o corpus deixa de ser só texto (cap. 02).
 
@@ -86,10 +86,18 @@ A ressalva de segurança, que vale registrar aqui: consulta gerada por modelo co
 
 Duas perguntas quebram a suposição dos capítulos anteriores: **multi-hop** (a resposta está na *relação* entre trechos) e **global** (a resposta é propriedade do *conjunto* — aumentar `top_k` piora). **O que roubar:** a diferença de conta entre as duas curas — **RAPTOR precisa só de embeddings e agrupamento; grafo precisa extrair entidades**, o que é um modelo a mais, um erro a mais e um custo a mais. Daí a regra: **se a pergunta é global, tente RAPTOR antes de grafo**; grafo é para multi-hop sobre entidades recorrentes e reais. **Antes de aprovar grafo, três perguntas** — as entidades são recorrentes e nomeáveis? as perguntas atravessam documentos por relação? você já **mediu** que a falha é de multi-hop, e não de chunk sem contexto? Um "não" basta para adiar, e o erro típico da área é adotar grafo para curar um problema que custava uma fração. **Sobre texto + tabela:** o anti-padrão é transformar tabela em prosa para embeddar (perde agregação e contagem em troca de busca semântica sobre números); o padrão é **rotear** entre retrievers e fundir — com a consulta gerada em somente-leitura, escopo restrito e teto.
 
-## Mão na massa — rag-zero, etapa 9
+## Mão na massa — `rag-zero`, etapa 9
 
 Na etapa 9 você monta a versão mínima honesta das duas curas sobre o texto deste livro: uma árvore de resumos por agrupamento (RAPTOR reduzido a ~80 linhas) e um roteador que manda perguntas globais para os nós altos e factuais para as folhas. Grafo fica **de fora**, deliberadamente — e a etapa explica por quê: o corpus do livro não tem entidades recorrentes o suficiente para justificá-lo, e fingir que tem seria ensinar o erro que o capítulo denuncia. O exercício de completude: o critério de escolha de nível vem esqueletado.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa09_raptor.py
+```
+
+Código: [`rag_zero/raptor.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/raptor.py). O que você deve ver: a árvore condensando (180 → 55 → 24 → 12) e os limiares **derivados do corpus**.
 ## Verificação
 
 1. *"Quais os assuntos mais frequentes nos nossos 5.000 chamados?"* Por que aumentar `top_k` piora essa resposta?

@@ -1,6 +1,6 @@
 # 08 — Entendimento da Consulta
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **entendimento da consulta** (cap. 02).
 
@@ -9,7 +9,7 @@
 Ao final deste capítulo, você deve ser capaz de:
 
 1. **Diagnosticar** quando o problema está na pergunta, e não no índice;
-2. **Escolher** entre reescrita, expansão, decomposição, HyDE e step-back pelo que cada uma corrige;
+2. **Escolher** entre reescrita, expansão, decomposição, HyDE (*Hypothetical Document Embeddings*) e step-back pelo que cada uma corrige;
 3. **Resolver** referências entre turnos — a falha mais comum e menos tratada em RAG conversacional;
 4. **Avaliar** o custo destas técnicas, que é pago **em toda pergunta**.
 
@@ -29,7 +29,7 @@ Melhorar o índice para curar isso é caro e demorado. Melhorar a consulta é um
 ## Fundamentos científicos
 
 - **HyDE** ([arXiv 2212.10496](https://arxiv.org/abs/2212.10496)) — gerar um documento hipotético que responda à pergunta e buscar por **ele**, porque uma resposta se parece mais com o documento do que a pergunta se parece. O documento gerado *"captures relevance patterns but is unreal and may contain false details"*, e é o gargalo denso do encoder que filtra o que foi inventado. **A condição experimental muda a recomendação:** foi proposto para o cenário **zero-shot, sem rótulo de relevância**, comparado a um retriever denso não supervisionado. Se você já tem híbrido bom (cap. 06), o caso a favor do HyDE é bem mais fraco do que a fama sugere. ✓
-- **Step-back prompting** ([arXiv 2310.06117](https://arxiv.org/abs/2310.06117)) — generalizar a pergunta antes de recuperar, para trazer o princípio e não só o detalhe. É o inverso da decomposição: sobe um nível em vez de descer. **Ressalva de procedência:** o paper propõe uma técnica de **raciocínio** (abstrair para primeiros princípios), medida em STEM e QA — PaLM-2L com MMLU Física +7%, Química +11%, TimeQA +27%, MuSiQue +7%. Usá-la como **etapa de recuperação** é leitura derivada da prática, não do paper — e *The Prompt Report* corrobora, classificando-a sob *thought generation*, junto do CoT. ✓
+- **Step-back prompting** ([arXiv 2310.06117](https://arxiv.org/abs/2310.06117)) — generalizar a pergunta antes de recuperar, para trazer o princípio e não só o detalhe. É o inverso da decomposição: sobe um nível em vez de descer. **Ressalva de procedência:** o paper propõe uma técnica de **raciocínio** (abstrair para primeiros princípios), medida em STEM e QA — PaLM-2L com MMLU Física +7%, Química +11%, TimeQA +27%, MuSiQue +7%. Usá-la como **etapa de recuperação** é leitura derivada da prática, não do paper — e *The Prompt Report* corrobora, classificando-a sob *thought generation*, junto do CoT (*Chain-of-Thought*). ✓
 - **Reescrita em múltiplos turnos** — trabalho aplicado combina reescrita de consulta e recuperação híbrida para RAG conversacional ([arXiv 2606.28352](https://arxiv.org/abs/2606.28352)) — a falha de referência no cenário mais difícil. É um **paper de sistema de competição** (SemEval-2026, tarefa 8), não um método geral: serve de indício de prática, não de evidência de superioridade. `[a validar]`
 - **O lugar no paradigma** — na taxonomia de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)), estas são as técnicas de **pré-recuperação** do Advanced RAG. Junto com busca híbrida e reranking, formam os três acréscimos que definem o degrau (cap. 03). `[a validar]`
 
@@ -83,10 +83,18 @@ A consequência prática:
 
 Melhorar o índice é caro e demorado; melhorar a **pergunta** costuma ser onde está o ganho mais rápido — e é a metade que quase todo pipeline ignora. Cinco técnicas, por falha que corrigem: **reescrita** (vocabulário e referência), **expansão** (pergunta composta), **HyDE** (distância grande pergunta↔documento), **step-back** (falta o princípio, não o detalhe), **roteamento** (fonte errada). **O que roubar:** a ordem de tentativa não é empírica — **reescrita primeiro, sempre**, por ser a mais barata e cobrir o caso mais frequente. **A falha esquecida:** em conversa, boa parte das perguntas é incompleta por construção ("e no ano passado?") e recupera ruído; reescreva para uma forma **autocontida antes de buscar** — mas reescreva *para buscar*, mantendo a pergunta original para responder, e **registre a consulta reescrita na trajetória**, porque ela é um ponto de falha silencioso que produz logs plausíveis. **A economia:** este custo é pago em **toda** pergunta, para sempre — ao contrário do cap. 09, pago uma vez. Corpus estável com muitas consultas pede indexação; corpus volátil pede o lado da pergunta. **E cuidado com o eval:** conjuntos sintéticos têm perguntas bem formuladas e **subestimam sistematicamente** o valor deste capítulo.
 
-## Mão na massa — rag-zero, etapa 7
+## Mão na massa — `rag-zero`, etapa 7
 
 Na etapa 7 você acrescenta ao `rag-zero` a reescrita de consulta com resolução de referência, e valida com um conjunto de perguntas encadeadas ("o que é chunking?" → "e quando ele falha?" → "e no caso de PDF?"). O teste da etapa compara recall com e sem reescrita **apenas nas perguntas dependentes** — que é onde o ganho está e onde o eval sintético não olha. O exercício de completude: o detector de "esta pergunta depende do contexto" vem esqueletado; você define o critério e mede quanto ele economiza.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa07_consulta.py
+```
+
+Código: [`rag_zero/consulta.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/consulta.py). O que você deve ver: o roteamento, o portão de reescrita, e a conta: 2 chamadas por pergunta com tudo ligado, 0 com os padrões.
 ## Verificação
 
 1. Seu RAG funciona bem na primeira pergunta e degrada a partir da terceira. Qual técnica deste capítulo é a primeira suspeita, e por quê?
