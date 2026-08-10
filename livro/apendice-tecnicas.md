@@ -28,7 +28,7 @@
 | Técnica | O que é | Quando usa | Custo | Cap. |
 |---|---|---|---|:---:|
 | **Resumo contextual** | descrever o lugar do trecho no documento | chunk que não se basta — é o *contextual retrieval* visto da ingestão | 1 chamada de LLM por chunk | 04, 09 |
-| **Perguntas hipotéticas** | gerar e indexar as perguntas que o trecho responde | pergunta do usuário distante do vocabulário do texto | indexação; **paga uma vez**, contra HyDE que paga sempre | 04, 08 |
+| **Perguntas hipotéticas** | gerar e indexar as perguntas que o trecho responde | pergunta do usuário distante do vocabulário do texto | indexação; **paga uma vez**, contra HyDE (*Hypothetical Document Embeddings*) que paga sempre | 04, 08 |
 | **Vigência extraída da prosa** | ler "substitui a de 2023", "válido até" e virar campo | quando o status só existe no texto | 1 chamada por documento | 04 |
 | **Classificação por área/tipo** | rotular para habilitar filtro e roteamento | múltiplos domínios ou permissões | 1 chamada por documento | 04, 08 |
 | **Confiança junto do valor** | guardar a certeza do gerador ao lado do campo | **sempre que houver metadado gerado** | ~0 | 04 |

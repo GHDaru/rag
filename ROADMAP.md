@@ -2,11 +2,11 @@
 
 > As rodadas planejadas do livro vivo. Cada rodada é um lote de trabalho que vira **uma ou mais specs** (`specs/NNN-nome/`), cada uma em sua branch, conforme o Princípio VII da [constituição](.specify/memory/constitution.md).
 >
-> Última atualização: **2026-08-09** · edição vigente: **0.6** (ver [Histórico](livro/HISTORICO.md))
+> Última atualização: **2026-08-09** · edição vigente: **1.0** (ver [Histórico](livro/HISTORICO.md))
 
 ## Onde estamos
 
-**Edição 0.6 — o esqueleto do sistema, a evidência conferida, e o livro começando a executar.** O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
+**Edição 1.0 — a primeira versão.** O que o livro afirma e o que entrega coincidem; o leitor consegue construir, não só decidir. Escopo decidido no [ADR 0009](adr/0009-escopo-da-edicao-1-0.md). O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
 
 O que a 0.2 fez além de renomear: os três capítulos que fechavam a lacuna real (**02** anatomia, **03** arquiteturas de referência, **15** geração fundamentada), a Parte III desdobrada em cinco, e a fronteira com o livro irmão tornada explícita na constituição.
 
@@ -16,7 +16,7 @@ O que **ainda não** existe, e é deliberado:
 |---|---|:---:|
 | Referências validadas (status ✓) | **42 de 55 (76%)** — rodada 2 ✅ concluída; as 13 restantes são de menor peso | — |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 3–5 |
-| Trilha prática `rag-zero` | **7 de 17 etapas** executáveis (0, 3–6, 9, 10) | rodada 3 |
+| Trilha prática `rag-zero` | **12 de 17 etapas** executáveis, com 48 testes; as 5 restantes declaradas | pós-1.0 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
 | Instância pública do companion | roda localmente com um comando; publicar exige conta, credencial e custo recorrente de terceiro | pós-1.0 |
 | Edição em inglês | fora do escopo da v1, por decisão | rodada 7 |
@@ -64,7 +64,7 @@ O que **ainda não** existe, e é deliberado:
 
 ---
 
-## Rodada 3 — `rag-zero` (a trilha prática) · **em andamento**
+## Rodada 3 — `rag-zero` (a trilha prática) · **piso da 1.0 entregue**
 
 **Objetivo:** o livro executável. **17 etapas** (0–16), Python + FastAPI, custo zero e sem GPU. A Parte IV inteira converge para a etapa 10, porque é um gerador só — construído em camadas.
 

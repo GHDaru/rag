@@ -37,7 +37,7 @@ Este capítulo fixa os termos, dá a linhagem, e entrega o mapa de entrada por s
 | Termo | O que é neste livro | O que **não** é |
 |---|---|---|
 | **recuperação** (*retrieval*) | selecionar trechos de um corpus por relevância a uma consulta | não é RAG |
-| **RAG** | recuperação **+** geração fundamentada no recuperado | não é "busca com LLM em cima" |
+| **RAG** (*Retrieval-Augmented Generation*) | recuperação **+** geração fundamentada no recuperado | não é "busca com LLM (*Large Language Model*) em cima" |
 | **corpus** | o conjunto de documentos que o sistema pode consultar | não é o índice |
 | **índice** | a estrutura que torna o corpus buscável | não é o corpus |
 | **chunk** | a unidade indexada e recuperada | não é parágrafo, necessariamente |

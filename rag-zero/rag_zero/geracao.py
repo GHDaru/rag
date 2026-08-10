@@ -96,7 +96,10 @@ def montar_contexto(pergunta: str, trechos: list[Trecho], *,
 # Verificação — a parte que quase nenhum tutorial faz
 # --------------------------------------------------------------------------- #
 
-_CITACAO = re.compile(r"\[([A-Za-z]\d+)\]")
+# O identificador é opaco de propósito: `T1` nos exemplos, `06-busca#0358` no
+# pipeline real. O verificador não pode assumir formato — ele confere contra os
+# identificadores que **foram realmente enviados**, e é isso que o torna robusto.
+_CITACAO = re.compile(r"\[([A-Za-z0-9][\w.#/-]*)\]")
 # Uma "afirmação" aqui é uma sentença com conteúdo. Aproximação deliberada: o
 # cap. 15 nota que decompor resposta em afirmações é exatamente onde a métrica
 # de faithfulness fica frágil, e este módulo não finge o contrário.

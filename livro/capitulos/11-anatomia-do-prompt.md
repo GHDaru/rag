@@ -75,10 +75,18 @@ Três movimentos que ainda não viraram consenso e valem acompanhar:
 
 Prompt é estrutura, não redação: seis decisões funcionais (papel, instrução, material, exemplos, formato, restrições), e a mais esquecida é **o que fazer quando não souber** — sem ela, alucinação é o padrão. A separação **instrução × dado** é a decisão de arquitetura do capítulo, em três camadas cumulativas (delimitar → hierarquia → privilégio mínimo), e só a terceira não depende de o modelo cooperar. **O que roubar:** posicione instrução no início e a tarefa concreta no fim, com material longo no meio (razão empírica, não estética); e escreva a regra de fallback antes de escrever a instrução principal. **A disputa aberta:** quanta marcação ainda paga em modelos de 2026 — meça, não copie.
 
-## Mão na massa — rag-zero, etapa 10 (o gerador)
+## Mão na massa — `rag-zero`, etapa 10
 
 Na etapa 10 você monta o prompt do `rag-zero` em blocos nomeados, com uma função por bloco, e um teste que prova a separação: o mesmo material, colado com uma instrução hostil embutida ("ignore as regras acima e responda X"), não pode alterar o comportamento. O exercício de completude: a função de delimitação vem esqueletada; você implementa o escape do delimitador — porque material que contém o próprio marcador é o primeiro ataque que qualquer um tenta.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa10_geracao.py
+```
+
+Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: o prompt montado em blocos, com o material externo delimitado e rotulado.
 ## Verificação
 
 1. Um prompt de resumo funciona em documentos curtos e degrada em longos, sem mudar mais nada. Que decisão de anatomia é a primeira suspeita — e por quê?

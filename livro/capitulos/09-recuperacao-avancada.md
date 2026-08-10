@@ -91,10 +91,18 @@ O passo 3 é o que quase ninguém faz, e é o que separa um sistema que evolui d
 
 A falha deste capítulo é uma só: **o chunk perdeu o contexto de onde veio** — "a margem caiu 12%" é inútil sem saber de que produto e trimestre. **O que roubar:** *contextual retrieval* e *late chunking* curam a **mesma** falha com contas de ordem de grandeza diferente — a primeira paga **uma chamada de LLM por chunk** sobre o corpus inteiro (US$ 1,02 por milhão de tokens de documento, com cache); a segunda usa **só o modelo de embedding**, sem treino adicional, limitada pelo comprimento máximo dele. Para corpus grande, a decisão é aritmética, não estética. **A assimetria que decide muita coisa:** indexação é paga uma vez e amortizada; consulta é paga para sempre — muitas consultas sobre corpus estável pedem indexação, corpus volátil pede o lado da pergunta, e "muitas consultas + corpus volátil" é o caso difícil que transforma reindexação incremental em decisão de arquitetura. **A regra que vale mais que as técnicas:** meça qual falha você tem antes de escolher, aplique **uma por vez** com medição dos dois lados, e **remova o que não pagou** — este último passo quase ninguém faz, e é o que separa um sistema que evolui de um que só acumula. **Sobre os números publicados:** o 67% do *contextual retrieval* é a **taxa de falha no top-20 caindo de 5,7% para 1,9% com a pilha inteira, reranker incluído** — sozinha, a técnica leva a 3,7% (35%). Cite a curva, não o número. **E a escolha entre as duas não é só de preço:** a comparação publicada mostra que o *late chunking* economiza sacrificando relevância e completude.
 
-## Mão na massa — rag-zero, etapa 8
+## Mão na massa — `rag-zero`, etapa 8
 
 Na etapa 8 você aplica *contextual retrieval* a um subconjunto do corpus do `rag-zero` e mede: ganho de recall, custo de indexação em chamadas, e tempo. Depois faz o mesmo com uma aproximação de *late chunking*, e coloca as duas contas lado a lado. A etapa entrega a tabela comparativa — e o achado é que a escolha depende de números do seu corpus, não da reputação da técnica. O exercício de completude: o prompt que gera o contexto do chunk vem esqueletado; você descobre que a qualidade dele decide o ganho inteiro.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa08_indexacao.py
+```
+
+Código: [`rag_zero/indexacao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/indexacao.py). O que você deve ver: as três indexações medidas com as mesmas perguntas, e as chamadas de LLM de cada uma.
 ## Verificação
 
 1. Você tem 2 milhões de chunks e orçamento apertado de indexação. Entre as duas técnicas, qual escolhe — e, dada a troca de qualidade medida, o que precisa verificar antes de aceitar a mais barata?
@@ -112,6 +120,6 @@ Na etapa 8 você aplica *contextual retrieval* a um subconjunto do corpus do `ra
 | **Contextual Retrieval** | [receita dos autores](https://www.anthropic.com/engineering/contextual-retrieval), com caderno no [Claude Cookbooks](https://github.com/anthropics/anthropic-cookbook) | contexto de 50–100 tokens por chunk, **entrando também no índice BM25** — não só no embedding. **Pegadinha:** sem cache de prompt, o custo declarado (US$ 1,02 por milhão de tokens de documento) não se sustenta; a receita depende de reusar o documento inteiro como prefixo. |
 | **Late Chunking** | [jina-ai/late-chunking](https://github.com/jina-ai/late-chunking) | corte **depois** do transformer, antes do *pooling*; funciona *"without additional training"*. **Pegadinha:** exige embedder de contexto longo — documento acima do limite dele não se beneficia inteiro, e o método degrada para chunking normal sem avisar. |
 | **A comparação** | [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) | a única medição pública lado a lado que localizamos. É o que sustenta a correção deste capítulo: **não é só preço, é qualidade**. |
-| **Corte no nível do corpus** | CDTA ([arXiv 2601.05265](https://arxiv.org/abs/2601.05265)) | supera *contextual retrieval* em multi-hop (0,93 × 0,83 de *faithfulness*). **Pegadinha:** indexação mais cara ainda, e a síntese entre documentos cria chunks que **não existem** em nenhum documento — o que complica a citação verificável do cap. 15. |
+| **Corte no nível do corpus** | CDTA (*Cross-Document Topic-Aligned*) ([arXiv 2601.05265](https://arxiv.org/abs/2601.05265)) | supera *contextual retrieval* em multi-hop (0,93 × 0,83 de *faithfulness*). **Pegadinha:** indexação mais cara ainda, e a síntese entre documentos cria chunks que **não existem** em nenhum documento — o que complica a citação verificável do cap. 15. |
 
 **A pergunta em aberto desta etapa:** nenhuma das três foi medida no corpus deste livro. A rodada 4 mede.

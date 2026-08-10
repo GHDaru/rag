@@ -89,10 +89,20 @@ A linha "escrita" é a que mais importa: **memória tem um caminho de escrita, e
 
 Memória de longo prazo é a decisão de **o que vale a pena sobreviver** — e é irreversível: o que não foi guardado não volta. Três horizontes (histórico · trabalho · longo prazo), e o mais negligenciado é o do meio: **memória de trabalho deixada implícita no histórico é a primeira coisa que a compactação destrói**. Três arquiteturas de longo prazo — fatos extraídos (barata, auditável, perde nuance), grafo temporal (responde "o que era verdade quando?"), paginação autogerida (geral, cara em latência) — e a pergunta que escolhe entre elas é uma só: **os seus fatos mudam?** **A distinção que evita o erro caro:** RAG recupera trechos **imutáveis**; memória mantém afirmações que **mudam de valor de verdade**. **O risco estrutural:** memória tem caminho de **escrita**, e todo caminho de escrita é superfície de ataque — uma afirmação falsa gravada envenena todas as sessões futuras (cap. 22). Nunca grave direto do que foi lido de fonte externa.
 
-## Mão na massa — rag-zero, etapa 12
+## Mão na massa — `rag-zero`, etapa 12
+
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 12 o `rag-zero` passa a lidar com conversa: estado de sessão com tópico corrente e trechos já mostrados, resolução de referência alimentada por esse estado (o cap. 08 em uso), e memória de longo prazo com procedência, data e exclusão real. Dois testes fecham a etapa: uma pergunta encadeada recupera o que a pergunta isolada não recuperaria; e uma segunda pergunta sobre o mesmo assunto **não** devolve os mesmos trechos. O exercício de completude: o critério de "já mostrei isto" vem esqueletado — e você descobre que ele é mais sutil do que comparar ids.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa07_consulta.py
+```
+
+Código: [`rag_zero/consulta.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/consulta.py). O que você deve ver: o portão de resolução de referência: quando a pergunta depende do turno anterior, e quando não.
 ## Verificação
 
 1. Seu assistente lembra que o usuário "prefere respostas curtas", mas o usuário mudou de ideia há um mês e continua recebendo respostas curtas. Qual modo de falha é esse, e qual arquitetura o endereça por construção?

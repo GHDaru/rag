@@ -107,10 +107,18 @@ Dois cuidados que separam painel de enfeite:
 
 "O RAG não está bom" tem pelo menos quatro causas distintas, e a separação mínima é entre **achar** e **usar**. **O que roubar:** a **tabela de diagnóstico** — recall baixo = não acha (chunking/busca); recall alto + precision baixo = traz lixo junto (reranking, `top_k` menor); recall e precision altos + faithfulness baixa = **tem tudo e inventa** (prompt de fundamentação). Sem ela, "melhorar o RAG" é tentativa e erro caro. **A métrica mais mal compreendida:** *faithfulness* baixa numa resposta **factualmente correta** não é defeito da métrica — significa que o modelo respondeu de memória, e você não tem garantia nenhuma sobre a próxima pergunta. Esse é o caso que mais engana, porque parece bom. **Sobre conjuntos:** sintético a partir do corpus é barato e **superestima o recall** (a pergunta gerada de um trecho é respondível por aquele trecho); pergunta real com resposta verificada por gente é insubstituível. **Nunca** gere as perguntas e julgue as respostas com o mesmo modelo que responde — isso mede consistência, não qualidade. **Do eval ao painel:** eval mede um conjunto fixo; produção precisa de sinais contínuos — e o mais barato e informativo é a **taxa de resultado zero**. Se ela sobe, algo mudou no corpus ou nas perguntas; se está em **zero**, provavelmente não há limiar nem caminho de abstenção, e o sistema devolve ruído com cara de resposta. Monitore também **p99** (é onde o laço agêntico do cap. 18 aparece, não na mediana) e a **taxa de citação**, que é *faithfulness* na versão barata, sem juiz. **As lacunas abertas:** trajetória, conversa (não só turno), custo ao lado da qualidade, e deriva.
 
-## Mão na massa — rag-zero, etapa 14
+## Mão na massa — `rag-zero`, etapa 14
 
 Na etapa 14 você monta o eval do `rag-zero`: 30 perguntas sobre o texto deste livro (metade sintéticas, metade escritas por você), as quatro métricas implementadas com juiz de família diferente, e a tabela de diagnóstico impressa ao final. A etapa termina com um exercício desconfortável e deliberado: rodar o eval sobre a etapa 9 (só BM25) e sobre a etapa 10 (pipeline completo) e verificar se o ganho que você **esperava** aparece. O exercício de completude: o cálculo de *faithfulness* vem esqueletado — você implementa a decomposição em afirmações e descobre onde a métrica é frágil.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa05_busca.py
+```
+
+Código: [`rag_zero/avaliacao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/avaliacao.py). O que você deve ver: as métricas de recuperação por estágio — e a armadilha do `recall@k` com gabarito grande.
 ## Verificação
 
 1. *Context recall* 0,9, *context precision* 0,4, *faithfulness* 0,85. Qual é o problema, e qual o custo escondido dele? (Dica: cap. 20.)

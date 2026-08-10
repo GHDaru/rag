@@ -69,10 +69,18 @@ Vale marcar a passagem porque ela é a costura entre as duas metades do livro: a
 
 Seis famílias: *zero-shot*, *few-shot*, *thought generation*, *decomposition*, *ensembling*, *self-criticism*. Com modelos que já raciocinam por padrão, o valor **migrou das três primeiras para as três últimas** — de induzir raciocínio para estruturar trabalho. **O que roubar:** antes de escolher técnica, responda se o erro é de raciocínio ou de conhecimento — se for de conhecimento, você está no livro errado (vá ao cap. 06); e trate *ensembling* como decisão financeira (N× o custo), não como upgrade. **A ponte:** *decomposition* + ferramenta = ReAct = a arquitetura do cap. 18. **O que vai expirar:** as receitas de indução de CoT — o raciocínio virou parâmetro de compra, não truque de redação.
 
-## Mão na massa — rag-zero, etapa 10 (o gerador)
+## Mão na massa — `rag-zero`, etapa 10
 
 Na etapa 10 você implementa duas famílias no `rag-zero` e as compara com números: uma variante *thought generation* e uma variante *self-consistency* (3 amostras + voto), sobre o mesmo conjunto de 20 perguntas. O contador de tokens da etapa 0 mostra o preço; a taxa de acerto mostra o benefício. O exercício de completude: a agregação por voto vem esqueletada — você implementa o desempate, e descobre que o desempate é onde mora a decisão de produto.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa10_geracao.py
+```
+
+Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: o contexto montado e o custo em tokens de cada bloco.
 ## Verificação
 
 1. Seu sistema erra ao responder perguntas sobre a política interna da empresa. Qual das seis famílias resolve? (Cuidado: é pegadinha.)

@@ -82,10 +82,20 @@ Orçamento sem instrumentação é intenção. Quatro números que um sistema ma
 
 Janela maior não resolveu nada: o comprimento degrada **sozinho** — medido isolando a variável, em 18 modelos, mesmo em tarefas triviais — e a queda fica **mais íngreme** com distratores semanticamente próximos, onde **um único já basta** para reduzir o desempenho. Encher a janela piora a resposta **e** a fatura. **O que roubar:** escreva a alocação do seu contexto em **uma linha** (`sistema 2k | memória 1k | recuperado 8k | ferramenta ≤4k | histórico o resto`) e defina quem cede quando aperta — sistemas sem essa linha degradam de um jeito que ninguém consegue explicar depois. **O concorrente esquecido:** resultado de ferramenta é a única fonte cujo tamanho você não controla ao pedir; sem teto por ferramenta, você descobre em produção. **Contexto longo × RAG:** decida por corpus, frescor, forma do raciocínio e aritmética de custo — e prefira o híbrido (recupere para reduzir, raciocine sobre o que sobrou). **Meça:** composição por fonte, taxa de estouro, utilidade do recuperado, e qualidade × comprimento no **seu** dado.
 
-## Mão na massa — rag-zero, etapa 13
+## Mão na massa — `rag-zero`, etapa 13
+
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 13 você transforma o contador de tokens da etapa 0 em **orçamento com política**: limites por fonte, ordem de corte declarada, e um log por requisição com a composição do contexto. O teste da etapa força o estouro (um resultado de ferramenta gigante) e prova que o sistema corta segundo a política escrita, e não segundo o acaso da ordem de concatenação. O exercício de completude: a política de corte vem esqueletada — você decide quem cede primeiro e defende a decisão por escrito.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa00_contador.py
+```
+
+Código: [`rag_zero/contexto.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/contexto.py). O que você deve ver: a composição por bloco e o `ESTOUROU` quando o orçamento é excedido.
 ## Verificação
 
 1. Seu sistema responde bem com 5 documentos recuperados e pior com 20. Dê duas explicações compatíveis com o que este capítulo apresentou, e um experimento que as distingue.

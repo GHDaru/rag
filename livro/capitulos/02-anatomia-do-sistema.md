@@ -15,7 +15,7 @@ Ao final deste capítulo, você deve ser capaz de:
 
 ## O problema
 
-A maior parte do que se escreve sobre RAG é catálogo de técnicas: chunking, embeddings, reranking, HyDE, GraphRAG. Cada uma explicada isoladamente, nenhuma situada.
+A maior parte do que se escreve sobre RAG é catálogo de técnicas: chunking, embeddings, reranking, HyDE (*Hypothetical Document Embeddings*), GraphRAG. Cada uma explicada isoladamente, nenhuma situada.
 
 Isso produz um efeito conhecido de quem já montou um sistema desses: você acumula técnicas sem saber onde elas encaixam, aplica três de uma vez, e quando algo piora não sabe qual desfazer. É a diferença entre conhecer peças e conhecer a máquina.
 
@@ -111,10 +111,18 @@ E o uso editorial: **cada capítulo de técnica deste livro declara, no cabeçal
 
 RAG não é uma técnica, é um **sistema com dois caminhos**: indexação (offline, caro uma vez) e consulta (online, caro sempre) — e a assimetria entre eles é a decisão econômica que atravessa o livro. Sobre eles, **16 componentes** que existem em qualquer RAG funcional; o que separa sistema mantível de emaranhado é cada um ter **nome, dono e contrato**. **O que roubar:** o componente que quase ninguém desenha é o **aumento** — o que acontece *entre* buscar e responder (quantos trechos entram, em que ordem, comprimidos ou não). Ele costuma viver espalhado no código, sem dono, e é onde o orçamento vaza. **A regra que vale mais que o inventário:** os quatro contratos entre componentes são todos sobre **carregar procedência adiante** — chunk com envelope, resultado com nota e origem, contexto que declara o que é dado, resposta com referências. Perdeu a proveniência em qualquer fronteira, o sistema não consegue citar, auditar nem se defender — e recuperá-la depois é caro ou impossível. **Use como diagnóstico:** cita documento revogado é componente 3, e nenhum ajuste em busca ou reranking resolve.
 
-## Mão na massa — rag-zero, etapa 1
+## Mão na massa — `rag-zero`, etapa 1
 
 Na etapa 1 você não escreve técnica nenhuma: desenha o esqueleto do `rag-zero` com os dezesseis componentes como interfaces vazias, e um teste que verifica os **contratos** — um chunk sem `status` não entra no índice; um resultado sem nota não passa para o aumento. Só depois as etapas seguintes preenchem cada caixa. O exercício de completude: o envelope do chunk vem esqueletado, e você decide quais campos são obrigatórios — descobrindo que essa é a decisão mais consequente da etapa.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa02_naive.py
+```
+
+Código: [`rag_zero/pipeline.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/pipeline.py). O que você deve ver: os dois caminhos separados, o identificador estável do chunk, e `procedência sobreviveu aos 4 contratos: True`.
 ## Verificação
 
 1. Seu sistema responde citando uma política revogada. Percorra a tabela de diagnóstico: quais componentes você **não** deve tocar, e por quê?

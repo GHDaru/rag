@@ -15,11 +15,11 @@ Ao final desta introdução, você deve ser capaz de:
 
 ## O problema
 
-Um modelo de linguagem sabe o que estava nos seus pesos no dia em que foi treinado. Não sabe o preço de hoje, a política que sua empresa revisou semana passada, nem o histórico daquele cliente.
+Um modelo de linguagem (LLM, de *Large Language Model*) sabe o que estava nos seus pesos no dia em que foi treinado. Não sabe o preço de hoje, a política que sua empresa revisou semana passada, nem o histórico daquele cliente.
 
 A saída óbvia — "coloque tudo na pergunta" — esbarra em três limites duros: o corpus não cabe, o que cabe custa caro em toda chamada, e o que cabe demais o modelo aproveita mal.
 
-**RAG é a resposta a esse impasse**: buscar, em um corpus externo, os pedaços relevantes para *esta* pergunta, e gerar uma resposta fundamentada neles. Recuperação e geração — as duas metades da sigla, e a segunda costuma ser esquecida.
+**RAG — *Retrieval-Augmented Generation* — é a resposta a esse impasse**: buscar, em um corpus externo, os pedaços relevantes para *esta* pergunta, e gerar uma resposta fundamentada neles. Recuperação e geração — as duas metades da sigla, e a segunda costuma ser esquecida.
 
 O que RAG **não** resolve, e vale dizer logo:
 
@@ -28,7 +28,7 @@ O que RAG **não** resolve, e vale dizer logo:
 
 ## Por que "Engenharia" de RAG
 
-Existe muito material sobre *técnicas* de RAG: chunking, embeddings, reranking, HyDE, GraphRAG. Cada uma explicada isoladamente, nenhuma situada. O leitor acumula peças e não recebe a máquina.
+Existe muito material sobre *técnicas* de RAG: chunking, embeddings, reranking, HyDE (*Hypothetical Document Embeddings*), GraphRAG. Cada uma explicada isoladamente, nenhuma situada. O leitor acumula peças e não recebe a máquina.
 
 Este livro faz a aposta contrária: **RAG é um sistema com componentes, contratos e topologias** — e a decisão que importa quase nunca é "qual técnica", é "onde ela encaixa e o que ela custa".
 
@@ -55,7 +55,7 @@ Este livro fica no andar de baixo, deliberadamente: **como se constrói o sistem
 
 | Parte | O que responde |
 |---|---|
-| **Abertura** (00–01) | o problema, o vocabulário, a herança de IR |
+| **Abertura** (00–01) | o problema, o vocabulário, a herança de *Information Retrieval* (IR) |
 | **I — A arquitetura** (02–03) | quais são os componentes e as topologias |
 | **II — O corpus** (04–05) | o que entra no índice e como vira unidade buscável |
 | **III — Recuperação** (06–10) | como se acha: busca, reranking, a pergunta, indexação refinada, estrutura |

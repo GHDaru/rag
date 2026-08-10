@@ -138,42 +138,104 @@ def r4_remissoes() -> None:
 # R5 — siglas
 # --------------------------------------------------------------------------- #
 
-SIGLAS = {
-    "RAG": "Retrieval-Augmented Generation",
-    "LLM": "Large Language Model",
-    "IR": "Information Retrieval",
-    "OWASP": "Open Worldwide Application Security Project",
-    "BM25": "Best Matching 25",
-    "RRF": "Reciprocal Rank Fusion",
-    "DoD": "Definition of Done",
-}
+SIGLAS_DEF = json.loads((RAIZ / "publicar" / "siglas.json").read_text(encoding="utf-8"))
+
+
+def _limpar(texto: str) -> str:
+    """Remove o que não conta como ocorrência de sigla no corpo.
+
+    É aqui que moram os falsos positivos, e cada remoção tem motivo:
+
+    - **blockquote de datação** — o build o APAGA da página; sigla introduzida
+      ali é invisível para quem lê o site;
+    - **código** (cercado e inline) — `top_k` e `ERR_4021` não são siglas;
+    - **alvos de link e URLs** — `arXiv 2401.18059` não é sigla;
+    - **nomes de arquivo em caixa alta** — ROADMAP, HISTORICO, CLAUDE.
+    """
+    texto = re.sub(r"^> \*\*Estado da arte.*?(?=\n\n)", "", texto, flags=re.S | re.M)
+    texto = re.sub(r"```.*?```", "", texto, flags=re.S)
+    texto = re.sub(r"`[^`]*`", "", texto)
+    texto = re.sub(r"\]\([^)]*\)", "]", texto)
+    texto = re.sub(r"https?://\S+", "", texto)
+    texto = re.sub(r"\b(ROADMAP|HISTORICO|CLAUDE|GUIA|README|ADR|NAO_ENCONTRADO)\b", "", texto)
+    return texto
+
+
+def _primeiro_paragrafo_com(texto: str, sigla: str) -> str | None:
+    """O parágrafo da primeira ocorrência — a unidade que o leitor percebe."""
+    for par in re.split(r"\n\s*\n", texto):
+        if re.search(rf"\b{re.escape(sigla)}\b", par):
+            return par
+    return None
 
 
 def r5_siglas() -> None:
-    """Lei de Ferro: a primeira ocorrência do capítulo expande a sigla.
-
-    Verifica só a **primeira** ocorrência por arquivo — o leitor não tem
-    obrigação de ter lido o capítulo anterior.
-    """
-    for p in capitulos():
-        texto = p.read_text(encoding="utf-8")
-        for sigla, extenso in SIGLAS.items():
-            m = re.search(rf"\b{re.escape(sigla)}\b", texto)
-            if not m:
+    """A política do ADR 0011 — quatro classes, uma regra cada."""
+    publicados = capitulos() + [LIVRO / "apendice-tecnicas.md",
+                                LIVRO / "apendice-ecossistema.md"]
+    for p in publicados:
+        texto = _limpar(p.read_text(encoding="utf-8"))
+        rel = p.relative_to(RAIZ).as_posix()
+        for sigla, d in SIGLAS_DEF.items():
+            par = _primeiro_paragrafo_com(texto, sigla)
+            if par is None:
                 continue
-            # A expansão precisa aparecer até o fim do parágrafo da 1ª ocorrência.
-            janela = texto[:m.end() + 400]
-            if extenso.lower() not in janela.lower():
-                falhas.append(f"R5 sigla órfã: {p.relative_to(RAIZ)} usa '{sigla}' "
-                              f"sem expandir na primeira ocorrência")
+            classe = d["classe"]
+
+            # S2 — técnica: a expansão vem junto, no mesmo parágrafo.
+            if classe == "tecnica" and d.get("expansao"):
+                if d["expansao"].lower() not in par.lower():
+                    falhas.append(f"R5/S2: {rel} usa '{sigla}' (técnica) sem a "
+                                  f"expansão no mesmo parágrafo")
+                elif len(re.findall(rf"\b{re.escape(sigla)}\b", texto)) == 1:
+                    avisos.append(f"R5/S6: {rel} usa '{sigla}' UMA vez — "
+                                  f"escreva o termo em vez da sigla")
+
+            # S5 — núcleo expandida fora das portas canônicas é redundância.
+            if classe == "nucleo" and d.get("expansao"):
+                canonicos = d.get("canonicos", [])
+                tem = d["expansao"].lower() in texto.lower()
+                if tem and rel not in canonicos:
+                    falhas.append(f"R5/S5: {rel} expande '{sigla}' fora das portas "
+                                  f"canônicas — o motor já faz isso por página")
+                if not tem and rel in canonicos:
+                    falhas.append(f"R5/S5: {rel} é porta canônica de '{sigla}' e "
+                                  f"não traz a expansão")
 
 
 def r5_glossario() -> None:
+    """S4 — toda sigla catalogada tem verbete. Vale para as quatro classes."""
     glossario = (LIVRO / "glossario.md").read_text(encoding="utf-8")
-    for sigla in SIGLAS:
+    usadas = set()
+    for p in capitulos():
+        texto = _limpar(p.read_text(encoding="utf-8"))
+        for sigla in SIGLAS_DEF:
+            if re.search(rf"\b{re.escape(sigla)}\b", texto):
+                usadas.add(sigla)
+    for sigla in sorted(usadas):
+        # Sigla franca não entra no glossário: ela vive no dicionário (o motor dá
+        # o tooltip), e um verbete "JSON — JavaScript Object Notation" num livro
+        # de RAG é o empilhamento que o ADR 0011 combate. O glossário é para o
+        # que carrega sentido NESTE livro.
+        if SIGLAS_DEF[sigla]["classe"] == "franca":
+            continue
         if not re.search(rf"^\*\*{re.escape(sigla)}\b", glossario, re.M) and \
            not re.search(rf"\*\*{re.escape(sigla)} ?\(", glossario):
-            avisos.append(f"R5: '{sigla}' não tem verbete próprio no glossário")
+            falhas.append(f"R5/S4: '{sigla}' é usada no livro e não tem verbete "
+                          f"no glossário")
+
+
+def r5_fonte_unica() -> None:
+    """S7 — o motor e o verificador leem o MESMO dicionário.
+
+    Antes do ADR 0011 havia duas listas divergentes: a de `build.mjs` (herdada do
+    livro irmão, com ACP, A2A, LSP, MAST — nada disso é deste livro) e a do
+    verificador. Fonte única é o que impede a divergência de voltar.
+    """
+    build = (RAIZ / "publicar" / "build.mjs").read_text(encoding="utf-8")
+    if "siglas.json" not in build:
+        falhas.append("R5/S7: build.mjs não lê publicar/siglas.json — as duas "
+                      "listas voltaram a divergir")
 
 
 # --------------------------------------------------------------------------- #
@@ -228,7 +290,8 @@ def r8_etapas_honestas() -> None:
 
 def main() -> int:
     for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
-                     r5_glossario, r6_mao_na_massa, r6_sumario, r8_etapas_honestas):
+                     r5_glossario, r5_fonte_unica, r6_mao_na_massa,
+                     r6_sumario, r8_etapas_honestas):
         checagem()
 
     if avisos:

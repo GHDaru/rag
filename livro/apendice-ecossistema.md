@@ -34,7 +34,7 @@
 |---|---|---|
 | **Contextual Retrieval** (Anthropic) | indexação: 1 chamada de LLM por chunk | chunk sem contexto |
 | **Late Chunking** (Jina AI) | indexação: só o modelo de embedding | chunk sem contexto, muito mais barato |
-| **HyDE** | consulta: 1 chamada por pergunta | pergunta que não se parece com a resposta |
+| **HyDE (*Hypothetical Document Embeddings*)** | consulta: 1 chamada por pergunta | pergunta que não se parece com a resposta |
 | **Reescrita de consulta** | consulta | vocabulário do domínio; referência entre turnos |
 | **GraphRAG** e família | indexação pesada + consulta | multi-hop e perguntas globais |
 

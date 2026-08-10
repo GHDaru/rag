@@ -46,6 +46,8 @@
 
 ## D–L
 
+**CDTA (*Cross-Document Topic-Aligned*)** — corte que reconstrói o conhecimento **no nível do corpus**: identifica tópicos que atravessam documentos e sintetiza chunks unificados. Ganha em multi-hop e complica a citação verificável, porque o chunk resultante não existe em nenhum documento original (caps. 05, 09, 15).
+
 **Decodificação restrita (*constrained decoding*)** — restringir a amostragem para garantir que a saída obedeça a uma gramática ou schema. Garante forma, não valor (cap. 13).
 
 **DSPy** — framework que trata prompts como parâmetros a serem compilados contra uma métrica, com otimizadores (BootstrapFewShot, COPRO, MIPROv2, GEPA) — cap. 16.
@@ -72,6 +74,8 @@
 
 **Injeção indireta** — *prompt injection* em que o texto hostil chega por conteúdo que o sistema lê (documento, página, e-mail, memória), e não pela mensagem do usuário. É a forma que sistemas de RAG criam (cap. 22).
 
+**IR (*Information Retrieval*)** — o campo de seis décadas que estuda como encontrar documentos relevantes para uma necessidade de informação. O RAG não nasceu do zero: herdou dele as métricas, os benchmarks e o BM25 — e foi absorvido de volta, com track próprio no TREC (cap. 01).
+
 **Janela de contexto** — o limite físico de tokens de uma chamada. Não é "memória do modelo" (cap. 01).
 
 **Late chunking** — embeddar o documento inteiro e aplicar o corte **depois** do transformer, antes do *pooling*. Resolve a perda de contexto sem chamada de LLM, limitado pelo comprimento máximo do modelo de embedding (cap. 09).
@@ -79,6 +83,8 @@
 **LLM-as-judge** — usar um modelo para julgar saídas de outro. Padrão de fato e fraqueza metodológica simultaneamente; exige calibração contra julgamento humano (cap. 17).
 
 ## M–R
+
+**LLM (*Large Language Model*)** — modelo de linguagem de grande porte. Neste livro ele é sempre o **gerador**, nunca a fonte de verdade: o que ele sabe está nos pesos do dia do treino, e é justamente essa limitação que o RAG existe para contornar (caps. 00, 01).
 
 **Mem0** — sistema de memória que extrai fatos salientes das mensagens e os guarda como memórias compactas (cap. 19).
 
@@ -95,6 +101,8 @@
 **MTEB** — *Massive Text Embedding Benchmark*: avaliação ampla de modelos de embedding em múltiplas tarefas (cap. 21).
 
 **Multi-hop** — pergunta cuja resposta não está em nenhum trecho, mas na **relação** entre trechos. Recuperar os dois melhores não a produz (cap. 10).
+
+**MCP (*Model Context Protocol*)** — protocolo que padroniza como um sistema expõe ferramentas e recursos a um modelo. Resolve **integração**, não recuperação: o tratamento é do livro irmão, e aqui ele aparece só como superfície de ataque medida (cap. 22).
 
 **Naive RAG** — o primeiro paradigma: indexar, buscar por similaridade, concatenar, gerar. É a linha de base honesta — e a arquitetura da maioria dos sistemas que se dizem avançados (cap. 03).
 
@@ -130,6 +138,8 @@
 
 ## S–Z
 
+**RRF (*Reciprocal Rank Fusion*)** — fusão recíproca de ranking: combina listas pela **posição** de cada documento, não pela nota. É o que torna a busca híbrida prática, porque dispensa calibrar escalas incomparáveis (cap. 06).
+
 **Saída estruturada** — restringir a resposta a um schema. Garante forma, nunca valor; a validação semântica continua sendo sua (cap. 13).
 
 **Self-consistency** — amostrar vários caminhos de raciocínio e agregar por voto. Multiplica o custo por N; é decisão financeira (cap. 12).
@@ -140,10 +150,14 @@
 
 **Step-back prompting** — generalizar a pergunta antes de recuperar, para trazer o princípio e não só o detalhe. É o inverso da decomposição (cap. 08).
 
+**SIGIR** — a conferência de referência de *Information Retrieval*, e uma das evidências de que o RAG não nasceu do zero: as métricas, os benchmarks e a reordenação em estágios vêm de lá (cap. 01).
+
 **Taxa de resultado zero** — proporção de consultas que voltam sem nada acima do limiar. O sinal operacional mais barato da recuperação — e que denuncia por ausência: se está sempre em zero, provavelmente não há limiar nem caminho de abstenção (caps. 06, 21).
 
 **Token** — a unidade que o modelo processa e que a fatura cobra. Não é palavra (cap. 01).
 
 **Trajetória** — a sequência de decisões (buscas, chamadas, reflexões) que levou a uma resposta em um sistema agêntico. Duas trajetórias podem dar a mesma resposta com custos muito diferentes — e a instrumentação madura ainda não a mede (caps. 18, 21).
+
+**TREC (*Text REtrieval Conference*)** — o programa de avaliação que estrutura a pesquisa em recuperação há décadas. Tem **track dedicado a RAG** — o sinal mais claro de que a área absorveu o tema em vez de tratá-lo como estranho (cap. 01).
 
 **Zep** — sistema de memória que adiciona grafo de conhecimento **temporal** sobre recuperação densa, para raciocinar sobre fatos que mudam com o tempo (cap. 19).

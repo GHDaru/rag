@@ -86,10 +86,18 @@ O mínimo:
 
 A escolha "densa ou esparsa" é falsa: **as duas erram em direções complementares** — a densa perde identificador, código e nome próprio; a esparsa perde paráfrase e sinônimo. **O que roubar:** busca **híbrida com fusão por posição** é o upgrade de melhor relação benefício/esforço do livro, e a primeira coisa a tentar quando o RAG "não encontra o óbvio" — porque quase sempre o óbvio é um literal que o índice denso não representa. Funda **por posição no ranking**, não por nota: as escalas de cosseno e BM25 são incomparáveis, e normalizá-las é frágil. **O peso entre os sinais não tem valor universal** e depende do tipo de pergunta — o que sugere pesos por rota quando há roteamento. **Inegociável:** filtre por metadado **na consulta ao índice**, nunca sobre os resultados — filtrar depois desperdiça `top_k`, falseia a métrica e, dependendo de logs e cache, **vaza**; é requisito de segurança, não de eficiência. **E instale o "não encontrei":** limiar calibrado no seu corpus, abstenção quando nada passa, e a taxa de resultado zero monitorada — se ela vive em zero, provavelmente não há limiar nenhum.
 
-## Mão na massa — rag-zero, etapa 5
+## Mão na massa — `rag-zero`, etapa 5
 
 Na etapa 5 você constrói a busca do `rag-zero` **na mão, antes de qualquer biblioteca**: um BM25 em cerca de 40 linhas sobre o texto deste livro, depois embeddings, depois a fusão por posição — medindo os três com o mesmo conjunto de perguntas. O objetivo pedagógico é ver o ranking acontecer e o ponto cego de cada família aparecer numa pergunta concreta. O exercício de completude: o peso da fusão vem esqueletado; você o calibra e descobre que o ótimo muda com o tipo de pergunta.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa05_busca.py
+```
+
+Código: [`rag_zero/bm25.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/bm25.py). O que você deve ver: a tabela de ganho por estágio, e o BM25 achando `arXiv 2401.18059` onde o denso erra.
 ## Verificação
 
 1. Usuários buscam por código de produto (`XR-4400-B`) e não encontram, mas encontram por descrição. Qual família está faltando, e por quê?
@@ -106,7 +114,7 @@ Na etapa 5 você constrói a busca do `rag-zero` **na mão, antes de qualquer bi
 |---|---|---|
 | **BM25 puro, sem serviço** | [`rank_bm25`](https://github.com/dorianbrown/rank_bm25) | "A two line search engine". É a linha de base honesta em ~40 linhas, e é o que o `rag-zero` usa. **Pegadinha:** não tem índice invertido persistido — memória e reindexação são por sua conta acima de alguns milhares de documentos. |
 | **BM25 em produção** | motores de busca (Elasticsearch, OpenSearch, Vespa, Tantivy) | trazem índice invertido, filtro por campo **na consulta** (§3) e análise linguística. **Pegadinha:** o analisador (stemming, stopwords, tokenização) muda o resultado tanto quanto o `k1`/`b` — e quase ninguém o audita. |
-| **Fusão por posição** | `EnsembleRetriever` do [LangChain](https://github.com/langchain-ai/langchain); `QueryFusionRetriever` do [LlamaIndex](https://github.com/run-llama/llama_index); `JoinDocuments` do [Haystack](https://github.com/deepset-ai/haystack) | é a fusão recíproca de ranking, a implementação dominante do que a §2 descreve. **Pegadinha:** o parâmetro de amortecimento (o `k` da RRF, tipicamente 60) decide quanto peso a cauda recebe, e o padrão raramente é discutido. |
+| **Fusão por posição** | `EnsembleRetriever` do [LangChain](https://github.com/langchain-ai/langchain); `QueryFusionRetriever` do [LlamaIndex](https://github.com/run-llama/llama_index); `JoinDocuments` do [Haystack](https://github.com/deepset-ai/haystack) | é a fusão recíproca de ranking, a implementação dominante do que a §2 descreve. **Pegadinha:** o parâmetro de amortecimento (o `k` da fusão recíproca de ranking, tipicamente 60) decide quanto peso a cauda recebe, e o padrão raramente é discutido. |
 | **Índice denso** | bancos vetoriais ([Chroma](https://github.com/chroma-core/chroma) e congêneres); `faiss` para o caso embutido | **Pegadinha, e é a que mais dói:** o índice aproximado troca **recall** por latência. Um recall@k que cai sem explicação costuma ser o parâmetro de busca do índice, não o modelo de embedding. |
 | **A régua** | [BEIR](https://github.com/beir-cellar/beir) | 18 datasets, protocolo zero-shot. Serve para **comparar contra BM25**, que é o que o paper mostra ser difícil de bater. |
 

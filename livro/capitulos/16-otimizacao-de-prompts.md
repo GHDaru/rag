@@ -79,10 +79,18 @@ Três ressalvas que o entusiasmo costuma pular:
 
 O prompt deixou de ser texto autoral e virou **artefato compilado** contra uma métrica: você declara entrada→saída e um otimizador escreve o texto. Três famílias — busca por **exemplos** (barata, comece aqui), busca por **instrução** (bayesiana/evolutiva) e **reflexão sobre traços** (cara, mas devolve explicação legível junto). **O que roubar:** trate o prompt como artefato de build, versionado com o hash do conjunto que o produziu — e a troca de modelo vira recompilação, não reescrita. **O risco central:** o otimizador encontra exatamente as brechas da sua métrica — **otimizar contra métrica ruim produz um prompt confiantemente errado**. Por isso: não otimize antes de saber medir (cap. 17), e nunca sem separar treino de validação.
 
-## Mão na massa — rag-zero, etapa 10 (o gerador)
+## Mão na massa — `rag-zero`, etapa 10
 
 Na etapa 10 você constrói um otimizador mínimo, na mão, antes de qualquer framework: 20 casos rotulados, uma métrica, um laço que propõe K variantes de instrução, avalia e mantém a melhor — com validação separada. São ~60 linhas e ensinam o que nenhum tutorial de biblioteca ensina: o overfitting aparece na sua frente. Só depois a etapa mostra o mesmo problema com um framework, e a comparação é o conteúdo.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa10_geracao.py
+```
+
+Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: o prompt de fundamentação como artefato — o objeto que um otimizador otimizaria.
 ## Verificação
 
 1. Seu otimizador reporta ganho de 12 pontos e produção não muda. Cite as duas causas mais prováveis, em ordem.

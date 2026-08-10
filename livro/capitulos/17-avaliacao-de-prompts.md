@@ -23,7 +23,7 @@ Este capítulo é o portão da Parte IV. Sem ele, o cap. 16 é perigoso e o cap.
 
 ## Fundamentos científicos
 
-- **A escolha de técnica depende do domínio.** Estudos comparativos de variantes de CoT em domínios específicos mostram que o ranking das técnicas **muda com o domínio e o modelo** ([exemplo em QA médico](https://www.sciencedirect.com/science/article/pii/S0010482525009655)). É a evidência de que resultado publicado não transfere sem medição local. `[a validar]`
+- **A escolha de técnica depende do domínio.** Estudos comparativos de variantes de CoT (*Chain-of-Thought*) em domínios específicos mostram que o ranking das técnicas **muda com o domínio e o modelo** ([exemplo em QA médico](https://www.sciencedirect.com/science/article/pii/S0010482525009655)). É a evidência de que resultado publicado não transfere sem medição local. `[a validar]`
 - **Juiz automático como método** — a prática de usar um modelo para julgar saídas de outro consolidou-se como padrão de fato nas ferramentas de avaliação (cap. 21), com um conjunto conhecido de vieses documentados: preferência por respostas longas, por respostas do próprio modelo, e sensibilidade à ordem de apresentação. `[a validar]`
 - **Assimetria compreensão × geração** — [arXiv 2507.13334](https://arxiv.org/abs/2507.13334): a lacuna entre entender e produzir é onde as falhas aparecem, e por isso avaliar só a entrada (o prompt) sem avaliar a saída sob condições realistas subestima o problema. `[a validar]`
 
@@ -90,10 +90,18 @@ Três propriedades que fazem esse ciclo funcionar:
 
 Sem eval, mudar prompt é apostar — e este capítulo é o portão da Parte IV: sem ele o cap. 16 é perigoso e o cap. 12 é folclore. Suba a escada só o necessário: **todo critério que puder virar `assert` deve virar `assert`**; o juiz é para o que sobrar. **O que roubar:** monte o conjunto a partir de **falhas reais registradas** (não de casos imaginados), faça todo incidente virar caso, e versione prompt + modelo + conjunto **juntos** — número comparado entre conjuntos diferentes é auto-engano. **Se usar juiz:** modelo de outra família, critérios binários, ordem alternada, e **meça a concordância com humano** antes de confiar — juiz não calibrado é número inventado com aparência de rigor. **A lacuna aberta:** quase toda métrica mede um turno; os sistemas falham ao longo da conversa.
 
-## Mão na massa — rag-zero, etapa 10 (o gerador)
+## Mão na massa — `rag-zero`, etapa 10
 
 Na etapa 10 você monta o conjunto de avaliação do `rag-zero` com 20 casos vindos das falhas que as etapas anteriores produziram, três asserções determinísticas, uma rubrica com juiz — e o passo que quase ninguém faz: **calibrar o juiz** contra 10 julgamentos seus e reportar a concordância. Se a concordância for baixa, a rubrica é reescrita antes de o número ser usado. O exercício de completude: o runner vem esqueletado; você implementa a comparação entre duas versões e o bloqueio por regressão.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 -m pytest tests/ -q -k geracao
+```
+
+Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: os testes que fixam o contrato da resposta: são asserção determinística, não juiz.
 ## Verificação
 
 1. Liste três critérios que seu time hoje avalia com juiz e que poderiam virar asserção determinística.

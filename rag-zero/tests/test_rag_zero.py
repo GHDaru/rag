@@ -415,3 +415,105 @@ def test_trecho_externo_entra_delimitado_e_com_procedencia():
     montado = montar_contexto("p", _trechos()).montar()
     assert "<trecho fonte=pol.md>" in montado
     assert "[T1]" in montado and "[T2]" in montado
+
+
+# --------------------------------------------------------------------------- #
+# Etapas 1 e 2 — os contratos e a linha de base
+# --------------------------------------------------------------------------- #
+
+def _caminho_falso():
+    """Um caminho de indexação sobre corpus fixo, sem tocar em disco."""
+    from rag_zero.bm25 import BM25
+    from rag_zero.pipeline import CaminhoDeIndexacao, Indexado
+    from rag_zero.ingestao import Documento
+
+    docs = [Documento(origem="politicas/reembolso.md", secao="Prazo",
+                      texto="O prazo de reembolso é de 30 dias corridos."),
+            Documento(origem="politicas/garantia.md", secao="Cobertura",
+                      texto="A garantia do produto XR-4400-B cobre 24 meses.")]
+    c = CaminhoDeIndexacao.__new__(CaminhoDeIndexacao)
+    c.relatorio = {}
+    c.unidades = [Indexado.de_documento(d, i) for i, d in enumerate(docs)]
+    c.indice = BM25([u.texto for u in c.unidades])
+    return c
+
+
+def test_identificador_do_chunk_e_estavel():
+    """Contrato nº 2: id derivado de origem + posição, não de contador global."""
+    a, b = _caminho_falso(), _caminho_falso()
+    assert [u.id for u in a.unidades] == [u.id for u in b.unidades]
+    assert a.unidades[0].id.startswith("reembolso#")
+
+
+def test_procedencia_atravessa_os_quatro_contratos():
+    """**O teste que fecha a etapa 1.**"""
+    from rag_zero.pipeline import NaiveRAG, procedencia_sobreviveu
+    from rag_zero.portas import LLMFundamentado
+    ex = NaiveRAG(_caminho_falso(), LLMFundamentado(), k=2).responder("prazo de reembolso")
+    assert ex.candidatos and all(isinstance(n, float) for _, n in ex.candidatos)
+    assert procedencia_sobreviveu(ex)
+
+
+def test_citacao_fora_dos_candidatos_e_pega_no_pipeline():
+    """A verificação vale para identificador real, não só para o `T1` do exemplo."""
+    from rag_zero.pipeline import NaiveRAG, procedencia_sobreviveu
+    from rag_zero.portas import LLMAlucinado
+    ex = NaiveRAG(_caminho_falso(), LLMAlucinado(), k=2).responder("prazo")
+    assert not procedencia_sobreviveu(ex)
+
+
+# --------------------------------------------------------------------------- #
+# Etapa 7 — o lado da pergunta
+# --------------------------------------------------------------------------- #
+
+def test_roteamento_separa_estruturado_global_e_texto():
+    from rag_zero.consulta import rotear
+    assert rotear("quantos contratos vencem este mês") == "estruturado"
+    assert rotear("quais os temas recorrentes do corpus") == "global"
+    assert rotear("o que é fusão por posição") == "texto"
+
+
+def test_portao_de_reescrita_evita_chamada_desnecessaria():
+    """Sem o portão, paga-se uma chamada por turno para descobrir que não precisava."""
+    from rag_zero.consulta import entender, precisa_resolver
+    hist = ["usuário: como funciona a busca híbrida?"]
+    assert precisa_resolver("e o outro?", hist)
+    assert not precisa_resolver("qual o limiar de abstenção recomendado", hist)
+    eco = LLMEco()
+    entender("qual o limiar de abstenção recomendado", eco, historico=hist)
+    assert eco.chamadas == []
+
+
+def test_padroes_da_consulta_sao_conservadores():
+    """HyDE e expansão custam uma chamada POR PERGUNTA, para sempre."""
+    from rag_zero.consulta import entender
+    eco = LLMEco()
+    entender("o que é abstenção", eco)
+    assert eco.chamadas == []
+
+
+# --------------------------------------------------------------------------- #
+# Etapa 8 — indexação refinada
+# --------------------------------------------------------------------------- #
+
+def test_contexto_estrutural_nao_contamina_a_entrega():
+    """O prefixo entra no INDEXADO, nunca no entregue — senão a citação devolve
+    ao leitor um texto que não existe no documento (cap. 15)."""
+    from rag_zero.indexacao import contexto_estrutural
+    c = contexto_estrutural("A margem caiu 12%.", "rel/2026.md", "Resultados")
+    assert c.texto_entrega == "A margem caiu 12%."
+    assert c.texto_indexado.startswith("[2026.md › Resultados]")
+
+
+def test_late_chunking_nao_gasta_chamada_de_llm():
+    """A propriedade econômica que define a técnica."""
+    from rag_zero.indexacao import custo_estimado
+    assert custo_estimado(1000, 50, "late")["chamadas_llm"] == 0
+    assert custo_estimado(1000, 50, "contextual")["chamadas_llm"] == 1000
+
+
+def test_vetor_com_vizinhanca_continua_normalizado():
+    from rag_zero.indexacao import vetor_com_vizinhanca
+    e = EmbedderHashing()
+    v = vetor_com_vizinhanca(e.embutir("chunk"), e.embutir("documento inteiro"))
+    assert abs(cosseno(v, v) - 1.0) < 1e-9

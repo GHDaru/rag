@@ -100,10 +100,20 @@ Sem isso, toda decisão de arquitetura é tomada com metade da informação — 
 
 Contexto é pago **em toda requisição, para sempre**: uma linha acrescentada ao prompt de sistema custa o seu tamanho vezes o número de chamadas, até alguém removê-la — e quase ninguém calcula esse produto antes de acrescentar. **O que roubar, e é grátis:** **estabilizar o prefixo**. O cache vale do início até o primeiro token que difere, então nada volátil acima de algo estável (o timestamp no topo é o erro mais caro e mais comum da área), serialização determinística, e histórico que **cresce por acréscimo** em vez de ser reserializado. É a única alavanca que não sacrifica nada — vem antes de qualquer conversa sobre trocar de modelo. **Onde a atenção erra:** vai para o `top_k`, que é fácil de ver, e não para o prompt fixo e o histórico, que dominam a conta em conversas longas. **Sobre cache semântico:** economiza muito onde há repetição, e serve resposta errada com confiança quando o limiar é frouxo — a chave precisa incluir os filtros aplicados, e cache que ignora permissão é vazamento, não otimização. **A regra que fecha o livro:** nenhuma métrica de qualidade deve ser reportada sem o **custo ao lado** — decomposto por parcela, com taxa de acerto do cache e latência p95 na mesma tela.
 
-## Mão na massa — rag-zero, etapa 16
+## Mão na massa — `rag-zero`, etapa 16
+
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 16 você fecha a construção: o contador da etapa 0 vira painel. Custo por parcela, taxa de acerto do cache antes e depois de reordenar as camadas, latência p50/p95 com e sem o laço agêntico da etapa 11 — e as métricas de qualidade da etapa 15 na mesma tela. O entregável é a tela, não o código. O exercício de completude: a detecção de invalidação de cache vem esqueletada — você implementa o alerta que dispara quando a taxa cai, e descobre, ao rodar, que o seu próprio sistema tinha um invalidador escondido.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa00_contador.py
+```
+
+Código: [`rag_zero/contexto.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/contexto.py). O que você deve ver: a montagem determinística — a propriedade de que o cache por prefixo depende.
 ## Verificação
 
 1. Seu prompt de sistema tem 3.000 tokens e o sistema faz 500 mil chamadas por mês. Estime a ordem de grandeza do custo dessa decisão e diga o que a mudaria de graça.

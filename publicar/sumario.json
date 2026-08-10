@@ -167,6 +167,11 @@
       "nome": "Aparato do livro",
       "itens": [
         {
+          "arquivo": "rag-zero/README.md",
+          "titulo": "A trilha prática — rag-zero",
+          "teaser": "O livro executável: uma etapa por capítulo, em Python puro."
+        },
+        {
           "arquivo": "livro/apendice-tecnicas.md",
           "titulo": "Catálogo de técnicas",
           "teaser": "Cada técnica em uma ficha: o que é, quando usa, o que custa."

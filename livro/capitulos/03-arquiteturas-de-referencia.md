@@ -98,10 +98,18 @@ E há um custo que a literatura de entusiasmo omite: modularidade multiplica o e
 
 Quatro paradigmas em escada — **Naive → Advanced → Modular → Agêntico** — e cada degrau **troca uma limitação por um custo**. O degrau certo é o menor que resolve a falha que você **mediu**, não o mais sofisticado. **O que roubar:** a maioria dos ganhos reais está no **Advanced** (reescrita na entrada + busca híbrida no meio + reranking na saída) — três acréscimos sem nenhuma peça móvel nova em runtime. E defenda o ingênuo: **um RAG naive bem instrumentado é a linha de base honesta** contra a qual todo degrau seguinte se justifica; o erro não é começar ingênuo, é subir ou ficar sem medir. **Os quatro padrões de fluxo** (linear, condicional, ramificado, em laço) tornam a arquitetura discutível — e a leitura que decide projeto é: **só o laço é imprevisível**, e por isso é o único que exige teto. **A regra que mais economiza tempo:** se o recall está baixo, o problema é anterior à arquitetura — é corpus ou representação, e nenhuma topologia conserta índice ruim. **Sobre "modular":** o critério é verificável — trocar um módulo sem tocar nos vizinhos. Se não passa, é Advanced com nome bonito.
 
-## Mão na massa — rag-zero, etapa 2
+## Mão na massa — `rag-zero`, etapa 2
 
 Na etapa 2 você monta o `rag-zero` **ingênuo e inteiro**: corte fixo, embedding, `top_k`, concatenação, resposta. Sem reescrita, sem rerank, sem laço. E roda o eval sobre ele. O número que sai daí é a linha de base do livro — todos os degraus seguintes serão medidos contra ele, e alguns não vão se justificar. O exercício de completude: o registrador da linha de base vem esqueletado; você decide o que guardar de cada execução para que a comparação seja honesta seis capítulos depois.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa02_naive.py
+```
+
+Código: [`rag_zero/pipeline.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/pipeline.py). O que você deve ver: o Naive RAG inteiro respondendo, e a lista do que ele **não** faz — que é o índice do resto do livro.
 ## Verificação
 
 1. Seu sistema tem reescrita de consulta, busca híbrida e reranking, e o time o chama de "modular". Que teste decide se o nome está certo?

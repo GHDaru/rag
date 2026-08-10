@@ -73,10 +73,18 @@ Duas regras que separam quem já apanhou disso de quem ainda vai apanhar:
 
 Duas metades: a **sintática** está resolvida por plataforma (schema nativo, decodificação restrita) e é onde este capítulo vai expirar; a **semântica** — o campo válido com o valor errado — não tem solução de plataforma e é eval (cap. 17) e fundamentação (cap. 21). **O que roubar:** restrinja quando puder, **valide sempre** (garantia de forma não é garantia de valor); ponha um campo de raciocínio antes dos campos de decisão, use enum em domínio fechado, e dê ao modelo um lugar explícito para dizer "não sei". **O sinal operacional:** monitore a **taxa de reparo** — ela é o termômetro do schema, e mudanças nela avisam antes de o usuário reclamar.
 
-## Mão na massa — rag-zero, etapa 10 (o gerador)
+## Mão na massa — `rag-zero`, etapa 10
 
 Na etapa 10 você troca a resposta em texto livre do `rag-zero` por um contrato: schema com campo de raciocínio, enum de intenção e campo de incerteza; validação no lado do servidor; ciclo de reparo com teto 2 e falha explícita. O exercício de completude: o repórter de erro vem esqueletado — você faz a mensagem de validação virar uma instrução útil para a re-solicitação, e mede quanto isso muda a taxa de reparo.
 
+**Rode agora** — sem instalar nada, sem chave e sem GPU:
+
+```bash
+cd rag-zero
+python3 etapas/etapa10_geracao.py
+```
+
+Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: a verificação da resposta devolvendo `citacoes_invalidas` e `afirmacoes_sem_citacao` — o schema aplicado à saída.
 ## Verificação
 
 1. Você ativou saída estruturada nativa com schema garantido pelo provedor. Que classe de erro **continua** possível, e onde ela deve ser pega?
