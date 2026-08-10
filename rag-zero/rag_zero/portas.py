@@ -157,3 +157,62 @@ class RerankerLexical:
             return 0.0
         no_doc = set(normalizar(documento))
         return len(termos & no_doc) / len(termos)
+
+
+# --------------------------------------------------------------------------- #
+# Adaptadores de LLM que encenam modos de falha — etapa 10
+#
+# A etapa 10 precisa demonstrar que a verificação de citação FUNCIONA, e para
+# isso precisa de respostas ruins de propósito. Estes adaptadores produzem cada
+# modo de falha do cap. 15 de forma determinística, sem gastar um token.
+#
+# Não são simulação de modelo: são **casos de teste executáveis** do verificador.
+# --------------------------------------------------------------------------- #
+
+class LLMFundamentado:
+    """Obedece às três exigências: usa só o material, cita, e abstém quando falta.
+
+    Extrai a primeira sentença de cada trecho e a cita. É burro de propósito —
+    o que ele demonstra não é qualidade de redação, é **conformidade ao
+    contrato**.
+    """
+
+    def gerar(self, prompt: str, *, max_tokens: int = 512) -> str:
+        # Casa cada bloco <trecho>…</trecho> isoladamente. A âncora de abertura
+        # é obrigatória: sem ela o `.*?` atravessa blocos e mistura os trechos.
+        trechos = re.findall(r"<trecho[^>]*>\s*\[(T\d+)\]\s*(.*?)\s*</trecho>",
+                             prompt, re.S)
+        if not trechos:
+            return "NAO_ENCONTRADO"
+        partes = []
+        for ident, corpo in trechos[:3]:
+            frase = corpo.strip().split(".")[0].strip()
+            if frase:
+                partes.append(f"{frase} [{ident}].")
+        return " ".join(partes) if partes else "NAO_ENCONTRADO"
+
+
+class LLMAlucinado:
+    """Cita um identificador que **não existe** no contexto enviado.
+
+    É o modo de falha mais perigoso do cap. 15, porque a resposta *parece*
+    verificável — tem colchetes, tem número, tem cara de fonte. Só que a fonte
+    não existe. É exatamente isto que `geracao.verificar()` pega.
+    """
+
+    def gerar(self, prompt: str, *, max_tokens: int = 512) -> str:
+        return ("O prazo é de 30 dias corridos [T1]. "
+                "A contagem começa na data da nota fiscal [T7].")
+
+
+class LLMDeMemoria:
+    """Responde de memória: ignora a regra de ausência e não cita nada.
+
+    Não inventa fonte — apenas responde. É o comportamento **padrão** de um
+    modelo sem regra de ausência no prompt, e por isso o mais comum. A resposta
+    pode até estar certa; o problema é que **não dá para conferir**.
+    """
+
+    def gerar(self, prompt: str, *, max_tokens: int = 512) -> str:
+        return ("De acordo com a prática usual do setor, o prazo costuma ser "
+                "de trinta dias. Vale confirmar com o suporte.")

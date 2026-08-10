@@ -307,3 +307,111 @@ def test_normalizacao_descarta_token_curto_demais():
     o efeito aparece como "o sistema não encontra o óbvio" (cap. 06).
     """
     assert normalizar("IA e ML") == []
+
+
+# --------------------------------------------------------------------------- #
+# Etapa 9 — RAPTOR
+# --------------------------------------------------------------------------- #
+
+def test_raptor_condensa_a_cada_nivel():
+    """Um RAPTOR que não condensa não é RAPTOR — é a mesma lista com passos."""
+    from rag_zero.raptor import Raptor
+    textos = [f"assunto {i % 5}: " + " ".join(f"termo{i % 5}{j}" for j in range(12))
+              for i in range(40)]
+    arvore = Raptor(textos, EmbedderHashing(), niveis=3)
+    contagem = arvore.por_nivel()
+    assert contagem[0] == 40
+    assert arvore.altura >= 1
+    for nivel in range(1, arvore.altura + 1):
+        assert contagem[nivel] < contagem[nivel - 1], f"nível {nivel} não condensou"
+
+
+def test_limiar_derivado_do_corpus_nao_e_chute():
+    """A correção que a etapa 9 registra: limiar fixo não transfere."""
+    from rag_zero.raptor import limiar_por_percentil
+    e = EmbedderHashing()
+    vetores = [e.embutir(f"texto numero {i} sobre assunto {i % 3}") for i in range(30)]
+    p50 = limiar_por_percentil(vetores, 50.0)
+    p90 = limiar_por_percentil(vetores, 90.0)
+    assert 0.0 <= p50 <= p90 <= 1.0
+
+
+def test_raptor_busca_em_qualquer_nivel():
+    from rag_zero.raptor import Raptor
+    textos = [f"assunto {i % 4} com termo{i % 4}" for i in range(24)]
+    arvore = Raptor(textos, EmbedderHashing(), niveis=2)
+    folhas = arvore.buscar("assunto 1 termo1", k=3, nivel=0)
+    assert folhas and all(arvore.nos[i].nivel == 0 for i in folhas)
+    assert arvore.buscar("assunto 1 termo1", k=3, nivel=None)
+
+
+def test_resumo_extrativo_nao_inventa_frase():
+    """Extrativo nunca produz frase que não estava lá — bom para procedência."""
+    from rag_zero.raptor import resumir_extrativo
+    fonte = "Primeira frase sobre recuperacao. Segunda frase sobre geracao."
+    resumo = resumir_extrativo([fonte], frases=1)
+    assert resumo in fonte
+
+
+# --------------------------------------------------------------------------- #
+# Etapa 10 — geração fundamentada
+# --------------------------------------------------------------------------- #
+
+def _trechos():
+    from rag_zero.geracao import Trecho
+    return [Trecho("T1", "O prazo de reembolso é de 30 dias corridos.", "pol.md"),
+            Trecho("T2", "Promocoes seguem o mesmo prazo.", "pol.md")]
+
+
+def test_gerador_fundamentado_cita_o_que_existe():
+    from rag_zero.geracao import gerar
+    from rag_zero.portas import LLMFundamentado
+    r, _ = gerar("qual o prazo?", _trechos(), LLMFundamentado())
+    assert r.fundamentada
+    assert set(r.citacoes) <= {"T1", "T2"}
+    assert r.citacoes_invalidas == []
+
+
+def test_citacao_inexistente_e_pega():
+    """**O teste que fecha a etapa 10.**
+
+    O modo de falha mais perigoso do cap. 15: a resposta PARECE verificável —
+    tem colchete, tem número, tem cara de fonte — e a fonte não existe.
+    """
+    from rag_zero.geracao import gerar
+    from rag_zero.portas import LLMAlucinado
+    r, _ = gerar("qual o prazo?", _trechos(), LLMAlucinado())
+    assert not r.fundamentada
+    assert r.citacoes_invalidas == ["T7"]
+
+
+def test_resposta_de_memoria_e_recusada_por_nao_ser_conferivel():
+    from rag_zero.geracao import gerar
+    from rag_zero.portas import LLMDeMemoria
+    r, _ = gerar("qual o prazo?", _trechos(), LLMDeMemoria())
+    assert not r.fundamentada
+    assert r.citacoes_invalidas == []      # não inventou fonte...
+    assert r.afirmacoes_sem_citacao >= 1   # ...mas não dá para conferir
+
+
+def test_sem_trechos_o_modelo_nao_e_chamado():
+    """Chamar gerador sem material e torcer para que recuse é pagar por alucinação."""
+    from rag_zero.geracao import gerar
+    from rag_zero.portas import LLMEco
+    llm = LLMEco()
+    r, _ = gerar("pergunta fora do corpus", [], llm)
+    assert r.abstem and r.fundamentada
+    assert llm.chamadas == []
+
+
+def test_abstencao_conta_como_fundamentada():
+    from rag_zero.geracao import verificar
+    r = verificar("NAO_ENCONTRADO", _trechos())
+    assert r.abstem and r.fundamentada
+
+
+def test_trecho_externo_entra_delimitado_e_com_procedencia():
+    from rag_zero.geracao import montar_contexto
+    montado = montar_contexto("p", _trechos()).montar()
+    assert "<trecho fonte=pol.md>" in montado
+    assert "[T1]" in montado and "[T2]" in montado

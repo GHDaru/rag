@@ -19,7 +19,7 @@ Resumo do que a constituição exige (leia-a por inteiro antes de contribuir):
 
 ## Estado do projeto
 
-**Edição 0.1 (esqueleto).** Os 19 capítulos existem com o esqueleto completo e uma explicação de abertura — o **aprofundamento é o trabalho das próximas rodadas**, descrito em [`ROADMAP.md`](ROADMAP.md). Cada capítulo declara seu grau de maturidade no cabeçalho. Fora do escopo da v1, por decisão: edição em inglês, Radar de atualização automática, benchmark quantitativo de frameworks.
+**Edição 0.6.** Os **25 capítulos** em cinco partes estão de pé (arquitetura · corpus · recuperação · geração · sistema em produção), com **42 das 55 referências validadas** (rodada 2 concluída) e os **22 Apêndices A** preenchidos com implementação conferida. O `rag-zero` está em construção: **etapas 0, 3–6, 9 e 10 executáveis** com 39 testes, sem dependência externa. O aprofundamento segue em [`ROADMAP.md`](ROADMAP.md); cada capítulo declara sua maturidade no cabeçalho. Fora do escopo da v1, por decisão: edição em inglês, Radar automático, benchmark quantitativo de frameworks.
 
 ## Fluxo de trabalho (spec-kit) — uma branch por spec
 
@@ -43,7 +43,7 @@ As skills `/speckit-*` (em `.claude/skills/`) automatizam esses passos; quando n
 
 - `livro/` — o livro. `GUIA-EDITORIAL.md` (como escrever), `HISTORICO.md` (edições + expiração), `bibliografia.md`, `glossario.md`, `capitulos/`, apêndices.
 - `benchmark/` — a metodologia de avaliação de técnicas (`README.md`). As avaliações chegam na rodada 4 (ver ROADMAP).
-- `rag-zero/` — a construção prática (Python + FastAPI), uma etapa por capítulo. Regras: seção "Restrições" da constituição. Chega na rodada 3.
+- `rag-zero/` — a construção prática, uma etapa por capítulo. **Python puro, sem dependências, sem GPU, sem credencial.** Regras: seção "Restrições" da constituição.
 - `chat-companion/` — o assistente do livro (FastAPI + RAG sobre o próprio texto). É o `rag-zero` rodando em produção — e o exemplo real que o livro dissseca.
 - `estudos/` — notas de pesquisa (panorama da comunidade, parecer editorial).
 - `adr/` — Architecture Decision Records.

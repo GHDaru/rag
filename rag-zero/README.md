@@ -2,7 +2,7 @@
 
 > O livro executável: um sistema de RAG construído do zero, **uma etapa por capítulo**.
 >
-> Edição 0.5 · **status: etapas 0 e 3–6 construídas e testadas; 7–16 especificadas.**
+> Edição 0.6 · **status: etapas 0, 3–6, 9 e 10 construídas e testadas; demais especificadas.**
 > A implementação é a [rodada 3](../ROADMAP.md) do ROADMAP, e está em andamento.
 
 ## Rodar agora
@@ -17,8 +17,10 @@ python3 etapas/etapa00_contador.py     # o instrumento: composição do contexto
 python3 etapas/etapa03_ingestao.py     # o revogado não é recuperado
 python3 etapas/etapa05_busca.py        # esparso × denso × fusão, medidos
 python3 etapas/etapa06_reranking.py    # a nota como limiar, e a abstenção
+python3 etapas/etapa09_raptor.py       # a árvore de resumos recursivos
+python3 etapas/etapa10_geracao.py      # o "G": citação verificável e abstenção
 
-python3 -m pytest tests/ -q            # 29 testes
+python3 -m pytest tests/ -q            # 39 testes
 ```
 
 O corpus é **o texto deste livro**. Nenhuma etapa baixa nada.
@@ -77,8 +79,8 @@ a lição.
 | 6 | 07 | reranking com a **nota** como limiar | pergunta fora do corpus **abstém**; taxa de zero deixa de ser zero | ✅ |
 | 7 | 08 | reescrita, HyDE e roteamento | cada um medido contra a linha de base | 🔜 |
 | 8 | 09 | contextual retrieval × late chunking | as duas contas lado a lado, no mesmo corpus | 🔜 |
-| 9 | 10 | RAPTOR reduzido (~80 linhas) + roteador por nível | pergunta global responde melhor pelos nós altos | 🔜 |
-| 10 | 11–17 | **o gerador**: blocos, schema, camadas, fundamentação, eval | resposta sem sustentação no contexto é recusada | 🔜 |
+| 9 | 10 | RAPTOR reduzido (~80 linhas) + busca por nível | a árvore condensa a cada nível (180 → 55 → 24 → 12) | ✅ |
+| 10 | 11–17 | **o gerador**: blocos, fundamentação, citação verificável | **citação para um trecho que não existe é pega por código** | ✅ |
 | 11 | 18 | recuperação como ferramenta + reflexão + teto | custo médio por pergunta, antes e depois da autonomia | 🔜 |
 | 12 | 19 | referência entre turnos + memória com procedência | fato externo não vira fato do usuário; exclusão apaga | 🔜 |
 | 13 | 20 | orçamento com política de corte declarada | resultado gigante estoura e o corte segue a política escrita | 🔜 |
@@ -101,6 +103,8 @@ medir antes de otimizar, e não dava para escrever a etapa 5 sem elas. *Faithful
 | [`chunking.py`](rag_zero/chunking.py) | 05 | desacoplar a unidade de busca da unidade de entrega |
 | [`bm25.py`](rag_zero/bm25.py) | 06 | BM25 Okapi em ~40 linhas, com índice invertido |
 | [`recuperacao.py`](rag_zero/recuperacao.py) | 06, 07 | denso, fusão RRF, reranking e **abstenção** |
+| [`raptor.py`](rag_zero/raptor.py) | 10 | a árvore recursiva, com o limiar derivado do corpus |
+| [`geracao.py`](rag_zero/geracao.py) | 11, 15 | fundamentação, citação verificável, abstenção |
 | [`avaliacao.py`](rag_zero/avaliacao.py) | 21 | recall, precisão, taxa de resultado zero, taxa de acerto |
 
 ## A tese pedagógica das etapas
@@ -119,6 +123,11 @@ Quatro delas carregam o argumento do livro inteiro, e valem mesmo isoladas:
   ruim, não há ganho — e isso é informação.
 - **Etapa 6 — a abstenção.** A pergunta fora do corpus é a única que revela se o
   sistema sabe dizer "não encontrei" (caps. 06, 15).
+- **Etapa 10 — a citação verificável.** Três geradores encenam os três modos de
+  falha do cap. 15, e o verificador distingue os três: **citar fonte inexistente**
+  (o mais perigoso, porque *parece* verificável), **responder sem citar** (pode
+  estar certo, mas não dá para conferir) e **abster** (que é a resposta certa
+  quando falta base, e por isso conta como fundamentada).
 
 ## Uma nota de honestidade sobre os números
 

@@ -2,11 +2,11 @@
 
 > As rodadas planejadas do livro vivo. Cada rodada é um lote de trabalho que vira **uma ou mais specs** (`specs/NNN-nome/`), cada uma em sua branch, conforme o Princípio VII da [constituição](.specify/memory/constitution.md).
 >
-> Última atualização: **2026-08-09** · edição vigente: **0.5** (ver [Histórico](livro/HISTORICO.md))
+> Última atualização: **2026-08-09** · edição vigente: **0.6** (ver [Histórico](livro/HISTORICO.md))
 
 ## Onde estamos
 
-**Edição 0.4 — o esqueleto do sistema, com a rodada de evidência concluída.** O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
+**Edição 0.6 — o esqueleto do sistema, a evidência conferida, e o livro começando a executar.** O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
 
 O que a 0.2 fez além de renomear: os três capítulos que fechavam a lacuna real (**02** anatomia, **03** arquiteturas de referência, **15** geração fundamentada), a Parte III desdobrada em cinco, e a fronteira com o livro irmão tornada explícita na constituição.
 
@@ -15,8 +15,8 @@ O que **ainda não** existe, e é deliberado:
 | Ausente | Por quê | Volta em |
 |---|---|:---:|
 | Referências validadas (status ✓) | **42 de 55 (76%)** — rodada 2 ✅ concluída; as 13 restantes são de menor peso | — |
-| Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 2–3 |
-| Trilha prática `rag-zero` | descrita nos capítulos, não implementada | rodada 3 |
+| Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 3–5 |
+| Trilha prática `rag-zero` | **7 de 17 etapas** executáveis (0, 3–6, 9, 10) | rodada 3 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
 | Chat companion ligado | backend existe, corpus e capacidades adaptados; falta o deploy | rodada 3 |
 | Edição em inglês | fora do escopo da v1, por decisão | rodada 7 |
@@ -55,8 +55,8 @@ O que **ainda não** existe, e é deliberado:
 ### Aberto
 
 1. **As 13 referências ⏳** — otimizadores secundários (P7–P10), modos de falha de memória (M2–M5), e três de escopo estreito (Q3, E3, Z1). Nenhuma sustenta sozinha uma tese de capítulo.
-3. **Base de evidência do cap. 04.** Segue o capítulo mais fraco em citação, e a pergunta continua sem resposta: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
-4. **Aprofundar o corpo** dos capítulos onde a validação trouxe material novo — em especial 05 (métricas intrínsecas de chunking) e 09 (a troca de qualidade).
+2. **Base de evidência do cap. 04.** Segue o capítulo mais fraco em citação, e a pergunta continua sem resposta: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
+3. **Aprofundar o corpo** dos capítulos onde a validação trouxe material novo — em especial 05 (métricas intrínsecas de chunking) e 09 (a troca de qualidade).
 
 **Critério de conclusão — os três atingidos:** ≥ 60% das referências em ✓ (**76%**); nenhum número no corpo sem condição experimental (**feito** para os validados); nenhum capítulo com Apêndice A vazio (**22 de 22 preenchidos**, cada implementação citada com URL conferida).
 
@@ -94,15 +94,17 @@ O que **ainda não** existe, e é deliberado:
 
 ### Feito (edição 0.5, 2026-08-09)
 
-- ✅ **Etapas 0 e 3–6 construídas, executáveis e testadas** — 29 testes, sem rede, sem GPU, sem credencial, **sem uma única dependência externa**.
+- ✅ **Etapas 0, 3–6, 9 e 10 construídas, executáveis e testadas** — 39 testes, sem rede, sem GPU, sem credencial, **sem uma única dependência externa**.
 - ✅ **BM25 Okapi de verdade** em ~40 linhas (IDF + saturação + normalização por comprimento), com índice invertido.
 - ✅ **As três portas** (`LLMPort`, `EmbedderPort`, `RerankerPort`) com adaptadores que não custam nada.
 - ✅ **O erro didático deliberado declarado e fixado em teste**: o embedder de *hashing* não tem semântica, e a etapa 5 mede o que isso custa.
 - ✅ **O companion passou a usar BM25 de verdade.** Até a 0.4 ele pontuava por sobreposição crua de termos **enquanto se descrevia como o BM25 do rag-zero**. Agora a afirmação do livro é verdadeira.
+- ✅ **O "G" construído** (etapa 10): fundamentação, **citação verificável por código** e abstenção — com três geradores que encenam os três modos de falha do cap. 15.
+- ✅ **RAPTOR reduzido** (etapa 9), com o limiar de agrupamento **derivado do corpus** em vez de chutado.
 
 ### Aberto
 
-- Etapas 1, 2 e 7–16 (consulta, indexação avançada, estruturada, gerador, agêntico, memória, orçamento, segurança, custo).
+- Etapas 1, 2, 7, 8 e 11–16 (contratos, linha de base, consulta, indexação avançada, agêntico, memória, orçamento, segurança, custo).
 - Ligar o **companion em produção** com gating de capacidades por capítulo.
 
 **Critério de conclusão:** as 17 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
