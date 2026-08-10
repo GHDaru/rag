@@ -1,6 +1,6 @@
 # 20 — A Janela como Orçamento
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **aumento** — o que dos candidatos vira contexto (cap. 02). A tese do orçamento e a leitura híbrida estão fechadas; as medições por regime são a rodada 2 do ROADMAP.
 
@@ -30,7 +30,7 @@ Este capítulo é o que transforma "colocar informação no prompt" em **decisã
 - **Gestão de contexto como componente formal** — o survey [arXiv 2507.13334](https://arxiv.org/abs/2507.13334), síntese de **mais de 1.400 papers**, decompõe a disciplina em três componentes fundamentais — *context retrieval and generation*, *context processing* e ***context management*** — e é o terceiro que dá nome acadêmico ao que este capítulo chama de orçamento. ✓
 - **A natureza da degradação** — o relatório *Context Rot* ([Chroma](https://www.trychroma.com/research/context-rot), Hong, Troynikov e Huber, 2025-07-14, **18 modelos** de quatro fornecedores) mede duas coisas que o livro tratava como uma só. Primeira: **o comprimento sozinho degrada** — isolando a variável (mesmo par pergunta/alvo, variando só a quantidade de conteúdo irrelevante), o desempenho cai com o tamanho da entrada **mesmo em tarefas deliberadamente triviais**. Segunda: a queda **fica mais íngreme** quando a similaridade entre a pergunta e o alvo é baixa, e quando há distratores — **um único distrator já reduz o desempenho**, e os distratores **não têm impacto uniforme** entre si. ✓ (lido no original)
 
-  **Correção registrada (rodada 2).** A edição 0.2 afirmava que a degradação "não é linear com o comprimento, é dirigida pela similaridade entre alvo e distratores", e atribuía isso a *Lost in the Middle*. As duas metades estavam erradas: *Lost in the Middle* estabelece degradação **posicional** (pontas melhor que meio) e não trata de distratores; e o relatório que trata de distratores diz que o comprimento **também** degrada por si só. O comprimento não é inocente — ele é a base, e os distratores são o multiplicador.
+  **Correção registrada (rodada 2).** A edição 1.0 afirmava que a degradação "não é linear com o comprimento, é dirigida pela similaridade entre alvo e distratores", e atribuía isso a *Lost in the Middle*. As duas metades estavam erradas: *Lost in the Middle* estabelece degradação **posicional** (pontas melhor que meio) e não trata de distratores; e o relatório que trata de distratores diz que o comprimento **também** degrada por si só. O comprimento não é inocente — ele é a base, e os distratores são o multiplicador.
 
 (Bibliografia completa: [`bibliografia.md`](../bibliografia.md).)
 

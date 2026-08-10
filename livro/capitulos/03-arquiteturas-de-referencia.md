@@ -1,6 +1,6 @@
 # 03 — Arquiteturas de Referência
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Os quatro paradigmas e os padrões de fluxo estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 

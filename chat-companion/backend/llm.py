@@ -3,7 +3,7 @@
 Reuso direto do padrão do etapa 01: um Protocol e dois adapters. A novidade
 de produção é o **BYOK** (bring your own key): o leitor pode passar a própria
 chave numa requisição; ela é usada só naquela chamada e **nunca** persistida
-nem logada (cap. 07 — credencial é credencial).
+nem logada (cap. 22 — credencial é credencial).
 """
 
 from __future__ import annotations
@@ -55,7 +55,7 @@ class OpenAICompatAdapter:
     def __init__(self) -> None:
         self.base_url = os.environ.get("OPENAI_BASE_URL", "https://integrate.api.nvidia.com/v1")
         self.project_key = os.environ.get("OPENAI_API_KEY", "")
-        self.model = os.environ.get("LLM_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
+        self.model = os.environ.get("LLM_MODEL", "")
 
     def complete(self, messages: list[Message], tools: list[dict],
                  byok_key: Optional[str] = None) -> Message:

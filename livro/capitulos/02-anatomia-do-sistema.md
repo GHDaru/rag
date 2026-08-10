@@ -1,6 +1,6 @@
 # 02 — Anatomia de um Sistema de RAG
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O inventário de componentes e os contratos entre eles estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 

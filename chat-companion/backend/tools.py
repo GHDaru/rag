@@ -1,6 +1,6 @@
 """ToolPort — o registro de tools SEGURAS do companion.
 
-Regra do cap. 07 aplicada à superfície pública: nada de shell, nada de leitura
+Regra do cap. 22 aplicada à superfície pública: nada de shell, nada de leitura
 arbitrária de disco, nada de rede de saída. Só tools sandbox, com efeito
 limitado e previsível. Cada tool tem um schema (dialeto OpenAI) e está amarrada
 a uma capacidade em `capabilities.py` — o gating decide quais entram no loop.

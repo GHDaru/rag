@@ -1,6 +1,6 @@
 # 23 — Custo, Latência e Cache
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A economia do contexto e as alavancas estão fechadas; os números por provedor e o Apêndice A são a rodada 2 do ROADMAP.
 

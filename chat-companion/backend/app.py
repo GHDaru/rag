@@ -1,4 +1,4 @@
-"""Chat-companion — o backend (rag-zero ao vivo).
+"""Chat-companion — o desenho do rag-zero como serviço (execução local).
 
 Composition root: escolhe os adapters por ambiente (echo/openai, memória/Neon),
 monta as portas e expõe a API que o widget do site consome. Fallbacks seguros:
@@ -26,7 +26,7 @@ from ragindex import BookIndex
 from store import make_store
 from tools import Tools
 
-app = FastAPI(title="chat-companion · Engenharia de Prompt e Contexto")
+app = FastAPI(title="chat-companion · Engenharia de RAG")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.ALLOWED_ORIGINS,
@@ -168,7 +168,7 @@ def _enviar_email_sugestao(texto: str, pagina: str, session_id: str) -> bool:
         return False
     try:
         msg = EmailMessage()
-        msg["Subject"] = f"[Engenharia de Prompt e Contexto] Sugestão de leitor ({pagina or 'site'})"
+        msg["Subject"] = f"[Engenharia de RAG] Sugestão de leitor ({pagina or 'site'})"
         msg["From"] = config.SMTP_USER or "companion@livro"
         msg["To"] = config.SUGGESTION_EMAIL_TO
         msg.set_content(f"Sugestão recebida pelo companion do livro.\n\n"

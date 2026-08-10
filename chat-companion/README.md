@@ -1,8 +1,10 @@
-# chat-companion — o backend (rag-zero ao vivo)
+# chat-companion — o desenho do `rag-zero` como serviço (execução local)
 
-O **companion** é o assistente do livro vivo *Engenharia de RAG*: aparece desde a capa, ajuda o leitor e mostra, a cada capítulo, **quais capacidades tem naquele momento**. Este diretório é o **backend** — um serviço FastAPI que **é o `rag-zero` rodando em produção** (reusa `LLMPort`, o índice BM25 da etapa 8 e o loop de tool-calling). É também o exemplo real que o livro disseca: o próprio livro respondendo ao leitor, com um RAG que evolui capítulo a capítulo. O **widget** (front-end no site) é uma feature à parte.
+> **Estado em 2026-08-09:** roda localmente; **não há instância pública**. Ver [ADR 0010](../adr/0010-companion-na-1-0.md).
 
-> Feita pelo ciclo oficial do spec-kit: [`specs/016-chat-companion-backend/`](../specs/016-chat-companion-backend/).
+O **companion** é o assistente do livro vivo *Engenharia de RAG*: aparece desde a capa, ajuda o leitor e mostra, a cada capítulo, **quais capacidades tem naquele momento**. Este diretório é o **backend** — um serviço FastAPI que **leva o desenho do `rag-zero` a um serviço**: as mesmas portas e o mesmo BM25 (*Best Matching 25*) Okapi da etapa 5, **reimplementados aqui** para o backend ser deployável sozinho, sem o repositório completo. É o exemplo real que o livro disseca **a partir do código** — e o leitor o reproduz com um comando, sem chave, sem banco e sem custo. O **widget** (front-end no site) é uma feature à parte.
+
+> Construído **antes** do portão de processo da 1.0 (ver [ADR 0009](../adr/0009-escopo-da-edicao-1-0.md)); o rastro está no [Histórico](../livro/HISTORICO.md), edições 0.4–0.6. Fabricar uma spec retroativa seria manufaturar rastro — pior que registrar a ausência.
 
 ## Arquitetura em uma imagem
 
@@ -47,7 +49,7 @@ Resposta: `{ "reply": "...", "trace": ["🔧 hora(...)"], "mode": "...",
 - **avançado** — todas as capacidades disponíveis.
 - **progressivo** — só o que o livro ensinou **até o capítulo atual**. Uma tool de um capítulo à frente não é sequer oferecida ao modelo. É o *fading* do 4C/ID e a carga cognitiva do cap. 04 virando código. O mapa completo está em [`backend/capabilities.py`](backend/capabilities.py).
 
-## Segurança (o cap. 07 aplicado a si mesmo)
+## Segurança (o cap. 22 aplicado a si mesmo)
 
 - **Nenhum segredo no repositório.** Chave do projeto e `DATABASE_URL` só em variáveis de ambiente. `.env` é gitignored; use `.env.example` como molde.
 - **BYOK** (chave do próprio leitor) é usada só na requisição e **nunca** persistida nem logada.
@@ -93,7 +95,7 @@ Sem `.env`, sobe em modo **echo** + **memória** — ótimo para testar o fluxo.
    | `LLM_ADAPTER` | `openai` |
    | `OPENAI_BASE_URL` | `https://integrate.api.nvidia.com/v1` |
    | `OPENAI_API_KEY` | sua chave `nvapi-…` |
-   | `LLM_MODEL` | um modelo com Function Calling (ex.: `nvidia/nemotron-3-ultra-550b-a55b`) |
+   | `LLM_MODEL` | qualquer modelo com *function calling*. O livro é vendor-agnóstico (Princípio VI): a escolha é sua, e o caminho gratuito conferido fica no runbook, datado. |
    | `DATABASE_URL` | a connection string do Neon |
    | `ALLOWED_ORIGINS` | `https://ghdaru.github.io` |
    | `RATE_LIMIT_MSGS` | `20` (opcional) |

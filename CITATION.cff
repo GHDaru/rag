@@ -2,35 +2,41 @@ cff-version: 1.2.0
 message: "Se você usar esta obra, por favor cite-a como abaixo."
 title: "Engenharia de RAG — Como se constrói um sistema em volta da recuperação da informação"
 abstract: >-
-  Livro vivo, em português, sobre as duas disciplinas que decidem o que um
-  modelo de linguagem vê: a engenharia de prompt (o que se escreve — anatomia,
-  técnicas de raciocínio, saída estruturada, otimização automática e avaliação)
-  e a engenharia de contexto (o que se monta em runtime — orçamento de janela,
-  recuperação, RAG em três níveis, memória, compactação e ferramentas), mais a
-  camada de sistema que atravessa as duas: avaliação, segurança e custo. RAG é
-  tratado como a técnica central da engenharia de contexto, não como moldura.
-  Obra co-produzida por humano e IA, sob responsabilidade e curadoria humanas
-  (ver o Guia Editorial e o Histórico, que registra o modelo usado por edição).
-type: software
+  Livro vivo, em português, sobre como se constrói um sistema de RAG
+  (Retrieval-Augmented Generation): seus componentes, os contratos entre eles e
+  as topologias que eles formam. Percorre o caminho inteiro — a arquitetura
+  (anatomia do sistema e os paradigmas Naive, Advanced, Modular e agêntico), o
+  corpus (ingestão, governança, chunking e representação), a recuperação (busca
+  esparsa, densa e híbrida, reranking, entendimento da consulta, indexação
+  refinada e recuperação estruturada), a geração (o prompt, o raciocínio, a
+  saída como contrato e a fundamentação com citação verificável) e o sistema em
+  produção (RAG agêntico, conversa, orçamento de contexto, avaliação, segurança
+  e custo). A tese: a decisão que importa quase nunca é "qual técnica", é onde
+  ela encaixa e o que custa — e as duas metades da sigla têm peso.
+  Acompanha uma trilha prática executável (rag-zero), em Python puro, sem
+  dependência externa e sem GPU. Obra co-produzida por humano e IA, sob
+  responsabilidade e curadoria humanas (ver o Guia Editorial e o Histórico, que
+  registra o modelo usado por edição).
+type: book
 authors:
   - family-names: "Darú"
     given-names: "Gilsiley Henrique"
     orcid: "https://orcid.org/0000-0002-8979-0461"
-version: "0.1.0"
-date-released: "2026-08-04"
+version: "1.0.0"
+date-released: "2026-08-09"
 url: "https://ghdaru.github.io/rag/"
 repository-code: "https://github.com/GHDaru/rag"
 license:
   - CC-BY-4.0
   - MIT
 keywords:
-  - "engenharia de prompt"
-  - "prompt engineering"
-  - "engenharia de contexto"
-  - "context engineering"
   - "RAG"
   - "retrieval-augmented generation"
-  - "LLM"
-  - "avaliação de LLM"
+  - "recuperação de informação"
+  - "information retrieval"
+  - "arquitetura de sistemas de RAG"
+  - "geração fundamentada"
+  - "engenharia de prompt"
+  - "avaliação de RAG"
   - "prompt injection"
   - "livro vivo"

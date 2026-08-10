@@ -1,6 +1,6 @@
 # 12 — Técnicas de Raciocínio
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** As seis famílias e o critério de escolha estão fechados; a ficha por técnica e as medições comparadas são a rodada 2 do ROADMAP.
 

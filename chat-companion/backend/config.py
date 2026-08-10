@@ -1,6 +1,6 @@
 """Configuração do chat-companion, lida só de variáveis de ambiente.
 
-Regra do cap. 07 aplicada ao próprio projeto: nenhuma credencial no código.
+Regra do cap. 22 aplicada ao próprio projeto: nenhuma credencial no código.
 A chave do projeto (NVIDIA NIM) e a DATABASE_URL (Neon) vivem só no ambiente.
 Defaults são seguros: sem chave -> adapter echo; sem banco -> store em memória.
 """
@@ -41,7 +41,9 @@ def _int(name: str, default: int) -> int:
 LLM_ADAPTER = os.environ.get("LLM_ADAPTER", "echo")            # "echo" | "openai"
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://integrate.api.nvidia.com/v1")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")          # chave do PROJETO (nunca commitada)
-LLM_MODEL = os.environ.get("LLM_MODEL", "nvidia/nemotron-3-ultra-550b-a55b")
+# Sem padrão de fornecedor: o livro é vendor-agnóstico (Princípio VI). Sem
+# LLM_MODEL definido, o adaptador de eco assume — e o serviço sobe do mesmo jeito.
+LLM_MODEL = os.environ.get("LLM_MODEL", "")
 
 # --- Persistência (Neon) ---
 DATABASE_URL = os.environ.get("DATABASE_URL", "")             # vazio -> MemoryStore
@@ -86,7 +88,8 @@ REPO_ROOT = _find_repo_root()
 CORPUS_PATH = Path(__file__).resolve().parent / "corpus.json"
 
 # --- Sugestões dos leitores (E05) ---
-SUGGESTION_EMAIL_TO = os.environ.get("SUGGESTION_EMAIL_TO", "ghdaru@gmail.com")
+# Sem destinatário embutido: dado pessoal não vive em código publicado.
+SUGGESTION_EMAIL_TO = os.environ.get("SUGGESTION_EMAIL_TO", "")
 SMTP_HOST = os.environ.get("SMTP_HOST", "")           # vazio -> não envia email (só persiste)
 # Gmail: ver EMAIL.md (senha de app + variáveis no Railway).
 SMTP_PORT = _int("SMTP_PORT", 587)

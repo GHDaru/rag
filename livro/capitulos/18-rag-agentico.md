@@ -1,6 +1,6 @@
 # 18 — RAG Agêntico
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **orquestrador** (cap. 02). A distinção pipeline × agente e os padrões estão fechados; o tratamento por implementação é a rodada 2 do ROADMAP.
 

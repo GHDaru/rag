@@ -18,7 +18,7 @@ O que **ainda não** existe, e é deliberado:
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 3–5 |
 | Trilha prática `rag-zero` | **7 de 17 etapas** executáveis (0, 3–6, 9, 10) | rodada 3 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
-| Chat companion ligado | backend existe, corpus e capacidades adaptados; falta o deploy | rodada 3 |
+| Instância pública do companion | roda localmente com um comando; publicar exige conta, credencial e custo recorrente de terceiro | pós-1.0 |
 | Edição em inglês | fora do escopo da v1, por decisão | rodada 7 |
 | Radar de atualização | fora do escopo da v1, por decisão | rodada 6 |
 
@@ -90,7 +90,7 @@ O que **ainda não** existe, e é deliberado:
 | 15 | 22 | **atacar o próprio sistema** e medir o que cada camada bloqueia |
 | 16 | 23 | painel: custo por parcela + cache + latência + qualidade |
 
-**Também nesta rodada:** ligar o **chat companion** em produção (o companion *é* o `rag-zero` rodando, e vira o exemplo real que o livro disseca), com gating de capacidades por capítulo.
+**Também nesta rodada:** o **chat companion** — o desenho do `rag-zero` levado a um serviço FastAPI, com gating de capacidades por capítulo. Ele **roda localmente** (`cd chat-companion/backend && uvicorn app:app`, sem chave e sem banco) e é o exemplo que o livro disseca a partir do código. **O deploy público está fora da 1.0** ([ADR 0009](adr/0009-escopo-da-edicao-1-0.md), [ADR 0010](adr/0010-companion-na-1-0.md)): depende de conta, credencial e custo recorrente de terceiro — e nada na trilha prática pode depender dele (Princípio VI).
 
 ### Feito (edição 0.5, 2026-08-09)
 
@@ -105,9 +105,9 @@ O que **ainda não** existe, e é deliberado:
 ### Aberto
 
 - Etapas 1, 2, 7, 8 e 11–16 (contratos, linha de base, consulta, indexação avançada, agêntico, memória, orçamento, segurança, custo).
-- Ligar o **companion em produção** com gating de capacidades por capítulo.
+- Publicar o companion — **fora da 1.0** ([ADR 0010](adr/0010-companion-na-1-0.md)); a execução local é o produto desta versão.
 
-**Critério de conclusão:** as 17 etapas executáveis com testes verdes; o companion no ar respondendo sobre o livro.
+**Critério de conclusão (revisado pelo [ADR 0010](adr/0010-companion-na-1-0.md)):** as etapas do piso da 1.0 executáveis com testes verdes, as demais **declaradas** como especificadas; e o companion respondendo sobre o livro em **execução local verificável** (`/health` mais um turno em modo eco). O deploy público é pós-1.0.
 
 ---
 

@@ -1,6 +1,6 @@
 # 09 — Recuperação Avançada
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **chunking** e **embedding**, do lado da indexação (cap. 02).
 
@@ -27,7 +27,7 @@ E o aviso que abre o capítulo, porque é o erro mais caro daqui: **cada técnic
 
 - **A comparação direta entre as duas** — [arXiv 2504.19754](https://arxiv.org/abs/2504.19754) põe *late chunking* e *contextual retrieval* lado a lado e conclui: *"**contextual retrieval preserves semantic coherence more effectively but requires greater computational resources**. In contrast, **late chunking offers higher efficiency but tends to sacrifice relevance and completeness**"*. ✓
 
-  **Correção registrada (rodada 2).** A edição 0.2 dizia que as duas resolvem a mesma falha e que a escolha entre elas é **"aritmética, não estética"** — isto é, só uma questão de preço. A evidência corrige: **há troca de qualidade, não só de custo**. O *late chunking* é mais barato **e** entrega menos coerência. A decisão continua sendo sua, mas ela tem dois eixos, não um.
+  **Correção registrada (rodada 2).** A edição 1.0 dizia que as duas resolvem a mesma falha e que a escolha entre elas é **"aritmética, não estética"** — isto é, só uma questão de preço. A evidência corrige: **há troca de qualidade, não só de custo**. O *late chunking* é mais barato **e** entrega menos coerência. A decisão continua sendo sua, mas ela tem dois eixos, não um.
 - **Corte alinhado entre documentos** — [arXiv 2601.05265](https://arxiv.org/abs/2601.05265) reconstrói o conhecimento **no nível do corpus**: identifica tópicos entre documentos e sintetiza segmentos em chunks unificados. Números com a condição: no HotpotQA (multi-hop), *faithfulness* **0,93** contra **0,83** do *contextual retrieval* e **0,78** do corte semântico (p < 0,05); em `k = 3`, mantém **0,91** enquanto os métodos semânticos caem para **0,68**. O custo de indexação é maior — e a contrapartida é exatamente a assimetria da próxima seção: chunks mais densos *"reduce query-time retrieval needs"*. ✓
 - **O lugar no paradigma** — a survey de Gao ([arXiv 2312.10997](https://arxiv.org/abs/2312.10997)) nomeia esta etapa: *"To tackle the indexing issues, Advanced RAG **refines its indexing techniques** through the use of a sliding window approach, fine-grained segmentation, and the **incorporation of metadata**"*. Note o terceiro item — **metadado é listado como refinamento de indexação**, que é exatamente o argumento do cap. 04 visto daqui. O movimento de 2026 é o deslocamento do esforço de otimização para esta etapa. ✓
 

@@ -9,8 +9,13 @@ companion precisa ser deployável sozinho, sem o repositório completo.
 **sobreposição crua de termos** e se descrevia como "o BM25 do rag-zero". Não
 era: faltavam as três correções que fazem BM25 funcionar — IDF (termo raro vale
 mais), saturação de frequência e normalização por comprimento. Sem elas, o
-ranking favorecia bloco longo e tratava "sistema" como igual a "RAPTOR". O livro
-afirma que o companion **é** o rag-zero rodando; agora é verdade.
+ranking favorecia bloco longo e tratava "sistema" como igual a "RAPTOR".
+
+**Correção da afirmação (ADR 0010).** O livro atribuía a este serviço uma
+condição que ele não tinha, em dois sentidos: nenhum módulo daqui importa
+`rag_zero` — o que existe é uma **reimplementação** do mesmo BM25 — e não há
+instância pública. A paridade com `rag_zero/bm25.py` passou a ser fixada por
+**teste**, não por promessa: ver `test_bm25_paridade_com_rag_zero`.
 
 A versão canônica, comentada etapa a etapa, está em `rag-zero/rag_zero/bm25.py`.
 Fusão com busca densa e reranking entram nas etapas 5–6 desta mesma rodada.

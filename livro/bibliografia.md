@@ -2,7 +2,7 @@
 
 > Fontes científicas e da indústria, por capítulo, com **status de validação**.
 >
-> Edição 0.4 · captura em 2026-08 · **rodada 2 (evidência) — concluída no critério de validação**.
+> Edição 1.0 · captura em 2026-08 · **rodada 2 (evidência) — concluída no critério de validação**.
 
 ## Como ler o status (Princípio I da constituição)
 
@@ -23,7 +23,7 @@
 
 **Não feito:** 13 referências seguem ⏳ — com ID conferido e texto não lido. São, por desenho, as de menor peso estrutural: otimizadores secundários de prompt (P7–P10), modos de falha de memória (M2–M5), e três de escopo estreito (Q3, E3, Z1). Nenhuma sustenta sozinha uma tese de capítulo.
 
-Os **22 Apêndices A** — o tratamento por implementação que o Princípio II exige ao lado do paper — foram preenchidos na edição 0.4, com cada repositório citado conferido contra o real.
+Os **22 Apêndices A** — o tratamento por implementação que o Princípio II exige ao lado do paper — foram preenchidos na edição 1.0, com cada repositório citado conferido contra o real.
 
 ---
 
@@ -33,7 +33,7 @@ Os **22 Apêndices A** — o tratamento por implementação que o Princípio II 
 
 ### ✗ C1 — *Lost in the Middle* não sustentava a afirmação do cap. 20
 
-A edição 0.2 afirmava que a degradação em contexto longo **"não é linear com o comprimento: é dirigida pela similaridade entre alvo e distratores"**, ancorada em [arXiv 2307.03172](https://arxiv.org/abs/2307.03172). Lido o original: o paper estabelece degradação **posicional** — *"performance is often highest when relevant information occurs at the beginning or end of the input context, and significantly degrades when models must access relevant information in the middle"* — e **não trata de distratores nem de similaridade semântica**.
+A edição 1.0 afirmava que a degradação em contexto longo **"não é linear com o comprimento: é dirigida pela similaridade entre alvo e distratores"**, ancorada em [arXiv 2307.03172](https://arxiv.org/abs/2307.03172). Lido o original: o paper estabelece degradação **posicional** — *"performance is often highest when relevant information occurs at the beginning or end of the input context, and significantly degrades when models must access relevant information in the middle"* — e **não trata de distratores nem de similaridade semântica**.
 
 A fonte correta é o relatório *Context Rot* da Chroma (abaixo) — que, lido, **contradiz a outra metade da afirmação**: isolando a variável, o comprimento degrada **sozinho**, mesmo em tarefas triviais. O livro dizia "não é o comprimento"; o certo é **"é o comprimento, e distratores próximos tornam a queda mais íngreme"**. Corrigido no cap. 20 e no glossário.
 

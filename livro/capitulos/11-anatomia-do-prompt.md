@@ -1,6 +1,6 @@
 # 11 — Anatomia de um Prompt
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento do capítulo está fechado; a evidência por técnica e o Apêndice A completo são a rodada 2 do ROADMAP.
 

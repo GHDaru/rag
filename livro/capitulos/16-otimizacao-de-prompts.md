@@ -1,6 +1,6 @@
 # 16 — Otimização Automática de Prompts
 
-> **Estado da arte capturado em 2026-08** · edição 0.4 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento e as três famílias de otimizador estão fechados; as medições comparadas e o Apêndice A são a rodada 2 do ROADMAP.
 
