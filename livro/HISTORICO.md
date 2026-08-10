@@ -6,6 +6,30 @@
 
 ## Histórico de edições
 
+### Edição 0.6 — 2026-08-09 · O "G" construído, e a árvore que não condensava
+
+**O que é.** A rodada 3 avança para as duas etapas que faltavam no miolo: o **gerador fundamentado** (etapa 10) e o **RAPTOR** (etapa 9). São 39 testes agora, ainda sem uma única dependência externa.
+
+**A etapa 10 — o "G" do RAG, que até aqui não existia no código.** Um sistema que recupera bem e gera mal erra **com fontes ao lado**, o que é pior porque parece confiável. A etapa constrói o prompt de fundamentação com as três exigências do cap. 15 e — a parte que quase nenhum tutorial faz — **verifica a citação por código**. Três adaptadores encenam os três modos de falha, e o verificador os distingue:
+
+| Modo | O que acontece | Por que importa |
+|---|---|---|
+| **Citação inválida** | cita `[T7]`, que não estava no contexto | o mais perigoso: a resposta **parece** verificável — tem colchete, tem número, tem cara de fonte |
+| **Sem citação** | responde de memória, sem apontar fonte | não prova que inventou; prova que **não dá para conferir** |
+| **Abstenção** | responde `NAO_ENCONTRADO` | não é falha — é a resposta certa quando falta base, e por isso conta como fundamentada |
+
+E a primeira porta da abstenção acontece **antes** de qualquer chamada: sem trechos, o modelo não é chamado. Chamar um gerador sem material e torcer para que ele recuse é pagar por uma alucinação provável.
+
+**A etapa 9 — e o defeito que ela revelou.** A primeira versão do RAPTOR usava limiar de agrupamento fixo em `0.35`, como fazem os tutoriais. A árvore **degenerou**: 180 folhas viravam 141 nós, quase todos com um filho só. Um RAPTOR que não condensa não é RAPTOR — é a mesma lista com passos extras.
+
+Medindo a distribuição de similaridade no corpus com o embedder desta trilha: **mediana 0,049, percentil 99 em 0,314**. O limiar fixo agrupava menos de 1% dos pares. A correção não foi chutar outro número — foi **derivar o limiar do corpus** por percentil, que é a mesma regra que o livro já repete para o limiar de reranking (cap. 07) e para o peso da fusão (cap. 06): **similaridade não é comparável entre embedders**. Com o corte derivado, a árvore condensa como deve: **180 → 55 → 24 → 12**.
+
+**As ressalvas declaradas, porque a trilha não finge.** O resumidor é **extrativo**: escolhe as frases mais centrais e nunca produz uma frase que não estava lá. Isso é bom para procedência e ruim para o que dá poder ao RAPTOR — a **síntese**. E o embedder segue sendo o de *hashing*, sem semântica, o que atenua o ganho na pergunta global. Trocar os dois é uma linha cada, porque estão atrás de portas.
+
+**Estado:** etapas 0, 3–6, 9 e 10 ✅ · 14 parcial 🟡 · demais especificadas. Companion em produção segue pendente.
+
+**Atribuição:** direção editorial — Gilsiley Henrique Darú. Construção e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-09.
+
 ### Edição 0.5 — 2026-08-09 · O livro começa a executar
 
 **O que é.** A rodada 3 começa: o `rag-zero` sai do papel. As **etapas 0 e 3–6** estão construídas, executáveis e testadas — **29 testes, sem rede, sem GPU, sem credencial e sem uma única dependência externa**. O corpus é o texto deste livro.

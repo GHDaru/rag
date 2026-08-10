@@ -21,7 +21,11 @@
 3. **~20 técnicas nomeadas que estavam sem URL ganharam fonte primária.** Elas tinham entrado pela porta dos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição, GraphRAG…) e agora apontam para o paper que as propôs.
 4. **Quatro afirmações do livro foram corrigidas** contra a fonte — ver *Correções* abaixo. Duas delas atingiam a espinha de um capítulo.
 
-**Não feito:** 13 referências seguem ⏳ — com ID conferido e texto não lido. São, por desenho, as de menor peso estrutural: otimizadores secundários de prompt (P7–P10), modos de falha de memória (M2–M5), e três de escopo estreito (Q3, E3, Z1). Nenhuma sustenta sozinha uma tese de capítulo. Falta também **preencher os Apêndices A**, que é o item restante do critério de conclusão.---
+**Não feito:** 13 referências seguem ⏳ — com ID conferido e texto não lido. São, por desenho, as de menor peso estrutural: otimizadores secundários de prompt (P7–P10), modos de falha de memória (M2–M5), e três de escopo estreito (Q3, E3, Z1). Nenhuma sustenta sozinha uma tese de capítulo.
+
+Os **22 Apêndices A** — o tratamento por implementação que o Princípio II exige ao lado do paper — foram preenchidos na edição 0.4, com cada repositório citado conferido contra o real.
+
+---
 
 ## Correções que esta rodada produziu
 
