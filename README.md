@@ -84,7 +84,7 @@ Não pelo sumário — pela **tabela de sintomas** do [cap. 01](livro/01-fundame
 - **42 das 55 referências com status ✓ (76%)** na [bibliografia](livro/bibliografia.md). A [rodada 2](ROADMAP.md) conferiu **todos os 49 identificadores arXiv** contra o arXiv real (nenhum inventado), leu as fontes, e **corrigiu quatro afirmações do livro** — duas delas na espinha de um capítulo. As 13 restantes são de menor peso estrutural e seguem `[a validar]`.
 - **Os 22 Apêndices A estão preenchidos** — o tratamento por implementação de cada técnica, com URL conferida contra o repositório real, e a *pegadinha* que a documentação não conta.
 - **Nenhum número de terceiro** entra no corpo sem a condição experimental ao lado.
-- **A trilha prática `rag-zero`** tem **12 das 17 etapas** executáveis, em Python puro — sem dependência, sem GPU e sem credencial. As cinco restantes estão **especificadas e declaradas como tal**, nunca descritas como se existissem.
+- **A trilha prática `rag-zero`** tem **12 das 17 etapas** construídas, 9 com script próprio para rodar, em Python puro — sem dependência, sem GPU e sem credencial. As cinco restantes estão **especificadas e declaradas como tal**, nunca descritas como se existissem.
 
 Fora do escopo da 1.0, por decisão registrada no [ADR 0009](adr/0009-escopo-da-edicao-1-0.md): edição em inglês · Radar de atualização · medição própria de técnicas · catálogo exaustivo · *Digital Object Identifier* (DOI) e PDF consolidado.
 

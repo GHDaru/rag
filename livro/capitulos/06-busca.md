@@ -51,6 +51,29 @@ A linha em negrito é o conteúdo do capítulo: **os erros são complementares, 
 
 Daí a conclusão prática: **busca híbrida é o upgrade de melhor relação benefício/esforço deste livro**, e é a primeira coisa a tentar quando um RAG "não encontra o óbvio".
 
+
+**O núcleo do BM25, para você ver que cabe mesmo.** É o laço de pontuação de
+[`rag_zero/bm25.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/bm25.py):
+
+```python
+for termo in normalizar(consulta):
+    postings = self.invertido.get(termo)
+    if not postings:
+        continue
+    idf = self.idf[termo]                       # termo raro vale mais
+    for i, freq in postings.items():
+        norma = 1 - self.b + self.b * (self.tamanhos[i] / self.tamanho_medio)
+        notas[i] = notas.get(i, 0.0) + idf * (freq * (self.k1 + 1)) / (
+            freq + self.k1 * norma)             # satura e normaliza por tamanho
+```
+
+As três correções que separam isto de contagem crua de termos estão nessas
+linhas: **IDF** (termo raro pesa mais), **saturação** pelo `k1` (a décima
+ocorrência vale menos que a segunda) e **normalização por comprimento** pelo `b`
+(documento longo não ganha só por ser longo). Tire as três e você tem o
+ranqueador ingênuo que favorece bloco comprido — que foi, por três edições, o que
+o companion deste livro de fato usava enquanto se descrevia como BM25.
+
 ### 2. Fusão: como combinar dois rankings
 
 O problema é que as duas listas trazem **notas incomparáveis** — a similaridade de cosseno e a pontuação BM25 vivem em escalas diferentes, e normalizá-las é frágil.

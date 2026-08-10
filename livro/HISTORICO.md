@@ -18,15 +18,15 @@
 - **O estado se contradizia.** O `README.md` anunciava "Edição 0.2" com a vigente em 0.6, e afirmava, a duas linhas de distância, que os Apêndices A estavam preenchidos **e** enfileirados. 29 cabeçalhos de capítulo com a edição errada.
 - **O metadado de citação citava o livro anterior.** `CITATION.cff` e `.zenodo.json` descreviam o objeto da constituição 2.0.0, revogada.
 - **O livro afirmava algo que não podia demonstrar.** "O companion é o `rag-zero` rodando em produção" era falso em dois sentidos: não estava no ar, e nenhum módulo importava `rag_zero`. **A mesma frase já tinha corrido à frente do código na 0.4** — o que mostrou que o problema não era redação, era **ausência de portão**.
-- **O leitor não conseguia construir.** 20 dos 25 capítulos sem um único bloco de código; o cap. 15 prescrevia o prompt de fundamentação e **nunca o mostrava**; os 25 "Mão na massa" descreviam a trilha em prosa, sem arquivo, sem comando e sem saída esperada; e o `rag-zero` **não estava no sumário** — para quem lia o site, a espinha 4C/ID não existia.
+- **O leitor não conseguia construir.** 20 dos 25 capítulos sem um único bloco de código; o cap. 15 prescrevia o prompt de fundamentação e **nunca o mostrava** — os caps. 06, 11 e 15 passaram a exibir o artefato, e a exigência virou checagem (R7); os 25 "Mão na massa" descreviam a trilha em prosa, sem arquivo, sem comando e sem saída esperada; e o `rag-zero` **não estava no sumário** — para quem lia o site, a espinha 4C/ID não existia.
 - **Siglas órfãs, inclusive a do título.** *Retrieval-Augmented Generation* nunca era expandida no corpo.
 
 **O que a 1.0 acrescenta:**
 
-- **Um verificador como portão** (`specs/001-edicao-1-0/verificar.py`): cada critério de aceite virou um `pass/fail`. Ele começou reportando **145 falhas** e hoje reporta **zero**. *Prove, não afirme.*
+- **Um verificador como portão** (`specs/001-edicao-1-0/verificar.py`): cada critério de aceite virou um `pass/fail`. Ele reporta **zero** falhas hoje. O número de partida não entra aqui: o instrumento foi reescrito no meio do ciclo (ADR 0011), e comparar contagens de versões diferentes do verificador é maçã com laranja — exatamente o que o Princípio I proíbe quando exige a condição experimental ao lado. *Prove, não afirme* vale para o próprio relatório.
 - **Dois portões permanentes**: `scripts/check-companion.sh`, com invariante **bidirecional** — afirmar sem publicar quebra, e publicar sem atualizar o texto também; e um **teste de paridade** que transforma "o mesmo BM25 da etapa 5" de afirmação em contrato.
 - **A escada de execução visível**: os 22 "Mão na massa" com arquivo, comando e saída esperada; o `rag-zero` no sumário; e as cinco etapas não construídas **declaradas como tal**, nunca descritas no presente.
-- **A trilha em 12 de 17 etapas**, com **48 testes** — incluindo a **linha de base** (etapa 2, o *Naive RAG*), sem a qual nenhuma tabela de ganho do livro comparava com nada.
+- **A trilha em 12 das 17 etapas construídas** — 9 com script próprio para rodar, as outras 3 como módulo coberto por teste — e **48 testes** — incluindo a **linha de base** (etapa 2, o *Naive RAG*), sem a qual nenhuma tabela de ganho do livro comparava com nada.
 - **Política de siglas em quatro classes**, com o motor expandindo a primeira ocorrência de cada página — o que entrega o que a regra editorial queria com **zero palavras a mais no fonte**.
 
 **O que fica fora, por decisão e não por esquecimento:** medição própria de técnicas · catálogo exaustivo · Radar · edição em inglês · DOI e PDF consolidado · instância pública do companion · etapas 11–13, 15 e 16 da trilha. Tudo no ROADMAP como pós-1.0.

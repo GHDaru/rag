@@ -19,7 +19,7 @@ Resumo do que a constituição exige (leia-a por inteiro antes de contribuir):
 
 ## Estado do projeto
 
-**Edição 0.6.** Os **25 capítulos** em cinco partes estão de pé (arquitetura · corpus · recuperação · geração · sistema em produção), com **42 das 55 referências validadas** (rodada 2 concluída) e os **22 Apêndices A** preenchidos com implementação conferida. O `rag-zero` está em construção: **etapas 0, 3–6, 9 e 10 executáveis** com 39 testes, sem dependência externa. O aprofundamento segue em [`ROADMAP.md`](ROADMAP.md); cada capítulo declara sua maturidade no cabeçalho. Fora do escopo da v1, por decisão: edição em inglês, Radar automático, benchmark quantitativo de frameworks.
+**Edição 1.0.** Os **25 capítulos** em cinco partes estão de pé (arquitetura · corpus · recuperação · geração · sistema em produção), com **42 das 55 referências validadas** e os **22 Apêndices A** preenchidos com implementação conferida. O `rag-zero` tem **12 das 17 etapas** construídas (9 com script próprio) e **48 testes**, sem dependência externa. O escopo da 1.0 está no [ADR 0009](adr/0009-escopo-da-edicao-1-0.md); o portão de aceite é `specs/001-edicao-1-0/verificar.py`. Fora da 1.0, por decisão: medição própria de técnicas, catálogo exaustivo, Radar, edição em inglês, DOI e instância pública do companion.
 
 ## Fluxo de trabalho (spec-kit) — uma branch por spec
 

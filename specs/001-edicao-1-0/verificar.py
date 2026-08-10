@@ -37,12 +37,30 @@ def capitulos() -> list[Path]:
 # --------------------------------------------------------------------------- #
 
 def r2_datacao() -> None:
-    padrao = re.compile(r"edição (\d+\.\d+)", re.I)
+    """Só a LINHA de datação do cabeçalho — não toda menção a uma edição.
+
+    A primeira versão desta checagem cobrava `edição X.Y` em qualquer posição do
+    arquivo. O efeito foi perverso e é a lição mais cara deste ciclo: ela **forçou
+    a reescrita de fatos históricos** ("capítulo criado na edição 0.2" virou
+    "criado na edição 1.0") só para ficar verde. Uma checagem que só passa
+    mentindo é pior que checagem nenhuma — ela transforma o portão em pressão
+    para falsificar. O revisor independente pegou; eu não teria pegado.
+    """
+    linha_datacao = re.compile(r"^> \*\*Estado da arte capturado.*?· edição (\d+\.\d+)",
+                               re.M)
     for p in capitulos():
-        for m in padrao.finditer(p.read_text(encoding="utf-8")):
+        for m in linha_datacao.finditer(p.read_text(encoding="utf-8")):
             if m.group(1) != EDICAO_VIGENTE:
                 falhas.append(f"R2 datação: {p.relative_to(RAIZ)} declara edição "
                               f"{m.group(1)}, vigente é {EDICAO_VIGENTE}")
+
+    # Os dois arquivos que a versão anterior NÃO cobria — e que ficaram em 0.6.
+    for extra, padrao in ((RAIZ / "CLAUDE.md", r"\*\*Edição (\d+\.\d+)"),
+                          (RAIZ / "rag-zero" / "README.md", r"> Edição (\d+\.\d+)")):
+        m = re.search(padrao, extra.read_text(encoding="utf-8"))
+        if not m or m.group(1) != EDICAO_VIGENTE:
+            falhas.append(f"R2 datação: {extra.relative_to(RAIZ)} declara "
+                          f"{m.group(1) if m else '(nada)'}, vigente é {EDICAO_VIGENTE}")
 
     readme = (RAIZ / "README.md").read_text(encoding="utf-8")
     m = re.search(r"\*\*Edição (\d+\.\d+)\*\*", readme)
@@ -86,10 +104,12 @@ def r3_citacao() -> None:
 
 # O dono de cada assunto, para pegar remissão que manda ao capítulo errado.
 # Só assuntos com dono inequívoco entram — a checagem precisa ser precisa, não ampla.
+# Só assuntos com dono INEQUÍVOCO e que aparecem colados à remissão. A lista é
+# curta de propósito: uma checagem precisa vale mais que uma ampla e ruidosa.
 DONO = {
-    "fundamentação": 15, "fundamentacao": 15, "abstenção": 15,
-    "chunking": 5, "reranking": 7, "reranker": 7,
-    "ingestão": 4, "ingestao": 4, "corpus": 4,
+    "regra de fundamentação": 15, "prompt de fundamentação": 15,
+    "regra de abstenção": 15, "caminho de abstenção": 6,
+    "estratégia de chunking": 5, "o corte": 5,
 }
 
 
@@ -102,16 +122,33 @@ def r4_remissoes() -> None:
                 falhas.append(f"R4: {p.relative_to(RAIZ)} cita cap. {m.group(1)} "
                               f"(fora de 00–24)")
 
-    # 4b — assunto mandado ao capítulo errado, na mesma frase
+    # 4b — assunto mandado ao capítulo errado.
+    #
+    # A primeira versão desta checagem casava da esquerda para a direita e
+    # **consumia o sujeito errado**: em "prompt de fundamentação, regra de
+    # abstenção (cap. 11)" ela extraía "prompt", que não está no DONO — e
+    # `fundamentação` nunca chegava a ser avaliada. O caso que dá nome ao
+    # requisito passava batido. Agora a busca é pelo ALVO e olha para trás,
+    # varrendo todos os assuntos conhecidos na janela.
     for p in capitulos():
-        for linha in p.read_text(encoding="utf-8").splitlines():
-            for m in re.finditer(r"([\wçãáéíóúâêô-]+)[^.|]{0,60}?\(caps?\. (\d{2})\)",
-                                 linha, re.I):
-                assunto, alvo = m.group(1).lower(), int(m.group(2))
-                if assunto in DONO and DONO[assunto] != alvo:
-                    falhas.append(
-                        f"R4: {p.relative_to(RAIZ)} manda '{assunto}' para o cap. "
-                        f"{alvo:02d}; o dono é o cap. {DONO[assunto]:02d}")
+        texto = p.read_text(encoding="utf-8")
+        for m in re.finditer(r"\(caps?\. (\d{2})(?:[,/ e]+\d{2})*\)", texto):
+            alvo = int(m.group(1))
+            janela = texto[max(0, m.start() - 45):m.start()].lower()
+            janela = janela.rsplit("|", 1)[-1].rsplit(". ", 1)[-1]
+            # Só o assunto MAIS PRÓXIMO da remissão conta. Janela larga produz
+            # falso positivo: "o componente de chunking (cap. 02)" é legítimo
+            # quando a frase fala do componente, não da técnica.
+            candidatos = [(janela.rfind(a), a, d) for a, d in DONO.items()
+                          if a in janela]
+            if not candidatos:
+                continue
+            _, assunto, dono = max(candidatos)
+            if dono == alvo or re.search(rf"\b{dono:02d}\b", m.group(0)):
+                continue
+            falhas.append(
+                f"R4: {p.relative_to(RAIZ)} manda '{assunto}' para o cap. "
+                f"{alvo:02d}; o dono é o cap. {dono:02d}")
 
     # 4c — etapa do rag-zero citada com número divergente do README da trilha
     readme = (RAIZ / "rag-zero" / "README.md").read_text(encoding="utf-8")
@@ -266,6 +303,24 @@ def r6_sumario() -> None:
                       "não existe para quem lê o site")
 
 
+def r7_artefato_concreto() -> None:
+    """Nenhum capítulo prescreve uma forma sem exibir um exemplo dela.
+
+    A checagem exige bloco de código **fora** da seção "Mão na massa" — porque o
+    bloco de lá é a *invocação* (`cd rag-zero && python3 …`), não um artefato. O
+    revisor independente pegou exatamente isso: 17 capítulos tinham bloco de
+    código, e em todos era só o comando.
+    """
+    for stem in ("06-busca", "11-anatomia-do-prompt", "15-geracao-fundamentada"):
+        p = LIVRO / "capitulos" / f"{stem}.md"
+        texto = p.read_text(encoding="utf-8")
+        corpo = re.sub(r"^## Mão na massa.*?(?=^## |\Z)", "", texto,
+                       flags=re.M | re.S)
+        if "```" not in corpo:
+            falhas.append(f"R7: {p.relative_to(RAIZ)} prescreve uma forma sem "
+                          f"exibir um exemplo dela fora da 'Mão na massa'")
+
+
 # --------------------------------------------------------------------------- #
 # R8 — nenhuma etapa não construída descrita no presente
 # --------------------------------------------------------------------------- #
@@ -290,7 +345,7 @@ def r8_etapas_honestas() -> None:
 
 def main() -> int:
     for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
-                     r5_glossario, r5_fonte_unica, r6_mao_na_massa,
+                     r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
                      r6_sumario, r8_etapas_honestas):
         checagem()
 

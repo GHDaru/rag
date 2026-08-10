@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço, reescopado na edição 1.0.** Componente que aprofunda: **entendimento da consulta** e o estado que o alimenta (cap. 02). O que é gestão de contexto de agente — compactação, isolamento — é do [livro irmão sobre harness](https://github.com/GHDaru/harness_engineering); aqui fica só o que decide a **recuperação** na conversa.
+> **Maturidade: esboço, reescopado na edição 0.2.** Componente que aprofunda: **entendimento da consulta** e o estado que o alimenta (cap. 02). O que é gestão de contexto de agente — compactação, isolamento — é do [livro irmão sobre harness](https://github.com/GHDaru/harness_engineering); aqui fica só o que decide a **recuperação** na conversa.
 
 ## Objetivos de aprendizagem
 

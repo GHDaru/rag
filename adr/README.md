@@ -19,4 +19,5 @@ Convenção: arquivos `NNNN-titulo-curto.md`, numerados em sequência. Status: `
 - [0009 — Escopo da edição 1.0](0009-escopo-da-edicao-1-0.md) · Aceito
 - [0010 — O companion na 1.0: serviço local verificável, deploy pós-1.0](0010-companion-na-1-0.md) · Aceito
 - [0011 — Política de siglas: quatro classes, uma regra cada](0011-politica-de-siglas.md) · Aceito
+- [0012 — A etapa 14 entra parcial na 1.0](0012-etapa-14-parcial.md) · Aceito
 - [template](template.md)

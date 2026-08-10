@@ -2,8 +2,8 @@
 
 > O livro executável: um sistema de RAG construído do zero, **uma etapa por capítulo**.
 >
-> Edição 0.6 · **status: etapas 0, 3–6, 9 e 10 construídas e testadas; demais especificadas.**
-> A implementação é a [rodada 3](../ROADMAP.md) do ROADMAP, e está em andamento.
+> Edição 1.0 · **status: 12 das 17 etapas construídas (0–10 e 14 parcial), 9 delas com script próprio; as 5 restantes, especificadas e declaradas como tal.**
+> A implementação é a [rodada 3](../ROADMAP.md) do ROADMAP; o piso da 1.0 está entregue e o restante é pós-1.0.
 
 ## Rodar agora
 

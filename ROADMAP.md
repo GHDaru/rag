@@ -16,7 +16,7 @@ O que **ainda não** existe, e é deliberado:
 |---|---|:---:|
 | Referências validadas (status ✓) | **42 de 55 (76%)** — rodada 2 ✅ concluída; as 13 restantes são de menor peso | — |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 3–5 |
-| Trilha prática `rag-zero` | **12 de 17 etapas** executáveis, com 48 testes; as 5 restantes declaradas | pós-1.0 |
+| Trilha prática `rag-zero` | **12 das 17 etapas** construídas (9 com script próprio), 48 testes; as 5 restantes declaradas | pós-1.0 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
 | Instância pública do companion | roda localmente com um comando; publicar exige conta, credencial e custo recorrente de terceiro | pós-1.0 |
 | Edição em inglês | fora do escopo da v1, por decisão | rodada 7 |
