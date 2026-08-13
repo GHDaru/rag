@@ -2,7 +2,7 @@
 
 > Um livro aberto, em português, sobre **como se constrói um sistema em volta da recuperação da informação**. Do corpus à resposta fundamentada.
 
-**Edição 1.0** · captura em 2026-08 · [Histórico](livro/HISTORICO.md) · [ROADMAP](ROADMAP.md) · **[ler online](https://ghdaru.github.io/rag/)**
+**Edição 1.1** · captura em 2026-08 · [Histórico](livro/HISTORICO.md) · [ROADMAP](ROADMAP.md) · **[ler online](https://ghdaru.github.io/rag/)**
 
 ## A aposta deste livro
 

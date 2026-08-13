@@ -1,6 +1,6 @@
 # 20 — A Janela como Orçamento
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **aumento** — o que dos candidatos vira contexto (cap. 02). A tese do orçamento e a leitura híbrida estão fechadas; o Apêndice A traz o tratamento por implementação (rodada 2, concluída em 2026-08-09); as medições por regime são a rodada 4.
 

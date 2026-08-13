@@ -1,6 +1,6 @@
 # 17 — Avaliação de Prompts
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento e a escada de métodos estão fechados; o tratamento por ferramenta está no Apêndice A (rodada 2, concluída em 2026-08-09).
 

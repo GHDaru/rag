@@ -1,6 +1,6 @@
 # 01 — Fundamentos
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](HISTORICO.md)
 >
 > **Maturidade: fundação.** O vocabulário e a taxonomia por sintoma estão fechados. A rodada 2 validou a maior parte das referências; o que segue `[a validar]` são as afirmações sobre a herança de *Information Retrieval* (SIGIR, TREC), que precisam de fonte com URL.
 

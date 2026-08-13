@@ -36,38 +36,132 @@ def capitulos() -> list[Path]:
 # R2 — estado coerente
 # --------------------------------------------------------------------------- #
 
+def _git(*args: str) -> str | None:
+    """Saída do git, ou None quando não há repositório (tarball, clone raso)."""
+    import subprocess
+    try:
+        r = subprocess.run(["git", "-C", str(RAIZ), *args],
+                           capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return r.stdout.strip() if r.returncode == 0 else None
+
+
+def edicao_vigente() -> str:
+    """A edição vigente é a primeira entrada do HISTORICO — não uma constante.
+
+    Trocar uma constante literal custa um caractere. Escrever a entrada da edição
+    custa prosa sobre o que mudou e a atribuição do modelo (Guia §6). A diferença
+    entre as duas é a diferença entre um portão que se satisfaz e um que se cumpre.
+    """
+    m = re.search(r"^### Edição (\d+\.\d+) — (\d{4}-\d{2}-\d{2})",
+                  (LIVRO / "HISTORICO.md").read_text(encoding="utf-8"), re.M)
+    if not m:
+        falhas.append("R2: HISTORICO.md sem entrada de edição legível "
+                      "(`### Edição X.Y — AAAA-MM-DD`)")
+        return EDICAO_VIGENTE
+    return m.group(1)
+
+
 def r2_datacao() -> None:
-    """Só a LINHA de datação do cabeçalho — não toda menção a uma edição.
+    """Datação: a edição é da OBRA; do capítulo são a captura e a revisão.
 
     A primeira versão desta checagem cobrava `edição X.Y` em qualquer posição do
-    arquivo. O efeito foi perverso e é a lição mais cara deste ciclo: ela **forçou
+    arquivo. O efeito foi perverso e é a lição mais cara do ciclo 001: ela **forçou
     a reescrita de fatos históricos** ("capítulo criado na edição 0.2" virou
     "criado na edição 1.0") só para ficar verde. Uma checagem que só passa
     mentindo é pior que checagem nenhuma — ela transforma o portão em pressão
     para falsificar. O revisor independente pegou; eu não teria pegado.
+
+    **A mesma armadilha voltou no ciclo 002, por outra porta.** Ao fechar a edição
+    1.1, a versão seguinte da checagem — que exigia a edição vigente nos 25
+    cabeçalhos — obrigaria a marcar como 1.1 dezenove capítulos que ninguém releu.
+    Campo diferente, dano idêntico: atualizar metadado sem trabalho editorial é
+    barato e invisível, e um `sed` em 25 arquivos deixava tudo verde.
+
+    O [ADR 0016](../../adr/0016-datacao-do-capitulo.md) fechou essa porta tirando a
+    edição do cabeçalho de capítulo. O que restou — `última revisão` — é conferido
+    contra o **git**: mentir passou a exigir produzir um diff, que é exatamente o
+    que releitura de verdade produz, e o que a revisão humana consegue ver.
     """
-    linha_datacao = re.compile(r"^> \*\*Estado da arte capturado.*?· edição (\d+\.\d+)",
-                               re.M)
+    vigente = edicao_vigente()
+
+    # 1 — a edição é cobrada dos artefatos que falam da OBRA.
+    for rel, padrao in (("CLAUDE.md", r"\*\*Edição (\d+\.\d+)"),
+                        ("rag-zero/README.md", r"> Edição (\d+\.\d+)"),
+                        ("README.md", r"\*\*Edição (\d+\.\d+)\*\*")):
+        m = re.search(padrao, (RAIZ / rel).read_text(encoding="utf-8"))
+        if not m or m.group(1) != vigente:
+            falhas.append(f"R2 datação: {rel} declara "
+                          f"{m.group(1) if m else '(nada)'}, vigente é {vigente}")
+
+    # 2 — e NÃO é declarada no cabeçalho de capítulo. A checagem não só deixa de
+    # exigir o campo: impede que ele volte.
     for p in capitulos():
-        for m in linha_datacao.finditer(p.read_text(encoding="utf-8")):
-            if m.group(1) != EDICAO_VIGENTE:
-                falhas.append(f"R2 datação: {p.relative_to(RAIZ)} declara edição "
-                              f"{m.group(1)}, vigente é {EDICAO_VIGENTE}")
+        for n, linha in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+            if linha.startswith("> **Estado da arte capturado") and "· edição" in linha:
+                falhas.append(
+                    f"R2: {p.relative_to(RAIZ)}:{n} declara edição no cabeçalho. "
+                    f"A edição é da obra e vive no HISTORICO (ADR 0016); aqui vai "
+                    f"`última revisão AAAA-MM-DD`")
 
-    # Os dois arquivos que a versão anterior NÃO cobria — e que ficaram em 0.6.
-    for extra, padrao in ((RAIZ / "CLAUDE.md", r"\*\*Edição (\d+\.\d+)"),
-                          (RAIZ / "rag-zero" / "README.md", r"> Edição (\d+\.\d+)")):
-        m = re.search(padrao, extra.read_text(encoding="utf-8"))
-        if not m or m.group(1) != EDICAO_VIGENTE:
-            falhas.append(f"R2 datação: {extra.relative_to(RAIZ)} declara "
-                          f"{m.group(1) if m else '(nada)'}, vigente é {EDICAO_VIGENTE}")
+    r2_revisao_contra_git()
 
+
+def r2_revisao_contra_git() -> None:
+    """As datas do capítulo, conferidas contra evidência externa (ADR 0016).
+
+    Três invariantes, e o que importa em cada uma é **qual é a saída mais barata**:
+
+    - **Revisão no futuro do disco** → falha. Data fresca sem diff é trabalho que
+      não existe. Para consertar honestamente é preciso mexer no arquivo — e o
+      diff aparece na revisão humana. É esta que torna a mentira cara.
+    - **Revisão atrás do disco** → falha. O arquivo mudou e o cabeçalho não. O
+      conserto é correto e barato, então esta direção não pressiona ninguém a
+      falsificar nada.
+    - **Captura nova sem diff no corpo** → falha. É a assinatura literal de "datar
+      uma mentira" (Guia §7, item 3). A saída mais barata aqui é **devolver a
+      data** — uma linha, honesta —, não inventar prosa.
+
+    Sem git, viram aviso explícito. Checagem que não pôde rodar precisa dizer isso:
+    passar por ausência de fonte é a versão automatizada de afirmar sem evidência.
+    """
+    if _git("rev-parse", "--git-dir") is None:
+        avisos.append("R2: sem histórico git — as checagens de evidência de revisão "
+                      "não concluem (não confunda com verde)")
+        return
+
+    sujo = _git("status", "--porcelain") or ""
+    for p in capitulos():
+        rel = p.relative_to(RAIZ).as_posix()
+        texto = p.read_text(encoding="utf-8")
+        m = re.search(r"^> \*\*Estado da arte capturado em (\d{4}-\d{2})\*\*"
+                      r" · última revisão (\d{4}-\d{2}-\d{2})", texto, re.M)
+        if not m:
+            falhas.append(f"R2: {rel} sem a linha de datação no formato "
+                          f"`capturado em AAAA-MM · última revisão AAAA-MM-DD`")
+            continue
+        declarada = m.group(2)
+
+        ultimo = _git("log", "-1", "--format=%cs", "--", rel)
+        if not ultimo:
+            continue                      # arquivo ainda não commitado
+        # Arquivo com alteração pendente vai ser commitado agora: a revisão
+        # declarada deve ser de hoje ou mais nova que o último commit.
+        pendente = any(l[3:] == rel for l in sujo.splitlines())
+        if pendente:
+            continue
+        if declarada > ultimo:
+            falhas.append(f"R2: {rel} declara revisão {declarada}, mas o arquivo não "
+                          f"é tocado desde {ultimo}. Data de revisão sem diff é "
+                          f"trabalho que não existe (ADR 0016)")
+        elif declarada < ultimo:
+            falhas.append(f"R2: {rel} mudou em {ultimo} e o cabeçalho ainda diz "
+                          f"{declarada} — atualize a revisão")
+
+
+def r2_coerencia_readme() -> None:
     readme = (RAIZ / "README.md").read_text(encoding="utf-8")
-    m = re.search(r"\*\*Edição (\d+\.\d+)\*\*", readme)
-    if not m or m.group(1) != EDICAO_VIGENTE:
-        falhas.append(f"R2 datação: README.md declara "
-                      f"{m.group(1) if m else '(nada)'}, vigente é {EDICAO_VIGENTE}")
-
     # A contradição que o parecer de processo encontrou: duas afirmações
     # mutuamente exclusivas sobre os Apêndices A, a 15 linhas de distância.
     if "Apêndices A" in readme:
@@ -635,7 +729,7 @@ def adr15_fonte_unica() -> None:
 # --------------------------------------------------------------------------- #
 
 def main() -> int:
-    for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
+    for checagem in (r2_datacao, r2_coerencia_readme, r3_citacao, r4_remissoes, r5_siglas,
                      r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
                      r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes, r7_fontes_da_industria, r8_leitura_executiva,
                      adr13_janela_declarada, adr13_janela_cumprida,

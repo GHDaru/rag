@@ -66,6 +66,14 @@ uma edição publicada em **2026-08-04** — nove dias antes desta captura — q
 tinha nove dias e já era mais forte que a evidência. O livro passou a dizer **menos**, e o
 gatilho ficou registrado como aberto.
 
+**O que foi relido, e o que não foi.** Releitura de conteúdo, com fonte conferida: **06, 07,
+15, 21 e 22**. Correção pontual, sem releitura: os treze capítulos cuja linha de maturidade
+remetia a uma rodada já concluída (02, 03, 04, 11, 12, 13, 14, 16, 17, 18, 20, 21, 23). Os
+demais **mantêm a captura de 2026-08** — o que não foi relido não teve a data de captura
+mexida, que é a regra do [ADR 0013](../adr/0013-cadencia-livro-vivo-rag.md) aplicada ao
+próprio ciclo que a criou. A partir desta edição, o cabeçalho declara **`última revisão`** em
+vez de edição, e essa data é conferida contra o git ([ADR 0016](../adr/0016-datacao-do-capitulo.md)).
+
 **A dívida declarada, com contagem:** 45 bullets de "Fontes da indústria" seguem sem URL nem
 declaração, e 22 "Leituras executivas" seguem em parágrafo único — nos capítulos fora do lote
 deste ciclo. As duas checagens reportam a contagem como aviso: dívida declarada não é dívida

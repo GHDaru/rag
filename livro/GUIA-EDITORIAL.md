@@ -19,7 +19,9 @@ Todo capítulo numerado tem, nesta ordem:
 
 ```
 # NN — Título
-> cabeçalho: data de captura · edição · maturidade · link para o Histórico
+> cabeçalho: **linha 1** — data de captura · última revisão · link para o Histórico; **linha 2** — maturidade e o componente que o capítulo aprofunda
+>
+> A **edição não entra no cabeçalho de capítulo** ([ADR 0016](../adr/0016-datacao-do-capitulo.md)): ela identifica a *obra*, não o capítulo, e vive no Histórico. As duas datas respondem às duas perguntas que o leitor faz — *de quando é esta foto do estado da arte?* e *quando este texto foi mexido pela última vez?* — e a segunda é conferida contra o git, não contra uma constante.
 
 ## Objetivos de aprendizagem      ← Backward Design (verbos de Bloom)
 ## O problema                     ← por que o capítulo existe; a dor concreta

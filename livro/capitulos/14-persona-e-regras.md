@@ -1,6 +1,6 @@
 # 14 — Prompt de Sistema, Persona e Regras
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A arquitetura em camadas e a separação voz × política estão fechadas; o tratamento por implementação está no Apêndice A (rodada 2, concluída em 2026-08-09).
 

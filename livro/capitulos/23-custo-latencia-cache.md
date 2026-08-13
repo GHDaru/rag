@@ -1,6 +1,6 @@
 # 23 — Custo, Latência e Cache
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** A economia do contexto e as alavancas estão fechadas; o Apêndice A está preenchido (rodada 2, concluída em 2026-08-09); **os números por provedor ficam fora do corpo de propósito** — preço muda mais rápido que o livro, e número sem data é retórica (Princípio I).
 

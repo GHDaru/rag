@@ -23,4 +23,5 @@ Convenção: arquivos `NNNN-titulo-curto.md`, numerados em sequência. Status: `
 - [0013 — Cadência do livro vivo (RAG): janela trimestral e quatro gatilhos de domínio](0013-cadencia-livro-vivo-rag.md) · Aceito · *substitui o 0007*
 - [0014 — Autocontenção das etapas: núcleo único testado, delta como artefato derivado](0014-autocontencao-das-etapas.md) · Aceito · *emenda a constituição para 3.1.0*
 - [0015 — Links para o próprio repositório: caminho relativo, base única, tag da edição](0015-links-para-o-proprio-repositorio.md) · Aceito
+- [0016 — Datação do capítulo: captura e revisão, sem edição](0016-datacao-do-capitulo.md) · Aceito · *emenda o Guia §2*
 - [template](template.md)

@@ -1,6 +1,6 @@
 # 11 — Anatomia de um Prompt
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** O argumento do capítulo está fechado; o Apêndice A traz a evidência por técnica (rodada 2, concluída em 2026-08-09); as medições comparadas ficam para a rodada 4.
 

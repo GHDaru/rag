@@ -1,6 +1,6 @@
 # 00 — Introdução
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](HISTORICO.md)
 >
 > **Maturidade: fundação.** A moldura do livro está fechada. O aprofundamento por capítulo é o trabalho das rodadas seguintes — ver [ROADMAP](../ROADMAP.md).
 

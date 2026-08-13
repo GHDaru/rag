@@ -1,6 +1,6 @@
 # 22 — Segurança do Corpus e da Recuperação
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componente que aprofunda: **guardrails** (cap. 02). O foco é a superfície que o RAG cria — corpus envenenado, conteúdo recuperado como instrução, vazamento por permissão. O modelo de ameaça geral de agentes é do [livro irmão](https://github.com/GHDaru/harness_engineering).
 

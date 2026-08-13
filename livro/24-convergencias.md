@@ -1,6 +1,6 @@
 # 24 — Convergências e Tendências
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](HISTORICO.md)
 >
 > **Maturidade: esboço.** As convergências, as disputas e as apostas datadas estão registradas; a revisão do placar é a rodada 6 do ROADMAP.
 

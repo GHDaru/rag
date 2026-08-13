@@ -1,6 +1,6 @@
 # 12 — Técnicas de Raciocínio
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** As seis famílias e o critério de escolha estão fechados; a ficha por técnica está no Apêndice A (rodada 2, concluída em 2026-08-09); as medições comparadas são a rodada 4, fora da 1.0 por decisão ([ADR 0009](../../adr/0009-escopo-da-edicao-1-0.md)).
 

@@ -1,6 +1,6 @@
 # 10 — Recuperação Estruturada
 
-> **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
+> **Estado da arte capturado em 2026-08** · última revisão 2026-08-13 · [histórico e registro de expiração](../HISTORICO.md)
 >
 > **Maturidade: esboço.** Componentes que aprofunda: **índice** e **retriever**, quando o corpus deixa de ser só texto (cap. 02).
 
