@@ -385,6 +385,58 @@ def r4_contagem_de_testes() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# R7 (spec 002) — "Fontes da indústria" com fonte
+# --------------------------------------------------------------------------- #
+
+# Capítulos onde a regra já é DURA. A lista cresce por ciclo; ela existe porque
+# ligar a regra de uma vez em 25 capítulos produziria 40 falhas — e um portão que
+# nasce com 40 falhas é um portão que se desliga na primeira semana.
+R7_EM_VIGOR = {"06", "07", "15", "22"}
+
+# A saída honesta para um bullet sem URL: dizer o que ele é. Um bullet de "Fontes da
+# indústria" que não aponta para fonte externa não está proibido — está obrigado a se
+# declarar. Sem essa saída, a checagem viraria pressão para inventar link, que é a
+# forma mais direta de transformar um portão de evidência em máquina de retórica.
+R7_DECLARACOES = (
+    "observação de campo", "leitura dos autores", "hipótese a reproduzir",
+    "medição própria", "mesma fonte", "sem fonte publicada", "não conseguimos ler",
+    "sem levantamento publicado", "afirmação que circula sem fonte",
+)
+
+
+def r7_fontes_da_industria() -> None:
+    """Todo bullet de "Fontes da indústria" tem URL — ou declara o que é.
+
+    Achado A7 da auditoria: caps. 06, 07, 15 e 22 tinham bullets sem uma única URL, e o
+    22 dizia *"há registro público de vulnerabilidades"* **sem um identificador**. Num
+    livro que cobra fonte primária de toda afirmação técnica (Princípio I), a seção
+    chamada "Fontes da indústria" era a que menos citava fonte.
+    """
+    pendentes: list[str] = []
+    for p in sorted(LIVRO.rglob("*.md")):
+        cap = p.stem[:2]
+        dentro = False
+        for n, linha in enumerate(p.read_text(encoding="utf8").splitlines(), 1):
+            if linha.startswith("## "):
+                dentro = linha.strip() == "## Fontes da indústria"
+                continue
+            if not (dentro and linha.startswith("- ")):
+                continue
+            if "http" in linha or any(d in linha.lower() for d in R7_DECLARACOES):
+                continue
+            alvo = f"{p.relative_to(RAIZ)}:{n}"
+            if cap in R7_EM_VIGOR:
+                falhas.append(f"R7: {alvo} — bullet sem URL e sem declarar o que é "
+                              f"(observação de campo? hipótese a reproduzir?)")
+            else:
+                pendentes.append(alvo)
+    if pendentes:
+        avisos.append(f"R7: {len(pendentes)} bullets de 'Fontes da indústria' ainda sem URL "
+                      f"nem declaração, em capítulos fora do lote deste ciclo "
+                      f"(em vigor: {', '.join(sorted(R7_EM_VIGOR))})")
+
+
+# --------------------------------------------------------------------------- #
 # ADR 0013 — cadência do livro vivo
 # --------------------------------------------------------------------------- #
 #
@@ -534,7 +586,7 @@ def adr15_fonte_unica() -> None:
 def main() -> int:
     for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
                      r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
-                     r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes,
+                     r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes, r7_fontes_da_industria,
                      adr13_janela_declarada, adr13_janela_cumprida,
                      adr13_captura_recente, adr13_placar_honesto,
                      adr15_links_relativos, adr15_fonte_unica):

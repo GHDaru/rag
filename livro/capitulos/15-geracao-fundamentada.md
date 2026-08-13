@@ -36,9 +36,9 @@ O "R" do RAG tem três capítulos de técnica e uma literatura enorme. O "G" cos
 
 ## Fontes da indústria
 
-- **Grounding como funcionalidade** — os provedores passaram a oferecer modos de *grounding* com atribuição embutida, o que empurra parte deste capítulo para a plataforma. O que **não** vem pronto: a política de abstenção do seu domínio e o que conta como fonte suficiente.
-- **A prática que separa** — sistemas que citam bem não pedem citação: eles **estruturam a saída** de modo que cada afirmação carregue seu identificador de trecho (cap. 13), e validam a correspondência depois. Pedir "cite as fontes" em prosa produz citação decorativa.
-- **O caso de negócio da abstenção** — em domínios regulados, "não encontrei" é resposta aceitável e alucinação é incidente. A maioria dos sistemas é construída como se o inverso fosse verdade.
+- **A citação virou funcionalidade de plataforma** — provedores oferecem modos de *grounding* com atribuição embutida. A documentação da API da Anthropic descreve o recurso como devolvendo *"the exact passages that support each claim, so you can verify answers and surface sources to your users"* ([Anthropic, *Citations*](https://platform.claude.com/docs/en/build-with-claude/citations), consultado em 2026-08-13) — que é, palavra por palavra, o contrato deste capítulo. **O que não vem pronto:** a política de abstenção do seu domínio e o que conta como fonte suficiente. Isso é decisão sua, e continua sendo.
+- **A prática que separa** — sistemas que citam bem não pedem citação: eles **estruturam a saída** de modo que cada afirmação carregue seu identificador de trecho (cap. 13), e validam a correspondência depois. A garantia estrutural também é funcionalidade documentada — *"Structured Outputs is a feature that ensures the model will always generate responses that adhere to your supplied JSON Schema"* ([OpenAI, *Structured Outputs*](https://developers.openai.com/api/docs/guides/structured-outputs), consultado em 2026-08-13). Note o que ela garante e o que não garante: a **forma**, não a verdade. O identificador chega bem formado; se ele aponta para o trecho certo, quem confere é o seu código.
+- **O caso de negócio da abstenção** — em domínios regulados, "não encontrei" é resposta aceitável e alucinação é incidente. A maioria dos sistemas é construída como se o inverso fosse verdade. É leitura dos autores sobre a prática que observam, não levantamento publicado — e entra assim declarada.
 
 ## O estado da arte
 

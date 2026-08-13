@@ -31,9 +31,10 @@ O reranking existe porque as duas tarefas são diferentes o bastante para exigir
 
 ## Fontes da indústria
 
-- **O estágio de maior retorno marginal** — a experiência publicada por praticantes converge: quando busca e fusão já estão razoáveis, o reranker é o que mais adiciona. Os números específicos vêm de corpora dos próprios proponentes e este livro os trata como hipótese a reproduzir (cap. 21).
-- **A oferta** — rerankers como serviço e modelos abertos coexistem; a decisão prática costuma ser latência e custo por documento, não qualidade de topo.
-- **O uso que quase ninguém faz** — aproveitar a **nota** do reranker, e não apenas a ordem. Ela é um sinal calibrado de relevância, e é o que permite limiar e abstenção.
+- **O estágio de maior retorno marginal** — a experiência publicada por praticantes converge: quando busca e fusão já estão razoáveis, o reranker é o que mais adiciona. Os números específicos vêm de corpora dos próprios proponentes e este livro os trata como **hipótese a reproduzir**, não como resultado (cap. 21).
+- **A nota existe, e é documentada** — a API de reranking da Cohere devolve um `relevance_score` por documento, e a referência diz que *"relevance scores are normalized to be in the range `[0, 1]`"* ([Cohere, *Rerank API*](https://docs.cohere.com/reference/rerank), consultado em 2026-08-13). É esse número que torna possível o limiar do capítulo.
+- **E a nota tem um limite que a própria documentação declara** — *"it is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45"* (mesma fonte). Ou seja: a nota serve para **cortar**, não para fazer aritmética. E nada na documentação promete que ela seja comparável **entre perguntas diferentes** — por isso o limiar do cap. 07 é calibrado no seu corpus, com as suas perguntas, e não copiado deste livro.
+- **A oferta tem os dois lados** — reranker como serviço (a API citada acima) e **modelo aberto** que você roda: o [`BAAI/bge-reranker-v2-m3`](https://huggingface.co/BAAI/bge-reranker-v2-m3) (licença Apache 2.0) descreve a mesma mecânica de cross-encoder deste capítulo — *"reranker uses question and document as input and directly output similarity instead of embedding"* (consultado em 2026-08-13). A decisão prática costuma ser latência e custo por documento, não qualidade de topo — e é **leitura dos autores**, não levantamento publicado.
 
 ## O estado da arte
 

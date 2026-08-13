@@ -31,9 +31,9 @@ Há também o problema que ninguém vê até virar incidente: o sistema **sempre
 
 ## Fontes da indústria
 
-- **O consenso mais firme da área** — a leitura publicada é que praticamente todo benchmark recente mostra **BM25 + denso fundidos superando qualquer um sozinho**. É a afirmação com maior convergência independente deste livro, e agora com as duas metades ancoradas: a robustez do BM25 pelo BEIR, e a **complementaridade dos sinais** pela survey de Gao.
-- **A fusão de fato** — combinar por posição no ranking (em vez de por nota bruta) é a prática dominante, porque dispensa calibrar escalas incomparáveis entre os dois sistemas.
-- **O sintoma que denuncia falta de esparsa** — "o RAG não encontra o óbvio". Quase sempre o óbvio é um código, uma sigla ou um nome próprio que o índice denso não representa.
+- **A fusão por posição é a prática de fato** — os motores de busca comerciais implementam a fusão recíproca de ranking (RRF, *Reciprocal Rank Fusion*) como o modo padrão de combinar listas. A documentação do Elasticsearch a define como *"a method for combining multiple result sets with different relevance indicators into a single result set"*, e a fórmula publicada opera sobre `rank(result(q), d)` — a **posição** do documento em cada lista, não a nota original ([Elastic, *Reciprocal rank fusion*](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion), consultado em 2026-08-13). É exatamente o argumento da seção anterior, e é o que dispensa calibrar escalas incomparáveis.
+- **O consenso, e o tamanho dele** — a leitura publicada é que benchmarks recentes mostram BM25 e denso **fundidos** superando qualquer um sozinho. As duas metades têm âncora científica neste livro: a robustez do BM25 pelo BEIR, e a complementaridade dos sinais pela survey de Gao (ambas ✓ na [bibliografia](../bibliografia.md)). **O que não temos é medição própria** — e por isso o consenso entra como consenso, não como número.
+- **O sintoma que denuncia falta de esparsa** — "o RAG não encontra o óbvio". Quase sempre o óbvio é um código, uma sigla ou um nome próprio que o índice denso não representa. É observação de campo dos autores deste livro, não resultado publicado; está aqui porque é acionável, e declarada como o que é.
 
 ## O estado da arte
 

@@ -63,7 +63,7 @@ A leitura de 2026: **RAGAS fornece o arcabouço conceitual; DeepEval, a execuç�
 
 ## Proteger (cap. 22)
 
-- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — a classificação de referência. *Prompt injection* é LLM01 em todas as edições publicadas.
+- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — a classificação de referência. *Prompt injection* é **LLM01** nas edições que conferimos. **A página oficial passou a ser arquivo histórico**: ela mesma remete à *OWASP GenAI LLM Top 10 2026*, publicada em **2026-08-04**, sob o OWASP GenAI Security Project (conferido em 2026-08-13). **Não conseguimos ler a edição 2026** — o site do projeto novo recusa a leitura automatizada —, então este livro **não afirma** o que ela traz em LLM01. É um gatilho G1 aberto (Guia §7), registrado no [Histórico](HISTORICO.md).
 - **Ferramentas de red teaming** — teste adversarial em pipeline, com cobertura mapeada à classificação. A conexão importante: **teste adversarial é eval**, e roda no mesmo lugar (cap. 17).
 
 ## Fora do escopo deste livro

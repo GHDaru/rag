@@ -201,6 +201,22 @@ Decisão editorial do autor sobre a pergunta deixada em aberto no adendo 0.1.1: 
 
 ---
 
+## Gatilhos extraordinários abertos
+
+Eventos que dispararam um gatilho do [Guia §7](GUIA-EDITORIAL.md) fora da janela, e o que
+o livro fez com eles. **Gatilho aberto é dívida declarada** — o livro diz menos, não mais.
+
+| # | Data | Gatilho | Evento | O que o livro fez |
+|:---:|:---:|:---:|---|---|
+| G-01 | 2026-08-13 | **G1** | A página oficial do *OWASP Top 10 for LLM Applications* virou **arquivo histórico** e remete à **OWASP GenAI LLM Top 10 2026**, publicada em **2026-08-04** — nove dias antes desta captura. O site do projeto novo **recusa leitura automatizada**, e não conseguimos conferir o conteúdo dela. | O cap. 22 e o apêndice de ecossistema passaram de *"prompt injection é LLM01 em todas as edições publicadas"* para **"nas edições que conferimos"**, com a edição 2026 declarada como não lida. O livro **não afirma** o que ela traz. Fica aberto até alguém ler a fonte. |
+
+Este é o primeiro gatilho registrado, e ele apareceu **durante a verificação que criou a
+política** — o que é a melhor evidência possível de que a política era necessária: a
+afirmação "em todas as edições publicadas" tinha nove dias de idade e já era mais forte que
+a evidência que a sustentava.
+
+---
+
 ## Registro de expiração
 
 O placar das apostas registradas no [cap. 24](24-convergencias.md). Uma aposta só vale se puder ser julgada — por isso cada uma tem critério de verificação e prazo.
