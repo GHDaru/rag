@@ -6,6 +6,20 @@
 
 ## Onde estamos
 
+**Edição 1.1 — os portões acionados.** A 1.0 fechou coerente; a auditoria comparativa com o
+livro irmão mostrou que fechou **frágil**. O que a 1.1 acrescenta: seis portões rodando no CI
+**antes** do build, a **cadência do livro vivo** ([ADR 0013](adr/0013-cadencia-livro-vivo-rag.md) —
+próxima janela **2026-11**), a execução isolada de cada etapa virando teste em vez de promessa
+([ADR 0014](adr/0014-autocontencao-das-etapas.md)), e os 49 links para o próprio código
+passando a ser validados contra o disco ([ADR 0015](adr/0015-links-para-o-proprio-repositorio.md)).
+Mais um portão que **o tempo consegue quebrar sozinho**, que era o que faltava num livro cuja
+tese é a cláusula de expiração.
+
+**A dívida que a 1.1 declara com número:** 45 bullets de "Fontes da indústria" sem URL nem
+declaração, e 22 "Leituras executivas" ainda em parágrafo único — nos capítulos fora do lote.
+As duas checagens reportam a contagem, para que o próximo ciclo não possa fingir que ela
+diminuiu sem trabalho.
+
 **Edição 1.0 — a primeira versão.** O que o livro afirma e o que entrega coincidem; o leitor consegue construir, não só decidir. Escopo decidido no [ADR 0009](adr/0009-escopo-da-edicao-1-0.md). O livro é *Engenharia de RAG* e o esqueleto está de pé: **25 capítulos** em cinco partes (arquitetura · corpus · recuperação · geração · sistema em produção), cada um com argumento fechado, o componente da arquitetura que aprofunda declarado no cabeçalho, e a etapa correspondente do `rag-zero` descrita. Mais o aparato — catálogo de técnicas, mapa do ecossistema, glossário, bibliografia mapeada, grafo do livro — e o site publicando.
 
 O que a 0.2 fez além de renomear: os três capítulos que fechavam a lacuna real (**02** anatomia, **03** arquiteturas de referência, **15** geração fundamentada), a Parte III desdobrada em cinco, e a fronteira com o livro irmão tornada explícita na constituição.

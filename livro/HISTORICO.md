@@ -6,6 +6,77 @@
 
 ## Histórico de edições
 
+### Edição 1.1 — 2026-08-13 · Os portões acionados, e a cadência que faltava
+
+**O que é.** A 1.0 fechou coerente. Uma auditoria comparativa com o livro irmão, em contexto
+fresco, mostrou que ela fechou **frágil**: os portões existiam e ninguém os acionava, e o
+livro cuja tese central é a cláusula de expiração não tinha política de quando expira.
+
+**Como esta edição foi decidida.** Três decisões foram levadas a um arquiteto em contexto
+próprio, e o parecer dele foi **verificado nos três pontos factuais antes de virar ADR** —
+inclusive contra o texto da própria spec, que estava errado (dizia "49 URLs em 32 arquivos";
+são 30). As decisões viraram [ADR 0013](../adr/0013-cadencia-livro-vivo-rag.md) (cadência),
+[0014](../adr/0014-autocontencao-das-etapas.md) (autocontenção das etapas) e
+[0015](../adr/0015-links-para-o-proprio-repositorio.md) (links para o repositório).
+
+**O que estava errado, e foi corrigido:**
+
+- **O CI não acionava portão nenhum.** Fazia `build` → `pdf` → deploy. O verificador, as
+  duas suítes e o `check-companion.sh` existiam e nunca rodavam — e `rag-zero/**` nem
+  disparava o workflow. Um portão que não é acionado não é portão.
+- **O ADR 0007 estava "Aceito" e nunca foi implementado**, porque o mecanismo dele é de
+  outro domínio: a janela dele executa "re-sync dos 16 forks", corpus que não existe aqui.
+- **Os 49 links para o próprio código eram invisíveis ao portão.** O motor já convertia
+  caminho relativo em URL do GitHub; as URLs absolutas contornavam esse mecanismo e, por
+  serem externas, nenhuma era validada. O livro fazia 49 afirmações sobre onde o próprio
+  código está e o build dizia verde para todas.
+- **A constituição descrevia um `rag-zero` que não existe.** Ela exigia "etapas
+  autocontidas"; a trilha trocou os diretórios-snapshot por um núcleo único com 48 testes,
+  e a troca não estava registrada.
+- **Treze capítulos falavam do futuro no tempo errado**, remetendo à rodada 2 — concluída em
+  2026-08-09, com os 22 Apêndices A preenchidos.
+- **A seção "Fontes da indústria" era a que menos citava fonte.** O cap. 22 afirmava que
+  *"há registro público de vulnerabilidades"* **sem um identificador**.
+- **A "Leitura executiva" tinha virado o capítulo comprimido** — 1.050 a 1.500 caracteres
+  num parágrafo único, quando o gênero (*how-to*, no Diátaxis) pede passos executáveis.
+
+**O que a 1.1 acrescenta:**
+
+- **Seis portões no CI**, rodando **antes** do build — publicar e só então descobrir que o
+  portão falhou é o mesmo que não ter portão.
+- **Cadência declarada** (Guia §7): janela trimestral, **próxima em 2026-11**, e quatro
+  gatilhos de domínio. Com uma regra que decide se isso funciona ou apodrece: **recapturar a
+  data só onde houve releitura** — datar sem reler passa em qualquer verificador e falsifica
+  o livro.
+- **Um portão que o tempo consegue quebrar sozinho.** As checagens de cadência ficam
+  vermelhas sem ninguém commitar nada, e um workflow agendado abre issue quando a janela
+  vence. Foi a mudança de natureza deste ciclo: até aqui, tudo dependia de alguém mexer.
+- **A execução isolada de cada etapa virou teste**, não promessa: cada uma roda em diretório
+  temporário, ambiente limpo e `socket` derrubado. E a lição do diff volta **gerada**
+  (`rag-zero/DIFF.md`), porque o delta é função do que cada etapa importa — e função se
+  calcula.
+- **Sete fontes da indústria lidas de primeira mão** nos caps. 06, 07, 15 e 22, incluindo a
+  *Model Spec* da OpenAI (que escreve a regra do cap. 22 do lado do provedor) e o
+  **CVE-2025-32711**. O "registro público" agora tem número.
+
+**O primeiro gatilho extraordinário, no dia em que a política nasceu.** Ao conferir as fontes
+do cap. 22, o **G1 disparou**: a página oficial do OWASP virou arquivo histórico e remete a
+uma edição publicada em **2026-08-04** — nove dias antes desta captura — que o site novo
+**não deixa ler**. A afirmação "*prompt injection* é LLM01 em todas as edições publicadas"
+tinha nove dias e já era mais forte que a evidência. O livro passou a dizer **menos**, e o
+gatilho ficou registrado como aberto.
+
+**A dívida declarada, com contagem:** 45 bullets de "Fontes da indústria" seguem sem URL nem
+declaração, e 22 "Leituras executivas" seguem em parágrafo único — nos capítulos fora do lote
+deste ciclo. As duas checagens reportam a contagem como aviso: dívida declarada não é dívida
+escondida, e o número existe justamente para que o próximo ciclo não possa fingir que ela
+diminuiu sem trabalho.
+
+**Atribuição:** direção editorial e decisão de escopo — Gilsiley Henrique Darú. Pareceres,
+construção e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-13.
+
+---
+
 ### Edição 1.0 — 2026-08-09 · A primeira versão
 
 **O que é.** A versão em que o que o livro **afirma** e o que ele **entrega** coincidem — e em que o leitor consegue **construir**, não só decidir.

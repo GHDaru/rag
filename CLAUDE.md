@@ -19,7 +19,11 @@ Resumo do que a constituição exige (leia-a por inteiro antes de contribuir):
 
 ## Estado do projeto
 
-**Edição 1.0.** Os **25 capítulos** em cinco partes estão de pé (arquitetura · corpus · recuperação · geração · sistema em produção), com **42 das 55 referências validadas** e os **22 Apêndices A** preenchidos com implementação conferida. O `rag-zero` tem **12 das 17 etapas** construídas (9 com script próprio) e **48 testes**, sem dependência externa. O escopo da 1.0 está no [ADR 0009](adr/0009-escopo-da-edicao-1-0.md); o portão de aceite é `specs/001-edicao-1-0/verificar.py`. Fora da 1.0, por decisão: medição própria de técnicas, catálogo exaustivo, Radar, edição em inglês, DOI e instância pública do companion.
+**Edição 1.0 publicada; a 1.1 fecha neste ciclo** (`specs/002-portoes-e-cadencia`) e só passa a valer no merge — **o merge na `main` é o que publica** (ADR 0001). Os **25 capítulos** em cinco partes estão de pé (arquitetura · corpus · recuperação · geração · sistema em produção), com **42 das 55 referências validadas** e os **22 Apêndices A** preenchidos com implementação conferida. O `rag-zero` tem **12 das 17 etapas** construídas (9 com script próprio) e **48 testes**, sem dependência externa. O escopo da 1.0 está no [ADR 0009](adr/0009-escopo-da-edicao-1-0.md); o portão de aceite é `specs/001-edicao-1-0/verificar.py`. Fora da 1.0, por decisão: medição própria de técnicas, catálogo exaustivo, Radar, edição em inglês, DOI e instância pública do companion.
+
+O que a **1.1** acrescentou (spec `002-portoes-e-cadencia`): os portões passam a ser **acionados pelo CI** antes do build; o livro vivo ganha **cadência declarada** — janela trimestral, próxima em **2026-11**, e quatro gatilhos ([ADR 0013](adr/0013-cadencia-livro-vivo-rag.md), Guia §7); a restrição 4 da constituição passa a **3.1.0** e a execução isolada de cada etapa vira teste ([ADR 0014](adr/0014-autocontencao-das-etapas.md)); e link para arquivo do repositório é **sempre relativo**, validado contra o disco ([ADR 0015](adr/0015-links-para-o-proprio-repositorio.md)).
+
+**Regra de ouro ao mexer em datação:** recapturar a data de um capítulo **só onde houve releitura**. Datar sem reler passa em qualquer verificador e falsifica o livro — foi o erro mais caro do ciclo 001, e está anotado no cabeçalho de `r2_datacao`.
 
 ## Fluxo de trabalho (spec-kit) — uma branch por spec
 
