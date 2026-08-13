@@ -38,7 +38,7 @@ jobs:
               echo "já existe: $V"
             else
               gh release create "$V" --target "${GITHUB_SHA}" \
-                --title "$V — Engenharia de Harness" --notes-file "$f"
+                --title "$V — Engenharia de RAG" --notes-file "$f"
               echo "criada: $V"
             fi
           done

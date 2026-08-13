@@ -131,6 +131,18 @@ def r2_revisao_contra_git() -> None:
                       "não concluem (não confunda com verde)")
         return
 
+    # Clone raso é pior que ausência de git, e por isso tem tratamento próprio: o
+    # histórico existe o suficiente para as consultas responderem, e responderem
+    # ERRADO. Todo arquivo parece introduzido pelo commit enxertado, o que produz
+    # falha falsa em cada capítulo e faz a checagem de captura sair por baixo, sem
+    # nunca executar. Um portão que fica vermelho por motivo falso é o portão que
+    # se aprende a ignorar — e este ciclo inteiro é sobre portões que ninguém
+    # aciona. O remédio é `fetch-depth: 0` no workflow.
+    if (_git("rev-parse", "--is-shallow-repository") or "false") == "true":
+        avisos.append("R2: clone RASO — as checagens de data contra o git não valem aqui "
+                      "e foram puladas. Use `fetch-depth: 0` no checkout")
+        return
+
     sujo = _git("status", "--porcelain") or ""
     for p in capitulos():
         rel = p.relative_to(RAIZ).as_posix()
@@ -178,6 +190,21 @@ def _captura_com_diff(rel: str, captura: str) -> None:
     A saída mais barata aqui é **devolver a data**: uma linha, honesta. Inventar
     prosa para satisfazer o portão é caro e visível na revisão humana. O portão
     empurra para a verdade, não para o teatro.
+
+    **Duas limitações medidas, declaradas em vez de escondidas** (segunda revisão
+    independente):
+
+    1. **Cega antes do commit.** No working tree sujo a checagem não vê o avanço da
+       captura. O CI roda sobre commit, então o portão fecha lá — mas quem rodar o
+       verificador localmente antes de commitar não recebe o aviso.
+    2. **Lavável por commit posterior.** O invariante que o código implementa é
+       "existe algum diff no arquivo **desde** o avanço da captura", não "o avanço
+       veio acompanhado de diff". Um segundo commit com uma linha qualquer no mesmo
+       arquivo limpa a falha. Fechar isso exigiria olhar só o commit do avanço — e
+       aí um conserto legítimo (avançou a data, releu depois) ficaria bloqueado para
+       sempre. A escolha é deliberada: **preferir o falso negativo raro ao falso
+       positivo que empurra para o teatro.** Quem lava a falha precisa forjar um
+       diff, e diff forjado é o que a revisão humana enxerga.
     """
     log = _git("log", "--format=%H", "-S", f"capturado em {captura}", "--", rel)
     if not log:
@@ -209,20 +236,51 @@ def r6_datacao_do_aparato() -> None:
     metade corrigida e metade esquecida.
     """
     vigente = edicao_vigente()
-    alvos = sorted(LIVRO.glob("*.md")) + [RAIZ / "benchmark/README.md"]
-    alvos += sorted((RAIZ / ".claude/skills").rglob("SKILL.md"))
-    for p in alvos:
+
+    # As páginas do aparato seguem a MESMA convenção dos capítulos (ADR 0016):
+    # captura + última revisão, sem edição. E a declaração é OBRIGATÓRIA — senão a
+    # saída mais barata para o portão é apagá-la, que é a fuga que `r7r8_secoes_existem`
+    # fechou nos capítulos e que ficou aberta aqui, na checagem vizinha do mesmo commit.
+    # Fora: o HISTORICO (é a página da OBRA — declarar edições é a função dele), os
+    # capítulos que moram na raiz de `livro/` (têm a linha de capítulo, checada em R2)
+    # e `autor.md`, que não fala de estado da arte nenhum.
+    nomes_capitulo = {c.name for c in capitulos()}
+    for p in sorted(LIVRO.glob("*.md")):
+        if p.name in nomes_capitulo | {"HISTORICO.md", "autor.md"}:
+            continue
+        texto = p.read_text(encoding="utf-8")
+        if not re.search(r"^> Captura em \d{4}-\d{2} · última revisão \d{4}-\d{2}-\d{2}",
+                         texto, re.M):
+            falhas.append(f"R6: {p.relative_to(RAIZ)} sem a declaração "
+                          f"`> Captura em AAAA-MM · última revisão AAAA-MM-DD` "
+                          f"(ADR 0016) — apagar a linha não é saída para o portão")
+
+    # Os artefatos de PROCESSO continuam declarando edição, porque descrevem o
+    # estado do projeto, não uma página do livro.
+    obrigatorios = {RAIZ / "benchmark/README.md"}
+    candidatos = sorted(obrigatorios | set((RAIZ / ".claude/skills").rglob("SKILL.md")))
+    for p in candidatos:
         if not p.exists():
             continue
-        for n, linha in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
-            for m in re.finditer(r"[Ee]dição (\d+\.\d+)", linha):
-                # Referência a uma edição PASSADA é fato histórico e fica.
-                # O que a checagem cobra é a declaração de estado do arquivo.
-                if not linha.lstrip().startswith(("> Edição", "Edição", "**Edição")):
-                    continue
-                if m.group(1) != vigente:
-                    falhas.append(f"R6: {p.relative_to(RAIZ)}:{n} declara edição "
-                                  f"{m.group(1)}, vigente é {vigente}")
+        linhas = p.read_text(encoding="utf-8").splitlines()
+        # Skill que não declara edição não é forçada a declarar — ela não é uma
+        # página do livro. O que a checagem impede é uma declaração FÓSSIL.
+        if p not in obrigatorios and not any(
+                re.match(r"^>?\s*\*{0,2}Edição\s+\d+\.\d+", l) for l in linhas[:12]):
+            continue
+        declaracoes = [(n, m) for n, l in enumerate(linhas, 1)
+                       # Só a linha de DECLARAÇÃO de estado — que começa com ela e
+                       # está no cabeçalho. Prosa que cita uma edição passada é fato
+                       # histórico e fica: cobrar dela seria pedir para reescrever o
+                       # passado, que é literalmente o erro do ciclo 001.
+                       if n <= 12 and re.match(r"^>?\s*\*{0,2}Edição\s+\d+\.\d+", l)
+                       for m in [re.search(r"Edição (\d+\.\d+)", l)]]
+        if not declaracoes:
+            falhas.append(f"R6: {p.relative_to(RAIZ)} sem declaração de edição no cabeçalho")
+        for n, m in declaracoes:
+            if m.group(1) != vigente:
+                falhas.append(f"R6: {p.relative_to(RAIZ)}:{n} declara edição "
+                              f"{m.group(1)}, vigente é {vigente}")
 
 
 def r7r8_secoes_existem() -> None:
@@ -561,6 +619,20 @@ def r4_contagem_de_testes() -> None:
         for m in re.finditer(r"(\d+)\s+testes", arq.read_text(encoding="utf8")):
             if int(m.group(1)) != reais:
                 falhas.append(f"R4: {rel} diz '{m.group(1)} testes'; são {reais}")
+
+    # A mesma classe de erro, no número que o livro mais usa para se apresentar.
+    # "42 das 55 referências" tinha derivado para 43 de 56 sem que nada acusasse, e
+    # foi a segunda revisão independente que contou. Um número publicado em cinco
+    # arquivos precisa de uma fonte só — e a fonte é a tabela da bibliografia.
+    bib = (LIVRO / "bibliografia.md").read_text(encoding="utf8")
+    status = re.findall(r"([✓⏳✗])\s*\|?\s*$", bib, re.M)
+    total, validadas = len(status), status.count("✓")
+    for rel in ("README.md", "CLAUDE.md", "ROADMAP.md", "livro/bibliografia.md"):
+        for m in re.finditer(r"(\d+)\s+d[eao]s?\s+(\d+)\s+referências",
+                             (RAIZ / rel).read_text(encoding="utf8")):
+            if (int(m.group(1)), int(m.group(2))) != (validadas, total):
+                falhas.append(f"R4: {rel} diz '{m.group(1)} de {m.group(2)} referências'; "
+                              f"a bibliografia tem {validadas} ✓ de {total}")
 
 
 # --------------------------------------------------------------------------- #

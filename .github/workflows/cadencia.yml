@@ -25,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0      # o verificador confere datas contra o git
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -63,10 +65,14 @@ jobs:
               "violada: **recapturar a data só onde houve releitura** — trocar a data sem",
               "reler passa no verificador e falsifica o livro.",
             ].join("\n");
-            const { data: abertas } = await github.rest.issues.listForRepo({
-              owner: context.repo.owner, repo: context.repo.repo, state: "open",
+            // `listForRepo` devolve issues E pull requests, 30 por página. Sem
+            // paginar e sem filtrar PR, a issue existente some depois de 30 itens
+            // abertos e passa a nascer uma duplicata por mês.
+            const abertas = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: "open", per_page: 100,
             });
-            const existente = abertas.find((i) => i.title === titulo);
+            const existente = abertas.find((i) => !i.pull_request && i.title === titulo);
             if (existente) {
               await github.rest.issues.update({
                 owner: context.repo.owner, repo: context.repo.repo,

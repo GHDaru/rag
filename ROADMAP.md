@@ -2,7 +2,7 @@
 
 > As rodadas planejadas do livro vivo. Cada rodada é um lote de trabalho que vira **uma ou mais specs** (`specs/NNN-nome/`), cada uma em sua branch, conforme o Princípio VII da [constituição](.specify/memory/constitution.md).
 >
-> Última atualização: **2026-08-09** · edição vigente: **1.0** (ver [Histórico](livro/HISTORICO.md))
+> Última atualização: **2026-08-13** · edição vigente: **1.1** (ver [Histórico](livro/HISTORICO.md))
 
 ## Onde estamos
 
@@ -28,7 +28,7 @@ O que **ainda não** existe, e é deliberado:
 
 | Ausente | Por quê | Volta em |
 |---|---|:---:|
-| Referências validadas (status ✓) | **42 de 55 (76%)** — rodada 2 ✅ concluída; as 13 restantes são de menor peso | — |
+| Referências validadas (status ✓) | **43 de 56 (77%)** — rodada 2 ✅ concluída; as 13 restantes são de menor peso | — |
 | Profundidade nos capítulos | a v1 prioriza a moldura completa sobre a profundidade parcial | rodadas 3–5 |
 | Trilha prática `rag-zero` | **12 das 17 etapas** construídas (9 com script próprio), 48 testes; as 5 restantes declaradas | pós-1.0 |
 | Avaliação comparada de ferramentas | exige metodologia própria | rodada 4 |
@@ -57,7 +57,7 @@ O que **ainda não** existe, e é deliberado:
 ### Feito (edição 0.3, 2026-08-04)
 
 1. ✅ **Os 49 identificadores arXiv resolvidos** contra o arXiv real, com ID falso de controle. **Nenhum inventado, nenhum título divergente** — a classe de erro mais corrosiva está descartada.
-2. ✅ **42 das 55 referências em ✓ (76%)** — texto lido, afirmação do livro conferida. Acima do critério de 60%.
+2. ✅ **43 das 56 referências em ✓ (77%)** — texto lido, afirmação do livro conferida. Acima do critério de 60%.
 3. ✅ **As ~20 técnicas nomeadas ganharam fonte primária.** Entraram pelos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição, GraphRAG) e **todas chegaram ao paper que as propôs**.
 4. ✅ **Quatro afirmações corrigidas** ([detalhe](livro/bibliografia.md#correções-que-esta-rodada-produziu)):
    - *Lost in the Middle* **não sustentava** a afirmação do cap. 20 sobre distratores — e a fonte que sustenta contradiz a outra metade;
@@ -72,7 +72,7 @@ O que **ainda não** existe, e é deliberado:
 2. **Base de evidência do cap. 04.** Segue o capítulo mais fraco em citação, e a pergunta continua sem resposta: **existe medição publicada do impacto isolado de frescor e deduplicação sobre métricas de RAG?** Se não existir, vira experimento próprio na rodada 4.
 3. **Aprofundar o corpo** dos capítulos onde a validação trouxe material novo — em especial 05 (métricas intrínsecas de chunking) e 09 (a troca de qualidade).
 
-**Critério de conclusão — os três atingidos:** ≥ 60% das referências em ✓ (**76%**); nenhum número no corpo sem condição experimental (**feito** para os validados); nenhum capítulo com Apêndice A vazio (**22 de 22 preenchidos**, cada implementação citada com URL conferida).
+**Critério de conclusão — os três atingidos:** ≥ 60% das referências em ✓ (**77%**); nenhum número no corpo sem condição experimental (**feito** para os validados); nenhum capítulo com Apêndice A vazio (**22 de 22 preenchidos**, cada implementação citada com URL conferida).
 
 **Rodada 2 concluída.** O que sobrou (13 referências de menor peso e a evidência do cap. 04) migra para a rodada 4, onde vira medição própria em vez de busca bibliográfica.
 

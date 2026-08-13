@@ -32,7 +32,9 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  # O grupo inclui a ref: sem isso, um push em PR cancela a publicação de
+  # produção em andamento. Só a fila da `main` cancela a si mesma.
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -40,6 +42,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # HISTÓRICO COMPLETO, e não é detalhe: o Portão 1 confere as datas do
+          # cabeçalho contra o git. Num clone raso todo arquivo parece introduzido
+          # pelo commit enxertado — o portão produz 25 falhas falsas no primeiro
+          # commit datado em outro dia, e a checagem de captura sem diff (ADR 0016)
+          # nunca chega a executar. O portão deste ciclo não valia onde foi
+          # instalado; achado da segunda revisão independente.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -112,6 +122,10 @@ jobs:
 
   deploy:
     needs: build
+    # Em pull request os portões rodam e o site é construído; **publicar, não**.
+    # O merge na `main` é o que publica (ADR 0001), e um PR que publicasse
+    # contradiria a decisão que governa este repositório.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

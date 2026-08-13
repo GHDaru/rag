@@ -17,7 +17,7 @@
 **Feito — as duas levas:**
 
 1. **Todos os 49 identificadores arXiv do repositório foram resolvidos contra o arXiv real**, com um ID falso como controle (que devolve *"Article identifier not recognized"*, provando que o teste discrimina). **Nenhum ID inventado, nenhum título divergente.** A classe de erro mais corrosiva para um livro — a citação alucinada — está descartada.
-2. **42 das 55 referências (76%) passaram à validação plena (✓)**: o texto foi lido e a afirmação que o livro faz sobre elas, conferida. Isso cumpre o critério de conclusão da rodada 2 (≥ 60%).
+2. **43 das 56 referências (77%) passaram à validação plena (✓)**: o texto foi lido e a afirmação que o livro faz sobre elas, conferida. Isso cumpre o critério de conclusão da rodada 2 (≥ 60%).
 3. **~20 técnicas nomeadas que estavam sem URL ganharam fonte primária.** Elas tinham entrado pela porta dos guias de praticante (RAPTOR, Self-RAG, CRAG, FLARE, Adaptive RAG, HyDE, step-back, late chunking, proposição, GraphRAG…) e agora apontam para o paper que as propôs.
 4. **Quatro afirmações do livro foram corrigidas** contra a fonte — ver *Correções* abaixo. Duas delas atingiam a espinha de um capítulo.
 

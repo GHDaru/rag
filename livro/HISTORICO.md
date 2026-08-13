@@ -97,10 +97,34 @@ citação inventada, todos os trechos verbatim. É o contraponto que dá peso à
 não veio de quem não olhou.
 
 **A falha de processo, registrada porque se repete se não for.** O commit não foi congelado
-antes de pedir a revisão: o `HEAD` avançou duas vezes durante a leitura, e um dos achados foi
-corrigido enquanto o parecer era escrito. Isso quebra a regra 2 do plano deste ciclo — *quem
-executa não verifica* — na prática, porque ninguém revisou o artefato exato que vai para a
-`main`. **Da próxima vez, congelar o commit antes de abrir a revisão.**
+antes de pedir a primeira revisão: o `HEAD` avançou duas vezes durante a leitura, e um dos
+achados foi corrigido enquanto o parecer era escrito. Isso quebra a regra 2 do plano deste
+ciclo — *quem executa não verifica* — na prática, porque ninguém revisou o artefato exato que
+iria para a `main`.
+
+**Então houve uma segunda revisão, com o commit congelado — e ela reprovou de novo.** As seis
+correções da primeira rodada eram reais, verificadas por execução. O que reprovou foi pior, e
+não estava no livro: **o portão que este ciclo entrega não funcionava onde foi instalado.**
+O `actions/checkout` clona raso por padrão; num clone raso todo arquivo parece introduzido
+pelo commit enxertado, então o Portão 1 produziria **25 falhas falsas** no primeiro commit
+datado em outro dia — e a checagem de captura sem diff, a correção mais cara da rodada
+anterior, **nunca chegaria a executar**. Um portão que fica vermelho por motivo falso é o
+portão que se aprende a ignorar, que é a tese deste ciclo inteiro voltando contra ele.
+
+Junto: o gatilho `pull_request` recém-adicionado colocava o job de deploy dentro do PR — ou o
+PR publicava o site, contra o [ADR 0001](../adr/0001-modelo-de-publicacao.md), ou todo PR
+nascia vermelho; e o grupo de concorrência compartilhado fazia um push de PR **cancelar a
+publicação de produção em andamento**. Ambos eram regressões introduzidas pela correção
+anterior. Corrigidos, com o clone raso passando a **avisar** em vez de falhar em falso ou
+calar.
+
+A segunda revisão também conferiu contra a rede as fontes novas do cap. 22 (os dois valores
+de CVSS do CVE, a data da página do OWASP) e encontrou um número derivado: **"42 das 55
+referências" eram 43 de 56**. Corrigido nos cinco arquivos, e agora com checagem — a mesma
+classe de erro que a spec deste ciclo tinha acusado em "39 testes".
+
+**A lição de processo, em uma linha:** congelar o commit antes de abrir a revisão, e revisar
+de novo depois de corrigir. Foi a segunda revisão que pegou o defeito mais caro do ciclo.
 
 **Atribuição:** direção editorial e decisão de escopo — Gilsiley Henrique Darú. Pareceres,
 construção e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-13.
