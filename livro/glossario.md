@@ -140,6 +140,8 @@
 
 **RRF (*Reciprocal Rank Fusion*)** — fusão recíproca de ranking: combina listas pela **posição** de cada documento, não pela nota. É o que torna a busca híbrida prática, porque dispensa calibrar escalas incomparáveis (cap. 06).
 
+**`recall@k`** — dos trechos necessários, quantos apareceram entre os `k` primeiros. Tem uma armadilha que o `rag-zero` documenta em teste: se o gabarito marca dezenas de trechos como relevantes e você mede em `k=5`, o teto matemático é `5/40` — o número parece péssimo **por construção**, não por defeito da busca (cap. 21).
+
 **Saída estruturada** — restringir a resposta a um schema. Garante forma, nunca valor; a validação semântica continua sendo sua (cap. 13).
 
 **Self-consistency** — amostrar vários caminhos de raciocínio e agregar por voto. Multiplica o custo por N; é decisão financeira (cap. 12).
@@ -159,5 +161,7 @@
 **Trajetória** — a sequência de decisões (buscas, chamadas, reflexões) que levou a uma resposta em um sistema agêntico. Duas trajetórias podem dar a mesma resposta com custos muito diferentes — e a instrumentação madura ainda não a mede (caps. 18, 21).
 
 **TREC (*Text REtrieval Conference*)** — o programa de avaliação que estrutura a pesquisa em recuperação há décadas. Tem **track dedicado a RAG** — o sinal mais claro de que a área absorveu o tema em vez de tratá-lo como estranho (cap. 01).
+
+**`top_k`** — quantos candidatos o retriever devolve por consulta. É o botão mais mexido e o menos medido do livro: aumentar melhora *recall* e piora *precision*, e o custo é **linear no orçamento de contexto** (cap. 20). O valor certo não se escolhe — se mede, com a tabela de diagnóstico do cap. 21 (caps. 06, 07).
 
 **Zep** — sistema de memória que adiciona grafo de conhecimento **temporal** sobre recuperação densa, para raciocinar sobre fatos que mudam com o tempo (cap. 19).

@@ -46,4 +46,6 @@ Restrição conhecida deste ambiente: **arxiv.org e api.semanticscholar.org reto
 ## Papers-âncora já validados (não rebuscar)
 Ver `livro/bibliografia.md`. Âncoras transversais: *The Prompt Report* (2406.06608), *A Survey of Context Engineering for LLMs* (2507.13334), *Agentic RAG: A Survey* (2501.09136), Lost in the Middle (2307.03172), U-NIAH (2503.00353), ReAct (2210.03629), MemGPT (2310.08560).
 
-**Estado (edição 0.1): nenhuma referência tem status ✓.** Tirar os ⏳ é a rodada 2 do ROADMAP — é para isso que esta skill existe agora.
+**Estado (edição 1.0): 42 das 55 referências têm status ✓.** A rodada 2 do ROADMAP está concluída — ela resolveu os 49 identificadores arXiv contra o arXiv real (nenhum inventado) e **corrigiu quatro afirmações do livro** contra a fonte. As 13 restantes são de menor peso estrutural; nenhuma sustenta sozinha uma tese de capítulo.
+
+**A lição de método que esta skill carrega desde então:** uma consulta automática ao PDF do RAGAS devolveu uma **citação inventada** que teria *confirmado* um erro do livro em vez de revelá-lo. Só apareceu porque o texto foi extraído e lido diretamente. **Resumo automático de fonte não é validação** — é para isso que o status ✓ existe.
