@@ -55,8 +55,9 @@ princípio):
 - **`rag-zero/DIFF.md` gerado** por `ferramentas/diff_etapas.py`: a partir dos imports de
   cada script, a tabela `etapa N-1 → N: módulos novos · símbolos novos · testes que passam a
   valer`. O diff vira **saída verificável**, não convenção de diretório.
-- **Testes nomeados por etapa**, para que `pytest -k e05` seja literalmente "a prova da
-  etapa 5" — o README já promete essa coluna em prosa não verificável.
+- **Testes atribuídos a etapas**, para que "a prova da etapa 5" deixe de ser prosa e vire
+  consulta. *(Ver a nota de correção ao final: a implementação atribui por **seção** do
+  arquivo de testes, não por nome de função — e a mudança é deliberada.)*
 
 ### 3. Guia §5 e `rag-zero/README.md` acompanham a redação nova
 
@@ -99,6 +100,23 @@ mais barato que manter, e o gerado pode ser verificado contra a fonte — a cóp
   permite emenda direta, exige registro).
 - **Reversibilidade:** média. Voltar para snapshots é possível a qualquer momento; o que
   este ADR impede é fazê-lo **sem** decidir.
+
+## Nota de correção — 2026-08-13, após a revisão independente
+
+A redação original deste ADR prometia **testes renomeados por etapa**, para que
+`pytest -k e05` selecionasse a prova da etapa 5. O revisor independente rodou o comando:
+`48 deselected`. A promessa estava "Aceita" e o repositório não a entregava — que é
+exatamente o defeito que este ciclo existe para consertar, cometido pelo próprio ciclo.
+
+**A implementação divergiu de propósito, e a divergência é a escolha melhor.** O mapeamento
+teste ↔ etapa vem da **seção** do arquivo de testes (`# Etapa N — ...`), não do nome da
+função, porque mapear por nome convidaria a **renomear teste para o portão ficar verde** —
+a forma mais barata de mentir para um verificador. As seções já estavam lá, escritas por
+quem escreveu os testes: são registro, não adaptação ao instrumento.
+
+O que se corrige aqui é o **texto**, não a decisão: a decisão sempre foi "a prova de cada
+etapa tem de ser consultável". `pytest -k` era um meio, e um meio pior. O texto acima foi
+ajustado; esta nota fica para que a correção não apague o erro.
 
 ## Como verificar
 

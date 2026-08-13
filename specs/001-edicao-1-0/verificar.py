@@ -141,7 +141,9 @@ def r2_revisao_contra_git() -> None:
             falhas.append(f"R2: {rel} sem a linha de datação no formato "
                           f"`capturado em AAAA-MM · última revisão AAAA-MM-DD`")
             continue
-        declarada = m.group(2)
+        captura, declarada = m.group(1), m.group(2)
+
+        _captura_com_diff(rel, captura)
 
         ultimo = _git("log", "-1", "--format=%cs", "--", rel)
         if not ultimo:
@@ -158,6 +160,89 @@ def r2_revisao_contra_git() -> None:
         elif declarada < ultimo:
             falhas.append(f"R2: {rel} mudou em {ultimo} e o cabeçalho ainda diz "
                           f"{declarada} — atualize a revisão")
+
+
+def _captura_com_diff(rel: str, captura: str) -> None:
+    """A captura só avança com diff no CORPO — o terceiro invariante do ADR 0016.
+
+    Este era o buraco que o revisor independente encontrou: o ADR e o docstring
+    prometiam a checagem, e o código extraía a data de captura sem nunca usá-la. Um
+    `sed` avançando a captura dos 25 capítulos, sem uma linha de corpo tocada,
+    passava verde — a assinatura literal de "datar uma mentira", no livro cuja tese
+    central é a cláusula de expiração.
+
+    O algoritmo: localiza o commit que introduziu a captura vigente e exige que o
+    diff do arquivo desde então — **descontadas as linhas do próprio blockquote de
+    datação** — seja não-vazio.
+
+    A saída mais barata aqui é **devolver a data**: uma linha, honesta. Inventar
+    prosa para satisfazer o portão é caro e visível na revisão humana. O portão
+    empurra para a verdade, não para o teatro.
+    """
+    log = _git("log", "--format=%H", "-S", f"capturado em {captura}", "--", rel)
+    if not log:
+        return                      # a captura nunca mudou no histórico do arquivo
+    commit = log.splitlines()[-1].strip()
+    pai = _git("rev-parse", f"{commit}^")
+    if not pai:
+        return                      # veio no commit de criação do arquivo
+
+    diff = _git("diff", "--unified=0", pai, "HEAD", "--", rel)
+    if diff is None:
+        return
+    corpo = [l for l in diff.splitlines()
+             if l[:1] in "+-" and not l.startswith(("+++", "---"))
+             and "Estado da arte capturado" not in l]
+    if not corpo:
+        falhas.append(
+            f"R2: {rel} avançou a captura para {captura} sem uma linha alterada no "
+            f"corpo. Releia o capítulo ou devolva a data — datar sem reler é "
+            f"falsificar (ADR 0013 §7.3, ADR 0016)")
+
+
+def r6_datacao_do_aparato() -> None:
+    """A datação vale para TODO arquivo publicado, não só para capítulo.
+
+    R6 da spec 002, que constava do plano e **não tinha virado checagem nenhuma** —
+    o revisor independente encontrou o `GUIA-EDITORIAL.md` publicado declarando
+    "Edição 0.1" com o livro em 1.1. Era literalmente o achado A6 da própria spec,
+    metade corrigida e metade esquecida.
+    """
+    vigente = edicao_vigente()
+    alvos = sorted(LIVRO.glob("*.md")) + [RAIZ / "benchmark/README.md"]
+    alvos += sorted((RAIZ / ".claude/skills").rglob("SKILL.md"))
+    for p in alvos:
+        if not p.exists():
+            continue
+        for n, linha in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+            for m in re.finditer(r"[Ee]dição (\d+\.\d+)", linha):
+                # Referência a uma edição PASSADA é fato histórico e fica.
+                # O que a checagem cobra é a declaração de estado do arquivo.
+                if not linha.lstrip().startswith(("> Edição", "Edição", "**Edição")):
+                    continue
+                if m.group(1) != vigente:
+                    falhas.append(f"R6: {p.relative_to(RAIZ)}:{n} declara edição "
+                                  f"{m.group(1)}, vigente é {vigente}")
+
+
+def r7r8_secoes_existem() -> None:
+    """As seções que R7 e R8 governam não podem sumir para o portão calar.
+
+    O revisor achou a fuga: apagar `## Fontes da indústria` ou
+    `### Leitura executiva` fazia as duas checagens passarem, e nada mais no
+    repositório exigia as seções. Com lista branca que cresce por ciclo, a saída
+    mais barata para os capítulos pendentes seria o `sed` de deleção — um incentivo
+    desenhado no lugar exatamente errado.
+    """
+    # Só os capítulos numerados: a abertura (00, 01) e o fecho (24) não seguem o
+    # esqueleto de oito seções, e nunca seguiram.
+    for p in sorted(LIVRO.glob("capitulos/*.md")):
+        texto = p.read_text(encoding="utf-8")
+        for secao in ("## Fontes da indústria", "### Leitura executiva"):
+            if secao not in texto:
+                falhas.append(f"R7/R8: {p.relative_to(RAIZ)} sem a seção `{secao}` — "
+                              f"o esqueleto de capítulo é obrigatório (Princípio III); "
+                              f"apagar a seção não é saída para o portão")
 
 
 def r2_coerencia_readme() -> None:
@@ -634,12 +719,18 @@ def adr13_janela_cumprida() -> None:
     if atraso < 1:
         return
 
+    alvo = f"{ano}-{mes:02d}"
     historico = (LIVRO / "HISTORICO.md").read_text(encoding="utf8")
     cumprida = any(_mes(int(a), int(mm)) >= _mes(ano, mes)
                    for a, mm in re.findall(r"^### .*?— (\d{4})-(\d{2})-\d{2}", historico, re.M))
     if cumprida:
+        # E a janela tem de AVANÇAR. Sem isto, o portão de cadência se desliga
+        # sozinho para sempre depois da primeira janela cumprida: a linha fica
+        # apontando para um mês passado que uma edição qualquer já satisfez, e
+        # nada cobra o passo seguinte. Foi o segundo bloqueador do revisor.
+        falhas.append(f"ADR 0013: a janela {alvo} já foi cumprida e continua declarada "
+                      f"no Guia — declare a próxima (trimestral a partir dela)")
         return
-    alvo = f"{ano}-{mes:02d}"
     if atraso >= 2:
         falhas.append(f"ADR 0013: a janela {alvo} venceu há mais de 60 dias e não há "
                       f"edição correspondente no HISTORICO — o livro vivo parou")
@@ -731,7 +822,7 @@ def adr15_fonte_unica() -> None:
 def main() -> int:
     for checagem in (r2_datacao, r2_coerencia_readme, r3_citacao, r4_remissoes, r5_siglas,
                      r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
-                     r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes, r7_fontes_da_industria, r8_leitura_executiva,
+                     r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes, r7_fontes_da_industria, r8_leitura_executiva, r6_datacao_do_aparato, r7r8_secoes_existem,
                      adr13_janela_declarada, adr13_janela_cumprida,
                      adr13_captura_recente, adr13_placar_honesto,
                      adr15_links_relativos, adr15_fonte_unica):

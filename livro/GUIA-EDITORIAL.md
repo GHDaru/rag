@@ -2,8 +2,7 @@
 
 > Como este livro é escrito. A **constituição** ([`.specify/memory/constitution.md`](../.specify/memory/constitution.md)) diz o que é obrigatório; este guia diz **como** cumprir.
 >
-> Edição 0.1 · captura em 2026-08.
-
+> Captura em 2026-08 · última revisão 2026-08-13
 ## 1. O método pedagógico (Princípio III)
 
 Quatro tradições combinadas, cada uma resolvendo um problema diferente:

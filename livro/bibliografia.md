@@ -2,7 +2,7 @@
 
 > Fontes científicas e da indústria, por capítulo, com **status de validação**.
 >
-> Edição 1.0 · captura em 2026-08 · **rodada 2 (evidência) — concluída no critério de validação**.
+> Captura em 2026-08 · última revisão 2026-08-13 · **rodada 2 (evidência) — concluída no critério de validação**.
 
 ## Como ler o status (Princípio I da constituição)
 

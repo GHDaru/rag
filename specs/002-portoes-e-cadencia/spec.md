@@ -21,7 +21,7 @@ Cada achado abaixo foi **verificado por comando** antes de entrar aqui.
 |:---:|---|---|
 | A1 | **O CI não roda nenhum portão.** `publicar.yml` faz `npm ci` → `build` → `pdf` → deploy. Não roda `verificar.py`, não roda os 48 testes, não roda `check-companion.sh`. E `rag-zero/**` não está nos `paths` do gatilho | `grep "run:" .github/workflows/publicar.yml` |
 | A2 | **O ADR 0007 está "Aceito" e nunca foi implementado.** Ele manda o Guia Editorial ganhar a seção "Cadência do livro vivo"; ela não existe. O harness tem | `grep -c "Cadência" livro/GUIA-EDITORIAL.md` → **0**; no harness → **1** |
-| A3 | **12 capítulos remetem à rodada 2**, concluída em 2026-08-09, com o Apêndice A já preenchido | 12 arquivos |
+| A3 | **13 capítulos remetem à rodada 2**, concluída em 2026-08-09, com o Apêndice A já preenchido | 13 arquivos |
 | A4 | **"39 testes"** no `rag-zero/README.md` e no `ROADMAP.md`; são **48** | `grep -c "^def test_"` → 48 |
 | A5 | **`top_k` órfão**: 29 ocorrências nos capítulos, **zero verbete** no glossário. É o parâmetro mais citado do livro | contagem direta |
 | A6 | **Edição fossilizada** em arquivos que o R2 não cobre: `GUIA-EDITORIAL.md` e `benchmark/README.md` em "Edição 0.1", e a skill `academic-research` afirmando *"nenhuma referência tem status ✓"* — **falso**, são 42 | `sed -n '5p'`; `grep` na skill |

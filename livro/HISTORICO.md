@@ -80,6 +80,28 @@ deste ciclo. As duas checagens reportam a contagem como aviso: dívida declarada
 escondida, e o número existe justamente para que o próximo ciclo não possa fingir que ela
 diminuiu sem trabalho.
 
+**O portão reprovou, e o que ele pegou.** A revisão independente em contexto fresco
+**reprovou o merge** com seis bloqueadores. O mais grave era do mesmo tipo que este ciclo
+existe para consertar: **o instrumento não fazia o que os documentos dele diziam que fazia.**
+O ADR 0016 prometia que "captura nova sem diff no corpo" falharia; o código extraía a data de
+captura e nunca a usava — um `sed` avançando a captura dos 25 capítulos passava verde. O
+revisor rodou o `sed`. Junto vieram: a checagem de janela que se desligava sozinha depois da
+primeira janela cumprida; o ADR 0014 prometendo um `pytest -k e05` que seleciona zero testes;
+duas afirmações que iam além da fonte citada (um detalhe do CVE que não está no registro
+oficial, e uma doc de um fornecedor sustentando uma frase sobre "os motores de busca
+comerciais"); o `GUIA-EDITORIAL.md` **publicado** dizendo "Edição 0.1"; e o `tasks.md` com 34
+de 41 tarefas desmarcadas depois de feitas. Todos corrigidos antes deste registro.
+
+O revisor também conferiu **as dez fontes do lote F contra o original**, uma a uma: nenhuma
+citação inventada, todos os trechos verbatim. É o contraponto que dá peso à reprovação — ela
+não veio de quem não olhou.
+
+**A falha de processo, registrada porque se repete se não for.** O commit não foi congelado
+antes de pedir a revisão: o `HEAD` avançou duas vezes durante a leitura, e um dos achados foi
+corrigido enquanto o parecer era escrito. Isso quebra a regra 2 do plano deste ciclo — *quem
+executa não verifica* — na prática, porque ninguém revisou o artefato exato que vai para a
+`main`. **Da próxima vez, congelar o commit antes de abrir a revisão.**
+
 **Atribuição:** direção editorial e decisão de escopo — Gilsiley Henrique Darú. Pareceres,
 construção e redação — **Claude (Anthropic)**, modelo Opus 5, sessão de 2026-08-13.
 

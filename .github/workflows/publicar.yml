@@ -18,6 +18,12 @@ on:
       - "specs/**"
       - "scripts/**"
       - ".github/workflows/publicar.yml"
+  # Os portões precisam rodar ANTES da decisão de merge, não depois. Como o merge
+  # na `main` É a publicação (ADR 0001), sem este gatilho o portão humano decidiria
+  # sem sinal de CI — o mesmo argumento que este ciclo usou para mover os portões
+  # para antes do build, aplicado um nível acima. Achado da revisão independente.
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:

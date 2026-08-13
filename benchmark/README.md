@@ -2,7 +2,7 @@
 
 > A seção empírica do livro. **O objeto avaliado aqui é a técnica, não o produto.**
 >
-> Edição 1.0 · captura em 2026-08 · **status: metodologia esboçada, nenhuma avaliação executada.** As avaliações são a [rodada 4](../ROADMAP.md#rodada-4--avaliação-de-técnicas-o-benchmark-deste-livro) do ROADMAP.
+> Edição 1.1 · captura em 2026-08 · **status: metodologia esboçada, nenhuma avaliação executada.** As avaliações são a [rodada 4](../ROADMAP.md#rodada-4--avaliação-de-técnicas-o-benchmark-deste-livro) do ROADMAP.
 
 ## Por que existe
 

@@ -2,7 +2,7 @@
 
 > Uma ficha por técnica: **o que é · quando usa · o que custa · onde está no livro**.
 >
-> Edição 1.0 · captura em 2026-08.
+> Captura em 2026-08 · última revisão 2026-08-13
 >
 > **Como ler:** esta página é *reference* (Diátaxis) — feita para consulta rápida, não para leitura linear. A explicação de *por que* cada técnica funciona está no capítulo indicado; aqui está só o suficiente para decidir se vale abrir o capítulo.
 >

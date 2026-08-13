@@ -2,7 +2,7 @@
 
 > Siglas por extenso e termos com o sentido **que este livro usa**. Quando um termo tem uso ambíguo na indústria, a ambiguidade está registrada — desambiguar é metade do trabalho (cap. 01).
 >
-> Edição 1.0 · captura em 2026-08. Verbetes novos entram quando o capítulo correspondente é aprofundado.
+> Captura em 2026-08 · última revisão 2026-08-13 · Verbetes novos entram quando o capítulo correspondente é aprofundado.
 
 ## A–C
 

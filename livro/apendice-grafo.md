@@ -2,8 +2,7 @@
 
 > O mapa de conexões do livro, extraído **deterministicamente** do próprio texto a cada build — sem LLM, sem curadoria manual. Um nó é um capítulo, uma ferramenta do ecossistema, um conceito do glossário ou uma etapa do `rag-zero`; uma aresta é uma menção real, e o peso é o número de ocorrências.
 >
-> Edição 1.0 · captura em 2026-08.
-
+> Captura em 2026-08 · última revisão 2026-08-13
 Como o grafo nasce do texto, ele é sempre honesto: se um capítulo não cita uma técnica, não há aresta. Nós sem nenhuma conexão são podados — o que torna o grafo um instrumento de revisão editorial, e não só uma ilustração. Um conceito que ninguém menciona é um conceito que o livro promete e não entrega.
 
 <div data-viz="grafo-livro"></div>
