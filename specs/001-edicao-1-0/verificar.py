@@ -342,6 +342,106 @@ def r8_etapas_honestas() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# ADR 0013 — cadência do livro vivo
+# --------------------------------------------------------------------------- #
+#
+# Estas quatro checagens têm uma característica que as outras não precisam ter: elas
+# podem **ficar vermelhas pela passagem do tempo**, sem ninguém commitar nada. É de
+# propósito — num livro cuja tese é a cláusula de expiração, o tempo é a única coisa
+# que deveria conseguir quebrar o portão sozinha.
+#
+# E há uma armadilha desenhada de frente: cobrar data fresca sem cobrar releitura
+# transforma o portão em pressão para **datar uma mentira**. Por isso a checagem de
+# captura tem folga de duas janelas, e o remédio dela é reler — nunca só reescrever a
+# data. É a lição do ciclo 001, anotada no cabeçalho de `r2_datacao`.
+
+JANELA_RE = re.compile(r"^\*\*Próxima janela: (\d{4})-(\d{2})\.?\*\*", re.M)
+
+
+def _mes(ano: int, mes: int) -> int:
+    return ano * 12 + mes
+
+
+def _hoje() -> tuple[int, int, int]:
+    from datetime import date
+    h = date.today()
+    return h.year, h.month, h.day
+
+
+def adr13_janela_declarada() -> None:
+    """O Guia declara UMA próxima janela, em formato que a máquina lê."""
+    guia = (LIVRO / "GUIA-EDITORIAL.md").read_text(encoding="utf8")
+    achadas = JANELA_RE.findall(guia)
+    if len(achadas) != 1:
+        falhas.append(f"ADR 0013: o Guia deveria ter exatamente uma linha "
+                      f"`**Próxima janela: AAAA-MM**`; tem {len(achadas)}")
+
+
+def adr13_janela_cumprida() -> None:
+    """A janela venceu e não houve edição? Aviso aos 30 dias, falha aos 60.
+
+    A gradação existe para o repositório não ficar vermelho por um atraso de dias —
+    um portão que grita cedo demais é um portão que se aprende a ignorar.
+    """
+    guia = (LIVRO / "GUIA-EDITORIAL.md").read_text(encoding="utf8")
+    m = JANELA_RE.search(guia)
+    if not m:
+        return
+    ano, mes = int(m.group(1)), int(m.group(2))
+    hoje_a, hoje_m, hoje_d = _hoje()
+    # meses decorridos desde o início da janela (aprox. suficiente: 30d ≈ 1 mês)
+    atraso = _mes(hoje_a, hoje_m) - _mes(ano, mes)
+    if atraso < 1:
+        return
+
+    historico = (LIVRO / "HISTORICO.md").read_text(encoding="utf8")
+    cumprida = any(_mes(int(a), int(mm)) >= _mes(ano, mes)
+                   for a, mm in re.findall(r"^### .*?— (\d{4})-(\d{2})-\d{2}", historico, re.M))
+    if cumprida:
+        return
+    alvo = f"{ano}-{mes:02d}"
+    if atraso >= 2:
+        falhas.append(f"ADR 0013: a janela {alvo} venceu há mais de 60 dias e não há "
+                      f"edição correspondente no HISTORICO — o livro vivo parou")
+    else:
+        avisos.append(f"ADR 0013: a janela {alvo} venceu e ainda não há edição no HISTORICO")
+
+
+def adr13_captura_recente() -> None:
+    """Nenhum capítulo com captura mais velha que duas janelas (6 meses).
+
+    **O remédio é reler o capítulo**, não trocar a data. Trocar a data sem reler passa
+    nesta checagem e falsifica o livro — que é exatamente o dano que o ciclo 001 sofreu
+    e o motivo de a folga aqui ser generosa.
+    """
+    hoje_a, hoje_m, _ = _hoje()
+    for p in capitulos():
+        m = re.search(r"[Cc]apturado em\*{0,2}:?\s*\*{0,2}(\d{4})-(\d{2})", p.read_text(encoding="utf8"))
+        if not m:
+            continue
+        idade = _mes(hoje_a, hoje_m) - _mes(int(m.group(1)), int(m.group(2)))
+        if idade > 6:
+            falhas.append(f"ADR 0013: {p.relative_to(RAIZ)} capturado em "
+                          f"{m.group(1)}-{m.group(2)} — {idade} meses, mais de duas janelas. "
+                          f"Releia o capítulo (trocar só a data é falsificar)")
+
+
+def adr13_placar_honesto() -> None:
+    """Aposta do registro de expiração com prazo vencido não fica ⏳.
+
+    A saída honesta é o veredito — inclusive ❌. Aposta refutada não se apaga: o placar
+    só vale alguma coisa se ele puder marcar contra a casa.
+    """
+    historico = (LIVRO / "HISTORICO.md").read_text(encoding="utf8")
+    hoje_a, hoje_m, _ = _hoje()
+    for linha in historico.splitlines():
+        m = re.match(r"\|\s*(A\d+)\s*\|.*\|\s*(\d{4})-(\d{2})\s*\|.*\|\s*⏳", linha)
+        if m and _mes(int(m.group(2)), int(m.group(3))) < _mes(hoje_a, hoje_m):
+            falhas.append(f"ADR 0013: a aposta {m.group(1)} venceu em "
+                          f"{m.group(2)}-{m.group(3)} e segue ⏳ — dê o veredito")
+
+
+# --------------------------------------------------------------------------- #
 # ADR 0015 — links para o próprio repositório
 # --------------------------------------------------------------------------- #
 
@@ -392,6 +492,8 @@ def main() -> int:
     for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
                      r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
                      r6_sumario, r8_etapas_honestas,
+                     adr13_janela_declarada, adr13_janela_cumprida,
+                     adr13_captura_recente, adr13_placar_honesto,
                      adr15_links_relativos, adr15_fonte_unica):
         checagem()
 

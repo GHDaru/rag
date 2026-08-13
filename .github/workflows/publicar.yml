@@ -63,6 +63,13 @@ jobs:
       - name: "Portão 4 — a afirmação sobre o companion não passa do estado real"
         run: bash scripts/check-companion.sh
 
+      # Restrição 4 da constituição (ADR 0014): cada etapa roda isolada, sem rede e
+      # sem ter executado a anterior. A promessa "custo zero, sem dependência" só vale
+      # se for testada — e este é o teste.
+      - name: "Portão 6 — as etapas do rag-zero rodam isoladas"
+        run: python3 ferramentas/verificar_etapas.py
+        working-directory: rag-zero
+
       - name: Instalar dependências do motor
         run: npm ci
         working-directory: publicar
@@ -74,7 +81,7 @@ jobs:
       - name: "Portão 5 — o template dos capítulos"
         run: node verifica-capitulos.mjs
         working-directory: publicar
-        working-directory: publicar
+
       - name: Instalar Chromium (para os PDFs)
         run: npx playwright install --with-deps chromium
         working-directory: publicar

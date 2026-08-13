@@ -133,9 +133,26 @@ Depende da rodada 2 (validação) e se beneficia da 4 (medição própria).
 
 ---
 
+## Janelas de revisão — trimestrais, fora das rodadas
+
+> **A próxima é 2026-11**, e depois 2027-02 e 2027-05. Política no
+> [Guia Editorial §7](livro/GUIA-EDITORIAL.md) e no [ADR 0013](adr/0013-cadencia-livro-vivo-rag.md).
+
+A janela não é uma rodada: ela não acrescenta capítulo, ela **confere o que já está
+escrito** — as URLs dos Apêndices A, o status das referências, o placar de expiração — e
+recaptura a data **só dos capítulos efetivamente relidos**. Fora da janela, quatro gatilhos
+(G1–G4) abrem revisão pontual sem esperar o calendário.
+
+Um job agendado ([`cadencia.yml`](.github/workflows/cadencia.yml)) abre issue quando a
+janela vence — porque o apodrecimento do estado da arte não gera commit, e portão que só
+dispara por commit nunca o vê.
+
+---
+
 ## Rodada 6 — Livro vivo: Radar e revisão do placar
 
-**Objetivo:** ligar o mecanismo de atualização contínua.
+**Objetivo:** ligar o mecanismo de atualização contínua. A cadência (acima) já existe desde
+a edição 1.1; esta rodada acrescenta o **Radar** — o acompanhamento datado entre janelas.
 
 **Escopo:**
 1. **Radar** — acompanhamento datado do que aparece na área (papers, técnicas, ferramentas), com impacto classificado e ligação ao capítulo afetado.

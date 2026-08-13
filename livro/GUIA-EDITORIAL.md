@@ -89,7 +89,44 @@ Toda edição registra em [`HISTORICO.md`](HISTORICO.md): o que mudou, a data, *
 
 A co-autoria é declarada, não escondida: **direção, decisão editorial e responsabilidade são humanas; pesquisa, estruturação e redação são assistidas por IA.** Onde a IA errou e foi corrigida, o registro fica no histórico da branch.
 
-## 7. Checklist antes de publicar
+## 7. Cadência do livro vivo
+
+> Política decidida no [ADR 0013](../adr/0013-cadencia-livro-vivo-rag.md), que substitui o
+> [ADR 0007](../adr/0007-cadencia-livro-vivo.md) — herdado do livro irmão, com gatilho de
+> outro domínio.
+
+A cláusula de expiração é a tese do livro. Uma tese sem cadência é uma promessa.
+
+**Próxima janela: 2026-11.** Janela **trimestral**, contada da última captura
+(2026-08 → 2026-11 → 2027-02 → 2027-05).
+
+O que a janela faz, nesta ordem:
+
+1. **Apêndice A de todos os capítulos** — cada URL de implementação é aberta e conferida; o
+   que sumiu ou mudou de contrato é corrigido ou removido. É a espinha empírica do Princípio
+   II, e o que apodrece primeiro.
+2. **Referências** — papers com versão nova são reconferidos; o status ✓ vale para a versão
+   lida.
+3. **Recaptura de data — só onde houve releitura.** Mudar "capturado em" sem reler é datar
+   uma mentira. Capítulo não relido mantém a data antiga, e a data antiga é informação
+   honesta.
+4. **Registro de expiração** — toda aposta com prazo dentro da janela recebe veredito
+   ✅/❌/🔄. Aposta refutada não se apaga.
+5. **Histórico** — edição minor, com o modelo de IA registrado (§6).
+
+**Gatilho extraordinário** — não espera a janela; abre spec própria para o capítulo afetado:
+
+| # | Evento | Por que dispara |
+|:--:|---|---|
+| G1 | Paper citado é retratado ou corrigido, ou muda o número ou a condição experimental que o livro reproduz | o corpo passa a afirmar um número que a fonte não sustenta (Princípio I) |
+| G2 | Implementação citada no Apêndice A é arquivada, ou a função/parâmetro citado deixa de existir | a espinha empírica do Princípio II deixa de ser consultável |
+| G3 | A técnica vira funcionalidade nativa de provedor (reranking, embedding contextual, cache de prefixo, janela longa, busca) | invalida o "quando usar" e a conta de custo |
+| G4 | Qualquer evento que torne falsa uma **"Leitura executiva"** | é o contrato de frescor com o leitor apressado |
+
+A data "estado da arte capturado em" de cada capítulo é a verdade exposta ao leitor — a
+cadência existe para que ela nunca minta por omissão.
+
+## 8. Checklist antes de publicar
 
 - [ ] Objetivos com verbos de Bloom, e **cada um** com verificação correspondente
 - [ ] Primeiro blockquote com data de captura e maturidade
