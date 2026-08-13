@@ -98,7 +98,7 @@ cd rag-zero
 python3 etapas/etapa00_contador.py
 ```
 
-Código: [`rag_zero/contexto.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/contexto.py). O que você deve ver: as camadas na ordem de volatilidade, e o contador mostrando o custo de cada uma.
+Código: [`rag_zero/contexto.py`](../../rag-zero/rag_zero/contexto.py). O que você deve ver: as camadas na ordem de volatilidade, e o contador mostrando o custo de cada uma.
 ## Verificação
 
 1. Seu prompt de sistema começa com a data de hoje, "para o modelo se situar". Estime o que isso custa e proponha onde a data deveria ficar.

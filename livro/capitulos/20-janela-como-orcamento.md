@@ -84,7 +84,7 @@ Janela maior não resolveu nada: o comprimento degrada **sozinho** — medido is
 
 ## Mão na massa — `rag-zero`, etapa 13
 
-> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](../../rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 13 você transforma o contador de tokens da etapa 0 em **orçamento com política**: limites por fonte, ordem de corte declarada, e um log por requisição com a composição do contexto. O teste da etapa força o estouro (um resultado de ferramenta gigante) e prova que o sistema corta segundo a política escrita, e não segundo o acaso da ordem de concatenação. O exercício de completude: a política de corte vem esqueletada — você decide quem cede primeiro e defende a decisão por escrito.
 
@@ -95,7 +95,7 @@ cd rag-zero
 python3 etapas/etapa00_contador.py
 ```
 
-Código: [`rag_zero/contexto.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/contexto.py). O que você deve ver: a composição por bloco e o `ESTOUROU` quando o orçamento é excedido.
+Código: [`rag_zero/contexto.py`](../../rag-zero/rag_zero/contexto.py). O que você deve ver: a composição por bloco e o `ESTOUROU` quando o orçamento é excedido.
 ## Verificação
 
 1. Seu sistema responde bem com 5 documentos recuperados e pior com 20. Dê duas explicações compatíveis com o que este capítulo apresentou, e um experimento que as distingue.

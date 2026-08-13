@@ -2,6 +2,8 @@
   "titulo": "Engenharia de RAG",
   "subtitulo": "Como se constrói um sistema em volta da recuperação da informação",
   "companion_backend": "",
+  "_repo": "Base pública do repositório — fonte única (ADR 0015). No fonte, link para arquivo do próprio repositório é sempre CAMINHO RELATIVO; o motor converte. `ref` é a tag da edição: o leitor da 1.0 vê o código da 1.0, não o de amanhã. Tag inexistente cai para `main` com aviso no log.",
+  "repo": { "base": "https://github.com/GHDaru/rag", "ref": "v1.0" },
   "partes": [
     {
       "nome": "Abertura",

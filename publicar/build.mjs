@@ -24,6 +24,7 @@ import { execSync } from "node:child_process";
 import MarkdownIt from "markdown-it";
 import anchor from "markdown-it-anchor";
 import { gerarGrafo } from "./grafo.mjs";
+import { REPO_URL, REPO_REF, REF_PEDIDA, GITHUB_BASE, caminhoNoRepo, existeNoRepo } from "./repo.mjs";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = resolve(AQUI, "..");
@@ -55,7 +56,11 @@ sumario.partes.forEach((p, pi) =>
 );
 const hrefOutroIdioma = (slug) => (EN ? `../${parDe[slug] || "sumario"}.html` : `en/${parDe[slug] || "sumario"}.html`);
 
-const GITHUB_BASE = "https://github.com/GHDaru/rag/blob/main/";
+// A base do repositório vem de `repo.mjs` — fonte única (ADR 0015). O aviso de
+// fallback sai aqui, uma vez por build, e não dentro do módulo.
+if (REPO_REF !== REF_PEDIDA) {
+  console.warn(`⚠ ref "${REF_PEDIDA}" não existe neste repositório — os links do repositório vão para "${REPO_REF}" (ADR 0015).`);
+}
 const SITE = "https://ghdaru.github.io/rag/";
 const DOI = "";
 
@@ -75,7 +80,7 @@ const T = EN
       capKicker: "Ch.",
       anterior: "← previous",
       proximo: "next →",
-      rodape: `Living book · generated from Markdown by our own engine · <a href="https://github.com/GHDaru/harness_engineering">source on GitHub</a>`,
+      rodape: `Living book · generated from Markdown by our own engine · <a href="${REPO_URL}">source on GitHub</a>`,
       bibliografiaHtml: "bibliography.html",
       verCitacao: "see in the Bibliography",
       splashDesc: "An empirical study of the discipline of building the <em>scaffolding</em> around AI agents — theory, a benchmark of real harnesses, and a hands-on build from scratch.",
@@ -105,7 +110,7 @@ const T = EN
         ["01-foundations.html", "Track · 1", "Foundations", "The book's vocabulary and thesis."],
         ["02-agent-loop.html", "Track · 2", "Capabilities", "The 16 components, one per chapter."],
         ["comparative.html", "Track · 3", "Benchmark", "Real harnesses, compared."],
-        ["https://github.com/GHDaru/harness_engineering/tree/main/harness-zero", "Track · 4", "Hands-on", "Build harness-zero, step by step."],
+        [`${REPO_URL}/tree/${REPO_REF}/rag-zero`, "Track · 4", "Hands-on", "Build rag-zero, step by step."],
       ],
       partesCartao: new Set(["Opening", "Chapters by capability"]),
       pillsRotulo: "Benchmark · Apparatus · About",
@@ -130,7 +135,7 @@ const T = EN
       capKicker: "Cap.",
       anterior: "← anterior",
       proximo: "próximo →",
-      rodape: `Livro vivo · gerado do Markdown pelo motor próprio · <a href="https://github.com/GHDaru/rag">fonte no GitHub</a>`,
+      rodape: `Livro vivo · gerado do Markdown pelo motor próprio · <a href="${REPO_URL}">fonte no GitHub</a>`,
       bibliografiaHtml: "bibliografia.html",
       verCitacao: "ver na Bibliografia",
       splashDesc: "RAG não é uma técnica — é um <em>sistema</em>, com componentes, contratos e topologias. Do corpus à resposta fundamentada, em vinte e cinco capítulos.",
@@ -212,6 +217,10 @@ const md = new MarkdownIt({ html: true, linkify: false, typographer: false }).us
   slugify: (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""),
 });
 
+// Links de repositório que apontam para arquivo inexistente. Acumulados durante a
+// renderização e reportados no fim, junto dos links internos quebrados (ADR 0015).
+const linksDeRepoQuebrados = [];
+
 // Reescrita de links internos: .md publicado -> .html local; .html passa
 // intacto (links cross-idioma como ../historico.html); resto -> GitHub.
 const defaultLinkOpen = md.renderer.rules.link_open || ((t, i, o, e, s) => s.renderToken(t, i, o));
@@ -224,7 +233,14 @@ md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
     if (/\.md$/i.test(alvo) && slugsPublicados.has(slug)) {
       tokens[idx].attrSet("href", slug + ".html" + ancora);
     } else {
-      const repoRel = path.posix.normalize(path.posix.join(env.srcDir || ".", alvo)).replace(/^(\.\.\/)+/, "");
+      const repoRel = caminhoNoRepo(env.srcDir, alvo);
+      // ADR 0015 — o link para o próprio repositório passa a ser VERIFICADO contra o
+      // disco. Era o ponto cego do build: o link-check confere `href` .html e ignora
+      // todo link externo, então dezenas de afirmações sobre onde o código está
+      // passavam mudas. Aqui elas param de passar.
+      if (!existeNoRepo(repoRel)) {
+        linksDeRepoQuebrados.push(`${env.srcDir || "."} → ${alvo}  (não existe: ${repoRel})`);
+      }
       tokens[idx].attrSet("href", GITHUB_BASE + repoRel + ancora);
     }
   }
@@ -625,10 +641,23 @@ mkdirSync(resolve(SAIDA, "md"), { recursive: true });
     const caminho = resolve(RAIZ, item.arquivo);
     if (!existsSync(caminho)) continue;
     const bruto = readFileSync(caminho, "utf8");
-    writeFileSync(resolve(SAIDA, "md", `${item.slug}.md`), bruto);
-    partesMd.push(bruto.trim());
+    // ADR 0015 — no fonte, link para arquivo do repositório é relativo. Aqui o arquivo
+    // muda de lugar (livro/capitulos/ -> docs/md/), e o relativo passaria a resolver a
+    // partir do destino: quebraria. Aplicamos a MESMA conversão que o HTML recebe.
+    // Links entre capítulos publicados ficam relativos de propósito — em docs/md/ eles
+    // são irmãos, e o leitor que baixou o pacote continua navegando offline.
+    const srcDir = path.posix.dirname(item.arquivo);
+    const paraDownload = bruto.replace(/\]\(([^)\s]+)\)/g, (todo, href) => {
+      if (/^https?:|^#|^mailto:|^\/\//.test(href)) return todo;
+      const [alvo, hash] = href.split("#");
+      const ancora = hash ? "#" + hash : "";
+      if (/\.md$/i.test(alvo) && slugsPublicados.has(basename(alvo).replace(/\.md$/i, "").toLowerCase())) return todo;
+      return `](${GITHUB_BASE + caminhoNoRepo(srcDir, alvo) + ancora})`;
+    });
+    writeFileSync(resolve(SAIDA, "md", `${item.slug}.md`), paraDownload);
+    partesMd.push(paraDownload.trim());
   }
-  const cabecalho = `# ${sumario.titulo}\n\n> ${sumario.subtitulo}\n>\n> ${versaoDoLivro()}${DOI ? ` · DOI ${DOI}` : ""} · fonte: https://github.com/GHDaru/rag · site: ${SITE}\n\n---\n\n`;
+  const cabecalho = `# ${sumario.titulo}\n\n> ${sumario.subtitulo}\n>\n> ${versaoDoLivro()}${DOI ? ` · DOI ${DOI}` : ""} · fonte: ${REPO_URL} · site: ${SITE}\n\n---\n\n`;
   writeFileSync(resolve(SAIDA, T.mdLivro), cabecalho + partesMd.join("\n\n---\n\n") + "\n");
 }
 
@@ -753,6 +782,16 @@ for (const i of [...itens, { slug: "index" }, { slug: "sumario" }]) {
 if (quebrados.length) {
   console.error(`✗ ${quebrados.length} link(s) interno(s) quebrado(s):`);
   quebrados.forEach((q) => console.error("   " + q));
+  process.exit(1);
+}
+
+// ADR 0015 — a outra metade do portão: links para arquivos do próprio repositório.
+// Com a convenção relativa, 100% dos links do livro passam a ser validados: os
+// internos contra as páginas geradas, estes contra o disco.
+if (linksDeRepoQuebrados.length) {
+  const unicos = [...new Set(linksDeRepoQuebrados)];
+  console.error(`✗ ${unicos.length} link(s) para o repositório apontando para arquivo inexistente:`);
+  unicos.forEach((q) => console.error("   " + q));
   process.exit(1);
 }
 

@@ -53,7 +53,7 @@ Daí a conclusão prática: **busca híbrida é o upgrade de melhor relação be
 
 
 **O núcleo do BM25, para você ver que cabe mesmo.** É o laço de pontuação de
-[`rag_zero/bm25.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/bm25.py):
+[`rag_zero/bm25.py`](../../rag-zero/rag_zero/bm25.py):
 
 ```python
 for termo in normalizar(consulta):
@@ -120,7 +120,7 @@ cd rag-zero
 python3 etapas/etapa05_busca.py
 ```
 
-Código: [`rag_zero/bm25.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/bm25.py). O que você deve ver: a tabela de ganho por estágio, e o BM25 achando `arXiv 2401.18059` onde o denso erra.
+Código: [`rag_zero/bm25.py`](../../rag-zero/rag_zero/bm25.py). O que você deve ver: a tabela de ganho por estágio, e o BM25 achando `arXiv 2401.18059` onde o denso erra.
 ## Verificação
 
 1. Usuários buscam por código de produto (`XR-4400-B`) e não encontram, mas encontram por descrição. Qual família está faltando, e por quê?

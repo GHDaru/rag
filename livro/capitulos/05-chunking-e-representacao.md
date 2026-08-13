@@ -91,7 +91,7 @@ cd rag-zero
 python3 -m pytest tests/ -q -k chunking
 ```
 
-Código: [`rag_zero/chunking.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/chunking.py). O que você deve ver: `sentence_window` indexando a frase e entregando a janela — as duas unidades diferentes.
+Código: [`rag_zero/chunking.py`](../../rag-zero/rag_zero/chunking.py). O que você deve ver: `sentence_window` indexando a frase e entregando a janela — as duas unidades diferentes.
 ## Verificação
 
 1. Seu sistema recupera o trecho certo, mas a resposta sai incompleta por falta de contexto em volta. Qual é a solução **errada** e qual é a certa?

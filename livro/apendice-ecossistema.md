@@ -2,9 +2,9 @@
 
 > Frameworks, bibliotecas e coleções **organizados pelo problema que resolvem** — não por popularidade, e nunca como recomendação (Princípio VI: nenhum framework é "o jeito certo").
 >
-> Edição 1.0 · captura em 2026-08. Origem: [panorama da comunidade](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md).
+> Edição 1.0 · captura em 2026-08. Origem: [panorama da comunidade](../estudos/2026-08-03-panorama-comunidade.md).
 >
-> **Como ler:** esta página é *reference* (Diátaxis) — consulta, não leitura linear. A avaliação comparada por dimensão, com evidência, é a **rodada 4** do [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md); até lá, o que está aqui é mapa, não veredito.
+> **Como ler:** esta página é *reference* (Diátaxis) — consulta, não leitura linear. A avaliação comparada por dimensão, com evidência, é a **rodada 4** do [ROADMAP](../ROADMAP.md); até lá, o que está aqui é mapa, não veredito.
 
 ## Otimizar prompt automaticamente (cap. 16)
 

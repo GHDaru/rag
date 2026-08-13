@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](HISTORICO.md)
 >
-> **Maturidade: fundação.** A moldura do livro está fechada. O aprofundamento por capítulo é o trabalho das rodadas seguintes — ver [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+> **Maturidade: fundação.** A moldura do livro está fechada. O aprofundamento por capítulo é o trabalho das rodadas seguintes — ver [ROADMAP](../ROADMAP.md).
 
 ## Objetivos de aprendizagem
 
@@ -75,7 +75,7 @@ O livro é **vivo** e **empírico**, e assume as consequências das duas coisas.
 
 **Empírico**: uma técnica só entra no corpo com **fonte primária** (o paper ou a documentação que propôs e mediu) **e** **implementação pública**. Número sem condição experimental ao lado não entra — nem de fornecedor grande, nem quando confirma o que gostaríamos.
 
-E um aviso que vale para o livro inteiro: **toda medição citada aqui foi feita por alguém, em algum corpus, com algum modelo.** Reproduza no seu. É o que o [benchmark](https://github.com/GHDaru/rag/blob/main/benchmark/README.md) existe para fazer, a partir da rodada 4.
+E um aviso que vale para o livro inteiro: **toda medição citada aqui foi feita por alguém, em algum corpus, com algum modelo.** Reproduza no seu. É o que o [benchmark](../benchmark/README.md) existe para fazer, a partir da rodada 4.
 
 ### Leitura executiva
 

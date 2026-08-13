@@ -1,6 +1,6 @@
 # Guia Editorial
 
-> Como este livro é escrito. A **constituição** ([`.specify/memory/constitution.md`](https://github.com/GHDaru/rag/blob/main/.specify/memory/constitution.md)) diz o que é obrigatório; este guia diz **como** cumprir.
+> Como este livro é escrito. A **constituição** ([`.specify/memory/constitution.md`](../.specify/memory/constitution.md)) diz o que é obrigatório; este guia diz **como** cumprir.
 >
 > Edição 0.1 · captura em 2026-08.
 
@@ -63,6 +63,7 @@ E a formulação padrão para medição de terceiro: **"foi medido por N, em C, 
 - **Sem hype.** Nada é "revolucionário", "poderoso" ou "game changer". Se a coisa é boa, o número e o trade-off dizem.
 - **Sem vendor favorito** (Princípio VI). Ferramentas aparecem pelo problema que resolvem, com o custo declarado.
 - **Voz ativa e frase curta.** O assunto já é difícil; a prosa não deve somar dificuldade.
+- **Link para arquivo do próprio repositório é sempre relativo** — `../../rag-zero/rag_zero/bm25.py`, nunca a URL completa do GitHub ([ADR 0015](../adr/0015-links-para-o-proprio-repositorio.md)). O motor converte na URL pública, o GitHub resolve nativamente quem lê o `.md`, e — o que decide — **o build confere o alvo contra o disco**. URL absoluta é um link externo: nenhum portão a valida, e a branch fica codificada em cada ocorrência.
 
 ## 5. A construção (`rag-zero`)
 

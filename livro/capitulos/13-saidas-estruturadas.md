@@ -84,7 +84,7 @@ cd rag-zero
 python3 etapas/etapa10_geracao.py
 ```
 
-Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: a verificação da resposta devolvendo `citacoes_invalidas` e `afirmacoes_sem_citacao` — o schema aplicado à saída.
+Código: [`rag_zero/geracao.py`](../../rag-zero/rag_zero/geracao.py). O que você deve ver: a verificação da resposta devolvendo `citacoes_invalidas` e `afirmacoes_sem_citacao` — o schema aplicado à saída.
 ## Verificação
 
 1. Você ativou saída estruturada nativa com schema garantido pelo provedor. Que classe de erro **continua** possível, e onde ela deve ser pega?

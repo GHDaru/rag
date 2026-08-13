@@ -109,7 +109,7 @@ Dois cuidados que separam painel de enfeite:
 
 ## Mão na massa — `rag-zero`, etapa 14
 
-> **A etapa 14 está parcial**, por decisão registrada no [ADR 0012](https://github.com/GHDaru/rag/blob/main/adr/0012-etapa-14-parcial.md): as métricas de **recuperação** existem e rodam; *faithfulness* e *answer relevance* exigem juiz calibrado, e um juiz não calibrado é o anti-padrão que o cap. 17 ensina a evitar.
+> **A etapa 14 está parcial**, por decisão registrada no [ADR 0012](../../adr/0012-etapa-14-parcial.md): as métricas de **recuperação** existem e rodam; *faithfulness* e *answer relevance* exigem juiz calibrado, e um juiz não calibrado é o anti-padrão que o cap. 17 ensina a evitar.
 
 Na etapa 14 você monta o eval do `rag-zero`: 30 perguntas sobre o texto deste livro (metade sintéticas, metade escritas por você), as quatro métricas implementadas com juiz de família diferente, e a tabela de diagnóstico impressa ao final. A etapa termina com um exercício desconfortável e deliberado: rodar o eval sobre a etapa 9 (só BM25) e sobre a etapa 10 (pipeline completo) e verificar se o ganho que você **esperava** aparece. O exercício de completude: o cálculo de *faithfulness* vem esqueletado — você implementa a decomposição em afirmações e descobre onde a métrica é frágil.
 
@@ -120,7 +120,7 @@ cd rag-zero
 python3 etapas/etapa05_busca.py
 ```
 
-Código: [`rag_zero/avaliacao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/avaliacao.py). O que você deve ver: as métricas de recuperação por estágio — e a armadilha do `recall@k` com gabarito grande.
+Código: [`rag_zero/avaliacao.py`](../../rag-zero/rag_zero/avaliacao.py). O que você deve ver: as métricas de recuperação por estágio — e a armadilha do `recall@k` com gabarito grande.
 ## Verificação
 
 1. *Context recall* 0,9, *context precision* 0,4, *faithfulness* 0,85. Qual é o problema, e qual o custo escondido dele? (Dica: cap. 20.)

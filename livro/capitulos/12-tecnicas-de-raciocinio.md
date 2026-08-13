@@ -80,7 +80,7 @@ cd rag-zero
 python3 etapas/etapa10_geracao.py
 ```
 
-Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: o contexto montado e o custo em tokens de cada bloco.
+Código: [`rag_zero/geracao.py`](../../rag-zero/rag_zero/geracao.py). O que você deve ver: o contexto montado e o custo em tokens de cada bloco.
 ## Verificação
 
 1. Seu sistema erra ao responder perguntas sobre a política interna da empresa. Qual das seis famílias resolve? (Cuidado: é pegadinha.)

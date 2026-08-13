@@ -95,7 +95,7 @@ RAG agêntico inverte o controle: o modelo decide **se, o que e onde** buscar, e
 
 ## Mão na massa — `rag-zero`, etapa 11
 
-> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](../../rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 11 a recuperação do `rag-zero` vira ferramenta: o modelo passa a decidir se busca, com reflexão sobre o resultado e um teto de 3 iterações. A etapa entrega dois números lado a lado — o custo médio por pergunta antes e depois — porque o conteúdo pedagógico aqui é justamente que autonomia tem preço. O exercício de completude: a detecção de laço improdutivo vem esqueletada; você define o critério de "não trouxe nada novo" e descobre que ele é mais sutil do que parece.
 
@@ -106,7 +106,7 @@ cd rag-zero
 python3 etapas/etapa02_naive.py   # a linha de base a bater
 ```
 
-Código relacionado: [`rag_zero/pipeline.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/pipeline.py).
+Código relacionado: [`rag_zero/pipeline.py`](../../rag-zero/rag_zero/pipeline.py).
 ## Verificação
 
 1. Seu sistema tem três fontes (documentação, base de tickets, banco de produtos) e o RAG atual busca nas três sempre. Que grau do espectro resolve, e o que ele custa?

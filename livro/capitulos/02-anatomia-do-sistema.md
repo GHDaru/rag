@@ -122,7 +122,7 @@ cd rag-zero
 python3 etapas/etapa02_naive.py
 ```
 
-Código: [`rag_zero/pipeline.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/pipeline.py). O que você deve ver: os dois caminhos separados, o identificador estável do chunk, e `procedência sobreviveu aos 4 contratos: True`.
+Código: [`rag_zero/pipeline.py`](../../rag-zero/rag_zero/pipeline.py). O que você deve ver: os dois caminhos separados, o identificador estável do chunk, e `procedência sobreviveu aos 4 contratos: True`.
 ## Verificação
 
 1. Seu sistema responde citando uma política revogada. Percorra a tabela de diagnóstico: quais componentes você **não** deve tocar, e por quê?

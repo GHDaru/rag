@@ -86,7 +86,7 @@ cd rag-zero
 python3 etapas/etapa06_reranking.py
 ```
 
-Código: [`rag_zero/recuperacao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/recuperacao.py). O que você deve ver: a mesma pergunta com e sem limiar, e a taxa de resultado zero deixando de ser zero.
+Código: [`rag_zero/recuperacao.py`](../../rag-zero/rag_zero/recuperacao.py). O que você deve ver: a mesma pergunta com e sem limiar, e a taxa de resultado zero deixando de ser zero.
 ## Verificação
 
 1. Seu *context recall* em N=100 é 0,62. Vale adotar reranking? O que fazer antes?

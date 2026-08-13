@@ -342,11 +342,57 @@ def r8_etapas_honestas() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# ADR 0015 — links para o próprio repositório
+# --------------------------------------------------------------------------- #
+
+def adr15_links_relativos() -> None:
+    """Nenhum link de arquivo do repositório escrito como URL absoluta.
+
+    O motor já converte caminho relativo na URL pública desde sempre; as 49 URLs
+    absolutas que existiam contornavam esse mecanismo e, por serem externas,
+    **nenhum portão as validava**. Com a forma relativa, o build confere cada uma
+    contra o disco.
+
+    A checagem mira `/blob/` — o link para um **arquivo**. A URL da raiz do
+    repositório continua legítima: em `autor.md` ela é a citação bibliográfica da
+    obra, não uma referência a código.
+    """
+    for p in sorted(LIVRO.rglob("*.md")):
+        for n, linha in enumerate(p.read_text(encoding="utf8").splitlines(), 1):
+            if "github.com/GHDaru/rag/blob/" in linha or "github.com/GHDaru/rag/tree/" in linha:
+                falhas.append(
+                    f"ADR 0015: {p.relative_to(RAIZ)}:{n} usa URL absoluta para o próprio "
+                    f"repositório — use caminho relativo; o motor resolve e o build valida")
+
+
+def adr15_fonte_unica() -> None:
+    """A base pública do repositório vive em UM lugar no motor.
+
+    E nenhum resíduo do fork: o rodapé da edição em inglês apontava para o
+    repositório do livro irmão — bug real, encontrado ao escrever o ADR.
+    """
+    for arq in sorted((RAIZ / "publicar").glob("*.mjs")):
+        texto = arq.read_text(encoding="utf8")
+        if "harness_engineering" in texto:
+            falhas.append(f"ADR 0015: {arq.relative_to(RAIZ)} referencia o repositório do "
+                          f"livro irmão — resíduo do fork")
+        literais = len(re.findall(r'"https://github\.com/GHDaru/rag/(?:blob|tree)/', texto))
+        if literais:
+            falhas.append(f"ADR 0015: {arq.relative_to(RAIZ)} tem {literais} URL(s) de "
+                          f"repositório literal(is) — derive de `repo` em sumario.json")
+
+    cfg = json.loads((RAIZ / "publicar/sumario.json").read_text(encoding="utf8")).get("repo")
+    if not cfg or "base" not in cfg or "ref" not in cfg:
+        falhas.append("ADR 0015: `publicar/sumario.json` sem o bloco `repo` (base + ref)")
+
+
+# --------------------------------------------------------------------------- #
 
 def main() -> int:
     for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
                      r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
-                     r6_sumario, r8_etapas_honestas):
+                     r6_sumario, r8_etapas_honestas,
+                     adr15_links_relativos, adr15_fonte_unica):
         checagem()
 
     if avisos:

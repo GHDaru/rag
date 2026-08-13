@@ -102,7 +102,7 @@ Contexto é pago **em toda requisição, para sempre**: uma linha acrescentada a
 
 ## Mão na massa — `rag-zero`, etapa 16
 
-> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](https://github.com/GHDaru/rag/blob/main/rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
+> **Esta etapa está especificada e ainda não construída.** O que existe hoje da trilha cobre as etapas 0–10 e 14 parcialmente; o mapa completo, com o estado de cada uma, está no [README do `rag-zero`](../../rag-zero/README.md). A descrição abaixo é o **projeto** da etapa, não um exercício disponível.
 
 Na etapa 16 você fecha a construção: o contador da etapa 0 vira painel. Custo por parcela, taxa de acerto do cache antes e depois de reordenar as camadas, latência p50/p95 com e sem o laço agêntico da etapa 11 — e as métricas de qualidade da etapa 15 na mesma tela. O entregável é a tela, não o código. O exercício de completude: a detecção de invalidação de cache vem esqueletada — você implementa o alerta que dispara quando a taxa cai, e descobre, ao rodar, que o seu próprio sistema tinha um invalidador escondido.
 
@@ -113,7 +113,7 @@ cd rag-zero
 python3 etapas/etapa00_contador.py
 ```
 
-Código: [`rag_zero/contexto.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/contexto.py). O que você deve ver: a montagem determinística — a propriedade de que o cache por prefixo depende.
+Código: [`rag_zero/contexto.py`](../../rag-zero/rag_zero/contexto.py). O que você deve ver: a montagem determinística — a propriedade de que o cache por prefixo depende.
 ## Verificação
 
 1. Seu prompt de sistema tem 3.000 tokens e o sistema faz 500 mil chamadas por mês. Estime a ordem de grandeza do custo dessa decisão e diga o que a mudaria de graça.

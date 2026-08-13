@@ -97,7 +97,7 @@ cd rag-zero
 python3 etapas/etapa09_raptor.py
 ```
 
-Código: [`rag_zero/raptor.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/raptor.py). O que você deve ver: a árvore condensando (180 → 55 → 24 → 12) e os limiares **derivados do corpus**.
+Código: [`rag_zero/raptor.py`](../../rag-zero/rag_zero/raptor.py). O que você deve ver: a árvore condensando (180 → 55 → 24 → 12) e os limiares **derivados do corpus**.
 ## Verificação
 
 1. *"Quais os assuntos mais frequentes nos nossos 5.000 chamados?"* Por que aumentar `top_k` piora essa resposta?

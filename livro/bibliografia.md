@@ -49,7 +49,7 @@ O cap. 09 afirmava que as duas técnicas resolvem a mesma falha e que a decisão
 
 ### ⚠ C3 — o `67%` do *contextual retrieval*, com a condição ao lado
 
-O caso de deriva que o [panorama §6.2](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md) documentava agora tem os números da fonte primária. Todos sobre a **taxa de falha de recuperação no top-20**, partindo de **5,7%**:
+O caso de deriva que o [panorama §6.2](../estudos/2026-08-03-panorama-comunidade.md) documentava agora tem os números da fonte primária. Todos sobre a **taxa de falha de recuperação no top-20**, partindo de **5,7%**:
 
 | Configuração | Taxa de falha | Redução |
 |---|:---:|:---:|
@@ -202,7 +202,7 @@ Não recebem ✓/⏳ — são recursos consultáveis, verificados apenas quanto 
 - [promptfoo — OWASP LLM Top 10](https://www.promptfoo.dev/docs/red-team/owasp-llm-top-10/) — red teaming mapeado à classificação
 - Tópico [`context-engineering`](https://github.com/topics/context-engineering) no GitHub
 
-**Guias de praticante sobre RAG em produção** (consultados em 2026-08-04; [análise crítica no panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)):
+**Guias de praticante sobre RAG em produção** (consultados em 2026-08-04; [análise crítica no panorama](../estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)):
 
 - [RAG Architecture in 2026](https://futureagi.com/blog/rag-architecture-llm-2025/) (Future AGI)
 - [Building Production RAG](https://www.premai.io/blog/building-production-rag-architecture-chunking-evaluation-monitoring-2026-guide/) (Prem AI)

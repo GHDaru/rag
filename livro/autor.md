@@ -73,7 +73,7 @@ A obra é versionada por edição (ver [Histórico](HISTORICO.md)):
 
 > Darú, Gilsiley Henrique. *Engenharia de RAG — Como se constrói um sistema em volta da recuperação da informação*. Edição 1.0, 2026. Disponível em: <https://github.com/GHDaru/rag>
 
-O registro de DOI (Zenodo/DataCite) entra quando a obra atingir a edição 1.0 — ver [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md). A co-autoria humano + IA está declarada no [Guia Editorial](GUIA-EDITORIAL.md) e registrada, edição a edição, no [Histórico](HISTORICO.md).
+O registro de DOI (Zenodo/DataCite) entra quando a obra atingir a edição 1.0 — ver [ROADMAP](../ROADMAP.md). A co-autoria humano + IA está declarada no [Guia Editorial](GUIA-EDITORIAL.md) e registrada, edição a edição, no [Histórico](HISTORICO.md).
 
 ## Perfis e contato
 

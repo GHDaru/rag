@@ -46,7 +46,7 @@ E o aviso que abre o capítulo, porque é o erro mais caro daqui: **cada técnic
   | + *Contextual BM25* | 2,9% | **49%** |
   | + reranking | 1,9% | **67%** |
 
-  O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundárias como mérito da técnica sozinha. Note também o que a tabela diz ao capítulo anterior: o salto de 35% para 49% é **só por acrescentar BM25**, o que é a busca híbrida do cap. 06 aparecendo de novo, agora medida. ✓ ([caso de deriva no panorama §6.2](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md))
+  O `67%` é **a pilha inteira, com reranker** — e circula em fontes secundárias como mérito da técnica sozinha. Note também o que a tabela diz ao capítulo anterior: o salto de 35% para 49% é **só por acrescentar BM25**, o que é a busca híbrida do cap. 06 aparecendo de novo, agora medida. ✓ ([caso de deriva no panorama §6.2](../../estudos/2026-08-03-panorama-comunidade.md))
 
 ## O estado da arte
 
@@ -102,7 +102,7 @@ cd rag-zero
 python3 etapas/etapa08_indexacao.py
 ```
 
-Código: [`rag_zero/indexacao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/indexacao.py). O que você deve ver: as três indexações medidas com as mesmas perguntas, e as chamadas de LLM de cada uma.
+Código: [`rag_zero/indexacao.py`](../../rag-zero/rag_zero/indexacao.py). O que você deve ver: as três indexações medidas com as mesmas perguntas, e as chamadas de LLM de cada uma.
 ## Verificação
 
 1. Você tem 2 milhões de chunks e orçamento apertado de indexação. Entre as duas técnicas, qual escolhe — e, dada a troca de qualidade medida, o que precisa verificar antes de aceitar a mais barata?

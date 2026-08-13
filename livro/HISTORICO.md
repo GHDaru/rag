@@ -10,7 +10,7 @@
 
 **O que é.** A versão em que o que o livro **afirma** e o que ele **entrega** coincidem — e em que o leitor consegue **construir**, não só decidir.
 
-**Como esta edição foi decidida.** Dois pareceres independentes, em contexto fresco, sem contato entre si. Cada acusação foi **verificada contra o repositório antes de virar plano**. Todas se confirmaram, e os dois chegaram à mesma causa por caminhos diferentes: *o livro não estava bloqueado por falta de conteúdo, e sim por incoerência entre o que afirmava e o que entregava.* As decisões viraram [ADR 0009](https://github.com/GHDaru/rag/blob/main/adr/0009-escopo-da-edicao-1-0.md) (escopo), [0010](https://github.com/GHDaru/rag/blob/main/adr/0010-companion-na-1-0.md) (companion) e [0011](https://github.com/GHDaru/rag/blob/main/adr/0011-politica-de-siglas.md) (siglas).
+**Como esta edição foi decidida.** Dois pareceres independentes, em contexto fresco, sem contato entre si. Cada acusação foi **verificada contra o repositório antes de virar plano**. Todas se confirmaram, e os dois chegaram à mesma causa por caminhos diferentes: *o livro não estava bloqueado por falta de conteúdo, e sim por incoerência entre o que afirmava e o que entregava.* As decisões viraram [ADR 0009](../adr/0009-escopo-da-edicao-1-0.md) (escopo), [0010](../adr/0010-companion-na-1-0.md) (companion) e [0011](../adr/0011-politica-de-siglas.md) (siglas).
 
 **O que estava errado, e foi corrigido:**
 
@@ -162,12 +162,12 @@ Medindo a distribuição de similaridade no corpus com o embedder desta trilha: 
 
 **O que foi feito:**
 - **Constituição 2.0.0** — derivada da 1.2.0 do livro *Engenharia de Harness* (mesmo método pedagógico e editorial, domínio novo). Princípio II reescrito: a fonte-base deixa de ser "o código de harnesses" e passa a ser **paper + implementação pública**. Princípio VIII criado: fixa a moldura do par e o lugar do RAG.
-- **Levantamento da comunidade** — [panorama](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md) cruzando academia (surveys estruturantes), repositórios públicos, frameworks e técnicas, e respondendo à pergunta que originou o projeto ("engenharia de contexto substitui RAG?" — não como substituto, como moldura).
+- **Levantamento da comunidade** — [panorama](../estudos/2026-08-03-panorama-comunidade.md) cruzando academia (surveys estruturantes), repositórios públicos, frameworks e técnicas, e respondendo à pergunta que originou o projeto ("engenharia de contexto substitui RAG?" — não como substituto, como moldura).
 - **Sumário em três partes** — Parte I (Engenharia de Prompt, caps. 11–17), Parte II (Engenharia de Contexto, caps. 20–14, com RAG em três capítulos), Parte III (o sistema em produção, caps. 21–23), mais abertura (00–01) e fechamento (18).
 - **Aparato** — catálogo de técnicas, apêndice do ecossistema, glossário, bibliografia com status de validação, grafo do livro.
 - **Motor de publicação** adaptado: PT-only, sem Radar, com o grafo remapeado para o novo domínio.
 
-**Fora do escopo, por decisão explícita:** edição em inglês, Radar de atualização automática, benchmark quantitativo de frameworks, e a trilha prática `rag-zero` (descrita nos capítulos, implementada na rodada 3). Ver [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+**Fora do escopo, por decisão explícita:** edição em inglês, Radar de atualização automática, benchmark quantitativo de frameworks, e a trilha prática `rag-zero` (descrita nos capítulos, implementada na rodada 3). Ver [ROADMAP](../ROADMAP.md).
 
 **Estado da evidência (honestidade obrigatória, Princípio I):** **nenhuma referência tem status ✓ nesta edição.** Todas estão marcadas ⏳ na [bibliografia](bibliografia.md) e `[a validar]` nos capítulos. Os capítulos declaram maturidade "esboço" ou "fundação" no cabeçalho. A validação é a rodada 2.
 
@@ -175,7 +175,7 @@ Medindo a distribuição de similaridade no corpus com o embedder desta trilha: 
 
 ### Adendo 0.1.1 — 2026-08-04 · Técnicas nomeadas e o teto do corpus
 
-Rodada curta, disparada por três guias de praticante indicados pelo editor ([análise no panorama §6](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)). Um quarto guia devolveu HTTP 403 e fica como pendência declarada.
+Rodada curta, disparada por três guias de praticante indicados pelo editor ([análise no panorama §6](../estudos/2026-08-03-panorama-comunidade.md#6-adendo-2026-08-04--guias-de-praticante-sobre-rag-em-produção)). Um quarto guia devolveu HTTP 403 e fica como pendência declarada.
 
 **O que entrou:**
 - **Seis técnicas nomeadas** que o esqueleto tratava de forma genérica: RAPTOR (cap. 09), Self-RAG / CRAG / FLARE / Adaptive RAG (cap. 18), step-back prompting (cap. 09), sentence-window e proposition chunking (cap. 06). Todas ⏳, na fila da rodada 2.

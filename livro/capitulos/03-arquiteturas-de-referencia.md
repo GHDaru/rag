@@ -109,7 +109,7 @@ cd rag-zero
 python3 etapas/etapa02_naive.py
 ```
 
-Código: [`rag_zero/pipeline.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/pipeline.py). O que você deve ver: o Naive RAG inteiro respondendo, e a lista do que ele **não** faz — que é o índice do resto do livro.
+Código: [`rag_zero/pipeline.py`](../../rag-zero/rag_zero/pipeline.py). O que você deve ver: o Naive RAG inteiro respondendo, e a lista do que ele **não** faz — que é o índice do resto do livro.
 ## Verificação
 
 1. Seu sistema tem reescrita de consulta, busca híbrida e reranking, e o time o chama de "modular". Que teste decide se o nome está certo?

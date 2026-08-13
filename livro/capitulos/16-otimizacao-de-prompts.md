@@ -90,7 +90,7 @@ cd rag-zero
 python3 etapas/etapa10_geracao.py
 ```
 
-Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: o prompt de fundamentação como artefato — o objeto que um otimizador otimizaria.
+Código: [`rag_zero/geracao.py`](../../rag-zero/rag_zero/geracao.py). O que você deve ver: o prompt de fundamentação como artefato — o objeto que um otimizador otimizaria.
 ## Verificação
 
 1. Seu otimizador reporta ganho de 12 pontos e produção não muda. Cite as duas causas mais prováveis, em ordem.

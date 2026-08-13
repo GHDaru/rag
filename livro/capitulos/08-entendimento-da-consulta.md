@@ -94,7 +94,7 @@ cd rag-zero
 python3 etapas/etapa07_consulta.py
 ```
 
-Código: [`rag_zero/consulta.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/consulta.py). O que você deve ver: o roteamento, o portão de reescrita, e a conta: 2 chamadas por pergunta com tudo ligado, 0 com os padrões.
+Código: [`rag_zero/consulta.py`](../../rag-zero/rag_zero/consulta.py). O que você deve ver: o roteamento, o portão de reescrita, e a conta: 2 chamadas por pergunta com tudo ligado, 0 com os padrões.
 ## Verificação
 
 1. Seu RAG funciona bem na primeira pergunta e degrada a partir da terceira. Qual técnica deste capítulo é a primeira suspeita, e por quê?

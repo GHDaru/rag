@@ -6,6 +6,7 @@
 
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { GITHUB_TREE } from "./repo.mjs";
 
 // O ecossistema mapeado no panorama da comunidade (estudos/), com variantes de grafia.
 const FERRAMENTAS = [
@@ -57,7 +58,8 @@ const ETAPAS = [
   "14 avaliação e observabilidade", "15 segurança do corpus", "16 custo e cache",
 ];
 
-const GH = "https://github.com/GHDaru/rag/tree/main/rag-zero";
+// Mesma fonte única que o motor usa (ADR 0015).
+const GH = `${GITHUB_TREE}rag-zero`;
 
 function contar(re, texto) {
   const m = texto.match(re);

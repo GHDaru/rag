@@ -53,7 +53,7 @@ A restrição mais subestimada é a última: **dizer explicitamente o que fazer 
 
 
 **Um contexto montado, com o contador ao lado.** Saída real de
-[`etapa00_contador.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/etapas/etapa00_contador.py):
+[`etapa00_contador.py`](../../rag-zero/etapas/etapa00_contador.py):
 
 ```text
 bloco                    tokens       %  procedência
@@ -120,7 +120,7 @@ cd rag-zero
 python3 etapas/etapa10_geracao.py
 ```
 
-Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: o prompt montado em blocos, com o material externo delimitado e rotulado.
+Código: [`rag_zero/geracao.py`](../../rag-zero/rag_zero/geracao.py). O que você deve ver: o prompt montado em blocos, com o material externo delimitado e rotulado.
 ## Verificação
 
 1. Um prompt de resumo funciona em documentos curtos e degrada em longos, sem mudar mais nada. Que decisão de anatomia é a primeira suspeita — e por quê?

@@ -19,6 +19,6 @@ Arestas mais grossas são menções mais frequentes. Capítulo→capítulo apare
 
 ## O que o grafo revela nesta edição
 
-Na edição 1.0 o grafo é esparso por construção — os capítulos estão no nível de esqueleto, e a densidade de menções cresce com o aprofundamento. Os pisos de qualidade do build (nós e arestas mínimos) foram calibrados para esta edição e **sobem a cada rodada** de aprofundamento, registrado no [ROADMAP](https://github.com/GHDaru/rag/blob/main/ROADMAP.md).
+Na edição 1.0 o grafo é esparso por construção — os capítulos estão no nível de esqueleto, e a densidade de menções cresce com o aprofundamento. Os pisos de qualidade do build (nós e arestas mínimos) foram calibrados para esta edição e **sobem a cada rodada** de aprofundamento, registrado no [ROADMAP](../ROADMAP.md).
 
 O uso editorial do grafo, a partir da rodada 2: procurar **nós isolados** (conceito prometido no glossário e não usado em nenhum capítulo) e **pontes ausentes** (capítulos que deveriam conversar e não se citam — por exemplo, 12 e 16, que tratam do mesmo risco por ângulos diferentes).

@@ -101,7 +101,7 @@ cd rag-zero
 python3 -m pytest tests/ -q -k geracao
 ```
 
-Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: os testes que fixam o contrato da resposta: são asserção determinística, não juiz.
+Código: [`rag_zero/geracao.py`](../../rag-zero/rag_zero/geracao.py). O que você deve ver: os testes que fixam o contrato da resposta: são asserção determinística, não juiz.
 ## Verificação
 
 1. Liste três critérios que seu time hoje avalia com juiz e que poderiam virar asserção determinística.

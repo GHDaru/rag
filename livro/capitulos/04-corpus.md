@@ -44,7 +44,7 @@ O que existe, e ancora parcialmente o capítulo:
 
 ## Fontes da indústria
 
-- **O argumento de governança** — a leitura de fornecedores de catálogo de dados: *"retrieval quality is ultimately bounded by what is in the index"*, com governança como **pré-requisito** e não etapa posterior; ativos certificados, glossário de negócio e linhagem melhorariam a confiabilidade da recuperação. **Fonte interessada** — quem vende catálogo tem motivo para dizer isso — e por isso o livro adota o argumento (que se sustenta por lógica) e **não** os números que o acompanham (ver [panorama §6](https://github.com/GHDaru/rag/blob/main/estudos/2026-08-03-panorama-comunidade.md)).
+- **O argumento de governança** — a leitura de fornecedores de catálogo de dados: *"retrieval quality is ultimately bounded by what is in the index"*, com governança como **pré-requisito** e não etapa posterior; ativos certificados, glossário de negócio e linhagem melhorariam a confiabilidade da recuperação. **Fonte interessada** — quem vende catálogo tem motivo para dizer isso — e por isso o livro adota o argumento (que se sustenta por lógica) e **não** os números que o acompanham (ver [panorama §6](../../estudos/2026-08-03-panorama-comunidade.md)).
 - **A afirmação que circula sem fonte** — "80% das falhas de RAG remontam à camada de ingestão e chunking" aparece em guias de praticante **sem referência a medição alguma**. É plausível, é citável, e é exatamente o tipo de número que vira consenso sem nunca ter sido medido. Fica registrado aqui como **não utilizável** — e como exemplo do que o Princípio I existe para barrar.
 - **A prática convergente** — o que os praticantes descrevem fazer, independentemente do número: pipeline de ingestão versionado, reindexação incremental por mudança, e metadado de permissão aplicado **antes** da busca.
 
@@ -158,7 +158,7 @@ cd rag-zero
 python3 etapas/etapa03_ingestao.py
 ```
 
-Código: [`rag_zero/ingestao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/ingestao.py). O que você deve ver: o documento `revogado` ranqueando **melhor** sem governança, e sumindo com ela.
+Código: [`rag_zero/ingestao.py`](../../rag-zero/rag_zero/ingestao.py). O que você deve ver: o documento `revogado` ranqueando **melhor** sem governança, e sumindo com ela.
 ## Verificação
 
 1. Seu RAG cita uma política revogada. Liste os pontos do pipeline onde isso poderia ter sido evitado, do mais barato ao mais caro.

@@ -57,7 +57,7 @@ Há um contrapeso honesto, e ignorá-lo produz sistemas irritantes: exclusividad
 
 **O prompt, inteiro.** Este é o artefato — não uma descrição dele. É o que o
 `rag-zero` envia, e você pode conferir em
-[`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py):
+[`rag_zero/geracao.py`](../../rag-zero/rag_zero/geracao.py):
 
 ```text
 Responda **exclusivamente** com o material fornecido entre as marcas <trecho>.
@@ -140,7 +140,7 @@ cd rag-zero
 python3 etapas/etapa10_geracao.py
 ```
 
-Código: [`rag_zero/geracao.py`](https://github.com/GHDaru/rag/blob/main/rag-zero/rag_zero/geracao.py). O que você deve ver: os três modos de falha distinguidos: citação inválida, resposta sem citação, e abstenção.
+Código: [`rag_zero/geracao.py`](../../rag-zero/rag_zero/geracao.py). O que você deve ver: os três modos de falha distinguidos: citação inválida, resposta sem citação, e abstenção.
 ## Verificação
 
 1. Seu RAG responde corretamente uma pergunta cuja resposta não está no corpus. Por que isso é um problema, e qual métrica o revela?
