@@ -94,7 +94,7 @@ O que **ainda não** existe, e é deliberado:
 
 ### Feito (edição 0.5, 2026-08-09)
 
-- ✅ **Etapas 0, 3–6, 9 e 10 construídas, executáveis e testadas** — 39 testes, sem rede, sem GPU, sem credencial, **sem uma única dependência externa**.
+- ✅ **Etapas 0, 3–6, 9 e 10 construídas, executáveis e testadas** — 48 testes, sem rede, sem GPU, sem credencial, **sem uma única dependência externa**.
 - ✅ **BM25 Okapi de verdade** em ~40 linhas (IDF + saturação + normalização por comprimento), com índice invertido.
 - ✅ **As três portas** (`LLMPort`, `EmbedderPort`, `RerankerPort`) com adaptadores que não custam nada.
 - ✅ **O erro didático deliberado declarado e fixado em teste**: o embedder de *hashing* não tem semântica, e a etapa 5 mede o que isso custa.

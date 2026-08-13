@@ -11,6 +11,8 @@ Um aviso que faz parte da lição: o embedder daqui é de *hashing*, sem semânt
 (ver `rag_zero.portas.EmbedderHashing`). Ele reproduz a **mecânica** da busca
 densa, não a **qualidade**. A saída mostra exatamente onde isso quebra — e é
 esse o erro didático deliberado da etapa.
+
+Delta (ADR 0014) — vem da etapa 3; decide: esparso e denso não competem, se somam — e a fusão é por posição, não por nota, porque as escalas não são comparáveis.
 """
 
 from __future__ import annotations

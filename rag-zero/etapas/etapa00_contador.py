@@ -8,6 +8,8 @@ O que a saída prova: **a composição do contexto é uma decisão**, e sem medi
 você não sabe quem está gastando o orçamento. A maior parte dos sistemas em
 produção não tem nada equivalente — e é por isso que degradam de forma que
 ninguém consegue explicar depois (cap. 20).
+
+Delta (ADR 0014) — primeira etapa; decide: medir o contexto por bloco antes de otimizar qualquer coisa: sem o instrumento, toda decisão seguinte é palpite.
 """
 
 from __future__ import annotations

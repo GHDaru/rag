@@ -5,6 +5,8 @@
 A falha: **o chunk perdeu o contexto de onde veio**. Duas curas, com contas de
 ordem de grandeza diferente — e, como a rodada 2 mostrou, com **troca de
 qualidade**, não só de preço.
+
+Delta (ADR 0014) — vem da etapa 7; decide: empurrar o trabalho para a indexação, onde se paga uma vez; contextual e late chunking medidos lado a lado.
 """
 
 from __future__ import annotations

@@ -4,6 +4,8 @@
 
 Constrói a árvore de resumos recursivos sobre o texto deste livro e compara,
 na mesma pergunta, o que vem das **folhas** e o que vem dos **nós altos**.
+
+Delta (ADR 0014) — vem da etapa 8; decide: a pergunta global não se responde com trecho: exige um nível de agregação que o corpus não tem, e que a árvore constrói.
 """
 
 from __future__ import annotations

@@ -9,6 +9,8 @@ A etapa roda três geradores contra o mesmo contexto. Nenhum deles é um modelo
 real: são adaptadores que encenam, de forma determinística, os três
 comportamentos do capítulo. O que a etapa demonstra não é qualidade de redação —
 é que **a verificação pega o defeito**.
+
+Delta (ADR 0014) — vem da etapa 9; decide: a metade esquecida da sigla: citação verificável e abstenção, com a verificação pegando o defeito.
 """
 
 from __future__ import annotations

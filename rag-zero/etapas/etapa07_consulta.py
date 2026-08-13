@@ -5,6 +5,8 @@
 Os caps. 06 e 07 otimizam **como se busca**. Este otimiza **o que se busca**. E a
 regra econômica que atravessa tudo aqui: isto é **custo de consulta**, pago para
 sempre — ao contrário do cap. 09, onde se paga uma vez na indexação.
+
+Delta (ADR 0014) — vem da etapa 6; decide: otimizar a pergunta, não o índice — e declarar que isso é custo por consulta, pago para sempre.
 """
 
 from __future__ import annotations

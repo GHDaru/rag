@@ -68,7 +68,7 @@ E a formulação padrão para medição de terceiro: **"foi medido por N, em C, 
 ## 5. A construção (`rag-zero`)
 
 - **Do zero antes da biblioteca** (restrição 3 da constituição). Toda técnica é implementada na mão primeiro — BM25 em ~40 linhas antes de qualquer vector store. A biblioteca entra depois, nomeada como escolha.
-- **Uma etapa por capítulo**, autocontida e executável.
+- **Uma etapa por capítulo**, **executável isoladamente** — um comando, sem rede e sem credencial, e sem ter rodado a etapa anterior — sobre o núcleo testado (`rag_zero/`). O **delta** de cada etapa é declarado no cabeçalho do script e gerado em [`DIFF.md`](../rag-zero/DIFF.md); é ele que carrega a lição, no lugar da duplicação de diretório ([ADR 0014](../adr/0014-autocontencao-das-etapas.md)).
 - **Cada porta nasce da dor do capítulo** (`LLMPort`, `RetrieverPort`, `MemoryPort`, `EvalPort`) — nunca estrutura antecipada.
 - **Completion problem, não folha em branco**: a etapa entrega o esqueleto e o leitor implementa a parte que carrega a decisão.
 - **Custo zero e sem GPU** (Princípio VI).

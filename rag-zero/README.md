@@ -23,7 +23,8 @@ python3 etapas/etapa08_indexacao.py    # contextual × late chunking, medidos
 python3 etapas/etapa09_raptor.py       # a árvore de resumos recursivos
 python3 etapas/etapa10_geracao.py      # o "G": citação verificável e abstenção
 
-python3 -m pytest tests/ -q            # 39 testes
+python3 -m pytest tests/ -q            # 48 testes
+python3 ferramentas/verificar_etapas.py # o portão da restrição 4
 ```
 
 O corpus é **o texto deste livro**. Nenhuma etapa baixa nada.
@@ -50,8 +51,19 @@ Da seção "Restrições" da [constituição](../.specify/memory/constitution.md
 3. **Completion problem, não folha em branco** (Carga Cognitiva). O esqueleto vem
    pronto; o que carrega a **decisão** fica com você — o `k_rrf` da fusão, o limiar de
    abstenção, a política de expiração.
-4. **Anti-apodrecimento.** Modelo atrás de porta; etapas autocontidas; e **erro
-   didático deliberado comentado como tal**.
+4. **Anti-apodrecimento.** Modelo atrás de porta; **cada etapa executável
+   isoladamente** — um comando, sem rede, sem credencial, sem dependência externa e
+   sem ter rodado a anterior — sobre um **núcleo único e testado**, e não sobre
+   cópias por etapa; e **erro didático deliberado comentado como tal**.
+
+   A escolha aqui difere da do livro irmão, e é deliberada ([ADR 0014](../adr/0014-autocontencao-das-etapas.md)):
+   o *harness-zero* guarda um diretório completo por etapa, e ganha com isso um
+   `git diff` que é literalmente a lição. O `rag-zero` guarda **um** núcleo com 48
+   testes, porque cópia divergente é a forma mais comum de apodrecimento — a cópia 3
+   se afasta da 11 e nenhum teste percebe. O que se perde nessa troca, o **delta
+   legível**, volta gerado: o cabeçalho de cada etapa declara o que ela acrescenta, e
+   [`DIFF.md`](DIFF.md) reúne todos. Diff gerado pode ser conferido contra a fonte;
+   cópia mantida à mão, não.
 
 ### O erro didático deliberado, declarado de frente
 

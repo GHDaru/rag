@@ -6,6 +6,8 @@ O teste que fecha a etapa, e que dá nome ao capítulo: **um documento marcado
 como `revogado` não aparece em nenhuma recuperação, mesmo sendo o mais similar
 à consulta.** Um índice que não sabe disso não é um índice — é uma pilha de
 texto, e nenhuma técnica dos capítulos seguintes conserta.
+
+Delta (ADR 0014) — vem da etapa 2; decide: a governança do corpus entra ANTES da técnica: proveniência e deduplicação são o que nenhum reranking conserta depois.
 """
 
 from __future__ import annotations

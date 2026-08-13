@@ -14,6 +14,8 @@ Ela mostra duas coisas:
    objeto, a primeira consequência é reindexar por requisição sem ninguém ver.
 2. **Os quatro contratos honrados** — a procedência atravessa documento → chunk
    → índice → candidato → citação. É o que torna a citação do cap. 15 possível.
+
+Delta (ADR 0014) — vem da etapa 0; decide: fechar o circuito inteiro na forma mais burra possível — a linha de base contra a qual todo ganho posterior é medido.
 """
 
 from __future__ import annotations

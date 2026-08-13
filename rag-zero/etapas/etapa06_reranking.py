@@ -9,6 +9,8 @@ Duas coisas que o cap. 07 diz e quase nenhum tutorial faz:
 2. **Instalar o caminho de abstenção.** Um retriever que sempre devolve K
    sempre devolve *algo*. Se o corpus não tem a resposta, esse algo é ruído — e
    o gerador, sem instrução contrária, vai usá-lo (cap. 15).
+
+Delta (ADR 0014) — vem da etapa 5; decide: a nota do reranker vira limiar: é o único estágio que devolve número calibrável, e é ele que instala a abstenção.
 """
 
 from __future__ import annotations
