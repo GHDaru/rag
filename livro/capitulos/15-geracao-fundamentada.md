@@ -127,7 +127,13 @@ Separar as duas é o que permite consertar o lugar certo. Um sistema com *faithf
 
 ### Leitura executiva
 
-Recuperar bem não produz resposta fundamentada — o "G" do RAG tem três falhas próprias, invisíveis às métricas de recuperação: **responder de memória** (acerta, e você não tem garantia nenhuma sobre a próxima pergunta), **costurar o que não estava lá**, e **citar decorativamente**. **O que roubar:** as três exigências do prompt de fundamentação — exclusividade da fonte, marcação de procedência, e **regra de ausência** — postas antes do material, com a tarefa depois. E distinga **o que precisa de fonte** (fatos, números, políticas) do que não precisa (linguagem, aritmética, estrutura), senão o sistema fica irritante. **Sobre citação:** menção não garante nada; o que muda o jogo é **atribuição por afirmação** em saída estruturada — aí a validação de citação vira código, e *faithfulness* passa a ser calculável em produção. **Sobre abstenção:** não é o modelo decidir que não sabe, é o sistema ter caminho — e a decisão de produto é o que o usuário vê quando ele não sabe. **A distinção que evita consertar no lugar errado:** resposta correta com *faithfulness* baixa = respondeu de memória (problema deste capítulo); resposta errada com *faithfulness* alta = o contexto estava errado (problema do cap. 04).
+Recuperar bem não produz resposta fundamentada. O "G" do RAG tem três falhas próprias, **invisíveis às métricas de recuperação**: responder de memória, costurar o que não estava lá, e citar decorativamente.
+
+1. **Ponha as três exigências antes do material, e a tarefa depois:** exclusividade da fonte, marcação de procedência e **regra de ausência**.
+2. **Distinga o que precisa de fonte** (fatos, números, políticas) **do que não precisa** (linguagem, aritmética, estrutura) — senão o sistema fica irritante e o usuário desliga a regra.
+3. **Troque menção por atribuição por afirmação, em saída estruturada.** Aí a validação de citação vira código, e *faithfulness* passa a ser calculável em produção.
+4. **Abstenção não é o modelo decidir que não sabe — é o sistema ter caminho.** A decisão de produto é o que o usuário vê quando ele não sabe.
+5. **Use esta distinção para não consertar no lugar errado:** resposta correta com *faithfulness* baixa = respondeu de memória (é deste capítulo); resposta errada com *faithfulness* alta = o contexto estava errado (é do cap. 04).
 
 ## Mão na massa — `rag-zero`, etapa 10
 

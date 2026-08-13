@@ -107,7 +107,13 @@ O mínimo:
 
 ### Leitura executiva
 
-A escolha "densa ou esparsa" é falsa: **as duas erram em direções complementares** — a densa perde identificador, código e nome próprio; a esparsa perde paráfrase e sinônimo. **O que roubar:** busca **híbrida com fusão por posição** é o upgrade de melhor relação benefício/esforço do livro, e a primeira coisa a tentar quando o RAG "não encontra o óbvio" — porque quase sempre o óbvio é um literal que o índice denso não representa. Funda **por posição no ranking**, não por nota: as escalas de cosseno e BM25 são incomparáveis, e normalizá-las é frágil. **O peso entre os sinais não tem valor universal** e depende do tipo de pergunta — o que sugere pesos por rota quando há roteamento. **Inegociável:** filtre por metadado **na consulta ao índice**, nunca sobre os resultados — filtrar depois desperdiça `top_k`, falseia a métrica e, dependendo de logs e cache, **vaza**; é requisito de segurança, não de eficiência. **E instale o "não encontrei":** limiar calibrado no seu corpus, abstenção quando nada passa, e a taxa de resultado zero monitorada — se ela vive em zero, provavelmente não há limiar nenhum.
+A escolha "densa ou esparsa" é falsa: **as duas erram em direções complementares** — a densa perde identificador, código e nome próprio; a esparsa perde paráfrase e sinônimo.
+
+1. **Funda as duas listas, e funda por posição.** É o upgrade de melhor relação benefício/esforço do livro. Por posição, não por nota: as escalas de cosseno e BM25 são incomparáveis, e normalizá-las é frágil.
+2. **Quando "o RAG não encontra o óbvio", tente a esparsa primeiro.** O óbvio quase sempre é um literal — um código, uma sigla, um nome — que o índice denso não representa.
+3. **Filtre por metadado na consulta ao índice, nunca sobre os resultados.** Filtrar depois desperdiça `top_k`, falseia a métrica e, dependendo de logs e cache, **vaza**. É requisito de segurança, não de eficiência.
+4. **Instale o "não encontrei".** Limiar calibrado **no seu** corpus, abstenção quando nada passa, taxa de resultado zero monitorada — se ela vive em zero, provavelmente não há limiar nenhum.
+5. **Não copie o peso entre os sinais.** Ele depende do tipo de pergunta, e é o que sugere pesos por rota quando há roteamento (cap. 08).
 
 ## Mão na massa — `rag-zero`, etapa 5
 

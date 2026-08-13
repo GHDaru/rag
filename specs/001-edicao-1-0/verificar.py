@@ -437,6 +437,57 @@ def r7_fontes_da_industria() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# R8 (spec 002) — a "Leitura executiva" é how-to, não o capítulo comprimido
+# --------------------------------------------------------------------------- #
+
+R8_EM_VIGOR = {"06", "15", "21"}     # cresce por ciclo, como o R7
+R8_TETO_PROSA = 400                  # caracteres de prosa fora da lista
+
+
+def r8_leitura_executiva() -> None:
+    """A "Leitura executiva" é uma lista de 3–5 itens, não um parágrafo.
+
+    Achado A8: enquanto o livro irmão gasta ~600 caracteres em lista, aqui a seção
+    tinha 1.050–1.500 num parágrafo único com 6–8 marcadores em negrito. Não é
+    questão de tamanho — é de **gênero**. O Diátaxis (Princípio III) proíbe misturar
+    tipos de texto na mesma seção, e a Leitura executiva é *how-to*: o leitor apressado
+    precisa de passos que ele possa executar, não de um resumo denso do argumento.
+
+    Um parágrafo com oito negritos não é um resumo: é o capítulo comprimido, que exige
+    do leitor exatamente o esforço que a seção existia para poupar.
+    """
+    pendentes: list[str] = []
+    for p in capitulos():
+        dentro, prosa, itens = False, 0, 0
+        for linha in p.read_text(encoding="utf8").splitlines():
+            if linha.startswith("#"):
+                if dentro:
+                    break
+                dentro = "Leitura executiva" in linha
+                continue
+            if not dentro:
+                continue
+            if re.match(r"^\s*(\d+\.|[-*])\s", linha):
+                itens += 1
+            else:
+                prosa += len(linha.strip())
+        if not dentro and not itens and not prosa:
+            continue
+        if 3 <= itens <= 5 and prosa <= R8_TETO_PROSA:
+            continue
+        cap = p.stem[:2]
+        motivo = (f"{itens} itens (esperado 3–5), {prosa} caracteres de prosa "
+                  f"(teto {R8_TETO_PROSA})")
+        if cap in R8_EM_VIGOR:
+            falhas.append(f"R8: {p.relative_to(RAIZ)} — Leitura executiva com {motivo}")
+        else:
+            pendentes.append(p.stem[:2])
+    if pendentes:
+        avisos.append(f"R8: {len(pendentes)} Leituras executivas ainda em parágrafo único "
+                      f"(caps. {', '.join(sorted(pendentes))}) — fora do lote deste ciclo")
+
+
+# --------------------------------------------------------------------------- #
 # ADR 0013 — cadência do livro vivo
 # --------------------------------------------------------------------------- #
 #
@@ -586,7 +637,7 @@ def adr15_fonte_unica() -> None:
 def main() -> int:
     for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
                      r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
-                     r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes, r7_fontes_da_industria,
+                     r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes, r7_fontes_da_industria, r8_leitura_executiva,
                      adr13_janela_declarada, adr13_janela_cumprida,
                      adr13_captura_recente, adr13_placar_honesto,
                      adr15_links_relativos, adr15_fonte_unica):
