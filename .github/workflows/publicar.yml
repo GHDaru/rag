@@ -10,6 +10,13 @@ on:
       - "livro/**"
       - "publicar/**"
       - "benchmark/**"
+      # A trilha e os portões entram nos paths: uma mudança que quebre o
+      # rag-zero, o verificador ou o companion tem de disparar o CI. Sem isso,
+      # o portão existe e nunca é acionado — que foi o achado da auditoria.
+      - "rag-zero/**"
+      - "chat-companion/**"
+      - "specs/**"
+      - "scripts/**"
       - ".github/workflows/publicar.yml"
   workflow_dispatch:
 
@@ -30,6 +37,32 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # ------------------------------------------------------------------ #
+      # PORTÕES — rodam ANTES do build. Publicar e só então descobrir que o
+      # portão falhou é o mesmo que não ter portão.
+      #
+      # A auditoria comparativa com o livro irmão encontrou que nenhum destes
+      # era acionado: o verificador da spec, as duas suítes e o check do
+      # companion existiam e o CI fazia apenas build + pdf + deploy.
+      # ------------------------------------------------------------------ #
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: "Portão 1 — critérios de aceite da edição vigente"
+        run: python3 specs/001-edicao-1-0/verificar.py
+
+      - name: "Portão 2 — a trilha rag-zero (sem dependência externa)"
+        run: python3 -m pytest tests/ -q
+        working-directory: rag-zero
+
+      - name: "Portão 3 — o companion (inclui a paridade do BM25 com o rag-zero)"
+        run: pip install -q -r requirements.txt && python3 -m pytest tests/ -q
+        working-directory: chat-companion/backend
+
+      - name: "Portão 4 — a afirmação sobre o companion não passa do estado real"
+        run: bash scripts/check-companion.sh
+
       - name: Instalar dependências do motor
         run: npm ci
         working-directory: publicar
@@ -37,6 +70,10 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
       - name: Gerar o site (Markdown -> docs/)
         run: npm run build
+
+      - name: "Portão 5 — o template dos capítulos"
+        run: node verifica-capitulos.mjs
+        working-directory: publicar
         working-directory: publicar
       - name: Instalar Chromium (para os PDFs)
         run: npx playwright install --with-deps chromium
