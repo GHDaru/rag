@@ -15,9 +15,12 @@ Convenção: arquivos `NNNN-titulo-curto.md`, numerados em sequência. Status: `
 - [0004 — Cross-link de citações (MVP) e Apêndice "O estudo"](0004-citacoes-e-apendice.md) · Aceito
 - [0005 — Template dos capítulos: um spec de motor, verificação por capítulo](0005-template-capitulos-um-spec.md) · Aceito
 - [0006 — Design system: entregáveis como componentes de tela](0006-design-system-componentes.md) · Aceito
-- [0007 — Cadência de revisão do livro vivo](0007-cadencia-livro-vivo.md) · Aceito
+- [0007 — Cadência de revisão do livro vivo](0007-cadencia-livro-vivo.md) · **Substituído por 0013**
 - [0009 — Escopo da edição 1.0](0009-escopo-da-edicao-1-0.md) · Aceito
 - [0010 — O companion na 1.0: serviço local verificável, deploy pós-1.0](0010-companion-na-1-0.md) · Aceito
 - [0011 — Política de siglas: quatro classes, uma regra cada](0011-politica-de-siglas.md) · Aceito
 - [0012 — A etapa 14 entra parcial na 1.0](0012-etapa-14-parcial.md) · Aceito
+- [0013 — Cadência do livro vivo (RAG): janela trimestral e quatro gatilhos de domínio](0013-cadencia-livro-vivo-rag.md) · Aceito · *substitui o 0007*
+- [0014 — Autocontenção das etapas: núcleo único testado, delta como artefato derivado](0014-autocontencao-das-etapas.md) · Aceito · *emenda a constituição para 3.1.0*
+- [0015 — Links para o próprio repositório: caminho relativo, base única, tag da edição](0015-links-para-o-proprio-repositorio.md) · Aceito
 - [template](template.md)

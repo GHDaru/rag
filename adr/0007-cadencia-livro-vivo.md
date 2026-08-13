@@ -1,7 +1,14 @@
 # ADR 0007 — Cadência de revisão do livro vivo
 
-- **Status**: aceita (2026-07-29)
+- **Status**: **Substituído por [0013](0013-cadencia-livro-vivo-rag.md)** (2026-08-13) · aceita em 2026-07-29
 - **Feature**: `052-cadencia-livro-vivo`
+
+> **Nota de substituição.** Este ADR foi herdado do livro irmão *Engenharia de Harness* e o
+> texto abaixo é mantido **como escrito** — reescrevê-lo apagaria a decisão que ele registra.
+> A decisão que ele documenta (janela periódica + gatilho extraordinário ancorado na Leitura
+> executiva) continua valendo e é reafirmada no [ADR 0013](0013-cadencia-livro-vivo-rag.md).
+> O que mudou é o **mecanismo**: a janela abaixo executa "re-sync dos 16 forks
+> (`scripts/sync-forks.ps1`)", corpus e script que **não existem neste repositório**.
 
 ## Contexto
 

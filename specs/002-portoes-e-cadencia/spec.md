@@ -56,5 +56,16 @@ deploy do companion · etapas 11–13, 15–16 da trilha.
 2. **Autocontenção das etapas** — a constituição exige "etapas autocontidas"; o `rag-zero`
    trocou 13 diretórios independentes por pacote compartilhado + 48 testes. A troca é
    defensável e **não está registrada**.
-3. **Convenção de links para o repositório** — 49 URLs absolutas com `main` codificado,
-   que o link-check não valida. A convenção não está escrita em lugar nenhum.
+3. **Convenção de links para o repositório** — 49 URLs absolutas (em 30 arquivos) com
+   `main` codificado, que o link-check não valida. A convenção não está escrita em lugar
+   nenhum.
+
+**As três decisões estão tomadas:** [ADR 0013](../../adr/0013-cadencia-livro-vivo-rag.md),
+[ADR 0014](../../adr/0014-autocontencao-das-etapas.md) e
+[ADR 0015](../../adr/0015-links-para-o-proprio-repositorio.md). Ordem de implementação:
+**0015 → 0014 → 0013**.
+
+> **Correção de contagem (2026-08-13).** Este spec registrou "49 URLs absolutas em **32**
+> arquivos". A contagem conferida é **49 ocorrências em 30 arquivos**: o número de
+> ocorrências estava certo, o de arquivos não. A regra de evidência (Princípio I) vale
+> também para o texto do processo.
