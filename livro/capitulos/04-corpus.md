@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço novo.** Componentes que aprofunda: **aquisição, extração e enriquecimento** (cap. 02). É o capítulo **menos apoiado em evidência** do livro — a área trata ingestão como pré-processamento e raramente a estuda. A bibliografia própria dele é prioridade da rodada 2.
+> **Maturidade: esboço novo.** Componentes que aprofunda: **aquisição, extração e enriquecimento** (cap. 02). É o capítulo **menos apoiado em evidência** do livro — a área trata ingestão como pré-processamento e raramente a estuda. A rodada 2 procurou e **não encontrou** medição publicada do impacto isolado de frescor e deduplicação — a lacuna é da área, não do capítulo, e vira experimento próprio na rodada 4.
 
 ## Objetivos de aprendizagem
 

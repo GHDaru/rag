@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** O argumento e a escada de métodos estão fechados; o tratamento por ferramenta é a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** O argumento e a escada de métodos estão fechados; o tratamento por ferramenta está no Apêndice A (rodada 2, concluída em 2026-08-09).
 
 ## Objetivos de aprendizagem
 

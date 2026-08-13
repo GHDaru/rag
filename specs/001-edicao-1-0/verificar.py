@@ -342,6 +342,49 @@ def r8_etapas_honestas() -> None:
 
 
 # --------------------------------------------------------------------------- #
+# R3 e R4 (spec 002) — o livro não fala do repositório no tempo errado
+# --------------------------------------------------------------------------- #
+
+def r3_rodada_concluida() -> None:
+    """Nenhum capítulo promete no futuro uma rodada que o ROADMAP dá por concluída.
+
+    Era o achado A3: treze capítulos diziam "o tratamento por implementação **é a
+    rodada 2 do ROADMAP**" com os 22 Apêndices A já preenchidos desde 2026-08-09. Não
+    é erro de digitação — é o livro descrevendo um estado que deixou de existir, que
+    é o mesmo defeito que a edição 1.0 inteira foi corrigir.
+    """
+    roadmap = (RAIZ / "ROADMAP.md").read_text(encoding="utf8")
+    concluidas = {int(m.group(1))
+                  for m in re.finditer(r"^##\s*Rodada\s+(\d+)\b[^\n]*✅", roadmap, re.M)}
+    futuro = re.compile(r"(?:é|são|será|serão|fica para|ficam para)\s+a\s+rodada\s+(\d+)", re.I)
+    for p in capitulos():
+        for n, linha in enumerate(p.read_text(encoding="utf8").splitlines(), 1):
+            for m in futuro.finditer(linha):
+                if int(m.group(1)) in concluidas:
+                    falhas.append(
+                        f"R3: {p.relative_to(RAIZ)}:{n} remete ao futuro a rodada "
+                        f"{m.group(1)}, que o ROADMAP dá por concluída")
+
+
+def r4_contagem_de_testes() -> None:
+    """Número de testes publicado bate com o número de testes que existem.
+
+    Achado A4: "39 testes" no `README.md` da trilha e no ROADMAP, quando eram 48. Um
+    número desatualizado é uma afirmação falsa — só que barata de conferir, e por isso
+    imperdoável num livro que cobra condição experimental ao lado de cada número.
+    """
+    reais = sum(len(re.findall(r"^def test_", t.read_text(encoding="utf8"), re.M))
+                for t in sorted((RAIZ / "rag-zero/tests").glob("test_*.py")))
+    for rel in ("rag-zero/README.md", "ROADMAP.md", "CLAUDE.md", "README.md"):
+        arq = RAIZ / rel
+        if not arq.exists():
+            continue
+        for m in re.finditer(r"(\d+)\s+testes", arq.read_text(encoding="utf8")):
+            if int(m.group(1)) != reais:
+                falhas.append(f"R4: {rel} diz '{m.group(1)} testes'; são {reais}")
+
+
+# --------------------------------------------------------------------------- #
 # ADR 0013 — cadência do livro vivo
 # --------------------------------------------------------------------------- #
 #
@@ -491,7 +534,7 @@ def adr15_fonte_unica() -> None:
 def main() -> int:
     for checagem in (r2_datacao, r3_citacao, r4_remissoes, r5_siglas,
                      r5_glossario, r5_fonte_unica, r6_mao_na_massa, r7_artefato_concreto,
-                     r6_sumario, r8_etapas_honestas,
+                     r6_sumario, r8_etapas_honestas, r3_rodada_concluida, r4_contagem_de_testes,
                      adr13_janela_declarada, adr13_janela_cumprida,
                      adr13_captura_recente, adr13_placar_honesto,
                      adr15_links_relativos, adr15_fonte_unica):

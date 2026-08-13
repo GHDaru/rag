@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** A economia do contexto e as alavancas estão fechadas; os números por provedor e o Apêndice A são a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** A economia do contexto e as alavancas estão fechadas; o Apêndice A está preenchido (rodada 2, concluída em 2026-08-09); **os números por provedor ficam fora do corpo de propósito** — preço muda mais rápido que o livro, e número sem data é retórica (Princípio I).
 
 ## Objetivos de aprendizagem
 

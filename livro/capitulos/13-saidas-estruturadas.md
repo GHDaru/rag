@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** O argumento está fechado; o comparativo entre modos de garantia (schema nativo × gramática × validação externa) é a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** O argumento está fechado; o comparativo entre modos de garantia (schema nativo × gramática × validação externa) está no Apêndice A (rodada 2, concluída em 2026-08-09).
 
 ## Objetivos de aprendizagem
 

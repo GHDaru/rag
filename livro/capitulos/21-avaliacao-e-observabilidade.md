@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** Componentes que aprofunda: **avaliador** e **observabilidade** (cap. 02). As quatro métricas e a tabela de diagnóstico estão fechadas; o tratamento por ferramenta e benchmark é a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** Componentes que aprofunda: **avaliador** e **observabilidade** (cap. 02). As quatro métricas e a tabela de diagnóstico estão fechadas; o tratamento por ferramenta e benchmark está no Apêndice A (rodada 2, concluída em 2026-08-09).
 
 ## Objetivos de aprendizagem
 

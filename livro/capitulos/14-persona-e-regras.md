@@ -2,7 +2,7 @@
 
 > **Estado da arte capturado em 2026-08** · edição 1.0 · [histórico e registro de expiração](../HISTORICO.md)
 >
-> **Maturidade: esboço.** A arquitetura em camadas e a separação voz × política estão fechadas; o tratamento por implementação é a rodada 2 do ROADMAP.
+> **Maturidade: esboço.** A arquitetura em camadas e a separação voz × política estão fechadas; o tratamento por implementação está no Apêndice A (rodada 2, concluída em 2026-08-09).
 
 ## Objetivos de aprendizagem
 
